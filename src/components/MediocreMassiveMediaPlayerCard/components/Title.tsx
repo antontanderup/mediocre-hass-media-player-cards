@@ -1,5 +1,5 @@
 import { useContext } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "../../../utils";
 import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 

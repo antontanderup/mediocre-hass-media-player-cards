@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "../../../utils";
 import { Vibrant } from "node-vibrant/browser";
 import { Icon } from "../../Icon";

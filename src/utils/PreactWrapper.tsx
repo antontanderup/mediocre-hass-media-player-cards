@@ -1,7 +1,8 @@
 import Preact, { render } from "preact";
 import { CardContextProvider } from "../utils";
 import { HomeAssistant } from "custom-card-helpers";
-import { StyleSheetManager } from "styled-components";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
 export type GetConfigValid<T> = (
   config: T
@@ -48,7 +49,14 @@ export class PreactEditorWrapper<T> extends HTMLElement {
   setConfig(config: T) {
     this._config = config;
     render(
-      <StyleSheetManager target={this}>
+      <CacheProvider
+        value={createCache({
+          key: "re",
+          prepend: true,
+          container: this,
+          speedy: false,
+        })}
+      >
         <this.Card
           config={this._config}
           hass={this._hass}
@@ -62,7 +70,7 @@ export class PreactEditorWrapper<T> extends HTMLElement {
             this.dispatchEvent(event);
           }}
         />
-      </StyleSheetManager>,
+      </CacheProvider>,
       this
     );
   }

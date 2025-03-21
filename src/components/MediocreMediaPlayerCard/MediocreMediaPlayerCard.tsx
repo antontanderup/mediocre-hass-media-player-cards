@@ -1,7 +1,7 @@
 import { CardContext, type CardContextType } from "../../utils";
 import { useCallback, useContext, useState } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "../MediaPlayerCommon/config";
-import styled from "styled-components";
+
 import {
   AlbumArt,
   CustomButton,
@@ -17,6 +17,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures } from "../../hooks/useSupportedFeatures";
 import { InteractionConfig } from "../../types";
 import { useActionProps } from "../../hooks";
+import styled from "@emotion/styled";
 
 const Card = styled.div`
   border-radius: var(--ha-card-border-radius, 12px);

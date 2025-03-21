@@ -1,7 +1,7 @@
 import { HomeAssistant } from "custom-card-helpers";
 import { MediocreMediaPlayerCardConfig } from "../MediaPlayerCommon/config";
 import { useCallback } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import {
   EntitiesPicker,
   EntityPicker,

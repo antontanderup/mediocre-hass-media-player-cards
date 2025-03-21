@@ -2,7 +2,7 @@ import { FC, Fragment } from "preact/compat";
 import { InteractionConfig } from "../../types";
 import { ActionConfigurator } from "./ActionConfigurator";
 import { HomeAssistant } from "custom-card-helpers";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 const ActionsContainer = styled.div`
   display: flex;

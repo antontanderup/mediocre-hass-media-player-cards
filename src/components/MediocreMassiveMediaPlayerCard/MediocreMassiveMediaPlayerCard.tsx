@@ -1,6 +1,6 @@
 import { AlbumArt, Title, Track } from "./components";
 import { PlaybackControls } from "./components/PlaybackControls";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { PlayerActions } from "./components/PlayerActions";
 
 const Root = styled.div`

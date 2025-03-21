@@ -1,7 +1,8 @@
-import styled, { keyframes } from "styled-components";
 import { MdiReactIconComponentType } from "mdi-preact";
 import { Fragment } from "preact/jsx-runtime";
 import { ButtonHTMLAttributes } from "preact/compat";
+import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 
 export type ButtonSize =
   | "xx-small"

@@ -1,5 +1,6 @@
 import { useCallback, useContext, useState } from "preact/hooks";
-import styled, { keyframes } from "styled-components";
+import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { ReactNode } from "preact/compat";

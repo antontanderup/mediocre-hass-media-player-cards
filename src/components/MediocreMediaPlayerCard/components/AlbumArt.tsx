@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { Vibrant } from "node-vibrant/browser";
 import { CardContext, CardContextType } from "../../../utils";
 import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";

@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { ProgressBar } from "../../ProgressBar";
 import { CardContext, CardContextType } from "../../../utils";
 import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { Slider } from "../../Slider";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";

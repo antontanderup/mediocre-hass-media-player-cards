@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { IconButton } from "../IconButton";
 
 const SubFormContainer = styled.div`
