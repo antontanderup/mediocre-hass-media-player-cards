@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "preact/hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "../";
 import styled from "styled-components";
 import { CardContext, CardContextType } from "../../../utils";
 import { Vibrant } from "node-vibrant/browser";
 import { Icon } from "../../Icon";
 import { Fragment } from "preact/jsx-runtime";
+import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const ImgOuter = styled.div`
   display: flex;
@@ -45,9 +45,7 @@ const SourceIndicator = styled.div<{ contrastColor?: string }>`
 
 export const AlbumArt = () => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
   const player = hass.states[entity_id];
   const {

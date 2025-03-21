@@ -1,9 +1,9 @@
 import { useCallback, useContext } from "preact/hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "../";
 import styled from "styled-components";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { useSupportedFeatures } from "../../../hooks";
+import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const PlaybackControlsWrap = styled.div`
   display: flex;
@@ -15,9 +15,7 @@ const PlaybackControlsWrap = styled.div`
 
 export const PlaybackControls = () => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const player = hass.states[config.entity_id];
 
   const {

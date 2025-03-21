@@ -1,11 +1,11 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import styled from "styled-components";
-import type { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
 import { Slider } from "../../Slider";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { Fragment } from "preact/jsx-runtime";
 import { Icon } from "../../Icon";
+import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const SpeakerGroupContainer = styled.div`
   display: flex;
@@ -81,9 +81,7 @@ const Chip = styled.div<{ $loading: boolean }>`
 
 export const SpeakerGrouping = () => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
 
   const { entity_id, speaker_group } = config;
 

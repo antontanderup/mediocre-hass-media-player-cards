@@ -1,5 +1,4 @@
 import { useCallback, useContext, useState } from "preact/hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "../";
 import styled, { keyframes } from "styled-components";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
@@ -10,6 +9,7 @@ import { InteractionConfig } from "../../../types";
 import { Chip } from "../../Chip";
 import { Icon } from "../../Icon";
 import { useActionProps } from "../../../hooks";
+import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const PlaybackControlsWrap = styled.div`
   background-color: var(--card-background-color);
@@ -69,9 +69,7 @@ const ModalContent = styled.div<{ padding?: string }>`
 
 export const PlayerActions = () => {
   const { hass, config, rootElement } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
 
   const { entity_id, custom_buttons, speaker_group } = config;
 
@@ -179,9 +177,7 @@ export const CustomButton = ({
   };
 }) => {
   const { hass, rootElement, config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { icon, name, ...actionConfig } = button;
   const actionProps = useActionProps({
     hass,

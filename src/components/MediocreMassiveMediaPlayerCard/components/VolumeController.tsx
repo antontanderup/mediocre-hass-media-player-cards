@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { Slider } from "../../Slider";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
+import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const VolumeContainer = styled.div`
   display: flex;
@@ -19,9 +19,7 @@ const ControlButton = styled(IconButton)<{ muted?: boolean }>`
 
 export const VolumeController = () => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
   const player = hass.states[entity_id];
 
@@ -77,9 +75,7 @@ export const getVolumeIcon = (volume, volumeMuted) => {
 
 export const VolumeTrigger = ({ onClick }: { onClick: () => void }) => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
   const player = hass.states[entity_id];
 
