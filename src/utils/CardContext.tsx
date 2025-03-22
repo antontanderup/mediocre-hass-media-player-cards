@@ -1,8 +1,5 @@
-import createCache from "@emotion/cache";
-import { CacheProvider } from "@emotion/react";
 import { HomeAssistant } from "custom-card-helpers";
 import { createContext } from "preact";
-import { useState } from "preact/hooks";
 
 export type CardContextType<T> = {
   rootElement: HTMLElement;
@@ -22,14 +19,9 @@ export const CardContextProvider = ({
   config,
   children,
 }) => {
-  const [emotionCache] = useState(() =>
-    createCache({ key: "mmpc", container: rootElement, speedy: false })
-  );
   return (
-    <CacheProvider value={emotionCache}>
-      <CardContext.Provider value={{ rootElement, hass, config }}>
-        {children}
-      </CardContext.Provider>
-    </CacheProvider>
+    <CardContext.Provider value={{ rootElement, hass, config }}>
+      {children}
+    </CardContext.Provider>
   );
 };

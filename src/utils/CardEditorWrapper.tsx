@@ -2,6 +2,7 @@ import Preact, { render } from "preact";
 import { HomeAssistant } from "custom-card-helpers";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import { EmotionContextProvider } from "./EmotionContextProvider";
 
 export type EditorCardProps<T> = {
   config: T;
@@ -21,14 +22,7 @@ export class CardEditorWrapper<T> extends HTMLElement {
   setConfig(config: T) {
     this._config = config;
     render(
-      <CacheProvider
-        value={createCache({
-          key: "re",
-          prepend: true,
-          container: this,
-          speedy: false,
-        })}
-      >
+      <EmotionContextProvider rootElement={this}>
         <this.Card
           config={this._config}
           hass={this._hass}
@@ -42,7 +36,7 @@ export class CardEditorWrapper<T> extends HTMLElement {
             this.dispatchEvent(event);
           }}
         />
-      </CacheProvider>,
+      </EmotionContextProvider>,
       this
     );
   }
