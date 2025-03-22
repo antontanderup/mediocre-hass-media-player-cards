@@ -158,7 +158,7 @@ export const MediocreMediaPlayerCard = () => {
                       <IconButton
                         size="x-small"
                         onClick={() => setShowCustomButtons(!showCustomButtons)}
-                        Icon={"mdi:dots-vertical"}
+                        icon={"mdi:dots-vertical"}
                       />
                     )}
                   </Fragment>
@@ -167,7 +167,7 @@ export const MediocreMediaPlayerCard = () => {
                   <IconButton
                     size="x-small"
                     onClick={toggleGrouping}
-                    Icon={"mdi:speaker-multiple"}
+                    icon={"mdi:speaker-multiple"}
                   />
                 )}
               </ContentRow>
@@ -182,7 +182,7 @@ export const MediocreMediaPlayerCard = () => {
                   <IconButton
                     size="small"
                     onClick={togglePower}
-                    Icon={"mdi:power"}
+                    icon={"mdi:power"}
                   />
                 )}
               </ContentRow>

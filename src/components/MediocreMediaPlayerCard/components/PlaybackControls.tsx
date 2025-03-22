@@ -79,28 +79,28 @@ export const PlaybackControls = () => {
           size="x-small"
           onClick={toggleShuffle}
           muted={!shuffle}
-          Icon={shuffle ? "mdi:shuffle-variant" : "mdi:shuffle-disabled"}
+          icon={shuffle ? "mdi:shuffle-variant" : "mdi:shuffle-disabled"}
         />
       )}
       {!!supportPreviousTrack && (
         <ControlButton
           size="small"
           onClick={previousTrack}
-          Icon={"mdi:skip-previous"}
+          icon={"mdi:skip-previous"}
         />
       )}
       {supportsTogglePlayPause && (
         <ControlButton
           size="medium"
           onClick={togglePlayback}
-          Icon={playing ? "mdi:pause-circle" : "mdi:play-circle"}
+          icon={playing ? "mdi:pause-circle" : "mdi:play-circle"}
         />
       )}
       {!!supportNextTrack && (
         <ControlButton
           size="small"
           onClick={nextTrack}
-          Icon={"mdi:skip-next"}
+          icon={"mdi:skip-next"}
         />
       )}
       {!!supportsRepeat && (
@@ -108,7 +108,7 @@ export const PlaybackControls = () => {
           size="x-small"
           onClick={toggleRepeat}
           muted={repeat === "off"}
-          Icon={
+          icon={
             repeat === "one"
               ? "mdi:repeat-once"
               : repeat === "all"

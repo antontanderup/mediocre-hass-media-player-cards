@@ -124,19 +124,19 @@ export const PlayerActions = () => {
       {!!speaker_group && (
         <IconButton
           size="small"
-          Icon={"mdi:speaker-multiple"}
+          icon={"mdi:speaker-multiple"}
           onClick={() => toggleSelected("speaker-grouping")}
         />
       )}
       <IconButton
         size="small"
         {...moreInfoButtonProps}
-        Icon="mdi:information"
+        icon="mdi:information"
       />
       {custom_buttons.map((button, index) => (
         <CustomButton key={index} button={button} type={"icon-button"} />
       ))}
-      <IconButton size="small" Icon={"mdi:power"} onClick={onTogglePower} />
+      <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
     </PlaybackControlsWrap>
   );
@@ -160,7 +160,7 @@ const Modal = ({
     <ModalRoot>
       <ModalHeader>
         <h4>{title}</h4>
-        <IconButton size="small" Icon={"mdi:close"} onClick={onClose} />
+        <IconButton size="small" icon={"mdi:close"} onClick={onClose} />
       </ModalHeader>
       <ModalContent padding={padding}>{children}</ModalContent>
     </ModalRoot>
@@ -191,7 +191,7 @@ export const CustomButton = ({
   if (type === "icon-button") {
     return (
       <IconButton
-        Icon={button.icon ?? "mdi:dots-vertical"}
+        icon={button.icon ?? "mdi:dots-vertical"}
         size={"small"}
         {...actionProps}
       />
@@ -200,7 +200,7 @@ export const CustomButton = ({
 
   return (
     <Chip {...actionProps}>
-      {!!icon && <Icon Icon={icon} size={"x-small"} />}
+      {!!icon && <Icon icon={icon} size={"x-small"} />}
       {!!name && <span>{name}</span>}
     </Chip>
   );

@@ -104,7 +104,7 @@ export const AlbumArt = () => {
             onLoad={handleImageLoad}
           />
           <SourceIndicator contrastColor={contrastColor}>
-            <Icon size="x-small" Icon={getIcon({ source, state })} />
+            <Icon size="x-small" icon={getIcon({ source, state })} />
           </SourceIndicator>
         </Fragment>
       </ImgWrap>

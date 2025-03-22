@@ -53,7 +53,7 @@ export const VolumeController = () => {
       <ControlButton
         size="small"
         onClick={handleToggleMute}
-        Icon={VolumeIcon}
+        icon={VolumeIcon}
       />
       <Slider
         min={0}
@@ -83,5 +83,5 @@ export const VolumeTrigger = ({ onClick }: { onClick: () => void }) => {
   const volumeMuted = player.attributes?.is_volume_muted ?? false;
   const volumeIcon = getVolumeIcon(volume, volumeMuted);
 
-  return <ControlButton size="small" onClick={onClick} Icon={volumeIcon} />;
+  return <ControlButton size="small" onClick={onClick} icon={volumeIcon} />;
 };

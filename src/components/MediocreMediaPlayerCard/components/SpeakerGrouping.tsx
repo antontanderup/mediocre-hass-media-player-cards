@@ -180,14 +180,14 @@ export const SpeakerGrouping = () => {
                     onClick={() =>
                       handleToggleGroup(speaker.entity_id, speaker.isGrouped)
                     }
-                    Icon={"mdi:link-variant-off"}
+                    icon={"mdi:link-variant-off"}
                   />
                   <SpeakerName isMaster={speaker.isMainSpeaker}>
                     {speaker.name} {speaker.isMainSpeaker && "(Master)"}
                   </SpeakerName>
                   {speaker.isGrouped && (
                     <VolumeControl>
-                      <Icon size="x-small" Icon={"mdi:volume-high"} />
+                      <Icon size="x-small" icon={"mdi:volume-high"} />
                       <Slider
                         min={0}
                         max={1}
@@ -218,8 +218,8 @@ export const SpeakerGrouping = () => {
               }
             >
               {speaker.name}
-              {speaker.isGrouped && <Icon size="x-small" Icon={"mdi:close"} />}
-              {!speaker.isGrouped && <Icon size="x-small" Icon={"mdi:plus"} />}
+              {speaker.isGrouped && <Icon size="x-small" icon={"mdi:close"} />}
+              {!speaker.isGrouped && <Icon size="x-small" icon={"mdi:plus"} />}
             </Chip>
           ))}
       </Chips>

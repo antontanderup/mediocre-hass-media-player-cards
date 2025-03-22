@@ -72,7 +72,7 @@ export const CustomButton = ({
   if (type === "icon-button") {
     return (
       <IconButton
-        Icon={button.icon ?? "mdi:dots-vertical"}
+        icon={button.icon ?? "mdi:dots-vertical"}
         size={"x-small"}
         {...actionProps}
       />
@@ -81,7 +81,7 @@ export const CustomButton = ({
 
   return (
     <ChipButton {...actionProps}>
-      {!!icon && <Icon Icon={icon} size={"x-small"} />}
+      {!!icon && <Icon icon={icon} size={"x-small"} />}
       {!!name && <span>{name}</span>}
     </ChipButton>
   );

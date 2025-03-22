@@ -55,7 +55,7 @@ export const VolumeSlider = () => {
       <ControlButton
         size="small"
         onClick={handleToggleMute}
-        Icon={VolumeIcon}
+        icon={VolumeIcon}
       />
       <Slider
         min={0}
@@ -97,13 +97,13 @@ export const VolumeTrigger = ({
         <ControlButton
           size="small"
           onClick={() => setSliderVisible(true)}
-          Icon={volumeIcon}
+          icon={volumeIcon}
         />
       ) : (
         <ControlButton
           size="small"
           onClick={() => setSliderVisible(false)}
-          Icon={"mdi:chevron-left"}
+          icon={"mdi:chevron-left"}
         />
       )}
     </Fragment>

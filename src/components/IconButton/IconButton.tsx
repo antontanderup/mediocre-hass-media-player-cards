@@ -1,5 +1,3 @@
-import { MdiReactIconComponentType } from "mdi-preact";
-import { Fragment } from "preact/jsx-runtime";
 import { ButtonHTMLAttributes } from "preact/compat";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
@@ -14,7 +12,7 @@ export type ButtonSize =
   | "xx-large";
 
 export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  Icon: MdiReactIconComponentType | string;
+  icon: string;
   hasLongPress?: boolean;
   size?: ButtonSize;
   disabled?: boolean;
@@ -73,7 +71,7 @@ const Button = styled.button<{
 `;
 
 export const IconButton = ({
-  Icon,
+  icon,
   size = "medium",
   disabled = false,
   hasLongPress = false,
@@ -90,13 +88,7 @@ export const IconButton = ({
       className={className}
       {...buttonProps}
     >
-      {typeof Icon === "string" ? (
-        <Fragment>
-          <ha-icon icon={Icon} />
-        </Fragment>
-      ) : (
-        <Icon size={width} />
-      )}
+      <ha-icon icon={icon} />
     </Button>
   );
 };

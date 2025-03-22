@@ -40,7 +40,7 @@ export const PlayerInfo = () => {
 
   return (
     <PlayerInfoWrap>
-      <IconButton Icon={mdiIcon} onClick={handleMoreInfo} size={"xx-small"} />
+      <IconButton icon={mdiIcon} onClick={handleMoreInfo} size={"xx-small"} />
       <FriendlyNameText>{playerName}</FriendlyNameText>
       {groupMembers && groupMembers.length > 1 && (
         <FriendlyNameText>+{groupMembers.length - 1}</FriendlyNameText>

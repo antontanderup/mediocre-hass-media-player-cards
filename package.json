@@ -24,7 +24,6 @@
     "@emotion/styled": "^11.14.0",
     "clsx": "^2.1.1",
     "custom-card-helpers": "^1.9.0",
-    "mdi-preact": "^9.4.0",
     "node-vibrant": "^4.0.3",
     "preact": "^10.25.3"
   },

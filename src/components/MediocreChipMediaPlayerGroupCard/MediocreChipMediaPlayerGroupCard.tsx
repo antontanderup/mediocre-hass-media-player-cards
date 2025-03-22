@@ -149,8 +149,8 @@ export const MediocreChipMediaPlayerGroupCard = () => {
             }}
           >
             {player.friendly_name}
-            {player.isGrouped && <Icon size="x-small" Icon="mdi:close" />}
-            {!player.isGrouped && <Icon size="x-small" Icon="mdi:plus" />}
+            {player.isGrouped && <Icon size="x-small" icon="mdi:close" />}
+            {!player.isGrouped && <Icon size="x-small" icon="mdi:plus" />}
           </Chip>
         ))}
       </Chips>

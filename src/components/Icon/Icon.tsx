@@ -1,6 +1,4 @@
 import styled from "@emotion/styled";
-import { MdiReactIconComponentType } from "mdi-preact";
-import { Fragment } from "preact";
 
 export type IconSize =
   | "xx-small"
@@ -11,7 +9,7 @@ export type IconSize =
   | "x-large";
 
 export type IconProps = {
-  Icon: MdiReactIconComponentType | string;
+  icon: string;
   size?: IconSize;
   disabled?: boolean;
   className?: string;
@@ -35,17 +33,10 @@ const IconWrap = styled.div<{
   }
 `;
 
-export const Icon = ({ Icon, size = "medium", className }: IconProps) => {
-  const width = getIconSize(size);
+export const Icon = ({ icon, size = "medium", className }: IconProps) => {
   return (
     <IconWrap $size={size} className={className}>
-      {typeof Icon === "string" ? (
-        <Fragment>
-          <ha-icon icon={Icon} />
-        </Fragment>
-      ) : (
-        <Icon size={width} />
-      )}
+      <ha-icon icon={icon} />
     </IconWrap>
   );
 };

@@ -111,12 +111,12 @@ export const AlbumArt = ({ maxHeight, ...buttonProps }: AlbumArtProps) => {
             onLoad={handleImageLoad}
           />
           <SourceIndicator>
-            <Icon size="xx-small" Icon={getIcon({ source, state })} />
+            <Icon size="xx-small" icon={getIcon({ source, state })} />
           </SourceIndicator>
         </Fragment>
       ) : (
         <NoAlbumArt>
-          <Icon size="x-large" Icon={getIcon({ source, state })} />
+          <Icon size="x-large" icon={getIcon({ source, state })} />
         </NoAlbumArt>
       )}
     </AlbumArtContainer>

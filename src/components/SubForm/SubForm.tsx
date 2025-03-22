@@ -39,7 +39,7 @@ export const SubForm = ({ title, children, initiallyExpanded = false }) => {
         <SubFormTitle>{title}</SubFormTitle>
         <IconButton
           onClick={() => setExpanded(!expanded)}
-          Icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
+          icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
           type="button"
           size={"small"}
         />
