@@ -1,8 +1,8 @@
 import { MediocreMediaPlayerCard } from "../components";
 import { MediocreMediaPlayerCardConfig } from "../components/MediaPlayerCommon";
-import { PreactWrapper } from "../utils";
+import { CardWrapper } from "../utils";
 
-class MediocreMediaPlayerCardWrapper extends PreactWrapper<MediocreMediaPlayerCardConfig> {
+class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCardConfig> {
   Card = MediocreMediaPlayerCard;
 
   setConfig(config: MediocreMediaPlayerCardConfig) {

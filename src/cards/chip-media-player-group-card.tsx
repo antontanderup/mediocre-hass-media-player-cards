@@ -2,9 +2,9 @@ import {
   MediocreChipMediaPlayerGroupCard,
   MediocreChipMediaPlayerGroupCardConfig,
 } from "../components";
-import { PreactWrapper } from "../utils";
+import { CardWrapper } from "../utils";
 
-class MediocreChipMediaPlayerGroupCardWrapper extends PreactWrapper<MediocreChipMediaPlayerGroupCardConfig> {
+class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMediaPlayerGroupCardConfig> {
   Card = MediocreChipMediaPlayerGroupCard;
 
   setConfig(config: MediocreChipMediaPlayerGroupCardConfig) {

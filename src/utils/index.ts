@@ -1,2 +1,3 @@
 export * from "./CardContext";
-export * from "./PreactWrapper";
+export * from "./CardEditorWrapper";
+export * from "./CardWrapper";

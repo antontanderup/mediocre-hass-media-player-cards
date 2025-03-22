@@ -2,9 +2,9 @@ import {
   MediocreMediaPlayerCardConfig,
   MediocreMediaPlayerCardEditor,
 } from "../components/MediaPlayerCommon";
-import { PreactEditorWrapper } from "../utils";
+import { CardEditorWrapper } from "../utils";
 
-class MediocreMediaPlayerCardEditorWrapper extends PreactEditorWrapper<MediocreMediaPlayerCardConfig> {
+class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
   Card = MediocreMediaPlayerCardEditor;
 }
 
