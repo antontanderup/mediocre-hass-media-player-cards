@@ -1,11 +1,12 @@
+import { HomeAssistant } from "custom-card-helpers";
 import { MediocreMassiveMediaPlayerCard } from "../components";
-import { MediocreMediaPlayerCardConfig } from "../components/MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../components/MediaPlayerCommon";
 import { CardWrapper } from "../utils";
 
-class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCardConfig> {
+class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveMediaPlayerCardConfig> {
   Card = MediocreMassiveMediaPlayerCard;
 
-  setConfig(config: MediocreMediaPlayerCardConfig) {
+  setConfig(config: MediocreMassiveMediaPlayerCardConfig) {
     if (!config.entity_id) {
       throw new Error("You need to define an entity_id");
     }
@@ -13,7 +14,19 @@ class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPla
   }
 
   static getConfigElement() {
-    return document.createElement("mediocre-media-player-card-editor");
+    return document.createElement("mediocre-massive-media-player-card-editor");
+  }
+
+  static getStubConfig(hass: HomeAssistant) {
+    const entities = Object.keys(hass.states);
+    const mediaPlayers = entities.filter(
+      (entity) => entity.substr(0, entity.indexOf(".")) === "media_player"
+    );
+
+    return {
+      entity_id: mediaPlayers[0] ?? "",
+      mode: "card",
+    };
   }
 }
 
@@ -26,8 +39,8 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "mediocre-massive-media-player-card",
   name: "Mediocre Massive Media Player Card",
-  preview: false, // Optional - defaults to false
-  description: "A media player card with player grouping support", // Optional
+  preview: true,
+  description: "A media player card with player grouping support.", // Optional
   documentationURL:
     "https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card", // Adds a help link in the frontend card editor
 });

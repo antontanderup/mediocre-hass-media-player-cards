@@ -1,3 +1,4 @@
+import { HomeAssistant } from "custom-card-helpers";
 import { MediocreMediaPlayerCard } from "../components";
 import { MediocreMediaPlayerCardConfig } from "../components/MediaPlayerCommon";
 import { CardWrapper } from "../utils";
@@ -14,6 +15,19 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
 
   static getConfigElement() {
     return document.createElement("mediocre-media-player-card-editor");
+  }
+
+  static getStubConfig(hass: HomeAssistant) {
+    console.log("here");
+    const entities = Object.keys(hass.states);
+    const mediaPlayers = entities.filter(
+      (entity) => entity.substr(0, entity.indexOf(".")) === "media_player"
+    );
+    console.log("mediaPlayers", mediaPlayers);
+
+    return {
+      entity_id: mediaPlayers[0] ?? "",
+    };
   }
 
   getCardSize() {
@@ -37,8 +51,8 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "mediocre-media-player-card",
   name: "Mediocre Media Player Card",
-  preview: false, // Optional - defaults to false
-  description: "A media player card with player grouping support", // Optional
+  preview: true,
+  description: "A media player card with player grouping support.", // Optional
   documentationURL:
     "https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card", // Adds a help link in the frontend card editor
 });

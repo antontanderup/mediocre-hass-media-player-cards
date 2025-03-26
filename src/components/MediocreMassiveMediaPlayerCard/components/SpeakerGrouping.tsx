@@ -5,7 +5,7 @@ import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { Fragment } from "preact/jsx-runtime";
 import { Icon } from "../../Icon";
-import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const SpeakerGroupContainer = styled.div`
   display: flex;
@@ -81,7 +81,9 @@ const Chip = styled.div<{ $loading: boolean }>`
 
 export const SpeakerGrouping = () => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+      CardContext
+    );
 
   const { entity_id, speaker_group } = config;
 

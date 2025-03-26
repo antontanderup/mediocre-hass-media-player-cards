@@ -1,11 +1,15 @@
 import { HomeAssistant } from "custom-card-helpers";
-import { MediocreMediaPlayerCardConfig } from "../MediaPlayerCommon/config";
+import {
+  MediocreMassiveMediaPlayerCardConfig,
+  MediocreMediaPlayerCardConfig,
+} from "../MediaPlayerCommon/config";
 import { useCallback } from "preact/hooks";
 import styled from "@emotion/styled";
 import {
   EntitiesPicker,
   EntityPicker,
   InteractionsPicker,
+  Select,
   TextInput,
 } from "../FormElements";
 import { SubForm } from "../SubForm/SubForm";
@@ -54,15 +58,20 @@ const InputGroup = styled.div`
   margin-bottom: 16px;
 `;
 
+export type MediocreMediaPlayerCardEditorProps = {
+  rootElement: HTMLElement;
+  hass: HomeAssistant;
+} & (
+  | { config: MediocreMediaPlayerCardConfig; isMassive?: false }
+  | { config: MediocreMassiveMediaPlayerCardConfig; isMassive: true }
+);
+
 export const MediocreMediaPlayerCardEditor = ({
   config,
   rootElement,
   hass,
-}: {
-  config: MediocreMediaPlayerCardConfig;
-  rootElement: HTMLElement;
-  hass: HomeAssistant;
-}) => {
+  isMassive,
+}: MediocreMediaPlayerCardEditorProps) => {
   if (!config || !hass || !rootElement) {
     console.error("No config or hass");
   }
@@ -184,6 +193,20 @@ export const MediocreMediaPlayerCardEditor = ({
           required
         />
       </FormGroup>
+
+      {isMassive && (
+        <SubForm title="Display Mode">
+          <Select
+            options={[
+              { name: "Panel", value: "panel" },
+              { name: "Card", value: "card" },
+              { name: "In Card", value: "in-card" },
+            ]}
+            onSelected={(value) => updateField("mode", value)}
+            selected={config.mode || "panel"}
+          />
+        </SubForm>
+      )}
 
       <FormGroup>
         <SubForm title="Interactions">

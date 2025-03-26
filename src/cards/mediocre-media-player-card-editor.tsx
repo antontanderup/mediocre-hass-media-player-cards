@@ -8,6 +8,16 @@ class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMed
   Card = MediocreMediaPlayerCardEditor;
 }
 
+class MediocreMassiveMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
+  Card = MediocreMediaPlayerCardEditor;
+  extraProps = { isMassive: true };
+}
+
+customElements.define(
+  "mediocre-massive-media-player-card-editor",
+  MediocreMassiveMediaPlayerCardEditorWrapper
+);
+
 customElements.define(
   "mediocre-media-player-card-editor",
   MediocreMediaPlayerCardEditorWrapper

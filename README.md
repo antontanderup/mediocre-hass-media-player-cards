@@ -44,8 +44,6 @@ speaker_group:
 
 A full-sized media player card made for panel view. This card gives you an immersive media control experience with all features at a glance.
 
-**Note: This card is meant for panel view only and doesn't work well in dashboards.**
-
 <img src="https://github.com/user-attachments/assets/8340e509-c7af-4a10-bbb1-8b8086a87e57" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
 
 #### Configuration
@@ -53,6 +51,7 @@ A full-sized media player card made for panel view. This card gives you an immer
 ```yaml
 type: "custom:mediocre-massive-media-player-card"
 entity_id: media_player.living_room_speaker
+mode: panel # Options: panel, card, in-card
 speaker_group:
   entities:
     - media_player.kitchen_speaker
@@ -71,6 +70,12 @@ Both cards support these options:
 | `speaker_group.entity_id` | string | -        | Entity ID of the main speaker if different from the media player |
 | `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
 | `custom_buttons`          | array  | -        | List of custom buttons to display                                |
+
+The Mediocre Massive Media Player Card has additional options:
+
+| Option | Type   | Default | Description                                 |
+| ------ | ------ | ------- | ------------------------------------------- |
+| `mode` | string | `panel` | Display mode: `panel`, `card`, or `in-card` |
 
 ### Action Configuration
 

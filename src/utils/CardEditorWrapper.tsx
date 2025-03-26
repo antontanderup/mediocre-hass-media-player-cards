@@ -12,6 +12,7 @@ export type EditorCardProps<T> = {
 export class CardEditorWrapper<T> extends HTMLElement {
   _config: T = null;
   Card: Preact.FunctionComponent<EditorCardProps<T>> = null;
+  extraProps: { [key: string]: any } = {};
   _hass: HomeAssistant = null;
 
   set hass(hass) {
@@ -27,6 +28,7 @@ export class CardEditorWrapper<T> extends HTMLElement {
             config={this._config}
             hass={this._hass}
             rootElement={this}
+            {...this.extraProps}
           />
         </GlanceGuard>
       </EmotionContextProvider>,

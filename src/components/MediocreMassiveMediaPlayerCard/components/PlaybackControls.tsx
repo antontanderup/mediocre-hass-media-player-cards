@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { useSupportedFeatures } from "../../../hooks";
-import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const PlaybackControlsWrap = styled.div`
   display: flex;
@@ -15,7 +15,9 @@ const PlaybackControlsWrap = styled.div`
 
 export const PlaybackControls = () => {
   const { hass, config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+      CardContext
+    );
   const player = hass.states[config.entity_id];
 
   const {

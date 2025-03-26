@@ -12,3 +12,8 @@ export type MediocreMediaPlayerCardConfig = {
     name: string;
   })[];
 };
+
+export type MediocreMassiveMediaPlayerCardConfig =
+  MediocreMediaPlayerCardConfig & {
+    mode: "panel" | "card" | "in-card";
+  };

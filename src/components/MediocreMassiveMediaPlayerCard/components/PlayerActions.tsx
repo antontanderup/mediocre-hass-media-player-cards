@@ -10,7 +10,7 @@ import { InteractionConfig } from "../../../types";
 import { Chip } from "../../Chip";
 import { Icon } from "../../Icon";
 import { useActionProps } from "../../../hooks";
-import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
 const PlaybackControlsWrap = styled.div`
   background-color: var(--card-background-color);
@@ -70,13 +70,11 @@ const ModalContent = styled.div<{ padding?: string }>`
 
 export const PlayerActions = () => {
   const { hass, config, rootElement } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+      CardContext
+    );
 
   const { entity_id, custom_buttons, speaker_group } = config;
-
-  if (!custom_buttons || custom_buttons.length === 0) {
-    return null;
-  }
 
   const [selected, setSelected] = useState<"volume" | "speaker-grouping">();
 
@@ -133,7 +131,7 @@ export const PlayerActions = () => {
         {...moreInfoButtonProps}
         icon="mdi:information"
       />
-      {custom_buttons.map((button, index) => (
+      {custom_buttons?.map((button, index) => (
         <CustomButton key={index} button={button} type={"icon-button"} />
       ))}
       <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
@@ -178,7 +176,9 @@ export const CustomButton = ({
   };
 }) => {
   const { hass, rootElement, config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+      CardContext
+    );
   const { icon, name, ...actionConfig } = button;
   const actionProps = useActionProps({
     hass,
