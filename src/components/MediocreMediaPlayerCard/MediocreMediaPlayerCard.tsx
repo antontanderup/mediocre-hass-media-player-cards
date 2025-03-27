@@ -67,7 +67,7 @@ const ContentRow = styled.div`
 export const MediocreMediaPlayerCard = () => {
   const { rootElement, hass, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { entity_id, custom_buttons, action } = config;
+  const { entity_id, custom_buttons, action, tap_opens_popup } = config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
 
@@ -125,6 +125,13 @@ export const MediocreMediaPlayerCard = () => {
       ...artAction,
       entity: config.entity_id,
     },
+    overrideCallback: {
+      onTap: () => {
+        if (tap_opens_popup) {
+          setIsPopupVisible(true);
+        }
+      }
+    }
   });
 
   const togglePower = useCallback(() => {
@@ -140,9 +147,7 @@ export const MediocreMediaPlayerCard = () => {
           <CardContent isOn={isOn}>
             <AlbumArt
               maxHeight="100px"
-              {...(!!action
-                ? artActionProps
-                : { onClick: () => setIsPopupVisible(true) })}
+              {...artActionProps}
             />
             <ContentContainer>
               <ContentLeft>

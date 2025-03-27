@@ -58,6 +58,21 @@ const InputGroup = styled.div`
   margin-bottom: 16px;
 `;
 
+const ToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+const ToggleLabel = styled.label`
+  margin-left: 8px;
+  font-weight: normal;
+`;
+
+const Toggle = styled.input`
+  cursor: pointer;
+`;
+
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
   hass: HomeAssistant;
@@ -206,6 +221,24 @@ export const MediocreMediaPlayerCardEditor = ({
             selected={config.mode || "panel"}
           />
         </SubForm>
+      )}
+
+      {!isMassive && (
+        <FormGroup>
+          <SubForm title="Popup Configuration">
+            <ToggleContainer>
+              <Toggle 
+                type="checkbox"
+                id="tap_opens_popup"
+                checked={safeConfig.tap_opens_popup || false}
+                onChange={(e) => updateField("tap_opens_popup", e.target.checked)}
+              />
+              <ToggleLabel htmlFor="tap_opens_popup">
+                Tap opens popup (this will override any setting under tap in action)
+              </ToggleLabel>
+            </ToggleContainer>
+          </SubForm>
+        </FormGroup>
       )}
 
       <FormGroup>

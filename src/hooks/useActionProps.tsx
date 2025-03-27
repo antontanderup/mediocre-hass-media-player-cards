@@ -23,13 +23,23 @@ export function useActionProps({
   actionConfig,
   rootElement,
   hass,
+  overrideCallback,
 }: {
   actionConfig: InteractionConfig;
   rootElement: HTMLElement;
   hass: HomeAssistant;
+  overrideCallback?: {
+    onTap?: () => void;
+    onLongPress?: () => void;
+    onDoubleTap?: () => void;
+  }
 }) {
   const buttonProps = useButtonCallbacks({
     onTap: () => {
+      if (overrideCallback?.onTap) {
+        overrideCallback.onTap();
+        return
+      }
       handleAction(
         rootElement,
         hass,
@@ -38,6 +48,10 @@ export function useActionProps({
       );
     },
     onLongPress: () => {
+      if (overrideCallback?.onLongPress) {
+        overrideCallback.onLongPress();
+        return
+      }
       handleAction(
         rootElement,
         hass,
@@ -46,6 +60,10 @@ export function useActionProps({
       );
     },
     onDoubleTap: () => {
+      if (overrideCallback?.onDoubleTap) {
+        overrideCallback.onDoubleTap();
+        return
+      }
       handleAction(
         rootElement,
         hass,
