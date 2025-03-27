@@ -7,7 +7,7 @@ import { CardContext, CardContextType } from "../../utils";
 import { MediocreMassiveMediaPlayerCardConfig } from "../MediaPlayerCommon";
 
 const Root = styled.div<{
-  mode: MediocreMassiveMediaPlayerCardConfig["mode"];
+  mode: MediocreMassiveMediaPlayerCardConfig["mode"] | "popup";
 }>`
   display: flex;
   justify-content: center;
@@ -39,7 +39,7 @@ const Root = styled.div<{
 `;
 
 const Wrap = styled.div<{
-  mode: MediocreMassiveMediaPlayerCardConfig["mode"];
+  mode: MediocreMassiveMediaPlayerCardConfig["mode"] | "popup";
 }>`
   display: flex;
   flex-direction: column;
@@ -54,6 +54,12 @@ const Wrap = styled.div<{
         return `
           width: 90%;
           max-width: 400px;
+        `;
+      }
+      case "popup": {
+        return `
+          max-width: 100%;
+          padding: 16px;
         `;
       }
       case "card": {
@@ -80,15 +86,21 @@ const ControlsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const MediocreMassiveMediaPlayerCard = () => {
+export const MediocreMassiveMediaPlayerCard = ({
+  isInPopup,
+  className,
+}: {
+  isInPopup?: boolean;
+  className?: string;
+}) => {
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode = "panel" } = config;
+  const { mode = isInPopup ? "popup" : "panel" } = config;
 
   const renderRoot = () => (
-    <Root mode={mode}>
+    <Root className={className} mode={mode}>
       <Wrap mode={mode}>
         <AlbumArt />
         <ControlsWrapper>

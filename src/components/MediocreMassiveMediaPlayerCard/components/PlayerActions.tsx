@@ -158,7 +158,12 @@ const Modal = ({
     <ModalRoot>
       <ModalHeader>
         <h4>{title}</h4>
-        <IconButton size="small" icon={"mdi:close"} onClick={onClose} />
+        <IconButton
+          type="button"
+          size="small"
+          icon={"mdi:close"}
+          onClick={onClose}
+        />
       </ModalHeader>
       <ModalContent padding={padding}>{children}</ModalContent>
     </ModalRoot>

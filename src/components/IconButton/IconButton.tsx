@@ -67,6 +67,7 @@ const Button = styled.button<{
     --mdc-icon-size: ${(props) => getButtonSize(props.$size)}px;
     width: ${(props) => getButtonSize(props.$size)}px;
     display: flex;
+    pointer-events: none;
   }
 `;
 

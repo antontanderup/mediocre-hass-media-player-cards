@@ -18,12 +18,10 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
   }
 
   static getStubConfig(hass: HomeAssistant) {
-    console.log("here");
     const entities = Object.keys(hass.states);
     const mediaPlayers = entities.filter(
       (entity) => entity.substr(0, entity.indexOf(".")) === "media_player"
     );
-    console.log("mediaPlayers", mediaPlayers);
 
     return {
       entity_id: mediaPlayers[0] ?? "",
