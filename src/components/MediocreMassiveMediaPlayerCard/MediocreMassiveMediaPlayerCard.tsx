@@ -5,9 +5,10 @@ import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "../../utils";
 import { MediocreMassiveMediaPlayerCardConfig } from "../MediaPlayerCommon";
+import { FC } from "preact/compat";
 
 const Root = styled.div<{
-  mode: MediocreMassiveMediaPlayerCardConfig["mode"] | "popup";
+  mode: MediocreMassiveMediaPlayerCardConfig["mode"];
 }>`
   display: flex;
   justify-content: center;
@@ -39,7 +40,7 @@ const Root = styled.div<{
 `;
 
 const Wrap = styled.div<{
-  mode: MediocreMassiveMediaPlayerCardConfig["mode"] | "popup";
+  mode: MediocreMassiveMediaPlayerCardConfig["mode"];
 }>`
   display: flex;
   flex-direction: column;
@@ -60,6 +61,7 @@ const Wrap = styled.div<{
         return `
           max-width: 100%;
           padding: 16px;
+          padding-bottom: max(calc(env(safe-area-inset-bottom) + 8px), 16px);
         `;
       }
       case "card": {
@@ -86,18 +88,14 @@ const ControlsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const MediocreMassiveMediaPlayerCard = ({
-  isInPopup,
-  className,
-}: {
-  isInPopup?: boolean;
+export const MediocreMassiveMediaPlayerCard: FC<{
   className?: string;
-}) => {
+}> = ({ className }) => {
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode = isInPopup ? "popup" : "panel" } = config;
+  const { mode } = config;
 
   const renderRoot = () => (
     <Root className={className} mode={mode}>

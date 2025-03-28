@@ -1,4 +1,4 @@
-import { useContext } from "preact/hooks";
+import { useContext, useMemo } from "preact/hooks";
 import {
   CardContext,
   CardContextProvider,
@@ -123,6 +123,14 @@ export const MassivePopUp = ({
       ?.group_members;
   const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
+  const massiveConfig = useMemo(() => {
+    const { tap_opens_popup, ...commonConfig } = config;
+    return {
+      ...commonConfig,
+      mode: "popup",
+    };
+  }, [config]);
+
   if (!visible) {
     return null;
   }
@@ -148,9 +156,9 @@ export const MassivePopUp = ({
           <CardContextProvider
             rootElement={rootElement}
             hass={hass}
-            config={config}
+            config={massiveConfig}
           >
-            <PopupMediocreMassiveMediaPlayerCard isInPopup />
+            <PopupMediocreMassiveMediaPlayerCard />
           </CardContextProvider>
         </PopUpContent>
       </PopUpContainer>

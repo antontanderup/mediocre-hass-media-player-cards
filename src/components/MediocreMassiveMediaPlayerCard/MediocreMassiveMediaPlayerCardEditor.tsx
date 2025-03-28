@@ -1,98 +1,38 @@
 import { HomeAssistant } from "custom-card-helpers";
-import {
-  MediocreMassiveMediaPlayerCardConfig,
-  MediocreMediaPlayerCardConfig,
-} from "../MediaPlayerCommon/config";
+import { MediocreMassiveMediaPlayerCardConfig } from "../MediaPlayerCommon/config";
 import { useCallback } from "preact/hooks";
-import styled from "@emotion/styled";
 import {
+  Button,
+  ButtonsContainer,
+  DeleteButton,
   EntitiesPicker,
   EntityPicker,
+  FormGroup,
+  InputGroup,
   InteractionsPicker,
+  Label,
   Select,
   TextInput,
 } from "../FormElements";
 import { SubForm } from "../SubForm/SubForm";
 
-const FormGroup = styled.div`
-  margin-bottom: 16px;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 16px;
-  font-weight: 500;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button`
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: var(--primary-color, #03a9f4);
-  color: white;
-  font-weight: 500;
-
-  &:hover {
-    background-color: var(--primary-color-dark, #007ac1);
-  }
-  align-self: flex-start;
-`;
-
-const DeleteButton = styled(Button)`
-  background-color: var(--error-color, #ff5252);
-
-  &:hover {
-    background-color: var(--error-color-dark, #c50b0b);
-  }
-`;
-
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-`;
-
-const ToggleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-`;
-
-const ToggleLabel = styled.label`
-  margin-left: 8px;
-  font-weight: normal;
-`;
-
-const Toggle = styled.input`
-  cursor: pointer;
-`;
-
-export type MediocreMediaPlayerCardEditorProps = {
+export type MediocreMassiveMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
   hass: HomeAssistant;
-} & (
-  | { config: MediocreMediaPlayerCardConfig; isMassive?: false }
-  | { config: MediocreMassiveMediaPlayerCardConfig; isMassive: true }
-);
+  config: MediocreMassiveMediaPlayerCardConfig;
+};
 
-export const MediocreMediaPlayerCardEditor = ({
+export const MediocreMassiveMediaPlayerCardEditor = ({
   config,
   rootElement,
   hass,
-  isMassive,
-}: MediocreMediaPlayerCardEditorProps) => {
+}: MediocreMassiveMediaPlayerCardEditorProps) => {
   if (!config || !hass || !rootElement) {
     console.error("No config or hass");
   }
 
   const updateConfig = useCallback(
-    (newConfig: MediocreMediaPlayerCardConfig) => {
+    (newConfig: MediocreMassiveMediaPlayerCardConfig) => {
       const event = new Event("config-changed", {
         bubbles: true,
         composed: true,
@@ -127,7 +67,7 @@ export const MediocreMediaPlayerCardEditor = ({
   );
 
   const addCustomButton = useCallback(() => {
-    const newButtons: MediocreMediaPlayerCardConfig["custom_buttons"] = [
+    const newButtons: MediocreMassiveMediaPlayerCardConfig["custom_buttons"] = [
       ...(config.custom_buttons || []),
       {
         icon: "mdi:paper-roll",
@@ -190,7 +130,7 @@ export const MediocreMediaPlayerCardEditor = ({
   if (!config || !hass) return null;
 
   // Ensure these properties exist with default values to avoid errors
-  const safeConfig = {
+  const safeConfig: typeof config = {
     ...config,
     speaker_group: config.speaker_group || { entity_id: "", entities: [] },
     custom_buttons: config.custom_buttons || [],
@@ -209,37 +149,17 @@ export const MediocreMediaPlayerCardEditor = ({
         />
       </FormGroup>
 
-      {isMassive && (
-        <SubForm title="Display Mode">
-          <Select
-            options={[
-              { name: "Panel", value: "panel" },
-              { name: "Card", value: "card" },
-              { name: "In Card", value: "in-card" },
-            ]}
-            onSelected={(value) => updateField("mode", value)}
-            selected={config.mode || "panel"}
-          />
-        </SubForm>
-      )}
-
-      {!isMassive && (
-        <FormGroup>
-          <SubForm title="Popup Configuration">
-            <ToggleContainer>
-              <Toggle 
-                type="checkbox"
-                id="tap_opens_popup"
-                checked={safeConfig.tap_opens_popup || false}
-                onChange={(e) => updateField("tap_opens_popup", e.target.checked)}
-              />
-              <ToggleLabel htmlFor="tap_opens_popup">
-                Tap opens popup (this will override any setting under tap in action)
-              </ToggleLabel>
-            </ToggleContainer>
-          </SubForm>
-        </FormGroup>
-      )}
+      <SubForm title="Display Mode">
+        <Select
+          options={[
+            { name: "Panel", value: "panel" },
+            { name: "Card", value: "card" },
+            { name: "In Card", value: "in-card" },
+          ]}
+          onSelected={(value) => updateField("mode", value)}
+          selected={config.mode || "panel"}
+        />
+      </SubForm>
 
       <FormGroup>
         <SubForm title="Interactions">

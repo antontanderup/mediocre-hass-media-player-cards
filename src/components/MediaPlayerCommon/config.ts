@@ -13,11 +13,12 @@ export type CommonMediocreMediaPlayerCardConfig = {
   })[];
 };
 
-export type MediocreMediaPlayerCardConfig = CommonMediocreMediaPlayerCardConfig & {
-  tap_opens_popup?: boolean;
-}
+export type MediocreMediaPlayerCardConfig =
+  CommonMediocreMediaPlayerCardConfig & {
+    tap_opens_popup?: boolean;
+  };
 
 export type MediocreMassiveMediaPlayerCardConfig =
-  MediocreMediaPlayerCardConfig & {
-    mode: "panel" | "card" | "in-card";
+  CommonMediocreMediaPlayerCardConfig & {
+    mode: "panel" | "card" | "in-card" | "popup"; // don't document popup as it only for internal use
   };
