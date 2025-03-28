@@ -15,7 +15,7 @@ import { getDeviceIcon } from "./PlayerInfo";
 
 const slideUp = keyframes`
   from {
-    transform: translateY(100%);
+    transform: translateY(30%);
     opacity: 0;
   }
   to {
@@ -99,6 +99,7 @@ const PopupMediocreMassiveMediaPlayerCard = styled(
   max-width: 98vw;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 export const MassivePopUp = ({
