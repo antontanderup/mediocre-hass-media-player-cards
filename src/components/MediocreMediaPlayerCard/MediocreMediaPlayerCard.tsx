@@ -126,12 +126,12 @@ export const MediocreMediaPlayerCard = () => {
       entity: config.entity_id,
     },
     overrideCallback: {
-      onTap: () => {
-        if (tap_opens_popup) {
-          setIsPopupVisible(true);
-        }
-      }
-    }
+      onTap: tap_opens_popup
+        ? () => {
+            setIsPopupVisible(true);
+          }
+        : undefined,
+    },
   });
 
   const togglePower = useCallback(() => {
@@ -145,10 +145,7 @@ export const MediocreMediaPlayerCard = () => {
       <ha-card>
         <Card>
           <CardContent isOn={isOn}>
-            <AlbumArt
-              maxHeight="100px"
-              {...artActionProps}
-            />
+            <AlbumArt maxHeight="100px" {...artActionProps} />
             <ContentContainer>
               <ContentLeft>
                 <MetaInfo />

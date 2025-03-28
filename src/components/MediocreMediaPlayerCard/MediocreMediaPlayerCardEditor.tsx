@@ -153,7 +153,7 @@ export const MediocreMediaPlayerCardEditor = ({
       </FormGroup>
 
       <FormGroup>
-        <SubForm title="Popup Configuration">
+        <SubForm title="Interactions">
           <ToggleContainer>
             <Toggle
               type="checkbox"
@@ -166,11 +166,6 @@ export const MediocreMediaPlayerCardEditor = ({
               action)
             </ToggleLabel>
           </ToggleContainer>
-        </SubForm>
-      </FormGroup>
-
-      <FormGroup>
-        <SubForm title="Interactions">
           <InteractionsPicker
             hass={hass}
             value={safeConfig.action || {}}

@@ -15,7 +15,7 @@ import { getDeviceIcon } from "./PlayerInfo";
 
 const slideUp = keyframes`
   from {
-    transform: translateY(30%);
+    transform: translateY(15%);
     opacity: 0;
   }
   to {
@@ -35,6 +35,9 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  @media screen and (min-height: 832px) {
+    align-items: center;
+  }
 `;
 
 const ClickableBackground = styled.div`
@@ -47,7 +50,7 @@ const ClickableBackground = styled.div`
 `;
 
 const PopUpContainer = styled.div`
-  animation: ${slideUp} 0.3s ease-in-out forwards;
+  animation: ${slideUp} 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   max-height: 98vh;
   height: fit-content;
   width: 424px;
@@ -55,8 +58,12 @@ const PopUpContainer = styled.div`
   margin-botton: 16px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
   background-color: var(--ha-card-background, #fff);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  overflow: hidden;
+  border-top-left-radius: var(--ha-dialog-border-radius, 28px);
+  border-top-right-radius: var(--ha-dialog-border-radius, 28px);
+  @media screen and (min-height: 832px) {
+    border-radius: var(--ha-dialog-border-radius, 28px);
+  }
 `;
 
 const PopUpContent = styled.div`
@@ -73,8 +80,6 @@ const PopUpHeader = styled.div`
   padding: 0px 16px;
   border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
   background-color: var(--ha-card-background, #fff);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
   gap: 8px;
 `;
 
