@@ -34,6 +34,7 @@ A standard-sized media player card with speaker grouping support that fits nicel
 ```yaml
 type: "custom:mediocre-media-player-card"
 entity_id: media_player.living_room_speaker
+tap_opens_popup: true
 speaker_group:
   entities:
     - media_player.kitchen_speaker
@@ -71,6 +72,12 @@ Both cards support these options:
 | `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
 | `custom_buttons`          | array  | -        | List of custom buttons to display                                |
 
+The Mediocre Media Player Card has additional options:
+
+| Option            | Type    | Default | Description                                                   |
+| ----------------- | ------- | ------- | ------------------------------------------------------------- |
+| `tap_opens_popup` | boolean | `false` | When set to true, tapping the card opens a popup with details |
+
 The Mediocre Massive Media Player Card has additional options:
 
 | Option | Type   | Default | Description                                 |
@@ -100,11 +107,14 @@ custom_buttons:
   - icon: mdi:equalizer
     name: Equalizer
     tap_action:
-      action: call-service
-      service: media_player.open_equalizer
-      service_data:
+      action: perform-action
+      perform_action: media_player.open_equalizer
+      target:
         entity_id: media_player.living_room_speaker
+      data: {}
 ```
+
+Note: The newer `perform-action` is recommended over the legacy `call-service` action format.
 
 ### Mediocre Chip Media Player Group Card
 
