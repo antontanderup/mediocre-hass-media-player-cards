@@ -1,7 +1,8 @@
 import {
-  MediocreMediaPlayerCardConfig,
+  MediocreMassiveMediaPlayerCardEditor,
   MediocreMediaPlayerCardEditor,
-} from "../components/MediaPlayerCommon";
+} from "../components";
+import { MediocreMediaPlayerCardConfig } from "../components/MediaPlayerCommon";
 import { CardEditorWrapper } from "../utils";
 
 class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
@@ -9,8 +10,8 @@ class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMed
 }
 
 class MediocreMassiveMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
-  Card = MediocreMediaPlayerCardEditor;
-  extraProps = { isMassive: true };
+  Card = MediocreMassiveMediaPlayerCardEditor;
+  extraProps = { isMassive: true, className: undefined };
 }
 
 customElements.define(

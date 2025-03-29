@@ -5,6 +5,7 @@ import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "../../utils";
 import { MediocreMassiveMediaPlayerCardConfig } from "../MediaPlayerCommon";
+import { FC } from "preact/compat";
 
 const Root = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
@@ -56,6 +57,13 @@ const Wrap = styled.div<{
           max-width: 400px;
         `;
       }
+      case "popup": {
+        return `
+          max-width: 100%;
+          padding: 16px;
+          padding-bottom: max(calc(env(safe-area-inset-bottom) + 8px), 16px);
+        `;
+      }
       case "card": {
         return `
           width: 100%;
@@ -80,15 +88,17 @@ const ControlsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const MediocreMassiveMediaPlayerCard = () => {
+export const MediocreMassiveMediaPlayerCard: FC<{
+  className?: string;
+}> = ({ className }) => {
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode = "panel" } = config;
+  const { mode } = config;
 
   const renderRoot = () => (
-    <Root mode={mode}>
+    <Root className={className} mode={mode}>
       <Wrap mode={mode}>
         <AlbumArt />
         <ControlsWrapper>

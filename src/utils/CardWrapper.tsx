@@ -2,9 +2,9 @@ import Preact, { render } from "preact";
 import { CardContextProvider } from "../utils";
 import { EmotionContextProvider } from "./EmotionContextProvider";
 
-export class CardWrapper<T> extends HTMLElement {
+export class CardWrapper<Config> extends HTMLElement {
   Card: Preact.FunctionComponent = null;
-  config: T = null;
+  config: Config = null;
 
   set hass(hass) {
     if (!this.Card) {

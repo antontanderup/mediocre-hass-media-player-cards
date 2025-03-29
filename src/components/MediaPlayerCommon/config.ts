@@ -1,6 +1,6 @@
 import { InteractionConfig } from "../../types/actionTypes";
 
-export type MediocreMediaPlayerCardConfig = {
+export type CommonMediocreMediaPlayerCardConfig = {
   entity_id: string;
   action?: InteractionConfig;
   speaker_group?: {
@@ -13,7 +13,12 @@ export type MediocreMediaPlayerCardConfig = {
   })[];
 };
 
+export type MediocreMediaPlayerCardConfig =
+  CommonMediocreMediaPlayerCardConfig & {
+    tap_opens_popup?: boolean;
+  };
+
 export type MediocreMassiveMediaPlayerCardConfig =
-  MediocreMediaPlayerCardConfig & {
-    mode: "panel" | "card" | "in-card";
+  CommonMediocreMediaPlayerCardConfig & {
+    mode: "panel" | "card" | "in-card" | "popup"; // don't document popup as it only for internal use
   };
