@@ -46,6 +46,7 @@ export function useActionProps({
         return;
       }
       const action = actionConfig?.tap_action;
+      if (!action) return;
       if (action?.action === "perform-action") {
         performAction({
           hass,
@@ -68,6 +69,7 @@ export function useActionProps({
         return;
       }
       const action = actionConfig?.hold_action;
+      if (!action) return;
       if (action?.action === "perform-action") {
         performAction({
           hass,
@@ -90,6 +92,7 @@ export function useActionProps({
         return;
       }
       const action = actionConfig?.double_tap_action;
+      if (!action) return;
       if (action?.action === "perform-action") {
         performAction({
           hass,
