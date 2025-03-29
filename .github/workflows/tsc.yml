@@ -1,4 +1,4 @@
-name: TypeScript Check
+name: Code Quality Checks
 
 on:
   pull_request:
@@ -9,9 +9,9 @@ on:
       - main
 
 jobs:
-  tsc:
+  quality_checks:
+    name: Quality Checks
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -27,3 +27,6 @@ jobs:
 
       - name: Run TypeScript compiler
         run: yarn tsc
+
+      - name: Check formatting with Prettier
+        run: yarn prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss,md}"
