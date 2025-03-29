@@ -60,7 +60,7 @@ export const ActionsConfigurator = ({
       hass={hass}
       data={data}
       schema={getActionsFormSchema()}
-      computeLabel={(item) => item.label || item.name}
+      computeLabel={item => item.label || item.name}
       disabled={disabled}
     />
   );

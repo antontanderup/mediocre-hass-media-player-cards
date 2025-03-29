@@ -13,7 +13,7 @@ const Root = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
-  ${(props) => {
+  ${props => {
     switch (props?.mode) {
       case "panel": {
         return `
@@ -49,7 +49,7 @@ const Wrap = styled.div<{
   align-items: center;
   padding-top: 16px;
   padding-bottom: 16px;
-  ${(props) => {
+  ${props => {
     switch (props?.mode) {
       case "panel": {
         return `

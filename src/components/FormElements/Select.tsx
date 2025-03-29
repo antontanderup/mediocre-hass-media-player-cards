@@ -10,9 +10,9 @@ export const Select: FC<Select> = ({ options, onSelected, selected }) => {
   return (
     <select
       value={selected}
-      onChange={(e) => onSelected((e.target as HTMLSelectElement).value)}
+      onChange={e => onSelected((e.target as HTMLSelectElement).value)}
     >
-      {options.map((option) => (
+      {options.map(option => (
         <option key={option.value} value={option.value}>
           {option.name}
         </option>

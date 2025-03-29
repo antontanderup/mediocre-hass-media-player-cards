@@ -39,7 +39,7 @@ const SourceIndicator = styled.div<{ contrastColor?: string }>`
   bottom: 6px;
   right: 6px;
   color: var(--primary-text-color);
-  ${(props) => (props.contrastColor ? `color: ${props.contrastColor};` : "")}
+  ${props => (props.contrastColor ? `color: ${props.contrastColor};` : "")}
   opacity: 0.8;
 `;
 
@@ -71,7 +71,7 @@ export const AlbumArt = () => {
       const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
       Vibrant.from(albumArt)
         .getPalette()
-        .then((palette) => {
+        .then(palette => {
           if (palette.DarkVibrant && palette.LightVibrant) {
             setContrastColor(
               isDarkMode
@@ -88,7 +88,7 @@ export const AlbumArt = () => {
             setContrastColor(undefined);
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.error("Error getting color with Vibrant:", e);
         });
     }

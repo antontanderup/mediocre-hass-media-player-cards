@@ -16,8 +16,8 @@ const SliderWrap = styled.div<{ thumbSize?: HandleSize }>`
 
   > ha-slider {
     width: 100%;
-    --_handle-height: ${(props) => getHandleSize(props.thumbSize)} !important;
-    --_handle-width: ${(props) => getHandleSize(props.thumbSize)} !important;
+    --_handle-height: ${props => getHandleSize(props.thumbSize)} !important;
+    --_handle-width: ${props => getHandleSize(props.thumbSize)} !important;
   }
 `;
 
@@ -36,7 +36,7 @@ export const Slider = ({
         max={max}
         step={step}
         value={value}
-        onInput={(e) =>
+        onInput={e =>
           onChange(parseFloat((e.target as HTMLInputElement).value))
         }
       />

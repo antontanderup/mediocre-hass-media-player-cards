@@ -69,7 +69,7 @@ export function useButtonCallbacks({
   }, [performAction]);
 
   const onDblClick = useCallback(
-    (e) => {
+    e => {
       e.preventDefault();
       isDoubleClick.current = true;
       actionType.current = "double_tap";

@@ -20,7 +20,7 @@ class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveM
   static getStubConfig(hass: HomeAssistant) {
     const entities = Object.keys(hass.states);
     const mediaPlayers = entities.filter(
-      (entity) => entity.substr(0, entity.indexOf(".")) === "media_player"
+      entity => entity.substr(0, entity.indexOf(".")) === "media_player"
     );
 
     return {

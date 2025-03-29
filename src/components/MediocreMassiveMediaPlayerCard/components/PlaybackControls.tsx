@@ -102,8 +102,8 @@ export const PlaybackControls = () => {
             repeat === "one"
               ? "mdi:repeat-once"
               : repeat === "all"
-              ? "mdi:repeat"
-              : "mdi:repeat-off"
+                ? "mdi:repeat"
+                : "mdi:repeat-off"
           }
         />
       )}

@@ -23,12 +23,12 @@ const IconWrap = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: ${(props) => getIconSize(props.$size)}px;
+  min-width: ${props => getIconSize(props.$size)}px;
   aspect-ratio: 1;
 
   > ha-icon {
-    --mdc-icon-size: ${(props) => getIconSize(props.$size)}px;
-    width: ${(props) => getIconSize(props.$size)}px;
+    --mdc-icon-size: ${props => getIconSize(props.$size)}px;
+    width: ${props => getIconSize(props.$size)}px;
     display: flex;
   }
 `;

@@ -50,7 +50,7 @@ const Chip = styled.div<{ $inactive: boolean; $loading: boolean }>`
   gap: 4px;
   text-wrap: nowrap;
   cursor: pointer;
-  opacity: ${(props) => (props.$loading ? 0.5 : props.$inactive ? 0.8 : 1)};
+  opacity: ${props => (props.$loading ? 0.5 : props.$inactive ? 0.8 : 1)};
 `;
 
 export const MediocreChipMediaPlayerGroupCard = () => {
@@ -66,8 +66,8 @@ export const MediocreChipMediaPlayerGroupCard = () => {
     // sorted alfabetically by friendly name
     // grouped players first regardless of friendly name
     const players: GroupPlayer[] = config.entities
-      .filter((entity_id) => entity_id !== mainPlayer.entity_id)
-      .map((entity_id) => {
+      .filter(entity_id => entity_id !== mainPlayer.entity_id)
+      .map(entity_id => {
         const player = hass.states[entity_id];
         return {
           entity_id: player.entity_id,
@@ -108,7 +108,7 @@ export const MediocreChipMediaPlayerGroupCard = () => {
       } catch (e) {
         console.error(e);
       }
-      setPlayersLoading(playersLoading.filter((id) => id !== player.entity_id));
+      setPlayersLoading(playersLoading.filter(id => id !== player.entity_id));
     },
     [hass, config]
   );
@@ -127,7 +127,7 @@ export const MediocreChipMediaPlayerGroupCard = () => {
       } catch (e) {
         console.error(e);
       }
-      setPlayersLoading(playersLoading.filter((id) => id !== player.entity_id));
+      setPlayersLoading(playersLoading.filter(id => id !== player.entity_id));
     },
     [hass, config]
   );
@@ -135,7 +135,7 @@ export const MediocreChipMediaPlayerGroupCard = () => {
   return (
     <Fragment>
       <Chips className="chips">
-        {players.map((player) => (
+        {players.map(player => (
           <Chip
             $inactive={!player.isGrouped}
             $loading={player.isGrouping}

@@ -15,7 +15,7 @@ const SubFormHeader = styled.div<{ $expanded: boolean }>`
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border-bottom: ${(props) =>
+  border-bottom: ${props =>
     props.$expanded ? "1px solid var(--divider-color, #e0e0e0)" : "none"};
 `;
 
@@ -27,7 +27,7 @@ const SubFormTitle = styled.h3`
 
 const SubFormContent = styled.div<{ $expanded: boolean }>`
   padding: 16px;
-  display: ${(props) => (props.$expanded ? "block" : "none")};
+  display: ${props => (props.$expanded ? "block" : "none")};
 `;
 
 export const SubForm = ({ title, children, initiallyExpanded = false }) => {

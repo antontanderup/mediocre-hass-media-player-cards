@@ -44,10 +44,10 @@ const Button = styled.button<{
   justify-content: center;
   border-radius: 50%;
   transition: background-color 0.2s;
-  padding: ${(props) => (props.$size === "xx-small" ? 0 : 4)}px;
-  min-width: ${(props) => getButtonSize(props.$size)}px;
+  padding: ${props => (props.$size === "xx-small" ? 0 : 4)}px;
+  min-width: ${props => getButtonSize(props.$size)}px;
   aspect-ratio: 1;
-  color: ${(props) =>
+  color: ${props =>
     props.disabled
       ? "var(--disabled-text-color, #999)"
       : "var(--primary-text-color, #333)"};
@@ -61,11 +61,11 @@ const Button = styled.button<{
     animation-name: ${longPressIndicator};
     animation-duration: 2.3s;
     animation-fill-mode: forwards;
-    ${(props) => (!props.$hasLongPress ? "animation: none;" : "")}
+    ${props => (!props.$hasLongPress ? "animation: none;" : "")}
   }
   > ha-icon {
-    --mdc-icon-size: ${(props) => getButtonSize(props.$size)}px;
-    width: ${(props) => getButtonSize(props.$size)}px;
+    --mdc-icon-size: ${props => getButtonSize(props.$size)}px;
+    width: ${props => getButtonSize(props.$size)}px;
     display: flex;
     pointer-events: none;
   }

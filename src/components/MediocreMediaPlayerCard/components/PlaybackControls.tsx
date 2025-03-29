@@ -16,7 +16,7 @@ const PlaybackControlsWrap = styled.div`
 `;
 
 const ControlButton = styled(IconButton)<{ muted?: boolean }>`
-  opacity: ${(props) => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
+  opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
 `;
 
 export const PlaybackControls = () => {
@@ -112,8 +112,8 @@ export const PlaybackControls = () => {
             repeat === "one"
               ? "mdi:repeat-once"
               : repeat === "all"
-              ? "mdi:repeat"
-              : "mdi:repeat-off"
+                ? "mdi:repeat"
+                : "mdi:repeat-off"
           }
         />
       )}

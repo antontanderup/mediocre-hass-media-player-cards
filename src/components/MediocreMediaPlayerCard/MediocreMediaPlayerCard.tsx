@@ -29,7 +29,7 @@ const CardContent = styled.div<{ isOn: boolean }>`
   display: flex;
   gap: 14px;
   padding: 12px;
-  opacity: ${(props) => (props.isOn ? 1 : 0.7)};
+  opacity: ${props => (props.isOn ? 1 : 0.7)};
   transition: opacity 0.3s ease;
   position: relative;
 `;

@@ -65,7 +65,7 @@ const ModalContent = styled.div<{ padding?: string }>`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: ${(props) => props.padding ?? "16px"};
+  padding: ${props => props.padding ?? "16px"};
 `;
 
 export const PlayerActions = () => {

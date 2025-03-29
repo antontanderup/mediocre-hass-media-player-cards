@@ -145,7 +145,7 @@ export const MediocreMediaPlayerCardEditor = ({
         <EntityPicker
           hass={hass}
           value={safeConfig.entity_id}
-          onChange={(newValue) => updateField("entity_id", newValue)}
+          onChange={newValue => updateField("entity_id", newValue)}
           label="Media Player Entity"
           domains={["media_player"]}
           required
@@ -159,7 +159,7 @@ export const MediocreMediaPlayerCardEditor = ({
               type="checkbox"
               id="tap_opens_popup"
               checked={safeConfig.tap_opens_popup || false}
-              onChange={(e) => updateField("tap_opens_popup", e.target.checked)}
+              onChange={e => updateField("tap_opens_popup", e.target.checked)}
             />
             <ToggleLabel htmlFor="tap_opens_popup">
               Tap opens popup (this will override any setting under tap in
@@ -169,7 +169,7 @@ export const MediocreMediaPlayerCardEditor = ({
           <InteractionsPicker
             hass={hass}
             value={safeConfig.action || {}}
-            onChange={(newValue) => updateField("action", newValue)}
+            onChange={newValue => updateField("action", newValue)}
           />
         </SubForm>
       </FormGroup>
@@ -180,7 +180,7 @@ export const MediocreMediaPlayerCardEditor = ({
             <EntityPicker
               hass={hass}
               value={safeConfig.speaker_group.entity_id}
-              onChange={(newValue) =>
+              onChange={newValue =>
                 updateField("speaker_group.entity_id", newValue)
               }
               label="Main Speaker Entity ID (Optional)"
@@ -192,7 +192,7 @@ export const MediocreMediaPlayerCardEditor = ({
             <EntitiesPicker
               hass={hass}
               value={safeConfig.speaker_group.entities}
-              onChange={(newValue) =>
+              onChange={newValue =>
                 updateField("speaker_group.entities", newValue)
               }
               label="Speaker Group Entities (including main speaker)"
@@ -212,7 +212,7 @@ export const MediocreMediaPlayerCardEditor = ({
                   <InputGroup>
                     <TextInput
                       value={name || ""}
-                      onChange={(e) => updateCustomButton(index, "name", e)}
+                      onChange={e => updateCustomButton(index, "name", e)}
                       hass={hass}
                       label={"Name"}
                     />
@@ -221,7 +221,7 @@ export const MediocreMediaPlayerCardEditor = ({
                   <InputGroup>
                     <TextInput
                       value={icon || ""}
-                      onChange={(e) => updateCustomButton(index, "icon", e)}
+                      onChange={e => updateCustomButton(index, "icon", e)}
                       hass={hass}
                       isIconInput
                       label={"Icon"}
@@ -231,7 +231,7 @@ export const MediocreMediaPlayerCardEditor = ({
                   <InteractionsPicker
                     hass={hass}
                     value={interactions}
-                    onChange={(newValue) =>
+                    onChange={newValue =>
                       updateButtonInteractions(index, newValue)
                     }
                   />

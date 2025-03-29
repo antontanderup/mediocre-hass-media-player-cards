@@ -30,7 +30,7 @@ const SpeakerItem = styled.div`
 const SpeakerName = styled.div<{ isMaster?: boolean }>`
   font-size: 13px;
   flex: 1;
-  ${(props) => (props.isMaster ? "font-weight: 500;" : "")}
+  ${props => (props.isMaster ? "font-weight: 500;" : "")}
   color: var(--primary-text-color);
 `;
 
@@ -70,7 +70,7 @@ const Chip = styled.div<{ $loading: boolean }>`
   gap: 4px;
   text-wrap: nowrap;
   cursor: pointer;
-  opacity: ${(props) => (props.$loading ? 0.3 : 0.8)};
+  opacity: ${props => (props.$loading ? 0.3 : 0.8)};
   &:first-child {
     margin-left: 16px;
   }
@@ -98,8 +98,8 @@ export const SpeakerGrouping = () => {
     if (!speaker_group?.entities?.length) return [];
 
     return speaker_group.entities
-      .filter((id) => hass.states[id])
-      .map((id) => ({
+      .filter(id => hass.states[id])
+      .map(id => ({
         entity_id: id,
         name: hass.states[id].attributes.friendly_name,
         volume: hass.states[id].attributes.volume_level || 0,
@@ -119,7 +119,7 @@ export const SpeakerGrouping = () => {
   const handleToggleGroup = useCallback(
     async (speakerId: string, isGrouped: boolean) => {
       if (playersLoading.includes(speakerId)) return;
-      setPlayersLoading((prev) => [...prev, speakerId]);
+      setPlayersLoading(prev => [...prev, speakerId]);
       try {
         const speaker = hass.states[speakerId];
         if (isGrouped) {
@@ -142,7 +142,7 @@ export const SpeakerGrouping = () => {
       } catch (e) {
         console.error(e);
       }
-      setPlayersLoading((prev) => prev.filter((id) => id !== speakerId));
+      setPlayersLoading(prev => prev.filter(id => id !== speakerId));
     },
     [mainEntityId, playersLoading]
   );
@@ -161,8 +161,8 @@ export const SpeakerGrouping = () => {
         <Fragment>
           <SpeakerList>
             {availableSpeakers
-              .filter((speaker) => speaker.isGrouped)
-              .map((speaker) => (
+              .filter(speaker => speaker.isGrouped)
+              .map(speaker => (
                 <SpeakerItem key={speaker.entity_id}>
                   <IconButton
                     size="x-small"
@@ -183,7 +183,7 @@ export const SpeakerGrouping = () => {
                         step={0.01}
                         value={speaker.volume}
                         thumbSize="small"
-                        onChange={(value) =>
+                        onChange={value =>
                           handleVolumeChange(speaker.entity_id, value)
                         }
                       />
@@ -196,8 +196,8 @@ export const SpeakerGrouping = () => {
       )}
       <Chips>
         {availableSpeakers
-          .filter((speaker) => !speaker.isGrouped)
-          .map((speaker) => (
+          .filter(speaker => !speaker.isGrouped)
+          .map(speaker => (
             <Chip
               key={speaker.entity_id}
               $loading={playersLoading.includes(speaker.entity_id)}

@@ -20,7 +20,7 @@ const ChipButton = styled.button<{ $loading?: boolean }>`
   gap: 4px;
   text-wrap: nowrap;
   cursor: pointer;
-  opacity: ${(props) => (props.$loading ? 0.3 : 0.8)};
+  opacity: ${props => (props.$loading ? 0.3 : 0.8)};
 `;
 
 export type ChipProps = ButtonHTMLAttributes<HTMLButtonElement> & {

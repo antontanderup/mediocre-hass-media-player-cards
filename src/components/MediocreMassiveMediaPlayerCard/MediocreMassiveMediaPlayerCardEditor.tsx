@@ -142,7 +142,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
         <EntityPicker
           hass={hass}
           value={safeConfig.entity_id}
-          onChange={(newValue) => updateField("entity_id", newValue)}
+          onChange={newValue => updateField("entity_id", newValue)}
           label="Media Player Entity"
           domains={["media_player"]}
           required
@@ -156,7 +156,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
             { name: "Card", value: "card" },
             { name: "In Card", value: "in-card" },
           ]}
-          onSelected={(value) => updateField("mode", value)}
+          onSelected={value => updateField("mode", value)}
           selected={config.mode || "panel"}
         />
       </SubForm>
@@ -166,7 +166,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
           <InteractionsPicker
             hass={hass}
             value={safeConfig.action || {}}
-            onChange={(newValue) => updateField("action", newValue)}
+            onChange={newValue => updateField("action", newValue)}
           />
         </SubForm>
       </FormGroup>
@@ -177,7 +177,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
             <EntityPicker
               hass={hass}
               value={safeConfig.speaker_group.entity_id}
-              onChange={(newValue) =>
+              onChange={newValue =>
                 updateField("speaker_group.entity_id", newValue)
               }
               label="Main Speaker Entity ID (Optional)"
@@ -189,7 +189,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
             <EntitiesPicker
               hass={hass}
               value={safeConfig.speaker_group.entities}
-              onChange={(newValue) =>
+              onChange={newValue =>
                 updateField("speaker_group.entities", newValue)
               }
               label="Speaker Group Entities (including main speaker)"
@@ -209,7 +209,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
                   <InputGroup>
                     <TextInput
                       value={name || ""}
-                      onChange={(e) => updateCustomButton(index, "name", e)}
+                      onChange={e => updateCustomButton(index, "name", e)}
                       hass={hass}
                       label={"Name"}
                     />
@@ -218,7 +218,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
                   <InputGroup>
                     <TextInput
                       value={icon || ""}
-                      onChange={(e) => updateCustomButton(index, "icon", e)}
+                      onChange={e => updateCustomButton(index, "icon", e)}
                       hass={hass}
                       isIconInput
                       label={"Icon"}
@@ -228,7 +228,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
                   <InteractionsPicker
                     hass={hass}
                     value={interactions}
-                    onChange={(newValue) =>
+                    onChange={newValue =>
                       updateButtonInteractions(index, newValue)
                     }
                   />

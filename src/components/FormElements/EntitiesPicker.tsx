@@ -65,7 +65,7 @@ export const EntitiesPicker = ({
           key={`entity-${index}`}
           hass={hass}
           value={entityId}
-          onChange={(value) => handleEntityChange(value, index)}
+          onChange={value => handleEntityChange(value, index)}
           domains={domains}
           disabled={disabled}
           required={false}
@@ -78,7 +78,7 @@ export const EntitiesPicker = ({
         key="entity-new"
         hass={hass}
         value=""
-        onChange={(value) => handleEntityChange(value, entities.length)}
+        onChange={value => handleEntityChange(value, entities.length)}
         domains={domains}
         disabled={disabled}
         required={false}

@@ -15,13 +15,13 @@ const AlbumArtContainer = styled.button<{
   cursor: pointer;
   padding: 0px;
   margin: 0px;
-  max-height: ${(props) => props.maxHeight};
+  max-height: ${props => props.maxHeight};
   aspect-ratio: 1;
   flex-shrink: 0;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  ${(props) =>
+  ${props =>
     props.shadowColor
       ? `box-shadow: 0px 0px 80px ${props.shadowColor}, 170px 50px 120px ${props.shadowColor}40, 300px -50px 150px ${props.shadowColor}40;`
       : ""}
@@ -82,7 +82,7 @@ export const AlbumArt = ({ maxHeight, ...buttonProps }: AlbumArtProps) => {
     if (albumArt) {
       Vibrant.from(albumArt)
         .getPalette()
-        .then((palette) => {
+        .then(palette => {
           if (palette.Muted) {
             setAverageColor(palette.Muted.hex); // Use the vibrant color
           } else if (palette.Vibrant) {
@@ -91,7 +91,7 @@ export const AlbumArt = ({ maxHeight, ...buttonProps }: AlbumArtProps) => {
             setAverageColor("#888"); // Default fallback color
           }
         })
-        .catch((e) => {
+        .catch(e => {
           console.error("Error getting color with Vibrant:", e);
         });
     }

@@ -16,7 +16,7 @@ const VolumeContainer = styled.div`
 `;
 
 const ControlButton = styled(IconButton)<{ muted?: boolean }>`
-  opacity: ${(props) => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
+  opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
 `;
 
 export const VolumeSlider = () => {
