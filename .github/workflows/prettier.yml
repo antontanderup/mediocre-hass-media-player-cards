@@ -1,4 +1,4 @@
-name: TSC
+name: Prettier
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  typescript:
-    name: TypeScript Checks
+  prettier:
+    name: Prettier Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,9 +21,10 @@ jobs:
         with:
           node-version: "20"
           cache: "yarn"
+          cache-dependency-path: yarn.lock
 
       - name: Install dependencies
         run: yarn install
 
-      - name: Run TypeScript compiler
-        run: yarn tsc
+      - name: Check formatting with Prettier
+        run: yarn prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss,md}"
