@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "preact/compat";
+import { ButtonHTMLAttributes, JSX } from "preact/compat";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
@@ -16,6 +16,7 @@ export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   hasLongPress?: boolean;
   size?: ButtonSize;
   disabled?: boolean;
+  renderLongPressIndicator?: () => JSX.Element | null;
 };
 
 const longPressIndicator = keyframes`
@@ -76,7 +77,8 @@ export const IconButton = ({
   size = "medium",
   disabled = false,
   hasLongPress = false,
-  className,
+  className, 
+  renderLongPressIndicator,
   ...buttonProps
 }: IconButtonProps) => {
   const width = getButtonSize(size);
@@ -90,6 +92,7 @@ export const IconButton = ({
       {...buttonProps}
     >
       <ha-icon icon={icon} />
+      {renderLongPressIndicator && renderLongPressIndicator()}
     </Button>
   );
 };
