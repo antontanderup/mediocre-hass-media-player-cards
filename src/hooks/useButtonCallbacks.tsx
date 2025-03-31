@@ -5,12 +5,10 @@ const supportsTouchEvents = "ontouchstart" in window;
 
 const LongPressIndicator = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background-color: blue;
+  background-color: var(--primary-color, rgba(7, 114, 244));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,6 +37,19 @@ export function useButtonCallbacks({
   const mouseUpTimeout = useRef<NodeJS.Timeout | null>(null);
   const longPressIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
   const [isLongPressing, setIsLongPressing] = useState(false);
+
+  const reset = useCallback(() => {
+    if (mouseUpTimeout.current) {
+      clearTimeout(mouseUpTimeout.current);
+    }
+    if (longPressIndicatorTimeout.current) {
+      clearTimeout(longPressIndicatorTimeout.current);
+    }
+    setIsLongPressing(false);
+    mouseDownTimestamp.current = null;
+    numClicks.current = 0;
+  }
+  , []);
 
   const renderLongPressIndicator = () => {
     if (!isLongPressing) return null;
@@ -99,20 +110,26 @@ export function useButtonCallbacks({
     }
   }, [handleEnd]);
 
-  const onTouchStart = useCallback(() => {
+  const onTouchStart = useCallback((e: TouchEvent) => {
     handleStart();
   }, [handleStart]);
 
-  const onTouchEnd = useCallback(() => {
+  const onTouchEnd = useCallback((e: TouchEvent) => {
     handleEnd();
   }, [handleEnd]);
+
+  const onOut = useCallback(() => {
+    reset();
+  }, [reset]);
 
   return useMemo(
     () => ({
       onMouseDown,
       onMouseUp,
+      onMouseOut: onOut,
       onTouchStart,
       onTouchEnd,
+      onTouchCancel: onOut,
       renderLongPressIndicator
     }),
     [onMouseDown, onMouseUp, onTouchStart, onTouchEnd, isLongPressing, renderLongPressIndicator]

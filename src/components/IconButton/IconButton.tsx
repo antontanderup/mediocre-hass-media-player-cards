@@ -37,6 +37,7 @@ const Button = styled.button<{
   $size: ButtonSize;
   $hasLongPress: boolean;
 }>`
+  position: relative;
   background: none;
   border: none;
   cursor: pointer;
@@ -90,6 +91,7 @@ export const IconButton = ({
       $hasLongPress={hasLongPress}
       className={className}
       {...buttonProps}
+      
     >
       <ha-icon icon={icon} />
       {renderLongPressIndicator && renderLongPressIndicator()}

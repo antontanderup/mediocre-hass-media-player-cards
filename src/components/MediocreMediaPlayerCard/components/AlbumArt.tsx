@@ -4,7 +4,7 @@ import { Vibrant } from "node-vibrant/browser";
 import { CardContext, CardContextType } from "../../../utils";
 import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
 import { Icon } from "../../Icon";
-import { ButtonHTMLAttributes, Fragment } from "preact/compat";
+import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
 
 const AlbumArtContainer = styled.button<{
   shadowColor?: string;
@@ -54,10 +54,11 @@ const SourceIndicator = styled.div`
 
 export type AlbumArtProps = {
   maxHeight: string;
+  renderLongPressIndicator?: () => JSX.Element | null;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 // Component
-export const AlbumArt = ({ maxHeight, ...buttonProps }: AlbumArtProps) => {
+export const AlbumArt = ({ maxHeight, renderLongPressIndicator, ...buttonProps }: AlbumArtProps) => {
   const { hass, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
@@ -119,6 +120,7 @@ export const AlbumArt = ({ maxHeight, ...buttonProps }: AlbumArtProps) => {
           <Icon size="x-large" icon={getIcon({ source, state })} />
         </NoAlbumArt>
       )}
+      {!!renderLongPressIndicator && renderLongPressIndicator()}
     </AlbumArtContainer>
   );
 };

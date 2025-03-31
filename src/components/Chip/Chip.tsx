@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes } from "preact/compat";
 import styled from "@emotion/styled";
 
 const ChipButton = styled.button<{ $loading?: boolean }>`
+  position: relative;
   background: none;
   border: none;
   display: flex;
