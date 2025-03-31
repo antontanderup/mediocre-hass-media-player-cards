@@ -13,7 +13,7 @@ const LongPressIndicator = styled.div`
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  z-index: 1;
+  z-index: 9;
   animation: pulse 1s infinite;
   transform: translate(-50%, -50%);
 
@@ -98,7 +98,7 @@ export function useButtonCallbacks({
       clearTimeout(longPressIndicatorTimeout.current);
       setIsLongPressing(false);
     }
-    
+
     numClicks.current += 1;
     mouseUpTimeout.current = setTimeout(() => {
       if (numClicks.current > 1) {

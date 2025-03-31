@@ -13,29 +13,15 @@ export type ButtonSize =
 
 export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon: string;
-  hasLongPress?: boolean;
   size?: ButtonSize;
   disabled?: boolean;
   renderLongPressIndicator?: () => JSX.Element | null;
 };
 
-const longPressIndicator = keyframes`
-  0% {
-    background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
-  }
-  90% {
-    background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
-  }
-
-  100% {
-    background-color: var(--primary-color, rgba(7, 114, 244));
-  }
-`;
 
 const Button = styled.button<{
   $disabled: boolean;
   $size: ButtonSize;
-  $hasLongPress: boolean;
 }>`
   position: relative;
   background: none;
@@ -60,10 +46,6 @@ const Button = styled.button<{
 
   &:active {
     background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
-    animation-name: ${longPressIndicator};
-    animation-duration: 2.3s;
-    animation-fill-mode: forwards;
-    ${props => (!props.$hasLongPress ? "animation: none;" : "")}
   }
   > ha-icon {
     --mdc-icon-size: ${props => getButtonSize(props.$size)}px;
@@ -77,7 +59,6 @@ export const IconButton = ({
   icon,
   size = "medium",
   disabled = false,
-  hasLongPress = false,
   className, 
   renderLongPressIndicator,
   ...buttonProps
@@ -88,7 +69,6 @@ export const IconButton = ({
       disabled={disabled}
       $disabled={disabled}
       $size={size}
-      $hasLongPress={hasLongPress}
       className={className}
       {...buttonProps}
       
