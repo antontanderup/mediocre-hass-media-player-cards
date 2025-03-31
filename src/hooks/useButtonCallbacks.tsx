@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 const supportsTouchEvents = "ontouchstart" in window;
 
 const LongPressIndicator = styled.div`
-  position: absolute;
+  position: fixed;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -15,11 +15,12 @@ const LongPressIndicator = styled.div`
   pointer-events: none;
   z-index: 1;
   animation: pulse 1s infinite;
+  transform: translate(-50%, -50%);
 
   @keyframes pulse {
-    0% { transform: scale(0.95); opacity: 0.6; }
-    50% { transform: scale(1); opacity: 0.8; }
-    100% { transform: scale(0.95); opacity: 0.6; }
+    0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
   }
 `;
 
@@ -37,6 +38,7 @@ export function useButtonCallbacks({
   const mouseUpTimeout = useRef<NodeJS.Timeout | null>(null);
   const longPressIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
   const [isLongPressing, setIsLongPressing] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const reset = useCallback(() => {
     if (mouseUpTimeout.current) {
@@ -48,12 +50,11 @@ export function useButtonCallbacks({
     setIsLongPressing(false);
     mouseDownTimestamp.current = null;
     numClicks.current = 0;
-  }
-  , []);
+  }, []);
 
   const renderLongPressIndicator = () => {
     if (!isLongPressing) return null;
-    return <LongPressIndicator />;
+    return <LongPressIndicator style={{ left: `${position.x}px`, top: `${position.y}px` }} />;
   };
 
   const isLongPress = useCallback(() => {
@@ -67,12 +68,23 @@ export function useButtonCallbacks({
     return false; // No long press detected
   }, []);
 
-  const handleStart = useCallback(() => {
+  const updatePosition = useCallback((clientX: number, clientY: number) => {
+    setPosition({ x: clientX, y: clientY });
+  }, []);
+
+  const handleStart = useCallback((clientX: number, clientY: number) => {
     mouseDownTimestamp.current = Date.now();
+    updatePosition(clientX, clientY);
     longPressIndicatorTimeout.current = setTimeout(() => {
       setIsLongPressing(true);
     }, 500); // Long press threshold
-  }, []);
+  }, [updatePosition]);
+
+  const handleMove = useCallback((clientX: number, clientY: number) => {
+    if (isLongPressing) {
+      updatePosition(clientX, clientY);
+    }
+  }, [isLongPressing, updatePosition]);
 
   const handleEnd = useCallback(() => {
     if (mouseUpTimeout.current) {
@@ -98,11 +110,17 @@ export function useButtonCallbacks({
     }, 250); // Delay to distinguish between single and double tap
   }, [isLongPress, onDoubleTap, onLongPress, onTap]);
 
-  const onMouseDown = useCallback(() => {
+  const onMouseDown = useCallback((e: MouseEvent) => {
     if (!supportsTouchEvents) {
-      handleStart();
+      handleStart(e.clientX, e.clientY);
     }
   }, [handleStart]);
+
+  const onMouseMove = useCallback((e: MouseEvent) => {
+    if (!supportsTouchEvents) {
+      handleMove(e.clientX, e.clientY);
+    }
+  }, [handleMove]);
 
   const onMouseUp = useCallback(() => {
     if (!supportsTouchEvents) {
@@ -111,8 +129,18 @@ export function useButtonCallbacks({
   }, [handleEnd]);
 
   const onTouchStart = useCallback((e: TouchEvent) => {
-    handleStart();
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      handleStart(touch.clientX, touch.clientY);
+    }
   }, [handleStart]);
+
+  const onTouchMove = useCallback((e: TouchEvent) => {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    }
+  }, [handleMove]);
 
   const onTouchEnd = useCallback((e: TouchEvent) => {
     handleEnd();
@@ -125,13 +153,15 @@ export function useButtonCallbacks({
   return useMemo(
     () => ({
       onMouseDown,
+      onMouseMove,
       onMouseUp,
       onMouseOut: onOut,
       onTouchStart,
+      onTouchMove,
       onTouchEnd,
       onTouchCancel: onOut,
       renderLongPressIndicator
     }),
-    [onMouseDown, onMouseUp, onTouchStart, onTouchEnd, isLongPressing, renderLongPressIndicator]
+    [onMouseDown, onMouseMove, onMouseUp, onOut, onTouchStart, onTouchMove, onTouchEnd, renderLongPressIndicator]
   );
 }
