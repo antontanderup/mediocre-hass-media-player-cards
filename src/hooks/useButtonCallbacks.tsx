@@ -33,10 +33,13 @@ export function useButtonCallbacks({
   onLongPress?: () => void;
   onDoubleTap?: () => void;
 }) {
+
   const mouseDownTimestamp = useRef<number | null>(null);
   const numClicks = useRef(0);
+
   const mouseUpTimeout = useRef<NodeJS.Timeout | null>(null);
   const longPressIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
+  
   const [isLongPressing, setIsLongPressing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -90,10 +93,12 @@ export function useButtonCallbacks({
     if (mouseUpTimeout.current) {
       clearTimeout(mouseUpTimeout.current);
     }
+
     if (longPressIndicatorTimeout.current) {
       clearTimeout(longPressIndicatorTimeout.current);
       setIsLongPressing(false);
     }
+    
     numClicks.current += 1;
     mouseUpTimeout.current = setTimeout(() => {
       if (numClicks.current > 1) {
@@ -111,22 +116,12 @@ export function useButtonCallbacks({
   }, [isLongPress, onDoubleTap, onLongPress, onTap]);
 
   const onMouseDown = useCallback((e: MouseEvent) => {
-    if (!supportsTouchEvents) {
-      handleStart(e.clientX, e.clientY);
-    }
+    handleStart(e.clientX, e.clientY);
   }, [handleStart]);
 
   const onMouseMove = useCallback((e: MouseEvent) => {
-    if (!supportsTouchEvents) {
-      handleMove(e.clientX, e.clientY);
-    }
+    handleMove(e.clientX, e.clientY);
   }, [handleMove]);
-
-  const onMouseUp = useCallback(() => {
-    if (!supportsTouchEvents) {
-      handleEnd();
-    }
-  }, [handleEnd]);
 
   const onTouchStart = useCallback((e: TouchEvent) => {
     if (e.touches.length > 0) {
@@ -142,26 +137,23 @@ export function useButtonCallbacks({
     }
   }, [handleMove]);
 
-  const onTouchEnd = useCallback((e: TouchEvent) => {
-    handleEnd();
-  }, [handleEnd]);
-
-  const onOut = useCallback(() => {
-    reset();
-  }, [reset]);
-
   return useMemo(
     () => ({
-      onMouseDown,
-      onMouseMove,
-      onMouseUp,
-      onMouseOut: onOut,
-      onTouchStart,
-      onTouchMove,
-      onTouchEnd,
-      onTouchCancel: onOut,
+      ...(supportsTouchEvents
+        ? {
+            onTouchStart,
+            onTouchMove,
+            onTouchEnd: handleEnd,
+            onTouchCancel: reset,
+          }
+        : {
+            onMouseDown,
+            onMouseMove,
+            onMouseUp: handleEnd,
+            onMouseOut: reset,
+          }),
       renderLongPressIndicator
     }),
-    [onMouseDown, onMouseMove, onMouseUp, onOut, onTouchStart, onTouchMove, onTouchEnd, renderLongPressIndicator]
+    [onMouseDown, onMouseMove, handleEnd, reset, onTouchStart, onTouchMove, renderLongPressIndicator]
   );
 }
