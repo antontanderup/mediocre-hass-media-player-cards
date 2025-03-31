@@ -7,8 +7,6 @@ import { ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
 import { SpeakerGrouping } from "./SpeakerGrouping";
 import { InteractionConfig } from "../../../types";
-import { Chip } from "../../Chip";
-import { Icon } from "../../Icon";
 import { useActionProps } from "../../../hooks";
 import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
@@ -132,7 +130,7 @@ export const PlayerActions = () => {
         icon="mdi:information"
       />
       {custom_buttons?.map((button, index) => (
-        <CustomButton key={index} button={button} type={"icon-button"} />
+        <CustomButton key={index} button={button} />
       ))}
       <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
@@ -172,9 +170,7 @@ const Modal = ({
 
 export const CustomButton = ({
   button,
-  type = "chip",
 }: {
-  type?: "chip" | "icon-button";
   button: InteractionConfig & {
     icon?: string;
     name?: string;
@@ -193,21 +189,13 @@ export const CustomButton = ({
       entity: config.entity_id,
     },
   });
-  if (type === "icon-button") {
-    return (
-      <IconButton
-        icon={button.icon ?? "mdi:dots-vertical"}
-        size={"small"}
-        {...actionProps}
-      />
-    );
-  }
 
   return (
-    <Chip {...actionProps}>
-      {!!icon && <Icon icon={icon} size={"x-small"} />}
-      {!!name && <span>{name}</span>}
-      {!!actionProps.renderLongPressIndicator()}
-    </Chip>
+    <IconButton
+      icon={button.icon ?? "mdi:dots-vertical"}
+      size={"small"}
+      {...actionProps}
+    />
   );
+
 };
