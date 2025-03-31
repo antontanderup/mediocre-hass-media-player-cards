@@ -18,7 +18,6 @@ export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   renderLongPressIndicator?: () => JSX.Element | null;
 };
 
-
 const Button = styled.button<{
   $disabled: boolean;
   $size: ButtonSize;
@@ -59,7 +58,7 @@ export const IconButton = ({
   icon,
   size = "medium",
   disabled = false,
-  className, 
+  className,
   renderLongPressIndicator,
   ...buttonProps
 }: IconButtonProps) => {
@@ -71,7 +70,6 @@ export const IconButton = ({
       $size={size}
       className={className}
       {...buttonProps}
-      
     >
       <ha-icon icon={icon} />
       {renderLongPressIndicator && renderLongPressIndicator()}

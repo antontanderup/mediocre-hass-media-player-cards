@@ -58,7 +58,11 @@ export type AlbumArtProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 // Component
-export const AlbumArt = ({ maxHeight, renderLongPressIndicator, ...buttonProps }: AlbumArtProps) => {
+export const AlbumArt = ({
+  maxHeight,
+  renderLongPressIndicator,
+  ...buttonProps
+}: AlbumArtProps) => {
   const { hass, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
