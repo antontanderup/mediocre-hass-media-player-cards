@@ -42,5 +42,5 @@ window.customCards.push({
   preview: true,
   description: "A media player card with player grouping support.", // Optional
   documentationURL:
-    "https://developers.home-assistant.io/docs/frontend/custom-ui/custom-card", // Adds a help link in the frontend card editor
+    "https://github.com/antontanderup/mediocre-hass-media-player-cards", // Adds a help link in the frontend card editor
 });
