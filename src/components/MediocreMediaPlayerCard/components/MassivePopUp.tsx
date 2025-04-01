@@ -12,6 +12,7 @@ import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { Icon } from "../../Icon";
 import { getDeviceIcon } from "./PlayerInfo";
+import { useActionProps } from "../../../hooks";
 
 const slideUp = keyframes`
   from {
@@ -91,10 +92,7 @@ const Title = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`;
-
-const CloseButton = styled(IconButton)`
-  margin-left: auto;
+  margin-right: auto;
 `;
 
 const PopupMediocreMassiveMediaPlayerCard = styled(
@@ -137,6 +135,17 @@ export const MassivePopUp = ({
     };
   }, [config]);
 
+  const moreInfoButtonProps = useActionProps({
+    rootElement,
+    hass,
+    actionConfig: {
+      tap_action: {
+        action: "more-info",
+      },
+      entity: entity_id,
+    },
+  });
+
   if (!visible) {
     return null;
   }
@@ -152,7 +161,12 @@ export const MassivePopUp = ({
               <span> +{groupMembers.length - 1}</span>
             )}
           </Title>
-          <CloseButton
+          <IconButton
+            size="small"
+            {...moreInfoButtonProps}
+            icon="mdi:dots-vertical"
+          />
+          <IconButton
             icon="mdi:close"
             size="small"
             onClick={() => setVisible(false)}
