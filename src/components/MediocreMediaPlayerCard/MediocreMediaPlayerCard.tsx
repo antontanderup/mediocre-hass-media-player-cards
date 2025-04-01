@@ -125,13 +125,13 @@ export const MediocreMediaPlayerCard = () => {
       ...artAction,
       entity: config.entity_id,
     },
-    overrideCallback: {
-      onTap: tap_opens_popup
-        ? () => {
+    overrideCallback: tap_opens_popup
+      ? {
+          onTap: () => {
             setIsPopupVisible(true);
-          }
-        : undefined,
-    },
+          },
+        }
+      : {},
   });
 
   const togglePower = useCallback(() => {
