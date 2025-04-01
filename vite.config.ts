@@ -8,7 +8,8 @@ export default defineConfig({
     lib: {
       name: "MediocreMediaPlayerCard",
       entry: ["src/cards/index.ts"],
-      fileName: format => `mediocre-media-player-card.${format}.js`,
+      fileName: () => `mediocre-hass-media-player-cards.js`,
+      formats: ["umd"],
     },
   },
   define: {
