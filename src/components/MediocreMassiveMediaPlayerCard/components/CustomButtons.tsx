@@ -1,30 +1,29 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import type { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
+import type {
+  MediocreMassiveMediaPlayerCardConfig,
+  MediocreMediaPlayerCardConfig,
+} from "../../MediaPlayerCommon/config";
 import { CardContext, CardContextType } from "../../../utils";
 import { Icon } from "../../Icon";
 import { InteractionConfig } from "../../../types/actionTypes";
 import { Chip } from "../../Chip";
-import { IconButton } from "../../IconButton";
 import { useActionProps } from "../../../hooks";
 
 const CustomButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  gap: 2px;
   overflow-x: auto !important;
   scrollbar-width: none;
   -ms-overflow-style: none;
   ::-webkit-scrollbar {
     display: none;
   }
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-top: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-  gap: 2px;
 `;
 
-const ChipButton = styled(Chip)`
+const ButtonChip = styled(Chip)`
   &:first-child {
     margin-left: 16px;
   }
@@ -35,7 +34,9 @@ const ChipButton = styled(Chip)`
 
 export const CustomButtons = () => {
   const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+      CardContext
+    );
 
   const { custom_buttons } = config;
 
@@ -50,9 +51,7 @@ export const CustomButtons = () => {
 
 export const CustomButton = ({
   button,
-  type = "chip",
 }: {
-  type?: "chip" | "icon-button";
   button: InteractionConfig & {
     icon?: string;
     name?: string;
@@ -69,21 +68,12 @@ export const CustomButton = ({
       entity: config.entity_id,
     },
   });
-  if (type === "icon-button") {
-    return (
-      <IconButton
-        icon={button.icon ?? "mdi:dots-vertical"}
-        size={"x-small"}
-        {...actionProps}
-      />
-    );
-  }
 
   return (
-    <ChipButton {...actionProps}>
+    <ButtonChip {...actionProps}>
       {!!icon && <Icon icon={icon} size={"x-small"} />}
       {!!name && <span>{name}</span>}
       {actionProps.renderLongPressIndicator()}
-    </ChipButton>
+    </ButtonChip>
   );
 };

@@ -3,12 +3,13 @@ import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
-import { ReactNode } from "preact/compat";
+import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
 import { SpeakerGrouping } from "./SpeakerGrouping";
 import { InteractionConfig } from "../../../types";
 import { useActionProps } from "../../../hooks";
 import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { CustomButtons } from "./CustomButtons";
 
 const PlaybackControlsWrap = styled.div`
   background-color: var(--card-background-color);
@@ -67,32 +68,23 @@ const ModalContent = styled.div<{ padding?: string }>`
 `;
 
 export const PlayerActions = () => {
-  const { hass, config, rootElement } =
+  const { hass, config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
 
   const { entity_id, custom_buttons, speaker_group } = config;
 
-  const [selected, setSelected] = useState<"volume" | "speaker-grouping">();
+  const [selected, setSelected] = useState<
+    "volume" | "speaker-grouping" | "custom-buttons"
+  >();
 
   const toggleSelected = useCallback(
-    (key: "volume" | "speaker-grouping") => {
+    (key: "volume" | "speaker-grouping" | "custom-buttons") => {
       setSelected(selected === key ? undefined : key);
     },
     [selected]
   );
-
-  const moreInfoButtonProps = useActionProps({
-    rootElement,
-    hass,
-    actionConfig: {
-      tap_action: {
-        action: "more-info",
-      },
-      entity: entity_id,
-    },
-  });
 
   const onTogglePower = useCallback(() => {
     hass.callService("media_player", "toggle", {
@@ -124,14 +116,26 @@ export const PlayerActions = () => {
           onClick={() => toggleSelected("speaker-grouping")}
         />
       )}
-      <IconButton
-        size="small"
-        {...moreInfoButtonProps}
-        icon="mdi:information"
-      />
-      {custom_buttons?.map((button, index) => (
-        <CustomButton key={index} button={button} />
-      ))}
+      {custom_buttons
+        ?.slice(0, 2)
+        .map((button, index) => <CustomButton key={index} button={button} />)}
+      {custom_buttons?.length > 3 && (
+        <Fragment>
+          <IconButton
+            size="small"
+            icon={"mdi:dots-horizontal"}
+            onClick={() => toggleSelected("custom-buttons")}
+          />
+          <Modal
+            title="Shortcuts"
+            isOpen={selected === "custom-buttons"}
+            onClose={() => setSelected(undefined)}
+            padding="16px 0px 16px 0px"
+          >
+            <CustomButtons />
+          </Modal>
+        </Fragment>
+      )}
       <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
     </PlaybackControlsWrap>
