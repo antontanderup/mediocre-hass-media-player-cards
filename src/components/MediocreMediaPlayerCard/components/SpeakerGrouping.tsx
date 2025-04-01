@@ -6,6 +6,7 @@ import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { Fragment } from "preact/jsx-runtime";
 import { Icon } from "../../Icon";
+import { Chip } from "../../Chip";
 
 const SpeakerGroupContainer = styled.div`
   display: flex;
@@ -56,6 +57,7 @@ const VolumeControl = styled.div`
 const Chips = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 2px;
   justify-content: flex-start;
   overflow-x: auto !important;
   scrollbar-width: none;
@@ -64,24 +66,8 @@ const Chips = styled.div`
     display: none;
   }
 `;
-const Chip = styled.div<{ $loading: boolean }>`
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: row;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 32px;
-  padding: 0 12px;
-  border-radius: 16px;
-  color: var(--card-background-color);
-  background-color: var(--primary-text-color);
-  margin-right: 5px;
-  justify-content: space-between;
-  align-items: center;
-  gap: 4px;
-  text-wrap: nowrap;
-  cursor: pointer;
+
+const SpeakerChip = styled(Chip)<{ $loading: boolean }>`
   opacity: ${props => (props.$loading ? 0.3 : 0.8)};
   &:first-child {
     margin-left: 16px;
@@ -210,7 +196,7 @@ export const SpeakerGrouping = () => {
         {availableSpeakers
           .filter(speaker => !speaker.isGrouped)
           .map(speaker => (
-            <Chip
+            <SpeakerChip
               key={speaker.entity_id}
               $loading={playersLoading.includes(speaker.entity_id)}
               onClick={() =>
@@ -220,7 +206,7 @@ export const SpeakerGrouping = () => {
               {speaker.name}
               {speaker.isGrouped && <Icon size="x-small" icon={"mdi:close"} />}
               {!speaker.isGrouped && <Icon size="x-small" icon={"mdi:plus"} />}
-            </Chip>
+            </SpeakerChip>
           ))}
       </Chips>
     </SpeakerGroupContainer>
