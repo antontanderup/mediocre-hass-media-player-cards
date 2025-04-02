@@ -15,12 +15,23 @@ export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon: string;
   size?: ButtonSize;
   disabled?: boolean;
+  loading?: boolean;
   renderLongPressIndicator?: () => JSX.Element | null;
 };
+
+const spinAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 const Button = styled.button<{
   $disabled: boolean;
   $size: ButtonSize;
+  $loading: boolean;
 }>`
   position: relative;
   background: none;
@@ -51,6 +62,8 @@ const Button = styled.button<{
     width: ${props => getButtonSize(props.$size)}px;
     display: flex;
     pointer-events: none;
+    animation: ${spinAnimation} 1s linear infinite;
+    ${props => (!props.$loading ? "animation: none;" : "")};
   }
 `;
 
@@ -58,20 +71,21 @@ export const IconButton = ({
   icon,
   size = "medium",
   disabled = false,
+  loading = false,
   className,
   renderLongPressIndicator,
   ...buttonProps
 }: IconButtonProps) => {
-  const width = getButtonSize(size);
   return (
     <Button
       disabled={disabled}
       $disabled={disabled}
       $size={size}
+      $loading={loading}
       className={className}
       {...buttonProps}
     >
-      <ha-icon icon={icon} />
+      {loading ? <ha-icon icon="mdi:loading" /> : <ha-icon icon={icon} />}
       {renderLongPressIndicator && renderLongPressIndicator()}
     </Button>
   );

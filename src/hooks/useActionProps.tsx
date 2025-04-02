@@ -45,15 +45,14 @@ export function useActionProps({
         ? () => {
             const action = actionConfig.tap_action;
             if (action.action === "perform-action") {
-              performAction({
+              return performAction({
                 hass,
                 action: action.perform_action,
                 target: action.target,
                 data: action.data,
               });
-              return;
             }
-            handleAction(
+            return handleAction(
               rootElement,
               hass,
               patchAction(
@@ -65,18 +64,17 @@ export function useActionProps({
           }
         : undefined,
       onLongPress: !!actionConfig?.hold_action
-        ? () => {
+        ? async () => {
             const action = actionConfig.hold_action;
             if (action.action === "perform-action") {
-              performAction({
+              return performAction({
                 hass,
                 action: action.perform_action,
                 target: action.target,
                 data: action.data,
               });
-              return;
             }
-            handleAction(
+            return handleAction(
               rootElement,
               hass,
               patchAction(
@@ -91,15 +89,14 @@ export function useActionProps({
         ? () => {
             const action = actionConfig.double_tap_action;
             if (action.action === "perform-action") {
-              performAction({
+              return performAction({
                 hass,
                 action: action.perform_action,
                 target: action.target,
                 data: action.data,
               });
-              return;
             }
-            handleAction(
+            return handleAction(
               rootElement,
               hass,
               patchAction(

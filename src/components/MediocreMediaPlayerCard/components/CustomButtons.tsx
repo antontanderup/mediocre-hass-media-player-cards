@@ -80,8 +80,7 @@ export const CustomButton = ({
   }
 
   return (
-    <ChipButton {...actionProps}>
-      {!!icon && <Icon icon={icon} size={"x-small"} />}
+    <ChipButton icon={icon} {...actionProps}>
       {!!name && <span>{name}</span>}
       {actionProps.renderLongPressIndicator()}
     </ChipButton>

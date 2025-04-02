@@ -54,8 +54,7 @@ const Chips = styled.div`
     display: none;
   }
 `;
-const SpeakerChip = styled(Chip)<{ $loading: boolean }>`
-  opacity: ${props => (props.$loading ? 0.3 : 0.8)};
+const SpeakerChip = styled(Chip)`
   &:first-child {
     margin-left: 16px;
   }
@@ -185,14 +184,14 @@ export const SpeakerGrouping = () => {
           .map(speaker => (
             <SpeakerChip
               key={speaker.entity_id}
-              $loading={playersLoading.includes(speaker.entity_id)}
+              loading={playersLoading.includes(speaker.entity_id)}
               onClick={() =>
                 handleToggleGroup(speaker.entity_id, speaker.isGrouped)
               }
+              icon={speaker.isGrouped ? "mdi:close" : "mdi:plus"}
+              iconPosition="right"
             >
               {speaker.name}
-              {speaker.isGrouped && <Icon size="x-small" icon={"mdi:close"} />}
-              {!speaker.isGrouped && <Icon size="x-small" icon={"mdi:plus"} />}
             </SpeakerChip>
           ))}
       </Chips>

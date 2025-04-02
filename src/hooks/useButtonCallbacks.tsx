@@ -38,15 +38,17 @@ export function useButtonCallbacks({
   onLongPress,
   onDoubleTap,
 }: {
-  onTap?: () => void;
-  onLongPress?: () => void;
-  onDoubleTap?: () => void;
+  onTap?: () => Promise<void> | void;
+  onLongPress?: () => Promise<void> | void;
+  onDoubleTap?: () => Promise<void> | void;
 }) {
   const mouseDownTimestamp = useRef<number | null>(null);
   const numClicks = useRef(0);
 
   const mouseUpTimeout = useRef<NodeJS.Timeout | null>(null);
   const longPressIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const [loading, setLoading] = useState(false);
 
   const [isLongPressing, setIsLongPressing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -118,16 +120,22 @@ export function useButtonCallbacks({
     }
 
     numClicks.current += 1;
-    mouseUpTimeout.current = setTimeout(() => {
-      if (numClicks.current > 1) {
-        onDoubleTap?.();
-      } else {
-        if (isLongPress()) {
-          onLongPress?.();
+    mouseUpTimeout.current = setTimeout(async () => {
+      setLoading(true);
+      try {
+        if (numClicks.current > 1) {
+          await onDoubleTap?.();
         } else {
-          onTap?.();
+          if (isLongPress()) {
+            await onLongPress?.();
+          } else {
+            await onTap?.();
+          }
         }
+      } catch (error) {
+        console.error("Error in button callback:", error);
       }
+      setLoading(false);
       mouseDownTimestamp.current = null;
       numClicks.current = 0;
     }, 250); // Delay to distinguish between single and double tap
@@ -175,12 +183,14 @@ export function useButtonCallbacks({
             onTouchMove,
             onTouchEnd: handleEnd,
             onTouchCancel: reset,
+            loading,
           }
         : {
             onMouseDown,
             onMouseMove,
             onMouseUp: handleEnd,
             onMouseOut: reset,
+            loading,
           }),
       renderLongPressIndicator,
     }),
