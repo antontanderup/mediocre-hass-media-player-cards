@@ -169,6 +169,12 @@ These cards are built with Preact wrapped in web components. For local developme
 # Install dependencies
 yarn install
 
-# Build it
+# Build whenever files change and add -test to the card name
+yarn dev
+
+# Alternatively run this to achieve the same without the -test suffix
+yarn build --watch
+
+# One time build
 yarn build
 ```
