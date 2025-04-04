@@ -19,10 +19,21 @@ import { InteractionConfig } from "../../types";
 import { useActionProps } from "../../hooks";
 import styled from "@emotion/styled";
 import { MassivePopUp } from "./components/MassivePopUp";
+import { useArtworkColors } from "../../hooks/useArtworkColors";
 
-const Card = styled.div`
+const Card = styled.div<{
+  $artColorVars?: string;
+  $haColorVars?: string;
+  $useArtColors?: boolean;
+}>`
   border-radius: var(--ha-card-border-radius, 12px);
   overflow: hidden;
+  ${props => props.$artColorVars ?? ""}
+  ${props => {
+    if (props.$useArtColors && !!props.$haColorVars) {
+      return props.$haColorVars;
+    } else return "";
+  }}
 `;
 
 const CardContent = styled.div<{ isOn: boolean }>`
@@ -67,7 +78,13 @@ const ContentRow = styled.div`
 export const MediocreMediaPlayerCard = () => {
   const { rootElement, hass, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { entity_id, custom_buttons, action, tap_opens_popup } = config;
+  const {
+    entity_id,
+    custom_buttons,
+    action,
+    tap_opens_popup,
+    use_art_colors = true,
+  } = config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
 
@@ -87,6 +104,9 @@ export const MediocreMediaPlayerCard = () => {
       </ha-card>
     );
   }
+
+  const { artVars, haVars } = useArtworkColors(entity);
+  console.log("🚀 ~ MediocreMediaPlayerCard ~ haVars:", haVars);
 
   const supportedFeatures = useSupportedFeatures(entity);
   const hasNoPlaybackControls =
@@ -141,72 +161,72 @@ export const MediocreMediaPlayerCard = () => {
   }, [entity_id]);
 
   return (
-    <Fragment>
+    <Card
+      $artColorVars={artVars}
+      $haColorVars={haVars}
+      $useArtColors={use_art_colors}
+    >
       <ha-card>
-        <Card>
-          <CardContent isOn={isOn}>
-            <AlbumArt maxHeight="100px" {...artActionProps} />
-            <ContentContainer>
-              <ContentLeft>
-                <MetaInfo />
-                <PlayerInfo />
-                {showVolumeSlider || hasNoPlaybackControls ? (
-                  <VolumeSlider />
-                ) : (
-                  <PlaybackControls />
+        <CardContent isOn={isOn}>
+          <AlbumArt maxHeight="100px" {...artActionProps} />
+          <ContentContainer>
+            <ContentLeft>
+              <MetaInfo />
+              <PlayerInfo />
+              {showVolumeSlider || hasNoPlaybackControls ? (
+                <VolumeSlider />
+              ) : (
+                <PlaybackControls />
+              )}
+            </ContentLeft>
+            <ContentRight>
+              <ContentRow>
+                {hasCustomButtons && (
+                  <Fragment>
+                    {custom_buttons.length === 1 ? (
+                      <CustomButton
+                        button={custom_buttons[0]}
+                        type="icon-button"
+                      />
+                    ) : (
+                      <IconButton
+                        size="x-small"
+                        onClick={() => setShowCustomButtons(!showCustomButtons)}
+                        icon={"mdi:dots-vertical"}
+                      />
+                    )}
+                  </Fragment>
                 )}
-              </ContentLeft>
-              <ContentRight>
-                <ContentRow>
-                  {hasCustomButtons && (
-                    <Fragment>
-                      {custom_buttons.length === 1 ? (
-                        <CustomButton
-                          button={custom_buttons[0]}
-                          type="icon-button"
-                        />
-                      ) : (
-                        <IconButton
-                          size="x-small"
-                          onClick={() =>
-                            setShowCustomButtons(!showCustomButtons)
-                          }
-                          icon={"mdi:dots-vertical"}
-                        />
-                      )}
-                    </Fragment>
-                  )}
-                  {hasGroupingFeature && (
-                    <IconButton
-                      size="x-small"
-                      onClick={toggleGrouping}
-                      icon={"mdi:speaker-multiple"}
-                    />
-                  )}
-                </ContentRow>
-                <ContentRow>
-                  {!!isOn && !hasNoPlaybackControls && (
-                    <VolumeTrigger
-                      sliderVisible={showVolumeSlider}
-                      setSliderVisible={setShowVolumeSlider}
-                    />
-                  )}
-                  {(!isOn || hasNoPlaybackControls) && (
-                    <IconButton
-                      size="small"
-                      onClick={togglePower}
-                      icon={"mdi:power"}
-                    />
-                  )}
-                </ContentRow>
-              </ContentRight>
-            </ContentContainer>
-          </CardContent>
-          {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
-          {showCustomButtons && <CustomButtons />}
-        </Card>
+                {hasGroupingFeature && (
+                  <IconButton
+                    size="x-small"
+                    onClick={toggleGrouping}
+                    icon={"mdi:speaker-multiple"}
+                  />
+                )}
+              </ContentRow>
+              <ContentRow>
+                {!!isOn && !hasNoPlaybackControls && (
+                  <VolumeTrigger
+                    sliderVisible={showVolumeSlider}
+                    setSliderVisible={setShowVolumeSlider}
+                  />
+                )}
+                {(!isOn || hasNoPlaybackControls) && (
+                  <IconButton
+                    size="small"
+                    onClick={togglePower}
+                    icon={"mdi:power"}
+                  />
+                )}
+              </ContentRow>
+            </ContentRight>
+          </ContentContainer>
+        </CardContent>
+        {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
+        {showCustomButtons && <CustomButtons />}
+        <MassivePopUp visible={isPopupVisible} setVisible={setIsPopupVisible} />
       </ha-card>
-      <MassivePopUp visible={isPopupVisible} setVisible={setIsPopupVisible} />
-    </Fragment>
+    </Card>
   );
 };

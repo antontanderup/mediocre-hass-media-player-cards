@@ -18,6 +18,7 @@ const SliderWrap = styled.div<{ thumbSize?: HandleSize }>`
     width: 100%;
     --_handle-height: ${props => getHandleSize(props.thumbSize)} !important;
     --_handle-width: ${props => getHandleSize(props.thumbSize)} !important;
+    --_inactive-track-color: var(--divider-color, rgba(0, 0, 0, 0.1));
   }
 `;
 

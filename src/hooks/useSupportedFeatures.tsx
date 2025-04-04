@@ -1,6 +1,7 @@
+import { HassEntity } from "home-assistant-js-websocket";
 import { useMemo } from "preact/hooks";
 
-export function useSupportedFeatures(player) {
+export function useSupportedFeatures(player: HassEntity) {
   const {
     attributes: {
       shuffle,

@@ -27,12 +27,18 @@ const ChipButton = styled.button<{ $loading?: boolean }>`
   border-radius: 16px;
   color: var(--card-background-color);
   background-color: var(--primary-text-color);
+  --icon-primary-color: var(--card-background-color);
   margin-right: 5px;
   align-items: center;
   gap: 4px;
   text-wrap: nowrap;
   cursor: pointer;
-  opacity: ${props => (props.$loading ? 0.3 : 0.8)};
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  opacity: ${props => (props.$loading ? 0.3 : 1)};
   ha-icon {
     pointer-events: none;
     animation: ${spinAnimation} 1s linear infinite;

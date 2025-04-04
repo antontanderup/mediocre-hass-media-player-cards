@@ -135,6 +135,7 @@ export const MediocreMediaPlayerCardEditor = ({
   // Ensure these properties exist with default values to avoid errors
   const safeConfig: typeof config = {
     ...config,
+    use_art_colors: config.use_art_colors ?? true,
     speaker_group: config.speaker_group || { entity_id: "", entities: [] },
     custom_buttons: config.custom_buttons || [],
   };
@@ -150,6 +151,19 @@ export const MediocreMediaPlayerCardEditor = ({
           domains={["media_player"]}
           required
         />
+      </FormGroup>
+      <FormGroup>
+        <ToggleContainer>
+          <Toggle
+            type="checkbox"
+            id="use_art_colors"
+            checked={safeConfig.use_art_colors}
+            onChange={e => updateField("use_art_colors", e.target.checked)}
+          />
+          <ToggleLabel htmlFor="use_art_colors">
+            Use album art colors
+          </ToggleLabel>
+        </ToggleContainer>
       </FormGroup>
 
       <FormGroup>

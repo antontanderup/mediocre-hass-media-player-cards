@@ -11,14 +11,14 @@ const Root = styled.div`
   flex-direction: row;
   height: 4px;
   width: 100%;
-  background-color: var(--secondary-background-color);
+  background-color: var(--divider-color);
   border-radius: 2px;
   overflow: hidden;
 `;
 
 const Progress = styled.div`
   height: 100%;
-  background-color: var(--primary-text-color);
+  background-color: var(--secondary-text-color);
   width: 0%;
   transition: width 1s linear;
 `;

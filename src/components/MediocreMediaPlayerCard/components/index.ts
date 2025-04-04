@@ -5,5 +5,4 @@ export * from "./MetaInfo";
 export * from "./PlaybackControls";
 export * from "./PlayerInfo";
 export * from "./SpeakerGrouping";
-export * from "./Track";
 export * from "./VolumeSlider";

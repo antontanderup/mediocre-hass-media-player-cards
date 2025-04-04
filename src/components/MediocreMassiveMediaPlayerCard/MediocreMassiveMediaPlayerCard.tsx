@@ -6,13 +6,25 @@ import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "../../utils";
 import { MediocreMassiveMediaPlayerCardConfig } from "../MediaPlayerCommon";
 import { FC } from "preact/compat";
+import { useArtworkColors } from "../../hooks/useArtworkColors";
 
 const Root = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
+  $artColorVars?: string;
+  $haColorVars?: string;
+  $useArtColors?: boolean;
 }>`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${props => props.$artColorVars ?? ""}
+  ${props => {
+    if (props.$useArtColors && !!props.$haColorVars) {
+      return props.$haColorVars;
+    } else return "";
+  }}
+
   ${props => {
     switch (props?.mode) {
       case "panel": {
@@ -91,14 +103,23 @@ const ControlsWrapper = styled.div`
 export const MediocreMassiveMediaPlayerCard: FC<{
   className?: string;
 }> = ({ className }) => {
-  const { config } =
+  const { config, hass } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode } = config;
+  const { mode, entity_id, use_art_colors = true } = config;
+
+  const entity = hass.states[entity_id];
+  const { artVars, haVars } = useArtworkColors(entity);
 
   const renderRoot = () => (
-    <Root className={className} mode={mode}>
+    <Root
+      className={className}
+      mode={mode}
+      $artColorVars={artVars}
+      $haColorVars={haVars}
+      $useArtColors={use_art_colors}
+    >
       <Wrap mode={mode}>
         <AlbumArt />
         <ControlsWrapper>

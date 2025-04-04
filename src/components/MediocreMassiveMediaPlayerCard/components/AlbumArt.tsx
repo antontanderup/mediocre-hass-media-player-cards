@@ -38,8 +38,7 @@ const SourceIndicator = styled.div<{ contrastColor?: string }>`
   position: absolute;
   bottom: 6px;
   right: 6px;
-  color: var(--primary-text-color);
-  ${props => (props.contrastColor ? `color: ${props.contrastColor};` : "")}
+  --icon-primary-color: var(--art-on-art-color, --primary-text-color);
   opacity: 0.8;
 `;
 
@@ -57,42 +56,7 @@ export const AlbumArt = () => {
     source,
   } = player.attributes;
   const state = player.state;
-  // State for average color
-  const [contrastColor, setContrastColor] = useState<string | null>(null);
 
-  // Reset average color when album art changes
-  useEffect(() => {
-    setContrastColor(null);
-  }, [albumArt]);
-
-  // Handle image load to calculate average color
-  const handleImageLoad = () => {
-    if (albumArt) {
-      const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
-      Vibrant.from(albumArt)
-        .getPalette()
-        .then(palette => {
-          if (palette.DarkVibrant && palette.LightVibrant) {
-            setContrastColor(
-              isDarkMode
-                ? palette.DarkVibrant.bodyTextColor
-                : palette.LightVibrant.bodyTextColor
-            );
-          } else if (palette.DarkMuted && palette.LightMuted) {
-            setContrastColor(
-              isDarkMode
-                ? palette.DarkMutedt.bodyTextColor
-                : palette.DarkMuted.bodyTextColor
-            );
-          } else {
-            setContrastColor(undefined);
-          }
-        })
-        .catch(e => {
-          console.error("Error getting color with Vibrant:", e);
-        });
-    }
-  };
   return (
     <ImgOuter>
       <ImgWrap>
@@ -103,9 +67,8 @@ export const AlbumArt = () => {
               "data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%20viewBox='0%200%20400%20400'%3E%3Crect%20width='400'%20height='400'%20fill='transparent'/%3E%3C/svg%3E"
             }
             alt={`${title} by ${artist}`}
-            onLoad={handleImageLoad}
           />
-          <SourceIndicator contrastColor={contrastColor}>
+          <SourceIndicator>
             <Icon size="x-small" icon={getIcon({ source, state })} />
           </SourceIndicator>
         </Fragment>

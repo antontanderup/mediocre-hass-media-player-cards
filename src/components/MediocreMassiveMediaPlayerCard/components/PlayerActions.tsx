@@ -57,6 +57,7 @@ const ModalHeader = styled.div`
     margin: 0;
   }
   padding: 8px 16px;
+  color: var(--primary-text-color, #fff);
   border-bottom: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
 `;
 

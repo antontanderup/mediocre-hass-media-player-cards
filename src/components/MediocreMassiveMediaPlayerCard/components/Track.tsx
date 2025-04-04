@@ -4,15 +4,14 @@ import { ProgressBar } from "../../ProgressBar";
 import { CardContext, CardContextType } from "../../../utils";
 import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 
-const TrackWrap = styled.div`
-  width: 100%;
-`;
-
 const TimeWrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 4px;
+  color: var(--secondary-text-color, #888);
+  height: 20px;
+  margin-bottom: -20px;
 `;
 
 export const Track = () => {
@@ -64,12 +63,12 @@ export const Track = () => {
     mediaPosition;
 
   return (
-    <TrackWrap>
+    <div>
       <ProgressBar value={currentPosition} min={0} max={mediaDuration} />
       <TimeWrap>
         <span>{prettyNow}</span>
         <span>{prettyEnd}</span>
       </TimeWrap>
-    </TrackWrap>
+    </div>
   );
 };

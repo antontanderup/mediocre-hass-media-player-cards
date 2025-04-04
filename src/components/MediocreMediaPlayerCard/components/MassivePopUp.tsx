@@ -57,13 +57,18 @@ const PopUpContainer = styled.div`
   width: 424px;
   max-width: 98vw;
   margin-botton: 16px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
   background-color: var(--ha-card-background, #fff);
   overflow: hidden;
+  box-shadow: 0px 10px 20px var(--clear-background-color);
   border-top-left-radius: var(--ha-dialog-border-radius, 28px);
   border-top-right-radius: var(--ha-dialog-border-radius, 28px);
   @media screen and (min-height: 832px) {
     border-radius: var(--ha-dialog-border-radius, 28px);
+    box-shadow: 0px 0px 20px var(--clear-background-color);
+  }
+
+  @media (prefers-color-scheme: light) {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
   }
 `;
 

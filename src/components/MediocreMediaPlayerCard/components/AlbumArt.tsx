@@ -7,7 +7,6 @@ import { Icon } from "../../Icon";
 import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
 
 const AlbumArtContainer = styled.button<{
-  shadowColor?: string;
   maxHeight: string;
 }>`
   background: none;
@@ -21,10 +20,6 @@ const AlbumArtContainer = styled.button<{
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  ${props =>
-    props.shadowColor
-      ? `box-shadow: 0px 0px 80px ${props.shadowColor}, 170px 50px 120px ${props.shadowColor}40, 300px -50px 150px ${props.shadowColor}40;`
-      : ""}
 `;
 
 const AlbumArtImage = styled.img`
@@ -48,7 +43,7 @@ const SourceIndicator = styled.div`
   position: absolute;
   bottom: 6px;
   right: 6px;
-  color: var(--primary-text-color);
+  --icon-primary-color: var(--art-on-art-color, --primary-text-color);
   opacity: 0.8;
 `;
 
@@ -74,47 +69,12 @@ export const AlbumArt = ({
     source,
   } = player.attributes;
   const state = player.state;
-  // State for average color
-  const [averageColor, setAverageColor] = useState<string | null>(null);
-
-  // Reset average color when album art changes
-  useEffect(() => {
-    setAverageColor(null);
-  }, [albumArt]);
-
-  // Handle image load to calculate average color
-  const handleImageLoad = () => {
-    if (albumArt) {
-      Vibrant.from(albumArt)
-        .getPalette()
-        .then(palette => {
-          if (palette.Muted) {
-            setAverageColor(palette.Muted.hex); // Use the vibrant color
-          } else if (palette.Vibrant) {
-            setAverageColor(palette.Vibrant.hex); // Fallback to a muted color
-          } else {
-            setAverageColor("#888"); // Default fallback color
-          }
-        })
-        .catch(e => {
-          console.error("Error getting color with Vibrant:", e);
-        });
-    }
-  };
 
   return (
-    <AlbumArtContainer
-      maxHeight={maxHeight}
-      {...buttonProps}
-      shadowColor={averageColor}
-    >
+    <AlbumArtContainer maxHeight={maxHeight} {...buttonProps}>
       {!!albumArt ? (
         <Fragment>
-          <AlbumArtImage
-            src={albumArt}
-            alt={`${title} by ${artist}`}
-            onLoad={handleImageLoad}
-          />
+          <AlbumArtImage src={albumArt} alt={`${title} by ${artist}`} />
           <SourceIndicator>
             <Icon size="xx-small" icon={getIcon({ source, state })} />
           </SourceIndicator>

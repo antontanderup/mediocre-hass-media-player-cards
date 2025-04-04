@@ -9,6 +9,7 @@ const TitleWrap = styled.div`
   align-items: center;
   gap: 8px;
   text-align: center;
+  color: var(--primary-text-color, #fff);
   > h2,
   > h3 {
     overflow: hidden;
@@ -25,6 +26,7 @@ const TitleH2 = styled.h2`
 const TitleH3 = styled.h3`
   margin: 0px;
   font-weight: normal;
+  color: var(--secondary-text-color, #fff);
 `;
 
 export const Title = () => {
