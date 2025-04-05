@@ -61,18 +61,18 @@ export const MediocreChipMediaPlayerGroupCard = () => {
 
   const [playersLoading, setPlayersLoading] = useState<string[]>([]);
 
-  const players = useMemo(() => {
+  const players = useMemo((): GroupPlayer[] => {
     const mainPlayer = hass.states[config.entity_id];
     // sorted alfabetically by friendly name
     // grouped players first regardless of friendly name
-    const players: GroupPlayer[] = config.entities
+    return config.entities
       .filter(entity_id => entity_id !== mainPlayer.entity_id)
       .map(entity_id => {
         const player = hass.states[entity_id];
         return {
           entity_id: player.entity_id,
           friendly_name: player.attributes.friendly_name,
-          isGrouped: mainPlayer.attributes["group_members"].includes(
+          isGrouped: mainPlayer.attributes.group_members.includes(
             player.entity_id
           ),
           isGrouping: playersLoading.includes(player.entity_id),
@@ -90,7 +90,6 @@ export const MediocreChipMediaPlayerGroupCard = () => {
         if (!a.isGrouped && b.isGrouped) return 1;
         return 0;
       });
-    return players;
   }, [hass, config, playersLoading]);
 
   const joinPlayer = useCallback(

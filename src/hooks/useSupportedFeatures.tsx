@@ -1,3 +1,4 @@
+/* tslint:disable:no-bitwise */
 import { HassEntity } from "home-assistant-js-websocket";
 import { useMemo } from "preact/hooks";
 

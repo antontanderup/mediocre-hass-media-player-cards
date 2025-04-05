@@ -16,7 +16,7 @@ interface HaFormAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
   hass?: any;
   data?: any;
   schema?: HaFormSchema;
-  computeLabel?: (any) => string;
+  computeLabel?: (arg0: any) => string;
   disabled?: boolean;
   required?: boolean;
 }

@@ -11,7 +11,6 @@ import {
   InputGroup,
   InteractionsPicker,
   Label,
-  Select,
   TextInput,
   Toggle,
   ToggleContainer,

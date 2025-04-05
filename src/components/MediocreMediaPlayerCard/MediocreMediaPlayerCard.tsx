@@ -106,7 +106,6 @@ export const MediocreMediaPlayerCard = () => {
   }
 
   const { artVars, haVars } = useArtworkColors(entity);
-  console.log("🚀 ~ MediocreMediaPlayerCard ~ haVars:", haVars);
 
   const supportedFeatures = useSupportedFeatures(entity);
   const hasNoPlaybackControls =
@@ -147,10 +146,10 @@ export const MediocreMediaPlayerCard = () => {
     },
     overrideCallback: tap_opens_popup
       ? {
-          onTap: () => {
-            setIsPopupVisible(true);
-          },
-        }
+        onTap: () => {
+          setIsPopupVisible(true);
+        },
+      }
       : {},
   });
 

@@ -19,7 +19,7 @@ export const Track = () => {
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const mediaPosition = useMemo(() => {
+  const position = useMemo(() => {
     const player = hass.states[config.entity_id];
     const mediaPosition = player.attributes?.media_position ?? null;
     const mediaPositionUpdatedAt =
@@ -49,25 +49,23 @@ export const Track = () => {
     };
 
     return {
-      currentPosition: currentPosition,
-      mediaDuration: mediaDuration,
+      currentPosition,
+      mediaDuration,
       prettyNow: getPrettyPrinted(currentPosition),
       prettyEnd: getPrettyPrinted(mediaDuration),
     };
   }, [hass, config]);
 
-  if (!mediaPosition) {
+  if (!position) {
     return null;
   }
-  const { currentPosition, prettyEnd, prettyNow, mediaDuration } =
-    mediaPosition;
 
   return (
     <div>
-      <ProgressBar value={currentPosition} min={0} max={mediaDuration} />
+      <ProgressBar value={position.currentPosition} min={0} max={position.mediaDuration} />
       <TimeWrap>
-        <span>{prettyNow}</span>
-        <span>{prettyEnd}</span>
+        <span>{position.prettyNow}</span>
+        <span>{position.prettyEnd}</span>
       </TimeWrap>
     </div>
   );
