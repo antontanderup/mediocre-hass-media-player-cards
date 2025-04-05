@@ -1,6 +1,4 @@
-import {
-  MediocreMassiveMediaPlayerCardEditor,
-} from "../components";
+import { MediocreMassiveMediaPlayerCardEditor } from "../components";
 import { MediocreMediaPlayerCardConfig } from "../components/MediaPlayerCommon";
 import { CardEditorWrapper } from "../utils";
 

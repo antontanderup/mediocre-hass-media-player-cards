@@ -42,69 +42,69 @@ export function useActionProps({
     () => ({
       onTap: !!actionConfig?.tap_action
         ? () => {
-          const action = actionConfig.tap_action;
-          if (action.action === "perform-action") {
-            return performAction({
+            const action = actionConfig.tap_action;
+            if (action.action === "perform-action") {
+              return performAction({
+                hass,
+                action: action.perform_action,
+                target: action.target,
+                data: action.data,
+              });
+            }
+            return handleAction(
+              rootElement,
               hass,
-              action: action.perform_action,
-              target: action.target,
-              data: action.data,
-            });
+              patchAction(
+                "tap_action",
+                actionConfig as InteractionConfigLegacy
+              ),
+              "tap"
+            );
           }
-          return handleAction(
-            rootElement,
-            hass,
-            patchAction(
-              "tap_action",
-              actionConfig as InteractionConfigLegacy
-            ),
-            "tap"
-          );
-        }
         : undefined,
       onLongPress: !!actionConfig?.hold_action
         ? async () => {
-          const action = actionConfig.hold_action;
-          if (action.action === "perform-action") {
-            return performAction({
+            const action = actionConfig.hold_action;
+            if (action.action === "perform-action") {
+              return performAction({
+                hass,
+                action: action.perform_action,
+                target: action.target,
+                data: action.data,
+              });
+            }
+            return handleAction(
+              rootElement,
               hass,
-              action: action.perform_action,
-              target: action.target,
-              data: action.data,
-            });
+              patchAction(
+                "hold_action",
+                actionConfig as InteractionConfigLegacy
+              ),
+              "hold"
+            );
           }
-          return handleAction(
-            rootElement,
-            hass,
-            patchAction(
-              "hold_action",
-              actionConfig as InteractionConfigLegacy
-            ),
-            "hold"
-          );
-        }
         : undefined,
       onDoubleTap: !!actionConfig?.double_tap_action
         ? () => {
-          const action = actionConfig.double_tap_action;
-          if (action.action === "perform-action") {
-            return performAction({
+            const action = actionConfig.double_tap_action;
+            if (action.action === "perform-action") {
+              return performAction({
+                hass,
+                action: action.perform_action,
+                target: action.target,
+                data: action.data,
+              });
+            }
+            return handleAction(
+              rootElement,
               hass,
-              action: action.perform_action,
-              target: action.target,
-              data: action.data,
-            });
+              patchAction(
+                "double_tap_action",
+                actionConfig as InteractionConfigLegacy
+              ),
+              "double_tap"
+            );
           }
-          return handleAction(
-            rootElement,
-            hass,
-            patchAction(
-              "double_tap_action",
-              actionConfig as InteractionConfigLegacy
-            ),
-            "double_tap"
-          );
-        }
         : undefined,
       ...(overrideCallback ?? {}),
     }),

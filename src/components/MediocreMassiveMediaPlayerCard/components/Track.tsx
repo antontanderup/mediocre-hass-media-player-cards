@@ -62,7 +62,11 @@ export const Track = () => {
 
   return (
     <div>
-      <ProgressBar value={position.currentPosition} min={0} max={position.mediaDuration} />
+      <ProgressBar
+        value={position.currentPosition}
+        min={0}
+        max={position.mediaDuration}
+      />
       <TimeWrap>
         <span>{position.prettyNow}</span>
         <span>{position.prettyEnd}</span>

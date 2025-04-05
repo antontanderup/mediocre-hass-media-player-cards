@@ -15,7 +15,7 @@ const VolumeContainer = styled.div`
   margin-top: auto;
 `;
 
-const ControlButton = styled(IconButton) <{ muted?: boolean }>`
+const ControlButton = styled(IconButton)<{ muted?: boolean }>`
   opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
 `;
 
