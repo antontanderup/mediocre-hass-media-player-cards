@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import preact from "@preact/preset-vite";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ }) => {
   const isWatching = process.argv.includes("--watch");
 
   return {
@@ -17,10 +17,10 @@ export default defineConfig(({ command, mode }) => {
       // Only include watch configuration if --watch flag is present
       ...(isWatching
         ? {
-            watch: {
-              include: "src/**",
-            },
-          }
+          watch: {
+            include: "src/**",
+          },
+        }
         : {}),
       // Ensure we don't get minification in watch mode for easier debugging
       minify: process.env.NODE_ENV === "production" && !isWatching,

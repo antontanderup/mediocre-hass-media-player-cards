@@ -5,7 +5,6 @@ import type {
   MediocreMediaPlayerCardConfig,
 } from "../../MediaPlayerCommon/config";
 import { CardContext, CardContextType } from "../../../utils";
-import { Icon } from "../../Icon";
 import { InteractionConfig } from "../../../types/actionTypes";
 import { Chip } from "../../Chip";
 import { useActionProps } from "../../../hooks";
