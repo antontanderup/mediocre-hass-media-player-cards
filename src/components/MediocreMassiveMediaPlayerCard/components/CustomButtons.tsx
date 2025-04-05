@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import type {
   MediocreMassiveMediaPlayerCardConfig,
   MediocreMediaPlayerCardConfig,
-} from "../../MediaPlayerCommon/config";
+} from "../../../types/config";
 import { CardContext, CardContextType } from "../../../utils";
 import { InteractionConfig } from "../../../types/actionTypes";
 import { Chip } from "../../Chip";

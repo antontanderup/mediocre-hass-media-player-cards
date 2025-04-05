@@ -1,7 +1,7 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "../../../utils";
-import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
+import { MediocreMediaPlayerCardConfig } from "../../../types/config";
 import { Icon } from "../../Icon";
 import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
 

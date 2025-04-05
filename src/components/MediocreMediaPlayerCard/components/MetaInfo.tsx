@@ -1,6 +1,6 @@
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "../../../utils";
-import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
+import { MediocreMediaPlayerCardConfig } from "../../../types/config";
 import { Fragment } from "preact/jsx-runtime";
 import styled from "@emotion/styled";
 

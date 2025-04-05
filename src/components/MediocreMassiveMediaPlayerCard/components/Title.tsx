@@ -1,7 +1,7 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "../../../utils";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 
 const TitleWrap = styled.div`
   display: flex;

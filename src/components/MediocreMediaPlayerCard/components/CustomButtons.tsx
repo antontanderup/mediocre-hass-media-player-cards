@@ -1,6 +1,6 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import type { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon/config";
+import type { MediocreMediaPlayerCardConfig } from "../../../types/config";
 import { CardContext, CardContextType } from "../../../utils";
 import { InteractionConfig } from "../../../types/actionTypes";
 import { Chip } from "../../Chip";

@@ -8,7 +8,7 @@ import { VolumeController, VolumeTrigger } from "./VolumeController";
 import { SpeakerGrouping } from "./SpeakerGrouping";
 import { InteractionConfig } from "../../../types";
 import { useActionProps } from "../../../hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 import { CustomButtons } from "./CustomButtons";
 
 const PlaybackControlsWrap = styled.div`

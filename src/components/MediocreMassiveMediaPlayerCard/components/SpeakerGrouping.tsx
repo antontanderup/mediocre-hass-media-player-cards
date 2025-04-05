@@ -5,7 +5,7 @@ import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { Fragment } from "preact/jsx-runtime";
 import { Icon } from "../../Icon";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 import { Chip } from "../../Chip";
 
 const SpeakerGroupContainer = styled.div`

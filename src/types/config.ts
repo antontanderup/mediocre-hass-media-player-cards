@@ -1,4 +1,4 @@
-import { InteractionConfig } from "../../types/actionTypes";
+import { InteractionConfig } from "./actionTypes";
 
 export type CommonMediocreMediaPlayerCardConfig = {
   entity_id: string;

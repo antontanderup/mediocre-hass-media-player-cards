@@ -4,7 +4,6 @@ import {
   CardContextProvider,
   CardContextType,
 } from "../../../utils";
-import { MediocreMediaPlayerCardConfig } from "../../MediaPlayerCommon";
 import { MediocreMassiveMediaPlayerCard } from "../../MediocreMassiveMediaPlayerCard";
 import { IconButton } from "../../IconButton/IconButton";
 
@@ -13,6 +12,7 @@ import { keyframes } from "@emotion/react";
 import { Icon } from "../../Icon";
 import { getDeviceIcon } from "./PlayerInfo";
 import { useActionProps } from "../../../hooks";
+import { MediocreMediaPlayerCardConfig } from "../../../types";
 
 const slideUp = keyframes`
   from {

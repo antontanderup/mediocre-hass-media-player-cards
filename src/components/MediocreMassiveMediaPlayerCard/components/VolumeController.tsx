@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { Slider } from "../../Slider";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 
 const VolumeContainer = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const VolumeContainer = styled.div`
   margin-top: auto;
 `;
 
-const ControlButton = styled(IconButton)<{ muted?: boolean }>`
+const ControlButton = styled(IconButton) <{ muted?: boolean }>`
   opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
 `;
 

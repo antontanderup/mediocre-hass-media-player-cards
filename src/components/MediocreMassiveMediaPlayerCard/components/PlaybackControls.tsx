@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { IconButton } from "../../IconButton";
 import { CardContext, CardContextType } from "../../../utils";
 import { useSupportedFeatures } from "../../../hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 
 const PlaybackControlsWrap = styled.div`
   display: flex;

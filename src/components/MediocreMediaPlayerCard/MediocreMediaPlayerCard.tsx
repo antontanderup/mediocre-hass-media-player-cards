@@ -1,6 +1,6 @@
 import { CardContext, type CardContextType } from "../../utils";
 import { useCallback, useContext, useState } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "../MediaPlayerCommon/config";
+import type { MediocreMediaPlayerCardConfig } from "../../types/config";
 
 import {
   AlbumArt,
@@ -146,10 +146,10 @@ export const MediocreMediaPlayerCard = () => {
     },
     overrideCallback: tap_opens_popup
       ? {
-          onTap: () => {
-            setIsPopupVisible(true);
-          },
-        }
+        onTap: () => {
+          setIsPopupVisible(true);
+        },
+      }
       : {},
   });
 

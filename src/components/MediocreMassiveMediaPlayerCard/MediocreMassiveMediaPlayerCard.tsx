@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "../../utils";
-import { MediocreMassiveMediaPlayerCardConfig } from "../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../types";
 import { FC } from "preact/compat";
 import { useArtworkColors } from "../../hooks/useArtworkColors";
 

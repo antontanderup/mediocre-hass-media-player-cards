@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "../../../utils";
 import { Icon } from "../../Icon";
 import { Fragment } from "preact/jsx-runtime";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../MediaPlayerCommon";
+import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 
 const ImgOuter = styled.div`
   display: flex;

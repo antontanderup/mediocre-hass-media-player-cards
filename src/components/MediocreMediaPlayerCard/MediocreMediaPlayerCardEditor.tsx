@@ -1,5 +1,5 @@
 import { HomeAssistant } from "custom-card-helpers";
-import { MediocreMediaPlayerCardConfig } from "../MediaPlayerCommon/config";
+import { MediocreMediaPlayerCardConfig } from "../../types/config";
 import { useCallback } from "preact/hooks";
 import {
   Button,
