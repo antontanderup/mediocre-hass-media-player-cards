@@ -6,6 +6,8 @@
     "noEmit": true,
     "allowJs": true,
     "checkJs": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
 
     /* Preact Config */
     "jsx": "react-jsx",
