@@ -6,11 +6,11 @@
   ],
   "rules": {
     "no-console": {
-      "severity": "warning"
+      "severity": "warning",
+      "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
     },
-    "no-unused-variable": {
-      "severity": "warning"
-    },
+    "variable-name": false,
+    "jsx-boolean-value": false,
     "jsx-no-lambda": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
