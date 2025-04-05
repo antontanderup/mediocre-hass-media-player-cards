@@ -7,7 +7,7 @@
     "dev:watch": "vite build --watch --mode development",
     "build": "vite build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src/"
+    "lint": "tslint --project tsconfig.json"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -19,14 +19,12 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.3",
-    "eslint": "^8.57.1",
-    "eslint-config-preact": "^1.5.0",
     "prettier": "^3.1.0",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^5.0.0",
     "typescript": "^5.8.2",
     "vite": "^6.0.4"
-  },
-  "eslintConfig": {
-    "extends": "preact"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
