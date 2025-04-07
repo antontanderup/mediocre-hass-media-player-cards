@@ -54,7 +54,7 @@ export const handleAction = async (
         ...actionConfig,
         entity_id: actionConfig?.entity,
       },
-      action: action,
+      action,
     },
   });
   element.dispatchEvent(event);
