@@ -1,27 +1,8 @@
-import { handleAction, HomeAssistant } from "custom-card-helpers";
-import {
-  InteractionConfig,
-  InteractionConfigLegacy,
-} from "../types/actionTypes";
+import { HomeAssistant } from "custom-card-helpers";
+import { InteractionConfig } from "../types/actionTypes";
 import { useMemo } from "preact/hooks";
 import { useButtonCallbacks } from ".";
-import { performAction } from "../utils";
-
-const patchAction = (
-  action: "tap_action" | "double_tap_action" | "hold_action",
-  interactionConfig: InteractionConfigLegacy
-): InteractionConfigLegacy => {
-  if (
-    interactionConfig[action].action === "more-info" &&
-    !!interactionConfig[action].entity
-  ) {
-    return {
-      ...interactionConfig,
-      entity: interactionConfig[action].entity,
-    };
-  }
-  return interactionConfig;
-};
+import { handleAction } from "../utils";
 
 export function useActionProps({
   actionConfig,
@@ -41,70 +22,13 @@ export function useActionProps({
   const callbacks = useMemo(
     () => ({
       onTap: !!actionConfig?.tap_action
-        ? () => {
-            const action = actionConfig.tap_action;
-            if (action.action === "perform-action") {
-              return performAction({
-                hass,
-                action: action.perform_action,
-                target: action.target,
-                data: action.data,
-              });
-            }
-            return handleAction(
-              rootElement,
-              hass,
-              patchAction(
-                "tap_action",
-                actionConfig as InteractionConfigLegacy
-              ),
-              "tap"
-            );
-          }
+        ? () => handleAction(rootElement, actionConfig, "tap", hass)
         : undefined,
       onLongPress: !!actionConfig?.hold_action
-        ? async () => {
-            const action = actionConfig.hold_action;
-            if (action.action === "perform-action") {
-              return performAction({
-                hass,
-                action: action.perform_action,
-                target: action.target,
-                data: action.data,
-              });
-            }
-            return handleAction(
-              rootElement,
-              hass,
-              patchAction(
-                "hold_action",
-                actionConfig as InteractionConfigLegacy
-              ),
-              "hold"
-            );
-          }
+        ? async () => handleAction(rootElement, actionConfig, "hold", hass)
         : undefined,
       onDoubleTap: !!actionConfig?.double_tap_action
-        ? () => {
-            const action = actionConfig.double_tap_action;
-            if (action.action === "perform-action") {
-              return performAction({
-                hass,
-                action: action.perform_action,
-                target: action.target,
-                data: action.data,
-              });
-            }
-            return handleAction(
-              rootElement,
-              hass,
-              patchAction(
-                "double_tap_action",
-                actionConfig as InteractionConfigLegacy
-              ),
-              "double_tap"
-            );
-          }
+        ? () => handleAction(rootElement, actionConfig, "double_tap", hass)
         : undefined,
       ...(overrideCallback ?? {}),
     }),
