@@ -75,7 +75,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
       {
         icon: "mdi:paper-roll",
         name: "New Button",
-        tap_action: { action: "toggle-menu" },
+        tap_action: { action: "toggle" },
       },
     ];
 
