@@ -7,6 +7,6 @@ class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMed
 }
 
 customElements.define(
-  "mediocre-media-player-card-editor",
+  import.meta.env.VITE_MEDIA_PLAYER_CARD_EDITOR,
   MediocreMediaPlayerCardEditorWrapper
 );

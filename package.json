@@ -3,7 +3,7 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch --mode development & chmod +x ./scripts/dev-replace.sh && ./scripts/dev-replace.sh",
+    "dev": "vite build --mode development",
     "dev:watch": "vite build --watch --mode development",
     "build": "vite build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",

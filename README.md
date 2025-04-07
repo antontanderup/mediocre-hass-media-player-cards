@@ -169,12 +169,16 @@ These cards are built with Preact wrapped in web components. For local developme
 # Install dependencies
 yarn install
 
-# Build whenever files change and add -test to the card name
+# Build for development
 yarn dev
 
-# Alternatively run this to achieve the same without the -test suffix
-yarn build --watch
+# Continually build when files change
+yarn dev:watch
 
-# One time build
+# Build for production
 yarn build
 ```
+
+When using `yarn dev`, the output file will be named `mediocre-hass-media-player-cards-dev.js` instead of `mediocre-hass-media-player-cards.js`.
+
+You can also create a `.env.development` file (based on the `.env.development.example`) to use custom component names during development. This is usefull if you want to test in a live environment without risking breaking anything for your users (family members :D).

@@ -32,6 +32,6 @@ class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMe
 }
 
 customElements.define(
-  "mediocre-chip-media-player-group-card",
+  import.meta.env.VITE_CHIP_MEDIA_PLAYER_GROUP_CARD,
   MediocreChipMediaPlayerGroupCardWrapper
 );

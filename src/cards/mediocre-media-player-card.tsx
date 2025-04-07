@@ -41,13 +41,13 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
 }
 
 customElements.define(
-  "mediocre-media-player-card",
+  import.meta.env.VITE_MEDIA_PLAYER_CARD,
   MediocreMediaPlayerCardWrapper
 );
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "mediocre-media-player-card",
+  type: import.meta.env.VITE_MEDIA_PLAYER_CARD,
   name: "Mediocre Media Player Card",
   preview: true,
   description: "A media player card with player grouping support.",
