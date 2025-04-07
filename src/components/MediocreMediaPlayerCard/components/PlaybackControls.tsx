@@ -15,7 +15,7 @@ const PlaybackControlsWrap = styled.div`
   margin-left: -4px; // compensate for icon button padding
 `;
 
-const ControlButton = styled(IconButton) <{ muted?: boolean }>`
+const ControlButton = styled(IconButton)<{ muted?: boolean }>`
   opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
 `;
 

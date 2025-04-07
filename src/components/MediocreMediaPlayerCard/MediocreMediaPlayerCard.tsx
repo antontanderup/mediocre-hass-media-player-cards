@@ -146,10 +146,10 @@ export const MediocreMediaPlayerCard = () => {
     },
     overrideCallback: tap_opens_popup
       ? {
-        onTap: () => {
-          setIsPopupVisible(true);
-        },
-      }
+          onTap: () => {
+            setIsPopupVisible(true);
+          },
+        }
       : {},
   });
 
