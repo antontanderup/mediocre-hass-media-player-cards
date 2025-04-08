@@ -1,7 +1,6 @@
-import Preact, { render } from "preact";
+import { FunctionComponent, render } from "preact";
 import { HomeAssistant } from "custom-card-helpers";
-import { EmotionContextProvider } from "../components/EmotionContextProvider";
-import { GlanceGuard } from "../components/GlanceGuard";
+import { EmotionContextProvider, GlanceGuard } from "@components";
 
 export type EditorCardProps<T> = {
   config: T;
@@ -11,8 +10,8 @@ export type EditorCardProps<T> = {
 
 export class CardEditorWrapper<T> extends HTMLElement {
   _config: T = null;
-  Card: Preact.FunctionComponent<EditorCardProps<T>> = null;
-  extraProps: { [key: string]: any } = {};
+  Card: FunctionComponent<EditorCardProps<T>> = null;
+  extraProps: { [key: string]: unknown } = {};
   _hass: HomeAssistant = null;
 
   set hass(hass) {

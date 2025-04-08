@@ -4,9 +4,8 @@ import styled from "@emotion/styled";
 import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../types";
-import { FC } from "preact/compat";
-import { useArtworkColors } from "../../hooks/useArtworkColors";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
+import { useArtworkColors } from "@hooks";
 
 const Root = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
@@ -100,9 +99,11 @@ const ControlsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const MediocreMassiveMediaPlayerCard: FC<{
+export const MediocreMassiveMediaPlayerCard = ({
+  className,
+}: {
   className?: string;
-}> = ({ className }) => {
+}) => {
   const { config, hass } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext

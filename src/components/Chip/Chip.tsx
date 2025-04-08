@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "preact/compat";
 import styled from "@emotion/styled";
-import { Icon } from "../Icon";
+import { Icon } from "@components";
 import { keyframes } from "@emotion/react";
 
 const spinAnimation = keyframes`
@@ -63,7 +63,7 @@ export const Chip = ({
     if (loading) {
       return <Icon size="x-small" icon="mdi:loading" />;
     }
-    if (!!icon) {
+    if (icon) {
       return <Icon size="x-small" icon={icon} />;
     }
   };

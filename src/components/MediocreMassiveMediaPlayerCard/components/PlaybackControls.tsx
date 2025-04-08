@@ -1,9 +1,9 @@
 import { useCallback, useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton } from "../../IconButton";
+import { IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { useSupportedFeatures } from "../../../hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
+import { useSupportedFeatures } from "@hooks";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
 const PlaybackControlsWrap = styled.div`
   display: flex;

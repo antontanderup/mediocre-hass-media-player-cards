@@ -1,11 +1,10 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import type { MediocreMediaPlayerCardConfig } from "../../../types/config";
+import type { MediocreMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { InteractionConfig } from "../../../types/actionTypes";
-import { Chip } from "../../Chip";
-import { IconButton } from "../../IconButton";
-import { useActionProps } from "../../../hooks";
+import { InteractionConfig } from "@types";
+import { Chip, IconButton } from "@components";
+import { useActionProps } from "@hooks";
 
 const CustomButtonsContainer = styled.div`
   display: flex;

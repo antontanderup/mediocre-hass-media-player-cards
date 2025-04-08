@@ -1,8 +1,8 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMediaPlayerCardConfig } from "../../../types/config";
-import { Icon } from "../../Icon";
+import { MediocreMediaPlayerCardConfig } from "@types";
+import { Icon } from "@components";
 import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
 
 const AlbumArtContainer = styled.button<{
@@ -71,7 +71,7 @@ export const AlbumArt = ({
 
   return (
     <AlbumArtContainer maxHeight={maxHeight} {...buttonProps}>
-      {!!albumArt ? (
+      {albumArt ? (
         <Fragment>
           <AlbumArtImage src={albumArt} alt={`${title} by ${artist}`} />
           <SourceIndicator>

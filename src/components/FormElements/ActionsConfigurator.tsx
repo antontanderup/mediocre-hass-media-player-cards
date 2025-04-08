@@ -1,6 +1,6 @@
 import { HomeAssistant } from "custom-card-helpers";
 import { useCallback, useEffect, useMemo, useRef } from "preact/hooks";
-import { InteractionConfig } from "../../types";
+import { InteractionConfig } from "@types";
 import { getActionsFormSchema } from "./actionsSchema";
 
 export type ActionsConfiguratorProps = {
@@ -23,7 +23,7 @@ export const ActionsConfigurator = ({
     if (!value) {
       return { action: "none" };
     }
-    const result: Record<string, any> = { ...value };
+    const result: Record<string, unknown> = { ...value };
 
     return result;
   }, [value]);
@@ -56,7 +56,7 @@ export const ActionsConfigurator = ({
 
   return (
     <ha-form
-      ref={formRef as any}
+      ref={formRef}
       hass={hass}
       data={data}
       schema={getActionsFormSchema()}

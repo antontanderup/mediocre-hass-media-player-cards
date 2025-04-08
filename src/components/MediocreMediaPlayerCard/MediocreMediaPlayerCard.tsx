@@ -1,6 +1,6 @@
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useCallback, useContext, useState } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "../../types/config";
+import type { MediocreMediaPlayerCardConfig } from "@types";
 
 import {
   AlbumArt,
@@ -11,15 +11,13 @@ import {
   PlayerInfo,
   SpeakerGrouping,
 } from "./components";
-import { IconButton } from "../IconButton";
+import { IconButton } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
-import { useSupportedFeatures } from "../../hooks/useSupportedFeatures";
-import { InteractionConfig } from "../../types";
-import { useActionProps } from "../../hooks";
+import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
+import { InteractionConfig } from "@types";
 import styled from "@emotion/styled";
 import { MassivePopUp } from "./components/MassivePopUp";
-import { useArtworkColors } from "../../hooks/useArtworkColors";
 
 const Card = styled.div<{
   $artColorVars?: string;

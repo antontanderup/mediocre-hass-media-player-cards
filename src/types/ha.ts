@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { HomeAssistant } from "custom-card-helpers";
 import "preact";
 
 interface HaIconAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
@@ -8,12 +10,12 @@ export type HaFormSchema = {
   name: string;
   label?: string;
   selector?: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }[];
 
 interface HaFormAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
-  hass?: any;
+  hass?: HomeAssistant;
   data?: any;
   schema?: HaFormSchema;
   computeLabel?: (arg0: any) => string;
@@ -27,7 +29,7 @@ interface HaIconPickerAttributes
   value?: string;
   disabled?: boolean;
   required?: boolean;
-  hass?: any;
+  hass?: HomeAssistant;
   "onvalue-changed"?: (e: CustomEvent) => void;
 }
 
@@ -41,7 +43,7 @@ interface HaTextfieldAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
 
 interface HaEntityPickerAttributes
   extends preact.JSX.HTMLAttributes<HTMLElement> {
-  hass?: any;
+  hass?: HomeAssistant;
   value?: string;
   label?: string;
   includeDomains?: string[];
@@ -52,7 +54,7 @@ interface HaEntityPickerAttributes
 
 interface HaEntitiesPickerAttributes
   extends preact.JSX.HTMLAttributes<HTMLElement> {
-  hass?: any;
+  hass?: HomeAssistant;
   value?: string[];
   label?: string;
   includeDomains?: string[];
@@ -62,6 +64,7 @@ interface HaEntitiesPickerAttributes
 }
 
 declare module "preact" {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       "ha-icon": HaIconAttributes;

@@ -1,8 +1,8 @@
 import {
   MediocreChipMediaPlayerGroupCard,
   MediocreChipMediaPlayerGroupCardConfig,
-} from "../components";
-import { CardWrapper } from "../wrappers";
+} from "@components";
+import { CardWrapper } from "@wrappers";
 
 class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMediaPlayerGroupCardConfig> {
   Card = MediocreChipMediaPlayerGroupCard;

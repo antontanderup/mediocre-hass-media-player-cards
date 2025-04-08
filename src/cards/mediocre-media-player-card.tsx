@@ -1,7 +1,7 @@
 import { HomeAssistant } from "custom-card-helpers";
-import { MediocreMediaPlayerCard } from "../components";
-import { MediocreMediaPlayerCardConfig } from "../types";
-import { CardWrapper } from "../wrappers";
+import { MediocreMediaPlayerCard } from "@components";
+import { MediocreMediaPlayerCardConfig } from "@types";
+import { CardWrapper } from "@wrappers";
 
 class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCardConfig> {
   Card = MediocreMediaPlayerCard;

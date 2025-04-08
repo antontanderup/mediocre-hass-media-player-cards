@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
-import preact from "@preact/preset-vite";
+import { preact } from "@preact/preset-vite";
 import path from "path";
 
 // https://vitejs.dev/config/
+// eslint-disable-next-line no-empty-pattern
 export default defineConfig(({}) => {
   const isWatching = process.argv.includes("--watch");
   const isDevelopment =
@@ -16,7 +17,7 @@ export default defineConfig(({}) => {
         "@hooks": path.resolve(__dirname, "./src/hooks"),
         "@types": path.resolve(__dirname, "./src/types"),
         "@utils": path.resolve(__dirname, "./src/utils"),
-        "@wrapper": path.resolve(__dirname, "./src/wrapper"),
+        "@wrappers": path.resolve(__dirname, "./src/wrappers"),
       },
     },
     build: {
@@ -39,27 +40,7 @@ export default defineConfig(({}) => {
       minify: !isDevelopment,
     },
     define: {
-      "process.env": {
-        VITE_MEDIA_PLAYER_CARD: JSON.stringify(
-          process.env.VITE_MEDIA_PLAYER_CARD || "mediocre-media-player-card"
-        ),
-        VITE_MEDIA_PLAYER_CARD_EDITOR: JSON.stringify(
-          process.env.VITE_MEDIA_PLAYER_CARD_EDITOR ||
-            "mediocre-media-player-card-editor"
-        ),
-        VITE_MASSIVE_MEDIA_PLAYER_CARD: JSON.stringify(
-          process.env.VITE_MASSIVE_MEDIA_PLAYER_CARD ||
-            "mediocre-massive-media-player-card"
-        ),
-        VITE_MASSIVE_MEDIA_PLAYER_CARD_EDITOR: JSON.stringify(
-          process.env.VITE_MASSIVE_MEDIA_PLAYER_CARD_EDITOR ||
-            "mediocre-massive-media-player-card-editor"
-        ),
-        VITE_CHIP_MEDIA_PLAYER_GROUP_CARD: JSON.stringify(
-          process.env.VITE_CHIP_MEDIA_PLAYER_GROUP_CARD ||
-            "mediocre-chip-media-player-group-card"
-        ),
-      },
+      "process.env": {},
     },
   };
 });

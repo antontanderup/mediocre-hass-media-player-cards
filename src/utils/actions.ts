@@ -1,5 +1,5 @@
 import { HomeAssistant } from "custom-card-helpers";
-import { InteractionConfig, InteractionType } from "../types/actionTypes";
+import { InteractionConfig, InteractionType } from "@types";
 
 const performAction = ({
   hass,

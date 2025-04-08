@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact";
 import styled from "@emotion/styled";
-import { Icon } from "../Icon";
+import { Icon } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 
 export type MediocreChipMediaPlayerGroupCardConfig = {

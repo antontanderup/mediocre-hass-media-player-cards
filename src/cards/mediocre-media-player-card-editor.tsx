@@ -1,6 +1,6 @@
-import { MediocreMediaPlayerCardEditor } from "../components";
-import { MediocreMediaPlayerCardConfig } from "../types";
-import { CardEditorWrapper } from "../wrappers";
+import { MediocreMediaPlayerCardEditor } from "@components";
+import { MediocreMediaPlayerCardConfig } from "@types";
+import { CardEditorWrapper } from "@wrappers";
 
 class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
   Card = MediocreMediaPlayerCardEditor;

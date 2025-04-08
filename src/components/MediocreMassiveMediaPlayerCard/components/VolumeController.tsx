@@ -1,9 +1,8 @@
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton } from "../../IconButton";
+import { IconButton, Slider } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { Slider } from "../../Slider";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
 const VolumeContainer = styled.div`
   display: flex;

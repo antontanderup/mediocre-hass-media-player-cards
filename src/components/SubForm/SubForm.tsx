@@ -1,6 +1,7 @@
 import { useState } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton } from "../IconButton";
+import { IconButton } from "@components";
+import { JSX } from "preact";
 
 const SubFormContainer = styled.div`
   border: 1px solid var(--divider-color, #e0e0e0);
@@ -30,7 +31,15 @@ const SubFormContent = styled.div<{ $expanded: boolean }>`
   display: ${props => (props.$expanded ? "block" : "none")};
 `;
 
-export const SubForm = ({ title, children, initiallyExpanded = false }) => {
+export const SubForm = ({
+  title,
+  children,
+  initiallyExpanded = false,
+}: {
+  title: string;
+  children: JSX.Element | JSX.Element[];
+  initiallyExpanded?: boolean;
+}) => {
   const [expanded, setExpanded] = useState(initiallyExpanded);
 
   return (

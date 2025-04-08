@@ -1,8 +1,8 @@
 import { useCallback, useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMediaPlayerCardConfig } from "../../../types/config";
+import { MediocreMediaPlayerCardConfig } from "@types";
 import styled from "@emotion/styled";
-import { IconButton } from "../../IconButton";
+import { IconButton } from "@components";
 import { fireEvent } from "custom-card-helpers";
 
 const PlayerInfoWrap = styled.div`

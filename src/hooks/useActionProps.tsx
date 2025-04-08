@@ -1,8 +1,8 @@
 import { HomeAssistant } from "custom-card-helpers";
-import { InteractionConfig } from "../types/actionTypes";
+import { InteractionConfig } from "@types";
 import { useMemo } from "preact/hooks";
 import { useButtonCallbacks } from ".";
-import { handleAction } from "../utils";
+import { handleAction } from "@utils";
 
 export function useActionProps({
   actionConfig,
@@ -21,13 +21,13 @@ export function useActionProps({
 }) {
   const callbacks = useMemo(
     () => ({
-      onTap: !!actionConfig?.tap_action
+      onTap: actionConfig?.tap_action
         ? () => handleAction(rootElement, actionConfig, "tap", hass)
         : undefined,
-      onLongPress: !!actionConfig?.hold_action
+      onLongPress: actionConfig?.hold_action
         ? async () => handleAction(rootElement, actionConfig, "hold", hass)
         : undefined,
-      onDoubleTap: !!actionConfig?.double_tap_action
+      onDoubleTap: actionConfig?.double_tap_action
         ? () => handleAction(rootElement, actionConfig, "double_tap", hass)
         : undefined,
       ...(overrideCallback ?? {}),

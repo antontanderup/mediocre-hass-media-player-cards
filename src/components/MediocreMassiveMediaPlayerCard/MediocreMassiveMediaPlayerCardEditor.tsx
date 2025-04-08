@@ -1,5 +1,8 @@
 import { HomeAssistant } from "custom-card-helpers";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../types/config";
+import {
+  InteractionConfig,
+  MediocreMassiveMediaPlayerCardConfig,
+} from "@types";
 import { useCallback } from "preact/hooks";
 import {
   Button,
@@ -16,8 +19,8 @@ import {
   Toggle,
   ToggleContainer,
   ToggleLabel,
-} from "../FormElements";
-import { SubForm } from "../SubForm/SubForm";
+  SubForm,
+} from "@components";
 
 export type MediocreMassiveMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -40,7 +43,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
         bubbles: true,
         composed: true,
       });
-      // @ts-ignore
+      // @ts-expect-error its ok shh... we know what we're doing (we think)
       event.detail = { config: newConfig };
       rootElement.dispatchEvent(event);
     },
@@ -49,7 +52,10 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
 
   // Direct update function - creates a new config object and calls updateConfig
   const updateField = useCallback(
-    (path: string, value: any) => {
+    (
+      path: string,
+      value: string | { [key: string]: string } | InteractionConfig | string[]
+    ) => {
       if (!config) return;
 
       const pathParts = path.split(".");
@@ -99,7 +105,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
   );
 
   const updateCustomButton = useCallback(
-    (index: number, field: string, value: any) => {
+    (index: number, field: string, value: string) => {
       const newButtons = [...(config.custom_buttons || [])];
       newButtons[index] = {
         ...newButtons[index],
@@ -115,7 +121,12 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
   );
 
   const updateButtonInteractions = useCallback(
-    (index: number, interactions: any) => {
+    (
+      index: number,
+      interactions: Partial<
+        MediocreMassiveMediaPlayerCardConfig["custom_buttons"][number]
+      >
+    ) => {
       const newButtons = [...(config.custom_buttons || [])];
       newButtons[index] = {
         ...newButtons[index],

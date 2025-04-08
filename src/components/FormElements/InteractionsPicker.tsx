@@ -1,5 +1,5 @@
 import { FC } from "preact/compat";
-import { InteractionConfig } from "../../types";
+import { InteractionConfig } from "@types";
 // import { ActionConfigurator } from "./ActionConfigurator";
 import { HomeAssistant } from "custom-card-helpers";
 import { ActionsConfigurator } from "./ActionsConfigurator";

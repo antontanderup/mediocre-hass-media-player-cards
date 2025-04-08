@@ -53,7 +53,7 @@ export const EntityPicker = (props: EntityPickerProps) => {
 
   return (
     <ha-entity-picker
-      ref={formRef as any}
+      ref={formRef}
       hass={hass}
       value={value}
       label={label || "Entity"}

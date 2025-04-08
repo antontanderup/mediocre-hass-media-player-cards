@@ -1,12 +1,15 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import styled from "@emotion/styled";
-import type { MediocreMediaPlayerCardConfig } from "../../../types/config";
-import { Slider } from "../../Slider";
-import { IconButton } from "../../IconButton";
-import { CardContext, CardContextType } from "@components/CardContext";
+import type { MediocreMediaPlayerCardConfig } from "@types";
 import { Fragment } from "preact/jsx-runtime";
-import { Icon } from "../../Icon";
-import { Chip } from "../../Chip";
+import {
+  Icon,
+  Chip,
+  CardContext,
+  CardContextType,
+  IconButton,
+  Slider,
+} from "@components";
 
 const SpeakerGroupContainer = styled.div`
   display: flex;

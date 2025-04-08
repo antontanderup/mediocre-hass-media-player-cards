@@ -1,9 +1,9 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { Icon } from "../../Icon";
+import { Icon } from "@components";
 import { Fragment } from "preact/jsx-runtime";
-import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
 const ImgOuter = styled.div`
   display: flex;
