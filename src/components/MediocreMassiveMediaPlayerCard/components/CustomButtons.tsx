@@ -4,7 +4,7 @@ import type {
   MediocreMassiveMediaPlayerCardConfig,
   MediocreMediaPlayerCardConfig,
 } from "../../../types/config";
-import { CardContext, CardContextType } from "../../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "../../../types/actionTypes";
 import { Chip } from "../../Chip";
 import { useActionProps } from "../../../hooks";

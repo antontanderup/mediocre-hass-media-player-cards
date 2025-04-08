@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact";
 import styled from "@emotion/styled";
 import { Icon } from "../Icon";
-import { CardContext, CardContextType } from "../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 
 export type MediocreChipMediaPlayerGroupCardConfig = {
   entity_id: string;

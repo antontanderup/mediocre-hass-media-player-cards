@@ -1,7 +1,7 @@
 import Preact, { render } from "preact";
 import { HomeAssistant } from "custom-card-helpers";
-import { EmotionContextProvider } from "./EmotionContextProvider";
-import { GlanceGuard } from "./GlanceGuard";
+import { EmotionContextProvider } from "../components/EmotionContextProvider";
+import { GlanceGuard } from "../components/GlanceGuard";
 
 export type EditorCardProps<T> = {
   config: T;

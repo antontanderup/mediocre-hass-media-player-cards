@@ -1,6 +1,6 @@
 import Preact, { render } from "preact";
-import { CardContextProvider } from "../utils";
-import { EmotionContextProvider } from "./EmotionContextProvider";
+import { CardContextProvider } from "../components/CardContext";
+import { EmotionContextProvider } from "../components/EmotionContextProvider";
 
 export class CardWrapper<Config> extends HTMLElement {
   Card: Preact.FunctionComponent = null;

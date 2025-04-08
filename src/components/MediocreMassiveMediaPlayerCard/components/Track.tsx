@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
 import { ProgressBar } from "../../ProgressBar";
-import { CardContext, CardContextType } from "../../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 
 const TimeWrap = styled.div`

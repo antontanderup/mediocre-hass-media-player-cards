@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
 import { IconButton } from "../../IconButton";
-import { CardContext, CardContextType } from "../../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMediaPlayerCardConfig } from "../../../types/config";
 import { Slider } from "../../Slider";
 import { Fragment } from "preact/jsx-runtime";

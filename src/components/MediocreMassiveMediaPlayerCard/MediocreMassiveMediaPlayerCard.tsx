@@ -3,7 +3,7 @@ import { PlaybackControls } from "./components/PlaybackControls";
 import styled from "@emotion/styled";
 import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
-import { CardContext, CardContextType } from "../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "../../types";
 import { FC } from "preact/compat";
 import { useArtworkColors } from "../../hooks/useArtworkColors";

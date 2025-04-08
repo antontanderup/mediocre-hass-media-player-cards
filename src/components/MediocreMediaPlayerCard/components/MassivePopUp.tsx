@@ -1,9 +1,9 @@
 import { useContext, useMemo } from "preact/hooks";
 import {
   CardContext,
-  CardContextProvider,
   CardContextType,
-} from "../../../utils";
+  CardContextProvider,
+} from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCard } from "../../MediocreMassiveMediaPlayerCard";
 import { IconButton } from "../../IconButton/IconButton";
 

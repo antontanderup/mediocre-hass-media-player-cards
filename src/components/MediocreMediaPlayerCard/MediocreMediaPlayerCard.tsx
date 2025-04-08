@@ -1,4 +1,4 @@
-import { CardContext, type CardContextType } from "../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { useCallback, useContext, useState } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "../../types/config";
 

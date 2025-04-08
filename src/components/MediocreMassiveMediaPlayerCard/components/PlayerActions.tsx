@@ -2,7 +2,7 @@ import { useCallback, useContext, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { IconButton } from "../../IconButton";
-import { CardContext, CardContextType } from "../../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
 import { SpeakerGrouping } from "./SpeakerGrouping";

@@ -1,7 +1,7 @@
 import { useCallback, useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { IconButton } from "../../IconButton";
-import { CardContext, CardContextType } from "../../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { useSupportedFeatures } from "../../../hooks";
 import { MediocreMassiveMediaPlayerCardConfig } from "../../../types";
 

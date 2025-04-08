@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import type { MediocreMediaPlayerCardConfig } from "../../../types/config";
 import { Slider } from "../../Slider";
 import { IconButton } from "../../IconButton";
-import { CardContext, CardContextType } from "../../../utils";
+import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment } from "preact/jsx-runtime";
 import { Icon } from "../../Icon";
 import { Chip } from "../../Chip";
