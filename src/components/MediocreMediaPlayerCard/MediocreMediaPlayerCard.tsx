@@ -18,7 +18,6 @@ import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
 import styled from "@emotion/styled";
 import { MassivePopUp } from "./components/MassivePopUp";
-import { memo } from "preact/compat";
 import { getHass } from "@utils";
 
 const Card = styled.div<{
@@ -75,7 +74,7 @@ const ContentRow = styled.div`
   align-items: flex-start;
 `;
 
-export const MediocreMediaPlayerCard = memo(() => {
+export const MediocreMediaPlayerCard = () => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const {
@@ -218,4 +217,4 @@ export const MediocreMediaPlayerCard = memo(() => {
       </ha-card>
     </Card>
   );
-});
+};
