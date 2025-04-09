@@ -2,6 +2,7 @@
   "name": "mediocre-hass-media-player-cards",
   "private": false,
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "dev": "vite build --mode development",
     "dev:watch": "vite build --watch --mode development",
