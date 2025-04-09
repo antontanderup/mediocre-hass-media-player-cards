@@ -2,10 +2,25 @@ import {
   MediocreChipMediaPlayerGroupCard,
   MediocreChipMediaPlayerGroupCardConfig,
 } from "@components";
+import { getDidMediaPlayerUpdate } from "@utils";
 import { CardWrapper } from "@wrappers";
+import { HomeAssistant } from "custom-card-helpers";
 
 class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMediaPlayerGroupCardConfig> {
   Card = MediocreChipMediaPlayerGroupCard;
+
+  shouldUpdate = (prevHass: HomeAssistant, hass: HomeAssistant) => {
+    if (!prevHass && hass) return true;
+    if (
+      getDidMediaPlayerUpdate(
+        prevHass.states[this.config.entity_id],
+        hass.states[this.config.entity_id]
+      )
+    ) {
+      return true;
+    }
+    return false;
+  };
 
   setConfig(config: MediocreChipMediaPlayerGroupCardConfig) {
     if (!config.entity_id) {
