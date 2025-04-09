@@ -9,6 +9,7 @@ import {
   CardContextType,
   IconButton,
   Slider,
+  useHass,
 } from "@components";
 
 const SpeakerGroupContainer = styled.div`
@@ -80,7 +81,8 @@ const SpeakerChip = styled(Chip)`
 `;
 
 export const SpeakerGrouping = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
 
   const { entity_id, speaker_group } = config;

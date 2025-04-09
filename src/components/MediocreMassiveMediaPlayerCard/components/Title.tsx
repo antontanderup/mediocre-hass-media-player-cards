@@ -2,6 +2,7 @@ import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
+import { useHass } from "@components/HassContext";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -30,7 +31,8 @@ const TitleH3 = styled.h3`
 `;
 
 export const Title = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

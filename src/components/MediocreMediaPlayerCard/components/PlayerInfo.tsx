@@ -2,7 +2,7 @@ import { useCallback, useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import styled from "@emotion/styled";
-import { IconButton } from "@components";
+import { IconButton, useHass } from "@components";
 import { fireEvent } from "custom-card-helpers";
 
 const PlayerInfoWrap = styled.div`
@@ -19,7 +19,8 @@ const FriendlyNameText = styled.span`
 `;
 
 export const PlayerInfo = () => {
-  const { hass, config, rootElement } =
+  const hass = useHass();
+  const { config, rootElement } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id, speaker_group } = config;
   const {

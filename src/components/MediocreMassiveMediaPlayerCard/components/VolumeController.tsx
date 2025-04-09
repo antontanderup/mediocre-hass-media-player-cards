@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton, Slider } from "@components";
+import { IconButton, Slider, useHass } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
@@ -17,7 +17,8 @@ const ControlButton = styled(IconButton)<{ muted?: boolean }>`
 `;
 
 export const VolumeController = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
@@ -75,7 +76,8 @@ export const getVolumeIcon = (volume, volumeMuted) => {
 };
 
 export const VolumeTrigger = ({ onClick }: { onClick: () => void }) => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

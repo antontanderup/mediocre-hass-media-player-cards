@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
-import { ProgressBar } from "@components";
+import { ProgressBar, useHass } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
@@ -15,7 +15,8 @@ const TimeWrap = styled.div`
 `;
 
 export const Track = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

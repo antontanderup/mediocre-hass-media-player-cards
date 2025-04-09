@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton, CardContext, CardContextType } from "@components";
+import { IconButton, CardContext, CardContextType, useHass } from "@components";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { useSupportedFeatures } from "@hooks";
 
@@ -19,7 +19,8 @@ const ControlButton = styled(IconButton)<{ muted?: boolean }>`
 `;
 
 export const PlaybackControls = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
   const player = hass.states[entity_id];

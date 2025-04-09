@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
-import { Chip, IconButton } from "@components";
+import { Chip, IconButton, useHass } from "@components";
 import { useActionProps } from "@hooks";
 
 const CustomButtonsContainer = styled.div`
@@ -56,7 +56,8 @@ export const CustomButton = ({
     name?: string;
   };
 }) => {
-  const { hass, rootElement, config } =
+  const hass = useHass();
+  const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { icon, name, ...actionConfig } = button;
   const actionProps = useActionProps({

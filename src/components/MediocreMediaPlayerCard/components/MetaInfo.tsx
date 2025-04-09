@@ -3,6 +3,7 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { Fragment } from "preact/jsx-runtime";
 import styled from "@emotion/styled";
+import { useHass } from "@components/HassContext";
 
 const TitleText = styled.h3`
   margin: 0;
@@ -24,7 +25,8 @@ const ArtistText = styled.p`
 `;
 
 export const MetaInfo = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id } = config;
   const {

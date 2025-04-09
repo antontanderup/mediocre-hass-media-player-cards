@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { IconButton } from "@components";
+import { IconButton, useHass } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -71,7 +71,8 @@ const ModalContent = styled.div<{ padding?: string }>`
 `;
 
 export const PlayerActions = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
@@ -183,7 +184,8 @@ export const CustomButton = ({
     name?: string;
   };
 }) => {
-  const { hass, rootElement, config } =
+  const hass = useHass();
+  const { rootElement, config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

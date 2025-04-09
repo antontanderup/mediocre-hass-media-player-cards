@@ -1,7 +1,7 @@
 import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { Icon } from "@components";
+import { Icon, useHass } from "@components";
 import { Fragment } from "preact/jsx-runtime";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
@@ -42,7 +42,8 @@ const SourceIndicator = styled.div<{ contrastColor?: string }>`
 `;
 
 export const AlbumArt = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

@@ -1,7 +1,14 @@
 import { FunctionComponent, render } from "preact";
-import { EmotionContextProvider, CardContextProvider } from "@components";
+import {
+  EmotionContextProvider,
+  CardContextProvider,
+  HassContextProvider,
+} from "@components";
+import { PlayerContextProvider } from "@components/PlayerContext";
 
-export class CardWrapper<Config> extends HTMLElement {
+export class CardWrapper<
+  Config extends { entity_id: string },
+> extends HTMLElement {
   Card: FunctionComponent = null;
   config: Config = null;
 
@@ -11,12 +18,12 @@ export class CardWrapper<Config> extends HTMLElement {
     }
     render(
       <EmotionContextProvider rootElement={this}>
-        <CardContextProvider
-          rootElement={this}
-          hass={hass}
-          config={this.config}
-        >
-          <this.Card />
+        <CardContextProvider rootElement={this} config={this.config}>
+          <HassContextProvider hass={hass}>
+            <PlayerContextProvider hass={hass} entityId={this.config.entity_id}>
+              <this.Card />
+            </PlayerContextProvider>
+          </HassContextProvider>
         </CardContextProvider>
       </EmotionContextProvider>,
       this

@@ -6,6 +6,7 @@ import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { useArtworkColors } from "@hooks";
+import { useHass } from "@components/HassContext";
 
 const Root = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
@@ -104,7 +105,8 @@ export const MediocreMassiveMediaPlayerCard = ({
 }: {
   className?: string;
 }) => {
-  const { config, hass } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

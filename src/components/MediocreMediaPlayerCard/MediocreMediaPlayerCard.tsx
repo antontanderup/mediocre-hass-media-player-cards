@@ -11,7 +11,7 @@ import {
   PlayerInfo,
   SpeakerGrouping,
 } from "./components";
-import { IconButton } from "@components";
+import { IconButton, useHass } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
@@ -74,7 +74,8 @@ const ContentRow = styled.div`
 `;
 
 export const MediocreMediaPlayerCard = () => {
-  const { rootElement, hass, config } =
+  const hass = useHass();
+  const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const {
     entity_id,

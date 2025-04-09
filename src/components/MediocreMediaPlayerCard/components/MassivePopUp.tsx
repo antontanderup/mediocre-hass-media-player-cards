@@ -4,7 +4,12 @@ import {
   CardContextType,
   CardContextProvider,
 } from "@components/CardContext";
-import { MediocreMassiveMediaPlayerCard, IconButton, Icon } from "@components";
+import {
+  MediocreMassiveMediaPlayerCard,
+  IconButton,
+  Icon,
+  useHass,
+} from "@components";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import { getDeviceIcon } from "./PlayerInfo";
@@ -114,7 +119,8 @@ export const MassivePopUp = ({
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }) => {
-  const { hass, config, rootElement } =
+  const hass = useHass();
+  const { config, rootElement } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
 
   const { entity_id, speaker_group } = config;
@@ -175,11 +181,7 @@ export const MassivePopUp = ({
           />
         </PopUpHeader>
         <PopUpContent>
-          <CardContextProvider
-            rootElement={rootElement}
-            hass={hass}
-            config={massiveConfig}
-          >
+          <CardContextProvider rootElement={rootElement} config={massiveConfig}>
             <PopupMediocreMassiveMediaPlayerCard />
           </CardContextProvider>
         </PopUpContent>

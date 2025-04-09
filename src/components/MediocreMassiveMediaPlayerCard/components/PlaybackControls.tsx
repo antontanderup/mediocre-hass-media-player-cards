@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton } from "@components";
+import { IconButton, useHass } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useSupportedFeatures } from "@hooks";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
@@ -14,7 +14,8 @@ const PlaybackControlsWrap = styled.div`
 `;
 
 export const PlaybackControls = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );

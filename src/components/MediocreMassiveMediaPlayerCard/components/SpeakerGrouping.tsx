@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import styled from "@emotion/styled";
-import { Slider, IconButton, Icon, Chip } from "@components";
+import { Slider, IconButton, Icon, Chip, useHass } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment } from "preact/jsx-runtime";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
@@ -61,7 +61,8 @@ const SpeakerChip = styled(Chip)`
 `;
 
 export const SpeakerGrouping = () => {
-  const { hass, config } =
+  const hass = useHass();
+  const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
