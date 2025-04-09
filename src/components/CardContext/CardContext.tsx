@@ -6,14 +6,12 @@ export type CardContextType<T> = {
   config: T;
 };
 
-// Create a default context with generic type parameter
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CardContext = createContext<CardContextType<any>>({
   rootElement: null,
   config: null,
 });
 
-// Make the provider component properly generic
 export const CardContextProvider = <T,>({
   rootElement,
   config,
