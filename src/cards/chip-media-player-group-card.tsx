@@ -11,15 +11,11 @@ class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMe
 
   shouldUpdate = (prevHass: HomeAssistant, hass: HomeAssistant) => {
     if (!prevHass && hass) return true;
-    if (
-      getDidMediaPlayerUpdate(
-        prevHass.states[this.config.entity_id],
-        hass.states[this.config.entity_id]
-      )
-    ) {
-      return true;
-    }
-    return false;
+
+    return getDidMediaPlayerUpdate(
+      prevHass.states[this.config.entity_id],
+      hass.states[this.config.entity_id]
+    );
   };
 
   setConfig(config: MediocreChipMediaPlayerGroupCardConfig) {
