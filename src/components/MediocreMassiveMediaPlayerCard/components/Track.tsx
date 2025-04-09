@@ -1,8 +1,6 @@
-import { useContext, useMemo } from "preact/hooks";
+import { useMemo, useEffect, useState } from "preact/hooks";
 import styled from "@emotion/styled";
-import { ProgressBar, useHass } from "@components";
-import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMassiveMediaPlayerCardConfig } from "@types";
+import { ProgressBar, usePlayer } from "@components";
 
 const TimeWrap = styled.div`
   display: flex;
@@ -15,13 +13,22 @@ const TimeWrap = styled.div`
 `;
 
 export const Track = () => {
-  const hass = useHass();
-  const { config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
+  const player = usePlayer();
+  const [tick, setTick] = useState(0);
+  const isPlaying = player.state === "playing";
+
+  // Set up tick that updates once per second, but only when playing
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const interval = setInterval(() => {
+      setTick(prev => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
   const position = useMemo(() => {
-    const player = hass.states[config.entity_id];
     const mediaPosition = player.attributes?.media_position ?? null;
     const mediaPositionUpdatedAt =
       player.attributes?.media_position_updated_at ?? null;
@@ -55,7 +62,7 @@ export const Track = () => {
       prettyNow: getPrettyPrinted(currentPosition),
       prettyEnd: getPrettyPrinted(mediaDuration),
     };
-  }, [hass, config]);
+  }, [player, tick]); // Added tick to the dependency array to update when tick changes
 
   if (!position) {
     return null;

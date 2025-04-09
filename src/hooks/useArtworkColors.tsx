@@ -1,18 +1,20 @@
-import { HassEntity } from "home-assistant-js-websocket";
 import { Vibrant } from "node-vibrant/browser";
 import type { Palette } from "@vibrant/color";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { usePlayer } from "@components";
 
 // Helper function to detect dark mode
 const isDarkMode = () =>
   window.matchMedia &&
   window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-export function useArtworkColors(player: HassEntity): {
+export function useArtworkColors(): {
   artVars: string | null;
   haVars: string | null;
 } {
-  const { entity_picture: albumArt } = player.attributes;
+  const {
+    attributes: { entity_picture: albumArt },
+  } = usePlayer();
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
   // Track dark mode state

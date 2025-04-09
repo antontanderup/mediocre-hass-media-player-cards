@@ -11,7 +11,6 @@ export const PlayerContext = createContext<PlayerContextType>({
   player: null,
 });
 
-// Make the provider component properly generic
 export const PlayerContextProvider = ({
   hass,
   children,
@@ -23,7 +22,7 @@ export const PlayerContextProvider = ({
 }): React.ReactElement => {
   const contextValue = useMemo(() => {
     return { player: hass.states[entityId] };
-  }, [hass.states[entityId]]);
+  }, [hass.states, entityId]);
 
   return (
     <PlayerContext.Provider value={contextValue}>

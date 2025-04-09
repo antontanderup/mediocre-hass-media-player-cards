@@ -1,8 +1,8 @@
 /* tslint:disable:no-bitwise */
-import { HassEntity } from "home-assistant-js-websocket";
+import { usePlayer } from "@components";
 import { useMemo } from "preact/hooks";
 
-export function useSupportedFeatures(player: HassEntity) {
+export function useSupportedFeatures() {
   const {
     attributes: {
       shuffle,
@@ -10,7 +10,7 @@ export function useSupportedFeatures(player: HassEntity) {
       source,
       supported_features: supportedFeatures,
     },
-  } = player;
+  } = usePlayer();
 
   const supportPreviousTrack = (supportedFeatures | 16) === supportedFeatures;
   const supportNextTrack = (supportedFeatures | 32) === supportedFeatures;

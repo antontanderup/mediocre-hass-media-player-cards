@@ -11,13 +11,15 @@ import {
   PlayerInfo,
   SpeakerGrouping,
 } from "./components";
-import { IconButton, useHass } from "@components";
+import { IconButton, usePlayer } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
 import styled from "@emotion/styled";
 import { MassivePopUp } from "./components/MassivePopUp";
+import { memo } from "preact/compat";
+import { getHass } from "@utils";
 
 const Card = styled.div<{
   $artColorVars?: string;
@@ -73,8 +75,7 @@ const ContentRow = styled.div`
   align-items: flex-start;
 `;
 
-export const MediocreMediaPlayerCard = () => {
-  const hass = useHass();
+export const MediocreMediaPlayerCard = memo(() => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const {
@@ -91,31 +92,17 @@ export const MediocreMediaPlayerCard = () => {
   const [showCustomButtons, setShowCustomButtons] = useState(false);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
-  // Get the media player entity from hass
-  const entity = hass.states[entity_id];
+  const { artVars, haVars } = useArtworkColors();
 
-  if (!entity) {
-    return (
-      <ha-card>
-        <Card>
-          <div>Entity {entity_id} not found</div>
-        </Card>
-      </ha-card>
-    );
-  }
+  const { state } = usePlayer();
 
-  const { artVars, haVars } = useArtworkColors(entity);
-
-  const supportedFeatures = useSupportedFeatures(entity);
+  const supportedFeatures = useSupportedFeatures();
   const hasNoPlaybackControls =
     !supportedFeatures.supportsTogglePlayPause &&
     !supportedFeatures.supportNextTrack &&
     !supportedFeatures.supportPreviousTrack &&
     !supportedFeatures.supportsShuffle &&
     !supportedFeatures.supportsRepeat;
-
-  // Extract state and attributes
-  const { state } = entity;
 
   // Determine if the player is on
   const isOn = !["off", "unavailable"].includes(state);
@@ -137,7 +124,6 @@ export const MediocreMediaPlayerCard = () => {
   };
 
   const artActionProps = useActionProps({
-    hass,
     rootElement,
     actionConfig: {
       ...artAction,
@@ -153,10 +139,19 @@ export const MediocreMediaPlayerCard = () => {
   });
 
   const togglePower = useCallback(() => {
-    hass.callService("media_player", "toggle", {
+    getHass().callService("media_player", "toggle", {
       entity_id,
     });
   }, [entity_id]);
+
+  console.log("Render triggered:", {
+    state,
+    supportedFeatures,
+    showGrouping,
+    showCustomButtons,
+    showVolumeSlider,
+    isPopupVisible,
+  });
 
   return (
     <Card
@@ -227,4 +222,4 @@ export const MediocreMediaPlayerCard = () => {
       </ha-card>
     </Card>
   );
-};
+});

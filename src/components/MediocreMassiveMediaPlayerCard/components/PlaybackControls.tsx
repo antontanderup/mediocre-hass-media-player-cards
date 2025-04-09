@@ -1,6 +1,6 @@
 import { useCallback, useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import { IconButton, useHass } from "@components";
+import { IconButton, useHass, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useSupportedFeatures } from "@hooks";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
@@ -19,13 +19,13 @@ export const PlaybackControls = () => {
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const player = hass.states[config.entity_id];
 
   const {
     attributes: { shuffle, repeat },
-  } = player;
+    state,
+  } = usePlayer();
 
-  const playing = player.state === "playing";
+  const playing = state === "playing";
 
   const {
     supportPreviousTrack,
@@ -33,7 +33,7 @@ export const PlaybackControls = () => {
     supportsShuffle,
     supportsRepeat,
     supportsTogglePlayPause,
-  } = useSupportedFeatures(player);
+  } = useSupportedFeatures();
 
   const togglePlayback = useCallback(() => {
     hass.callService("media_player", "media_play_pause", {

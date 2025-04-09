@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { IconButton, useHass } from "@components";
+import { IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -12,6 +12,7 @@ import {
   InteractionConfig,
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
+import { getHass } from "@utils";
 
 const PlaybackControlsWrap = styled.div`
   background-color: var(--card-background-color);
@@ -71,7 +72,6 @@ const ModalContent = styled.div<{ padding?: string }>`
 `;
 
 export const PlayerActions = () => {
-  const hass = useHass();
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
@@ -91,7 +91,7 @@ export const PlayerActions = () => {
   );
 
   const onTogglePower = useCallback(() => {
-    hass.callService("media_player", "toggle", {
+    getHass().callService("media_player", "toggle", {
       entity_id,
     });
   }, [entity_id]);
@@ -184,14 +184,12 @@ export const CustomButton = ({
     name?: string;
   };
 }) => {
-  const hass = useHass();
   const { rootElement, config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
   const { icon: _icon, name: _name, ...actionConfig } = button;
   const actionProps = useActionProps({
-    hass,
     rootElement,
     actionConfig: {
       ...actionConfig,

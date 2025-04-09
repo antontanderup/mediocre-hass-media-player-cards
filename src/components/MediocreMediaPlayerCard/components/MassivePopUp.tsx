@@ -9,6 +9,7 @@ import {
   IconButton,
   Icon,
   useHass,
+  usePlayer,
 } from "@components";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
@@ -125,10 +126,12 @@ export const MassivePopUp = ({
 
   const { entity_id, speaker_group } = config;
   const {
-    friendly_name: friendlyName,
-    icon,
-    device_class: deviceClass,
-  } = hass.states[entity_id].attributes;
+    attributes: {
+      friendly_name: friendlyName,
+      icon,
+      device_class: deviceClass,
+    },
+  } = usePlayer();
 
   const groupMembers =
     hass.states[speaker_group?.entity_id ?? entity_id]?.attributes
@@ -145,7 +148,6 @@ export const MassivePopUp = ({
 
   const moreInfoButtonProps = useActionProps({
     rootElement,
-    hass,
     actionConfig: {
       tap_action: {
         action: "more-info",
