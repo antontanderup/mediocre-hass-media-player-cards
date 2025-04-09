@@ -1,8 +1,5 @@
-import { useContext } from "preact/hooks";
 import styled from "@emotion/styled";
-import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMediaPlayerCardConfig } from "@types";
-import { Icon, useHass } from "@components";
+import { Icon, usePlayer } from "@components";
 import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
 
 const AlbumArtContainer = styled.button<{
@@ -57,11 +54,7 @@ export const AlbumArt = ({
   renderLongPressIndicator,
   ...buttonProps
 }: AlbumArtProps) => {
-  const hass = useHass();
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { entity_id } = config;
-  const player = hass.states[entity_id];
+  const player = usePlayer();
   const {
     media_title: title,
     media_artist: artist,

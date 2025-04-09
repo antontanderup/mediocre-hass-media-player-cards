@@ -144,15 +144,6 @@ export const MediocreMediaPlayerCard = memo(() => {
     });
   }, [entity_id]);
 
-  console.log("Render triggered:", {
-    state,
-    supportedFeatures,
-    showGrouping,
-    showCustomButtons,
-    showVolumeSlider,
-    isPopupVisible,
-  });
-
   return (
     <Card
       $artColorVars={artVars}
@@ -218,7 +209,12 @@ export const MediocreMediaPlayerCard = memo(() => {
         </CardContent>
         {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
         {showCustomButtons && <CustomButtons />}
-        <MassivePopUp visible={isPopupVisible} setVisible={setIsPopupVisible} />
+        {isPopupVisible && (
+          <MassivePopUp
+            visible={isPopupVisible}
+            setVisible={setIsPopupVisible}
+          />
+        )}
       </ha-card>
     </Card>
   );
