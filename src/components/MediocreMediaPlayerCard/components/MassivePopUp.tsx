@@ -13,9 +13,9 @@ import {
 } from "@components";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { getDeviceIcon } from "./PlayerInfo";
 import { useActionProps } from "@hooks";
 import { MediocreMediaPlayerCardConfig } from "@types";
+import { getDeviceIcon } from "@utils";
 
 const slideUp = keyframes`
   from {

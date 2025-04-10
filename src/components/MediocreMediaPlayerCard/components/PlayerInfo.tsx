@@ -4,6 +4,7 @@ import { MediocreMediaPlayerCardConfig } from "@types";
 import styled from "@emotion/styled";
 import { IconButton, useHass, usePlayer } from "@components";
 import { fireEvent } from "custom-card-helpers";
+import { getDeviceIcon } from "@utils";
 
 const PlayerInfoWrap = styled.div`
   display: flex;
@@ -46,24 +47,4 @@ export const PlayerInfo = () => {
       )}
     </PlayerInfoWrap>
   );
-};
-
-export const getDeviceIcon = ({
-  icon,
-  deviceClass,
-}: {
-  icon?: string;
-  deviceClass?: string;
-}) => {
-  if (icon) {
-    return icon;
-  }
-  switch (deviceClass) {
-    case "speaker":
-      return "mdi:speaker";
-    case "receiver":
-      return "mdi:audio-video";
-    default:
-      return "mdi:speaker";
-  }
 };

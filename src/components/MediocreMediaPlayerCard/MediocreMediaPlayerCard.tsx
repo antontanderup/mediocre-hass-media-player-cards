@@ -151,7 +151,7 @@ export const MediocreMediaPlayerCard = () => {
     >
       <ha-card>
         <CardContent isOn={isOn}>
-          <AlbumArt maxHeight="100px" {...artActionProps} />
+          <AlbumArt {...artActionProps} />
           <ContentContainer>
             <ContentLeft>
               <MetaInfo />
