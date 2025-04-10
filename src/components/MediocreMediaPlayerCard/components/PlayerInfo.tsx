@@ -1,9 +1,8 @@
-import { useCallback, useContext } from "preact/hooks";
+import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import styled from "@emotion/styled";
-import { IconButton, useHass, usePlayer } from "@components";
-import { fireEvent } from "custom-card-helpers";
+import { Icon, useHass, usePlayer } from "@components";
 import { getDeviceIcon } from "@utils";
 
 const PlayerInfoWrap = styled.div`
@@ -21,26 +20,24 @@ const FriendlyNameText = styled.span`
 
 export const PlayerInfo = () => {
   const hass = useHass();
-  const { config, rootElement } =
+  const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { entity_id, speaker_group } = config;
   const {
     attributes: { friendly_name: playerName, icon, device_class: deviceClass },
+    state,
   } = usePlayer();
   const groupMembers =
     hass.states[speaker_group?.entity_id ?? entity_id]?.attributes
       ?.group_members;
   const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
-  const handleMoreInfo = useCallback(() => {
-    fireEvent(rootElement, "hass-more-info", {
-      entityId: entity_id,
-    });
-  }, []);
-
+  if (state === "off") {
+    return null;
+  }
   return (
     <PlayerInfoWrap>
-      <IconButton icon={mdiIcon} onClick={handleMoreInfo} size={"xx-small"} />
+      <Icon icon={mdiIcon} size={"xx-small"} />
       <FriendlyNameText>{playerName}</FriendlyNameText>
       {groupMembers && groupMembers.length > 1 && (
         <FriendlyNameText>+{groupMembers.length - 1}</FriendlyNameText>

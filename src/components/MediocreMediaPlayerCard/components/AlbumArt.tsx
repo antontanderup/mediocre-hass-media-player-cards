@@ -11,8 +11,8 @@ const AlbumArtContainer = styled.button<{
   cursor: pointer;
   padding: 0px;
   margin: 0px;
-  max-height: ${props => (props.$state === "off" ? "80px" : "100px")};
-  height: ${props => (props.$state === "off" ? "80px" : "100px")};
+  max-height: ${props => (props.$state === "off" ? "68px" : "100px")};
+  height: ${props => (props.$state === "off" ? "68px" : "100px")};
   aspect-ratio: 1;
   flex-shrink: 0;
   border-radius: 4px;
