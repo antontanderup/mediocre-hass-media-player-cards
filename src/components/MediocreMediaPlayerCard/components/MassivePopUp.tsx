@@ -60,7 +60,7 @@ const PopUpContainer = styled.div`
   width: 424px;
   max-width: 98vw;
   margin-botton: 16px;
-  background-color: var(--ha-card-background, #fff);
+  background-color: var(--ha-card-background, var(--card-background-color));
   overflow: hidden;
   box-shadow: 0px 10px 20px var(--clear-background-color);
   border-top-left-radius: var(--ha-dialog-border-radius, 28px);
@@ -88,7 +88,6 @@ const PopUpHeader = styled.div`
   align-items: center;
   padding: 0px 16px;
   border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-  background-color: var(--ha-card-background, #fff);
   gap: 8px;
 `;
 

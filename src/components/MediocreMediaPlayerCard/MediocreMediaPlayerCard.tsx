@@ -77,13 +77,8 @@ const ContentRow = styled.div`
 export const MediocreMediaPlayerCard = () => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const {
-    entity_id,
-    custom_buttons,
-    action,
-    tap_opens_popup,
-    use_art_colors = true,
-  } = config;
+  const { entity_id, custom_buttons, action, tap_opens_popup, use_art_colors } =
+    config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
 
