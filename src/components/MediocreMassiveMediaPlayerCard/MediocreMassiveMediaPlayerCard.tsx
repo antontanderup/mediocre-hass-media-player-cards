@@ -48,6 +48,7 @@ const Root = styled.div<{
   * {
     box-sizing: border-box;
   }
+  --mmpc-surface-higher: var(--card-background-color);
 `;
 
 const Wrap = styled.div<{
@@ -108,7 +109,7 @@ export const MediocreMassiveMediaPlayerCard = ({
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode, use_art_colors = true } = config;
+  const { mode, use_art_colors } = config;
 
   const { artVars, haVars } = useArtworkColors();
 

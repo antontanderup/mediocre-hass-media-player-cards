@@ -18,6 +18,9 @@ const AlbumArtContainer = styled.button<{
   border-radius: 4px;
   overflow: hidden;
   position: relative;
+  box-shadow:
+    -150px -100px 250px var(--art-color, transparent),
+    300px 100px 250px var(--art-color, transparent);
 `;
 
 const AlbumArtImage = styled.img`

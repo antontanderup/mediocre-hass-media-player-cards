@@ -146,7 +146,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
   // Ensure these properties exist with default values to avoid errors
   const safeConfig: typeof config = {
     ...config,
-    use_art_colors: config.use_art_colors ?? true,
+    use_art_colors: config.use_art_colors ?? false,
     speaker_group: config.speaker_group || { entity_id: "", entities: [] },
     custom_buttons: config.custom_buttons || [],
   };

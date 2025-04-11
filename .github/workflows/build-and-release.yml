@@ -15,32 +15,6 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for all tags and branches
 
-      - name: Calculate version
-        id: version
-        run: |
-          # Get the latest tag or default to v0.0.0 if no tags exist
-          latest_tag=$(git tag -l "v*" | sort -V | tail -n 1 || echo "v0.0.0")
-          echo "Latest tag found: $latest_tag"
-
-          # Extract version number without the 'v' prefix
-          latest_version=${latest_tag#v}
-          echo "Latest version without v: $latest_version"
-
-          # If no previous version or invalid format, set to 0.1.0
-          if [[ "$latest_version" == "0.0.0" || ! "$latest_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            new_version="0.1.0"
-          else
-            # Split the version into major, minor, patch components
-            IFS='.' read -r major minor patch <<< "$latest_version"
-            
-            # Increment the minor version by 1 and reset patch to 0
-            new_minor=$((minor + 1))
-            new_version="${major}.${new_minor}.0"
-          fi
-
-          echo "Calculated new version: $new_version"
-          echo "new_version=$new_version" >> $GITHUB_OUTPUT
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -58,8 +32,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*
-          name: Release v${{ steps.version.outputs.new_version }}
-          tag_name: v${{ steps.version.outputs.new_version }}
           draft: true
           prerelease: true
         env:

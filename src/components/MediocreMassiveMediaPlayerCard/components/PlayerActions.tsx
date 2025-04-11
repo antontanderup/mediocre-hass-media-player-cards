@@ -15,8 +15,8 @@ import { CustomButtons } from "./CustomButtons";
 import { getHass } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 
-const PlaybackControlsWrap = styled.div`
-  background-color: var(--card-background-color);
+const PlayerActionsWrap = styled.div`
+  background-color: var(--mmpc-surface-higher);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -26,7 +26,7 @@ const PlaybackControlsWrap = styled.div`
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0 0px 80px var(--clear-background-color);
+  box-shadow: 0 15px 100px var(--clear-background-color);
 `;
 
 const slideUpFadeIn = keyframes`
@@ -45,7 +45,7 @@ const ModalRoot = styled.div`
   bottom: calc(100% + 12px);
   left: 0;
   width: 100%;
-  background-color: var(--card-background-color);
+  background-color: var(--mmpc-surface-higher);
   border-radius: 12px;
   box-sizing: border-box;
   animation: ${slideUpFadeIn} 0.3s ease forwards;
@@ -102,7 +102,7 @@ export const PlayerActions = () => {
   }, [entity_id]);
 
   return (
-    <PlaybackControlsWrap>
+    <PlayerActionsWrap>
       <Modal
         title="Volume"
         isOpen={selected === "volume"}
@@ -164,7 +164,7 @@ export const PlayerActions = () => {
       {state !== "off" && (
         <VolumeTrigger onClick={() => toggleSelected("volume")} />
       )}
-    </PlaybackControlsWrap>
+    </PlayerActionsWrap>
   );
 };
 

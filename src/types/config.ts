@@ -2,7 +2,7 @@ import { InteractionConfig } from "@types";
 
 export type CommonMediocreMediaPlayerCardConfig = {
   entity_id: string;
-  use_art_colors?: boolean; // default true
+  use_art_colors?: boolean;
   action?: InteractionConfig;
   speaker_group?: {
     entity_id?: string; // entity_id of the main speaker incase it's different from the entity_id of the media player
