@@ -1,11 +1,3 @@
-export type ActionType =
-  | "more-info"
-  | "toggle"
-  | "navigate"
-  | "url"
-  | "perform-action"
-  | "assist";
-
 export type InteractionType = "tap" | "hold" | "double_tap";
 
 export type ActionConfig =
@@ -39,6 +31,8 @@ export type ActionConfig =
   | {
       action: "none";
     };
+
+export type ActionType = ActionConfig["action"];
 
 export type InteractionConfig = {
   entity?: string;
