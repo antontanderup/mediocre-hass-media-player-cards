@@ -9,7 +9,6 @@ export type MediaBrowserProps = {
   entity_id: string;
 };
 
-// Media content type enum based on the provided data
 export enum MediaContentType {
   Favorites = "Favorites",
   Artists = "Artists",
@@ -22,6 +21,7 @@ export enum MediaContentType {
   Apps = "Apps",
   Radios = "Radios",
   App = "app",
+  Track = "track",
 }
 
 // Media class enum
@@ -85,17 +85,18 @@ const BreadcrumbSeparator = styled.span`
   color: var(--secondary-text-color);
 `;
 
-const MediaFolder = styled.div<{ $isTrack?: boolean }>`
+const MediaItem = styled.div<{ $isTrack?: boolean }>`
   position: relative;
   display: flex;
   flex-direction: ${props => (props.$isTrack ? "row" : "column")};
   max-width: 100%;
   align-items: center;
   background-color: var(--card-background-color);
-  ${props => props.$isTrack && "grid-column: 1 / -1; padding: 8px 16px;"}
+  ${props => props.$isTrack && "grid-column: 1 / -1; padding: 8px;"}
+  ${props => !props.$isTrack && "cursor: pointer;"}
 `;
 
-const MediaFolderTitle = styled.span<{ $isTrack?: boolean }>`
+const MediaItemTitle = styled.span<{ $isTrack?: boolean }>`
   text-align: ${props => (props.$isTrack ? "left" : "center")};
   font-size: 0.9rem;
   margin-top: ${props => (props.$isTrack ? "0" : "4px")};
@@ -103,10 +104,9 @@ const MediaFolderTitle = styled.span<{ $isTrack?: boolean }>`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  cursor: pointer;
 `;
 
-const MediaFolderIconWrap = styled.div<{ $isTrack?: boolean }>`
+const MediaItemIconWrap = styled.div<{ $isTrack?: boolean }>`
   position: relative;
   width: ${props => (props.$isTrack ? "40px" : "100%")};
   aspect-ratio: 1;
@@ -123,12 +123,18 @@ const Thumbnail = styled.img<{ $mediaClass?: MediaItem["media_class"] }>`
   ${props => props.$mediaClass === "app" && "width: 60%;"}
 `;
 
+const MediaIcon = styled(Icon)`
+  margin-bottom: 4px;
+`;
+
 const ItemButtons = styled.div`
   position: absolute;
   bottom: 8px;
   right: 8px;
+  left: 8px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   gap: 4px;
 `;
 
@@ -244,11 +250,7 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
 
   const renderTrack = (item: MediaItem) => {
     return (
-      <MediaFolder
-        onClick={() => onMediaItemClick(item)}
-        key={item.media_content_id + history.length}
-        $isTrack={true}
-      >
+      <MediaItem key={item.media_content_id + history.length} $isTrack={true}>
         {item.can_play && (
           <IconButton
             icon="mdi:play"
@@ -260,24 +262,19 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
             }}
           />
         )}
-        <MediaFolderTitle
-          onClick={() => onMediaItemClick(item)}
-          $isTrack={true}
-        >
-          {item.title}
-        </MediaFolderTitle>
-      </MediaFolder>
+        <MediaItemTitle $isTrack={true}>{item.title}</MediaItemTitle>
+      </MediaItem>
     );
   };
 
   const renderFolder = (item: MediaItem) => {
     return (
-      <MediaFolder
+      <MediaItem
         onClick={() => onMediaItemClick(item)}
         key={item.media_content_id + history.length}
         $isTrack={false}
       >
-        <MediaFolderIconWrap $isTrack={false}>
+        <MediaItemIconWrap $isTrack={false}>
           {item.thumbnail ? (
             <Thumbnail
               src={item.thumbnail}
@@ -285,7 +282,7 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
               $mediaClass={item.media_class}
             />
           ) : (
-            <Icon size="medium" icon={getItemMdiIcon(item)} />
+            <MediaIcon size="medium" icon={getItemMdiIcon(item)} />
           )}
           <ItemButtons>
             {item.can_expand === true &&
@@ -313,14 +310,9 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
               />
             )}
           </ItemButtons>
-        </MediaFolderIconWrap>
-        <MediaFolderTitle
-          onClick={() => onMediaItemClick(item)}
-          $isTrack={false}
-        >
-          {item.title}
-        </MediaFolderTitle>
-      </MediaFolder>
+        </MediaItemIconWrap>
+        <MediaItemTitle $isTrack={false}>{item.title}</MediaItemTitle>
+      </MediaItem>
     );
   };
 
@@ -357,7 +349,8 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
         )}
         {mediaItems.map(item => {
           const isTrack =
-            item.media_class === MediaClass.Track && history.length > 0;
+            item.media_content_type === MediaContentType.Track &&
+            history.length > 0;
           return isTrack ? renderTrack(item) : renderFolder(item);
         })}
       </BrowserContainer>
