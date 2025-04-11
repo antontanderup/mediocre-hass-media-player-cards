@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { IconButton } from "@components";
+import { IconButton, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -13,6 +13,7 @@ import {
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
 import { getHass } from "@utils";
+import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 
 const PlaybackControlsWrap = styled.div`
   background-color: var(--card-background-color);
@@ -79,12 +80,16 @@ export const PlayerActions = () => {
 
   const { entity_id, custom_buttons, speaker_group } = config;
 
+  const { state } = usePlayer();
+
   const [selected, setSelected] = useState<
-    "volume" | "speaker-grouping" | "custom-buttons"
+    "volume" | "speaker-grouping" | "custom-buttons" | "media-browser"
   >();
 
   const toggleSelected = useCallback(
-    (key: "volume" | "speaker-grouping" | "custom-buttons") => {
+    (
+      key: "volume" | "speaker-grouping" | "custom-buttons" | "media-browser"
+    ) => {
       setSelected(selected === key ? undefined : key);
     },
     [selected]
@@ -113,6 +118,14 @@ export const PlayerActions = () => {
       >
         <SpeakerGrouping />
       </Modal>
+      <Modal
+        title="Media Browser"
+        isOpen={selected === "media-browser"}
+        onClose={() => setSelected(undefined)}
+        padding="0px"
+      >
+        <MediaBrowser entity_id={entity_id} />
+      </Modal>
       {!!speaker_group && (
         <IconButton
           size="small"
@@ -121,9 +134,9 @@ export const PlayerActions = () => {
         />
       )}
       {custom_buttons
-        ?.slice(0, 2)
+        ?.slice(0, 1)
         .map((button, index) => <CustomButton key={index} button={button} />)}
-      {custom_buttons?.length > 3 && (
+      {custom_buttons?.length > 2 && (
         <Fragment>
           <IconButton
             size="small"
@@ -140,8 +153,17 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       )}
+      {state !== "off" && (
+        <IconButton
+          size="small"
+          icon={"mdi:play-box-multiple"}
+          onClick={() => toggleSelected("media-browser")}
+        />
+      )}
       <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
-      <VolumeTrigger onClick={() => toggleSelected("volume")} />
+      {state !== "off" && (
+        <VolumeTrigger onClick={() => toggleSelected("volume")} />
+      )}
     </PlaybackControlsWrap>
   );
 };
