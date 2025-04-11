@@ -85,28 +85,30 @@ const BreadcrumbSeparator = styled.span`
   color: var(--secondary-text-color);
 `;
 
-const MediaFolder = styled.div`
+const MediaFolder = styled.div<{ $isTrack?: boolean }>`
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${props => (props.$isTrack ? "row" : "column")};
   max-width: 100%;
   align-items: center;
   background-color: var(--card-background-color);
+  ${props => props.$isTrack && "grid-column: 1 / -1; padding: 8px 16px;"}
 `;
 
-const MediaFolderTitle = styled.span`
-  text-align: center;
+const MediaFolderTitle = styled.span<{ $isTrack?: boolean }>`
+  text-align: ${props => (props.$isTrack ? "left" : "center")};
   font-size: 0.9rem;
-  margin-top: 4px;
+  margin-top: ${props => (props.$isTrack ? "0" : "4px")};
+  margin-left: ${props => (props.$isTrack ? "12px" : "0")};
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   cursor: pointer;
 `;
 
-const MediaFolderIconWrap = styled.div`
+const MediaFolderIconWrap = styled.div<{ $isTrack?: boolean }>`
   position: relative;
-  width: 100%;
+  width: ${props => (props.$isTrack ? "40px" : "100%")};
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
@@ -240,6 +242,88 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
     [isFetching]
   );
 
+  const renderTrack = (item: MediaItem) => {
+    return (
+      <MediaFolder
+        onClick={() => onMediaItemClick(item)}
+        key={item.media_content_id + history.length}
+        $isTrack={true}
+      >
+        {item.can_play && (
+          <IconButton
+            icon="mdi:play"
+            size="x-small"
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+              playItem(item);
+            }}
+          />
+        )}
+        <MediaFolderTitle
+          onClick={() => onMediaItemClick(item)}
+          $isTrack={true}
+        >
+          {item.title}
+        </MediaFolderTitle>
+      </MediaFolder>
+    );
+  };
+
+  const renderFolder = (item: MediaItem) => {
+    return (
+      <MediaFolder
+        onClick={() => onMediaItemClick(item)}
+        key={item.media_content_id + history.length}
+        $isTrack={false}
+      >
+        <MediaFolderIconWrap $isTrack={false}>
+          {item.thumbnail ? (
+            <Thumbnail
+              src={item.thumbnail}
+              alt={item.title}
+              $mediaClass={item.media_class}
+            />
+          ) : (
+            <Icon size="medium" icon={getItemMdiIcon(item)} />
+          )}
+          <ItemButtons>
+            {item.can_expand === true &&
+              item.media_content_id !==
+                history[history.length - 1]?.media_content_id && (
+                <IconButton
+                  icon="mdi:folder"
+                  size="x-small"
+                  onClick={e => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    onMediaItemClick(item);
+                  }}
+                />
+              )}
+            {item.can_play === true && (
+              <IconButton
+                icon="mdi:play"
+                size="x-small"
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  playItem(item);
+                }}
+              />
+            )}
+          </ItemButtons>
+        </MediaFolderIconWrap>
+        <MediaFolderTitle
+          onClick={() => onMediaItemClick(item)}
+          $isTrack={false}
+        >
+          {item.title}
+        </MediaFolderTitle>
+      </MediaFolder>
+    );
+  };
+
   return (
     <div>
       {history.length > 0 && (
@@ -271,53 +355,11 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
         {!isFetching && mediaItems.length === 0 && (
           <div>No media items available</div>
         )}
-        {mediaItems.map(item => (
-          <MediaFolder
-            onClick={() => onMediaItemClick(item)}
-            key={item.media_content_id + history.length}
-          >
-            <MediaFolderIconWrap>
-              {item.thumbnail ? (
-                <Thumbnail
-                  src={item.thumbnail}
-                  alt={item.title}
-                  $mediaClass={item.media_class}
-                />
-              ) : (
-                <Icon size="medium" icon={getItemMdiIcon(item)} />
-              )}
-              <ItemButtons>
-                {item.can_expand === true &&
-                  item.media_content_id !==
-                    history[history.length - 1]?.media_content_id && (
-                    <IconButton
-                      icon="mdi:folder"
-                      size="x-small"
-                      onClick={e => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        onMediaItemClick(item);
-                      }}
-                    />
-                  )}
-                {item.can_play === true && (
-                  <IconButton
-                    icon="mdi:play"
-                    size="x-small"
-                    onClick={e => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      playItem(item);
-                    }}
-                  />
-                )}
-              </ItemButtons>
-            </MediaFolderIconWrap>
-            <MediaFolderTitle onClick={() => onMediaItemClick(item)}>
-              {item.title}
-            </MediaFolderTitle>
-          </MediaFolder>
-        ))}
+        {mediaItems.map(item => {
+          const isTrack =
+            item.media_class === MediaClass.Track && history.length > 0;
+          return isTrack ? renderTrack(item) : renderFolder(item);
+        })}
       </BrowserContainer>
     </div>
   );
