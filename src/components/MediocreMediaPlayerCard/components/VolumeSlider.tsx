@@ -9,8 +9,8 @@ const VolumeContainer = styled.div`
   align-items: center;
   flex: 1;
   transition: all 0.3s ease;
-  max-height: 36px;
   margin-top: auto;
+  gap: 4px;
 `;
 
 const ControlButton = styled(IconButton)<{ muted?: boolean }>`
@@ -57,7 +57,7 @@ export const VolumeSlider = () => {
         max={1}
         step={0.01}
         value={volume}
-        thumbSize={"small"}
+        sliderSize={"small"}
         onChange={handleVolumeChange}
       />
     </VolumeContainer>

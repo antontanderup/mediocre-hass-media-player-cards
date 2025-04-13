@@ -57,7 +57,7 @@ export const VolumeController = () => {
         max={1}
         step={0.01}
         value={volume}
-        thumbSize={"large"}
+        sliderSize={"large"}
         onChange={handleVolumeChange}
       />
     </VolumeContainer>

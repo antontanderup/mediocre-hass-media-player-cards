@@ -164,7 +164,7 @@ export const SpeakerGrouping = () => {
                         max={1}
                         step={0.01}
                         value={speaker.volume}
-                        thumbSize="small"
+                        sliderSize="small"
                         onChange={value =>
                           handleVolumeChange(speaker.entity_id, value)
                         }
