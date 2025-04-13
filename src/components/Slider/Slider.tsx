@@ -14,11 +14,11 @@ export type HandleSize = "xsmall" | "small" | "medium" | "large";
 const SliderWrap = styled.div<{ thumbSize?: HandleSize }>`
   display: contents;
 
-  > ha-slider {
+  > ha-control-slider {
     width: 100%;
-    --_handle-height: ${props => getHandleSize(props.thumbSize)} !important;
-    --_handle-width: ${props => getHandleSize(props.thumbSize)} !important;
-    --_inactive-track-color: var(--divider-color, rgba(0, 0, 0, 0.1));
+    --control-slider-thickness: ${props => getHandleSize(props.thumbSize)};
+    --control-slider-border-radius: 0px;
+    --handle-size: 0px; // show-handle="false" is not working
   }
 `;
 
@@ -32,14 +32,16 @@ export const Slider = ({
 }: SliderProps) => {
   return (
     <SliderWrap thumbSize={thumbSize}>
-      <ha-slider
+      <ha-control-slider
         min={min}
         max={max}
         step={step}
         value={value}
-        onInput={e =>
-          onChange(parseFloat((e.target as HTMLInputElement).value))
-        }
+        show-handle="false"
+        onvalue-changed={e => {
+          console.log(typeof e.detail.value);
+          onChange(parseFloat(e.detail.value));
+        }}
       />
     </SliderWrap>
   );
@@ -48,12 +50,12 @@ export const Slider = ({
 const getHandleSize = (thumbSize: HandleSize) => {
   switch (thumbSize) {
     case "xsmall":
-      return "8px";
-    case "small":
-      return "12px";
-    case "medium":
-      return "14px";
-    case "large":
       return "16px";
+    case "small":
+      return "24px";
+    case "medium":
+      return "28px";
+    case "large":
+      return "32px";
   }
 };
