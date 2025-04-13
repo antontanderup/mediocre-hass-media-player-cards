@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
-import { Icon, usePlayer } from "@components";
-import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
+import { CardContext, CardContextType, Icon, usePlayer } from "@components";
+import { ButtonHTMLAttributes, Fragment, JSX, useContext } from "preact/compat";
 import { getDeviceIcon } from "@utils";
+import { MediocreMediaPlayerCardConfig } from "@types";
 
 const AlbumArtContainer = styled.button<{
   $small: boolean;
+  $useArtColors?: boolean;
 }>`
   background: none;
   border: none;
@@ -18,9 +20,13 @@ const AlbumArtContainer = styled.button<{
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  box-shadow:
-    -150px -100px 250px var(--art-color, transparent),
-    300px 100px 250px var(--art-color, transparent);
+  ${props =>
+    props.$useArtColors &&
+    `
+    box-shadow:
+      -50px -60px 300px var(--art-color, transparent),
+      350px 120px 300px var(--art-color, transparent);
+  `}
 `;
 
 const AlbumArtImage = styled.img`
@@ -58,6 +64,9 @@ export const AlbumArt = ({
   renderLongPressIndicator,
   ...buttonProps
 }: AlbumArtProps) => {
+  const { config } =
+    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+  const { use_art_colors } = config;
   const player = usePlayer();
   const {
     media_title: title,
@@ -73,7 +82,11 @@ export const AlbumArt = ({
   const small = state === "off" || (!title && !artist && !albumName);
 
   return (
-    <AlbumArtContainer $small={small} {...buttonProps}>
+    <AlbumArtContainer
+      $useArtColors={use_art_colors}
+      $small={small}
+      {...buttonProps}
+    >
       {albumArt ? (
         <Fragment>
           <AlbumArtImage src={albumArt} alt={`${title} by ${artist}`} />

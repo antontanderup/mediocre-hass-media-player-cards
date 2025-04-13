@@ -139,12 +139,12 @@ export const MediocreMediaPlayerCard = () => {
   }, [entity_id]);
 
   return (
-    <Card
-      $artColorVars={artVars}
-      $haColorVars={haVars}
-      $useArtColors={use_art_colors}
-    >
-      <ha-card>
+    <ha-card>
+      <Card
+        $artColorVars={artVars}
+        $haColorVars={haVars}
+        $useArtColors={use_art_colors}
+      >
         <CardContent isOn={isOn}>
           <AlbumArt {...artActionProps} />
           <ContentContainer>
@@ -209,7 +209,7 @@ export const MediocreMediaPlayerCard = () => {
             setVisible={setIsPopupVisible}
           />
         )}
-      </ha-card>
-    </Card>
+      </Card>
+    </ha-card>
   );
 };
