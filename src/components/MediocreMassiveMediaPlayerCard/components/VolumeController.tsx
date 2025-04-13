@@ -9,6 +9,7 @@ const VolumeContainer = styled.div`
   flex: 1;
   max-height: 36px;
   margin-top: auto;
+  gap: 8px;
 `;
 
 const ControlButton = styled(IconButton)<{ muted?: boolean }>`

@@ -48,7 +48,7 @@ export const VolumeSlider = () => {
   return (
     <VolumeContainer>
       <ControlButton
-        size="small"
+        size="x-small"
         onClick={handleToggleMute}
         icon={VolumeIcon}
       />

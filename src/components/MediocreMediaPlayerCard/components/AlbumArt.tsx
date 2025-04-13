@@ -4,15 +4,15 @@ import { ButtonHTMLAttributes, Fragment, JSX } from "preact/compat";
 import { getDeviceIcon } from "@utils";
 
 const AlbumArtContainer = styled.button<{
-  $state: string;
+  $small: boolean;
 }>`
   background: none;
   border: none;
   cursor: pointer;
   padding: 0px;
   margin: 0px;
-  max-height: ${props => (props.$state === "off" ? "68px" : "100px")};
-  height: ${props => (props.$state === "off" ? "68px" : "100px")};
+  max-height: ${props => (props.$small ? "68px" : "100px")};
+  height: ${props => (props.$small ? "68px" : "100px")};
   aspect-ratio: 1;
   flex-shrink: 0;
   border-radius: 4px;
@@ -62,6 +62,7 @@ export const AlbumArt = ({
   const {
     media_title: title,
     media_artist: artist,
+    media_album_name: albumName,
     entity_picture: albumArt,
     icon,
     device_class: deviceClass,
@@ -69,8 +70,10 @@ export const AlbumArt = ({
   } = player.attributes;
   const state = player.state;
 
+  const small = state === "off" || (!title && !artist && !albumName);
+
   return (
-    <AlbumArtContainer $state={state} {...buttonProps}>
+    <AlbumArtContainer $small={small} {...buttonProps}>
       {albumArt ? (
         <Fragment>
           <AlbumArtImage src={albumArt} alt={`${title} by ${artist}`} />
