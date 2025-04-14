@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { usePlayer } from "@components/PlayerContext";
+import { usePlayer } from "@components";
 
 const TitleWrap = styled.div`
   display: flex;
@@ -28,18 +28,26 @@ const TitleH3 = styled.h3`
 `;
 
 export const Title = () => {
-  const player = usePlayer();
-  const title = player.attributes?.media_title;
-  const artist = player.attributes?.media_artist;
-  const albumName = player.attributes?.media_album_name;
-  if (!title && !artist && !albumName) {
+  const {
+    attributes: {
+      media_title: title,
+      media_artist: artist,
+      media_album_name: albumName,
+      source,
+    },
+    state,
+  } = usePlayer();
+  const titleText = title || source;
+
+  if (state === "off") {
     return null;
   }
+
   return (
     <TitleWrap>
-      {!!title && <TitleH2>{title}</TitleH2>}
+      {!!titleText && <TitleH2>{titleText}</TitleH2>}
       {(!!albumName || !!artist) && (
-        <TitleH3>{`${albumName ?? ""} - ${artist ?? ""}`}</TitleH3>
+        <TitleH3>{`${albumName !== title ? `${albumName} - ` : ""}${artist}`}</TitleH3>
       )}
     </TitleWrap>
   );
