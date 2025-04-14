@@ -38,7 +38,7 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
       return true;
     }
 
-    if (this.config.speaker_group.entities) {
+    if (this.config.speaker_group?.entities) {
       for (const entity of this.config.speaker_group.entities) {
         if (
           getDidMediaPlayerUpdate(
