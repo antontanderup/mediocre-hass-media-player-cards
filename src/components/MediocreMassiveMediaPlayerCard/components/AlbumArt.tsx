@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Icon, usePlayer } from "@components";
 import { Fragment } from "preact/jsx-runtime";
+import { useState } from "preact/hooks";
 
 const ImgOuter = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const ImgWrap = styled.div`
   margin-top: 8px;
   margin-bottom: 8px;
   box-shadow: 0px 0px 8px var(--clear-background-color);
+  font-size: 0; /* Hide any text that might be displayed inside */
 `;
 
 const Img = styled.img`
@@ -28,6 +30,8 @@ const Img = styled.img`
   aspect-ratio: 1;
   object-fit: cover;
   background-color: var(--card-background-color);
+  color: transparent; /* Hide alt text if it shows */
+  text-indent: -10000px; /* Move alt text off-screen */
 `;
 
 const SourceIndicator = styled.div<{ contrastColor?: string }>`
@@ -48,21 +52,32 @@ export const AlbumArt = () => {
   } = player.attributes;
   const state = player.state;
 
+  const [error, setError] = useState(false);
+
   return (
     <ImgOuter>
       <ImgWrap>
         <Fragment>
           <Img
-            src={
-              albumArt ??
-              "data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%20viewBox='0%200%20400%20400'%3E%3Crect%20width='400'%20height='400'%20fill='transparent'/%3E%3C/svg%3E"
-            }
+            src={albumArt}
+            onLoad={() => {
+              setError(false);
+            }}
+            onError={() => {
+              setError(true);
+            }}
             alt={
               !!title && !!artist
                 ? `${title} by ${artist}`
                 : `Source: ${source}`
             }
           />
+          {error && (
+            <Img
+              src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%20viewBox='0%200%20400%20400'%3E%3Crect%20width='400'%20height='400'%20fill='transparent'/%3E%3C/svg%3E"
+              alt="Album art fallback"
+            />
+          )}
           <SourceIndicator>
             <Icon size="x-small" icon={getIcon({ source, state })} />
           </SourceIndicator>

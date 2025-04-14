@@ -33,6 +33,8 @@ const AlbumArtImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  color: transparent; /* Hide alt text if it shows */
+  text-indent: -10000px; /* Move alt text off-screen */
 `;
 
 const NoAlbumArt = styled.div`
