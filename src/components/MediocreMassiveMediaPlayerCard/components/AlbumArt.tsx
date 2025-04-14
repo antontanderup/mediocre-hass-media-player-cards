@@ -57,7 +57,11 @@ export const AlbumArt = () => {
               albumArt ??
               "data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%20viewBox='0%200%20400%20400'%3E%3Crect%20width='400'%20height='400'%20fill='transparent'/%3E%3C/svg%3E"
             }
-            alt={`${title} by ${artist}`}
+            alt={
+              !!title && !!artist
+                ? `${title} by ${artist}`
+                : `Source: ${source}`
+            }
           />
           <SourceIndicator>
             <Icon size="x-small" icon={getIcon({ source, state })} />

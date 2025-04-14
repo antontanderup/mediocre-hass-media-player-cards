@@ -89,7 +89,14 @@ export const AlbumArt = ({
     >
       {albumArt ? (
         <Fragment>
-          <AlbumArtImage src={albumArt} alt={`${title} by ${artist}`} />
+          <AlbumArtImage
+            src={albumArt}
+            alt={
+              !!title && !!artist
+                ? `${title} by ${artist}`
+                : `Source: ${source}`
+            }
+          />
           <SourceIndicator>
             <Icon size="xx-small" icon={getIcon({ source })} />
           </SourceIndicator>
