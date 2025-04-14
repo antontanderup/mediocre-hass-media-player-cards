@@ -32,6 +32,20 @@ class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveM
       return true;
     }
 
+    if (this.config.speaker_group.entities) {
+      for (const entity of this.config.speaker_group.entities) {
+        if (
+          getDidMediaPlayerUpdate(
+            prevHass.states[entity],
+            hass.states[entity],
+            true
+          )
+        ) {
+          return true;
+        }
+      }
+    }
+
     return false;
   };
 

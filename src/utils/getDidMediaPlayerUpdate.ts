@@ -2,25 +2,33 @@ import { HassEntity } from "home-assistant-js-websocket";
 
 export const getDidMediaPlayerUpdate = (
   prevEntity: HassEntity,
-  entity: HassEntity
+  entity: HassEntity,
+  isGroupMember?: boolean
 ) => {
   // List of keys we want to ignore in comparison
-  const compareKeys = [
-    "state",
-    "attributes.media_duration",
-    "attributes.media_title",
-    "attributes.media_artist",
-    "attributes.media_album_name",
-    "attributes.icon",
-    "attributes.friendly_name",
-    "attributes.entity_picture",
-    "attributes.volume_level",
-    "attributes.is_volume_muted",
-    "attributes.shuffle",
-    "attributes.repeat",
-    "attributes.supported_features",
-    "attributes.group_members",
-  ];
+  const compareKeys = isGroupMember
+    ? [
+        "state",
+        "attributes.volume_level",
+        "attributes.is_volume_muted",
+        "attributes.group_members",
+      ]
+    : [
+        "state",
+        "attributes.media_duration",
+        "attributes.media_title",
+        "attributes.media_artist",
+        "attributes.media_album_name",
+        "attributes.icon",
+        "attributes.friendly_name",
+        "attributes.entity_picture",
+        "attributes.volume_level",
+        "attributes.is_volume_muted",
+        "attributes.shuffle",
+        "attributes.repeat",
+        "attributes.supported_features",
+        "attributes.group_members",
+      ];
 
   // Helper function to get nested property values
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
