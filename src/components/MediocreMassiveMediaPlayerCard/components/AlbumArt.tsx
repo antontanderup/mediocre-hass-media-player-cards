@@ -21,7 +21,6 @@ const ImgWrap = styled.div`
   align-self: center;
   margin-top: 8px;
   margin-bottom: 8px;
-  box-shadow: 0px 0px 8px var(--clear-background-color);
   font-size: 0; /* Hide any text that might be displayed inside */
 `;
 
