@@ -55,6 +55,7 @@ const Wrap = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
 }>`
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 16px;
   justify-content: space-around;
