@@ -34,12 +34,29 @@ const Img = styled.img`
   text-indent: -10000px; /* Move alt text off-screen */
 `;
 
-const SourceIndicator = styled.div<{ contrastColor?: string }>`
+const SourceIndicator = styled.div<{ $centered: boolean }>`
   position: absolute;
   bottom: 6px;
   right: 6px;
   --icon-primary-color: var(--art-on-art-color, --primary-text-color);
   opacity: 0.8;
+  ${props => {
+    if (props.$centered) {
+      return `
+        bottom: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        --icon-primary-color: var(--card-background-color);
+        background-color: var(--primary-text-color);
+        opacity: 0.5;
+        `;
+    }
+    return "";
+  }}
 `;
 
 export const AlbumArt = () => {
@@ -53,33 +70,39 @@ export const AlbumArt = () => {
   const state = player.state;
 
   const [error, setError] = useState(false);
+  const hasAlbumArt = !!albumArt && !error;
 
   return (
     <ImgOuter>
       <ImgWrap>
         <Fragment>
-          <Img
-            src={albumArt}
-            onLoad={() => {
-              setError(false);
-            }}
-            onError={() => {
-              setError(true);
-            }}
-            alt={
-              !!title && !!artist
-                ? `${title} by ${artist}`
-                : `Source: ${source}`
-            }
-          />
-          {error && (
+          {!!albumArt && (
+            <Img
+              src={albumArt}
+              onLoad={() => {
+                setError(false);
+              }}
+              onError={() => {
+                setError(true);
+              }}
+              alt={
+                !!title && !!artist
+                  ? `${title} by ${artist}`
+                  : `Source: ${source}`
+              }
+            />
+          )}
+          {!hasAlbumArt && (
             <Img
               src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%20viewBox='0%200%20400%20400'%3E%3Crect%20width='400'%20height='400'%20fill='transparent'/%3E%3C/svg%3E"
               alt="Album art fallback"
             />
           )}
-          <SourceIndicator>
-            <Icon size="x-small" icon={getIcon({ source, state })} />
+          <SourceIndicator $centered={!hasAlbumArt}>
+            <Icon
+              size={!hasAlbumArt ? "x-large" : "x-small"}
+              icon={getIcon({ source, state })}
+            />
           </SourceIndicator>
         </Fragment>
       </ImgWrap>
