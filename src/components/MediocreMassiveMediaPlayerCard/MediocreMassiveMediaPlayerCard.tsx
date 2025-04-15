@@ -73,6 +73,7 @@ const Wrap = styled.div<{
         return `
           width: 90%;
           max-width: 400px;
+          padding: 16px;
         `;
       }
       case "popup": {
