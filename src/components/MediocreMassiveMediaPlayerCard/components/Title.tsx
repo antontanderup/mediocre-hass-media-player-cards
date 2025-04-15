@@ -8,6 +8,8 @@ const TitleWrap = styled.div`
   gap: 8px;
   text-align: center;
   color: var(--primary-text-color, #fff);
+  padding-left: var(--mmpc-extra-horizontal-padding, 0px);
+  padding-right: var(--mmpc-extra-horizontal-padding, 0px);
   > h2,
   > h3 {
     overflow: hidden;
