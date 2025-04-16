@@ -34,21 +34,11 @@ const Card = styled.div<{
   ${props =>
     props.$useArtColors &&
     `
-    background: radial-gradient(
-      circle at bottom right,
-      var(--art-color, transparent) -100%,
-      transparent 20%
-    ),
-    radial-gradient(
-      circle at center,
-      var(--art-color, transparent) -100%,
-      transparent 20%
-    ),
-     radial-gradient(
-      circle at top left,
-      var(--art-color, transparent) -100%,
-      transparent 20%
-    );
+    background: 
+      radial-gradient( circle at bottom right, var(--art-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at top center, var(--art-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at bottom center, var(--art-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at top left, var(--art-color, transparent) -500%, transparent 40% );
   `}
 `;
 
