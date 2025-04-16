@@ -130,7 +130,7 @@ export const MediocreMassiveMediaPlayerCard = ({
       $useArtColors={use_art_colors}
     >
       <Wrap mode={mode}>
-        <AlbumArt />
+        <AlbumArt iconSize="x-large" borderRadius={8} />
         <ControlsWrapper>
           <Title />
           <Track />

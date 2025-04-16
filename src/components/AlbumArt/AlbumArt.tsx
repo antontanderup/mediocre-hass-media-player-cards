@@ -1,15 +1,18 @@
-import { Icon, usePlayer } from "@components";
+import { Icon, IconSize, usePlayer } from "@components";
 import styled from "@emotion/styled";
 import { getDeviceIcon } from "@utils";
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
 
 export type AlbumArtProps = {
   size?: number | string;
+  borderRadius?: number;
+  iconSize: IconSize;
   renderLongPressIndicator?: () => JSX.Element;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const AlbumArtContainer = styled.button<{
   $size?: number | string;
+  $borderRadius?: number;
 }>`
   background: none;
   border: none;
@@ -36,6 +39,7 @@ const AlbumArtContainer = styled.button<{
     }
     return "";
   }}
+  --mmpc-art-border-radius: ${props => props.$borderRadius}px;
 `;
 
 const ContentContainer = styled.div`
@@ -54,8 +58,8 @@ const StyledImage = styled.img`
   height: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 4px;
-`;
+  border-radius: var(--mmpc-art-border-radius, 4px);
+  `;
 
 const IconContainer = styled.div`
   display: flex;
@@ -64,13 +68,15 @@ const IconContainer = styled.div`
   --icon-primary-color: var(--card-background-color);
   background-color: var(--primary-text-color);
   opacity: 0.5;
-  border-radius: 4px;
+  border-radius: var(--mmpc-art-border-radius, 4px);
   height: 100%;
   aspect-ratio: 1 / 1;
 `;
 
 export const AlbumArt = ({
   size,
+  borderRadius = 4,
+  iconSize,
   renderLongPressIndicator,
   ...buttonProps
 }: AlbumArtProps) => {
@@ -86,7 +92,7 @@ export const AlbumArt = ({
   const state = player.state;
 
   return (
-    <AlbumArtContainer $size={size} {...buttonProps}>
+    <AlbumArtContainer $size={size} $borderRadius={borderRadius} {...buttonProps}>
       <ContentContainer>
         {albumArt && state !== "off" ? (
           <StyledImage
@@ -105,7 +111,7 @@ export const AlbumArt = ({
                   ? getDeviceIcon({ icon, deviceClass })
                   : getSourceIcon({ source })
               }
-              size="large"
+              size={iconSize}
             />
           </IconContainer>
         )}

@@ -163,7 +163,7 @@ export const MediocreMediaPlayerCard = () => {
         $useArtColors={use_art_colors}
       >
         <CardContent $isOn={isOn} $useArtColors={use_art_colors}>
-          <AlbumArt size={artSize} {...artActionProps} />
+          <AlbumArt size={artSize} iconSize="large" {...artActionProps} />
           <ContentContainer>
             <ContentLeft>
               <MetaInfo />
