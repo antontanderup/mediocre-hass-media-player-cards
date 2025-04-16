@@ -84,6 +84,7 @@ export const AlbumArt = ({
     source,
   } = player.attributes;
   const state = player.state;
+
   return (
     <AlbumArtContainer $size={size} {...buttonProps}>
       <ContentContainer>
@@ -98,11 +99,47 @@ export const AlbumArt = ({
           />
         ) : (
           <IconContainer>
-            <Icon icon={getDeviceIcon({ icon, deviceClass })} size="large" />
+            <Icon
+              icon={
+                state === "off"
+                  ? getDeviceIcon({ icon, deviceClass })
+                  : getSourceIcon({ source })
+              }
+              size="large"
+            />
           </IconContainer>
         )}
       </ContentContainer>
       {renderLongPressIndicator && renderLongPressIndicator()}
     </AlbumArtContainer>
   );
+};
+
+const getSourceIcon = ({ source }: { source: string }) => {
+  switch (source?.toLowerCase()) {
+    case "spotify":
+      return "mdi:spotify";
+    case "airplay":
+      return "mdi:airplay";
+    case "bluetooth":
+      return "mdi:bluetooth";
+    case "net radio":
+      return "mdi:radio";
+    case "server":
+      return "mdi:server";
+    case "usb":
+      return "mdi:usb";
+    case "aux":
+      return "mdi:audio-input-rca";
+    case "hdmi":
+      return "mdi:hdmi-port";
+    case "tv":
+      return "mdi:television";
+    case "tuner":
+      return "mdi:radio-tower";
+    case "optical":
+      return "mdi:audio-input-stereo-minijack";
+    default:
+      return "mdi:music";
+  }
 };
