@@ -48,7 +48,7 @@ export const CustomButtons = () => {
   );
 };
 
-export const CustomButton = ({
+const CustomButton = ({
   button,
 }: {
   button: InteractionConfig & {
