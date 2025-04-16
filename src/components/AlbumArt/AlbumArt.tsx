@@ -18,6 +18,7 @@ const AlbumArtContainer = styled.button<{
   margin: 0px;
   width: 100%;
   position: relative;
+  overflow: hidden;
   &:after {
     content: "";
     display: block;
@@ -47,13 +48,13 @@ const ContentContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  border-radius: 4px;
 `;
 
 const StyledImage = styled.img`
-  width: 100%;
   height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  border-radius: 4px;
 `;
 
 const IconContainer = styled.div`
@@ -63,8 +64,9 @@ const IconContainer = styled.div`
   --icon-primary-color: var(--card-background-color);
   background-color: var(--primary-text-color);
   opacity: 0.5;
-  width: 100%;
+  border-radius: 4px;
   height: 100%;
+  aspect-ratio: 1 / 1;
 `;
 
 export const AlbumArt = ({
