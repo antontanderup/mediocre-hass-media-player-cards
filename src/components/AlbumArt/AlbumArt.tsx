@@ -59,7 +59,7 @@ const StyledImage = styled.img`
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--mmpc-art-border-radius, 4px);
-  `;
+`;
 
 const IconContainer = styled.div`
   display: flex;
@@ -92,7 +92,11 @@ export const AlbumArt = ({
   const state = player.state;
 
   return (
-    <AlbumArtContainer $size={size} $borderRadius={borderRadius} {...buttonProps}>
+    <AlbumArtContainer
+      $size={size}
+      $borderRadius={borderRadius}
+      {...buttonProps}
+    >
       <ContentContainer>
         {albumArt && state !== "off" ? (
           <StyledImage
