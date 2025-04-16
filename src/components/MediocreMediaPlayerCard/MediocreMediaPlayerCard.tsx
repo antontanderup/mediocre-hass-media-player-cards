@@ -31,9 +31,28 @@ const Card = styled.div<{
       return props.$haColorVars;
     } else return "";
   }}
+  ${props =>
+    props.$useArtColors &&
+    `
+    background: radial-gradient(
+      circle at bottom right,
+      var(--art-color, transparent) -100%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at center,
+      var(--art-color, transparent) -100%,
+      transparent 20%
+    ),
+     radial-gradient(
+      circle at top left,
+      var(--art-color, transparent) -100%,
+      transparent 20%
+    );
+  `}
 `;
 
-const CardContent = styled.div<{ isOn: boolean }>`
+const CardContent = styled.div<{ $isOn: boolean; $useArtColors?: boolean }>`
   display: flex;
   gap: 14px;
   padding: 12px;
@@ -70,16 +89,6 @@ const ContentRow = styled.div`
   flex-direction: row;
   gap: 8px;
   align-items: flex-start;
-`;
-
-const AlbumArtStyled = styled(AlbumArt)<{ $useArtColors?: boolean }>`
-  ${props =>
-    props.$useArtColors &&
-    `
-    box-shadow:
-      -50px -60px 300px var(--art-color, transparent),
-      350px 120px 300px var(--art-color, transparent);
-  `}
 `;
 
 export const MediocreMediaPlayerCard = () => {
@@ -163,12 +172,8 @@ export const MediocreMediaPlayerCard = () => {
         $haColorVars={haVars}
         $useArtColors={use_art_colors}
       >
-        <CardContent isOn={isOn}>
-          <AlbumArtStyled
-            $useArtColors={use_art_colors}
-            size={artSize}
-            {...artActionProps}
-          />
+        <CardContent $isOn={isOn} $useArtColors={use_art_colors}>
+          <AlbumArt size={artSize} {...artActionProps} />
           <ContentContainer>
             <ContentLeft>
               <MetaInfo />
