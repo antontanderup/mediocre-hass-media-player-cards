@@ -1,9 +1,7 @@
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useCallback, useContext, useState } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
-
 import {
-  AlbumArt,
   CustomButton,
   CustomButtons,
   MetaInfo,
@@ -11,7 +9,7 @@ import {
   PlayerInfo,
   SpeakerGrouping,
 } from "./components";
-import { IconButton, usePlayer } from "@components";
+import { AlbumArt, IconButton, usePlayer } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
@@ -74,6 +72,16 @@ const ContentRow = styled.div`
   align-items: flex-start;
 `;
 
+const AlbumArtStyled = styled(AlbumArt)<{ $useArtColors?: boolean }>`
+  ${props =>
+    props.$useArtColors &&
+    `
+    box-shadow:
+      -50px -60px 300px var(--art-color, transparent),
+      350px 120px 300px var(--art-color, transparent);
+  `}
+`;
+
 export const MediocreMediaPlayerCard = () => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
@@ -88,7 +96,14 @@ export const MediocreMediaPlayerCard = () => {
 
   const { artVars, haVars } = useArtworkColors();
 
-  const { state } = usePlayer();
+  const {
+    state,
+    attributes: {
+      media_title: title,
+      media_artist: artist,
+      media_album_name: albumName,
+    },
+  } = usePlayer();
 
   const supportedFeatures = useSupportedFeatures();
   const hasNoPlaybackControls =
@@ -112,6 +127,9 @@ export const MediocreMediaPlayerCard = () => {
   };
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const artSize =
+    state === "off" || (!title && !artist && !albumName) ? 68 : 100;
 
   const artAction: InteractionConfig = action ?? {
     tap_action: { action: "more-info" },
@@ -146,7 +164,11 @@ export const MediocreMediaPlayerCard = () => {
         $useArtColors={use_art_colors}
       >
         <CardContent isOn={isOn}>
-          <AlbumArt {...artActionProps} />
+          <AlbumArtStyled
+            $useArtColors={use_art_colors}
+            size={artSize}
+            {...artActionProps}
+          />
           <ContentContainer>
             <ContentLeft>
               <MetaInfo />
