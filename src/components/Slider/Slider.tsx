@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ChangeEvent, useEffect, useRef } from "preact/compat";
+import { ChangeEvent, useRef } from "preact/compat";
 
 export type SliderProps = {
   min: number;
@@ -15,7 +15,6 @@ export type SliderSize = "xsmall" | "small" | "medium" | "large";
 const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
   display: contents;
   --unselected-color: var(--divider-color);
-  --slider-progress: 0%;
 
   input[type="range"] {
     -webkit-appearance: none;
@@ -35,7 +34,7 @@ const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
     }
 
     &::-moz-range-progress {
-      background: var(--primary-color); /* Revert to primary color */
+      background: var(--primary-color);
       height: ${props => getSliderSize(props.sliderSize || "medium")};
     }
 
@@ -43,19 +42,24 @@ const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
     &::-webkit-slider-runnable-track {
       -webkit-appearance: none;
       height: ${props => getSliderSize(props.sliderSize || "medium")};
-      background: linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) var(--slider-progress), var(--unselected-color) var(--slider-progress));
+      background: var(--unselected-color);
       margin-top: -1px;
       border-radius: 6px;
+      position: relative;
+      z-index: 1;
     }
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 8px;
       height: ${props => getSliderSize(props.sliderSize || "medium")};
-      background: var(--primary-text-color); /* Keep default text color */
+      background: var(--primary-text-color);
       border: 0;
       margin: 0;
       cursor: pointer;
+      box-shadow: -2000px 0 0 2000px var(--primary-color); /* Creates the colored track before the thumb */
+      position: relative;
+      z-index: 2;
     }
 
     &::-moz-range-thumb {
@@ -63,7 +67,7 @@ const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
       height: 100%;
       border-radius: 0;
       border: none;
-      background: var(--primary-text-color); /* Keep default text color */
+      background: var(--primary-text-color);
       cursor: pointer;
     }
 
@@ -82,17 +86,6 @@ export const Slider = ({
   onChange,
 }: SliderProps) => {
   const sliderRef = useRef<HTMLDivElement>(null);
-
-  const updateSliderProgress = () => {
-    if (sliderRef.current) {
-      const percentage = ((value - min) / (max - min)) * 100;
-      sliderRef.current.style.setProperty('--slider-progress', `${percentage}%`);
-    }
-  };
-
-  useEffect(() => {
-    updateSliderProgress();
-  }, [value, min, max]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(parseFloat((e.target as HTMLInputElement).value));
