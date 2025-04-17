@@ -1,4 +1,4 @@
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 

@@ -1,11 +1,11 @@
-import { HassEntity } from "home-assistant-js-websocket";
+import { MediaPlayerEntity } from "@types";
 
 export const getDidMediaPlayerUpdate = (
-  prevEntity: HassEntity,
-  entity: HassEntity,
+  prevEntity: MediaPlayerEntity,
+  entity: MediaPlayerEntity,
   isGroupMember?: boolean
 ) => {
-  // List of keys we want to ignore in comparison
+  // List of keys we want to include in comparison
   const compareKeys = isGroupMember
     ? [
         "state",
@@ -24,6 +24,7 @@ export const getDidMediaPlayerUpdate = (
         "attributes.entity_picture",
         "attributes.volume_level",
         "attributes.is_volume_muted",
+        "attributes.source",
         "attributes.shuffle",
         "attributes.repeat",
         "attributes.supported_features",

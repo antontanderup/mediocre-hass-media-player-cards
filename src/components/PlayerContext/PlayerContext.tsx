@@ -1,10 +1,10 @@
-import { HassEntity } from "home-assistant-js-websocket";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
+import { MediaPlayerEntity } from "@types";
 
 export type PlayerContextType = {
-  player: HassEntity;
+  player: MediaPlayerEntity;
 };
 
 export const PlayerContext = createContext<PlayerContextType>({
@@ -21,7 +21,7 @@ export const PlayerContextProvider = ({
   children: React.ReactElement;
 }): React.ReactElement => {
   const contextValue = useMemo(() => {
-    return { player: hass.states[entityId] };
+    return { player: hass.states[entityId] as MediaPlayerEntity };
   }, [hass.states, entityId]);
 
   return (

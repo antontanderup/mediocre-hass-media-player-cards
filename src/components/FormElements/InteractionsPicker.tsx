@@ -1,7 +1,7 @@
 import { FC } from "preact/compat";
 import { InteractionConfig } from "@types";
 // import { ActionConfigurator } from "./ActionConfigurator";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { ActionsConfigurator } from "./ActionsConfigurator";
 
 export type InteractionsPickerProps = {

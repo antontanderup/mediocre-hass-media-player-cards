@@ -1,4 +1,4 @@
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { useCallback, useEffect, useMemo, useRef } from "preact/hooks";
 import { InteractionConfig } from "@types";
 import { getActionsFormSchema } from "./actionsSchema";
