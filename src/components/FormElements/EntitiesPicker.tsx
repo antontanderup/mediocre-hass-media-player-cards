@@ -1,4 +1,4 @@
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { useCallback } from "preact/hooks";
 import styled from "@emotion/styled";
 import { EntityPicker } from "./EntityPicker";

@@ -56,7 +56,7 @@ speaker_group:
 
 ### Mediocre Massive Media Player Card
 
-A full-sized media player card made for panel view. This card gives you an immersive media control experience with all features at a glance.
+A full-sized media player card that can be used in various modes. It provides an immersive media control experience with all features at a glance and can be displayed as a regular card (mode: card), embedded in other cards (mode: in-card), or used in panel view (mode: panel).
 
 <img src="https://github.com/user-attachments/assets/8340e509-c7af-4a10-bbb1-8b8086a87e57" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
 
@@ -65,7 +65,7 @@ A full-sized media player card made for panel view. This card gives you an immer
 ```yaml
 type: "custom:mediocre-massive-media-player-card"
 entity_id: media_player.living_room_speaker
-mode: panel # Options: panel, card, in-card
+mode: card # Options: card, in-card, panel
 speaker_group:
   entities:
     - media_player.kitchen_speaker
@@ -87,15 +87,17 @@ Both cards support these options:
 
 The Mediocre Media Player Card has additional options:
 
-| Option            | Type    | Default | Description                                                   |
-| ----------------- | ------- | ------- | ------------------------------------------------------------- |
-| `tap_opens_popup` | boolean | `false` | When set to true, tapping the card opens a popup with details |
+| Option            | Type    | Default | Description                                                            |
+| ----------------- | ------- | ------- | ---------------------------------------------------------------------- |
+| `tap_opens_popup` | boolean | `false` | When set to true, tapping the card opens a popup with the massive card |
 
 The Mediocre Massive Media Player Card has additional options:
 
-| Option | Type   | Default | Description                                 |
-| ------ | ------ | ------- | ------------------------------------------- |
-| `mode` | string | `panel` | Display mode: `panel`, `card`, or `in-card` |
+| Option | Type   | Default | Description                                                                                            |
+| ------ | ------ | ------- | ------------------------------------------------------------------------------------------------------ |
+| `mode` | string | `card`  | Display mode: `card` (regular HA card), `in-card` (no card wrapper), or `panel` (panel optimized view) |
+
+> **Note:** When `tap_opens_popup` is set to true on the regular Media Player Card, it will display the Massive Media Player Card in a popup.
 
 ### Action Configuration
 
@@ -126,8 +128,6 @@ custom_buttons:
         entity_id: media_player.living_room_speaker
       data: {}
 ```
-
-Note: The newer `perform-action` is recommended over the legacy `call-service` action format.
 
 ### Mediocre Chip Media Player Group Card
 

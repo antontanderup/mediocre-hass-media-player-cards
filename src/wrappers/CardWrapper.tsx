@@ -5,7 +5,7 @@ import {
   HassContextProvider,
 } from "@components";
 import { PlayerContextProvider } from "@components/PlayerContext";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 
 export class CardWrapper<
   Config extends { entity_id: string },

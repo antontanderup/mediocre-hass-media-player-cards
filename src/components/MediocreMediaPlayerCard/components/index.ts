@@ -1,4 +1,3 @@
-export * from "./AlbumArt";
 export * from "./CustomButtons";
 export * from "./MassivePopUp";
 export * from "./MetaInfo";

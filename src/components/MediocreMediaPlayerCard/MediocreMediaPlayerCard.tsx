@@ -1,9 +1,7 @@
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useCallback, useContext, useState } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
-
 import {
-  AlbumArt,
   CustomButton,
   CustomButtons,
   MetaInfo,
@@ -11,7 +9,7 @@ import {
   PlayerInfo,
   SpeakerGrouping,
 } from "./components";
-import { IconButton, usePlayer } from "@components";
+import { AlbumArt, IconButton, usePlayer } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
@@ -33,13 +31,22 @@ const Card = styled.div<{
       return props.$haColorVars;
     } else return "";
   }}
+  ${props =>
+    props.$useArtColors &&
+    `
+    background: 
+      radial-gradient( circle at bottom right, var(--art-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at top center, var(--art-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at bottom center, var(--art-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at top left, var(--art-color, transparent) -500%, transparent 40% );
+  `}
 `;
 
-const CardContent = styled.div<{ isOn: boolean }>`
+const CardContent = styled.div<{ $isOn: boolean; $useArtColors?: boolean }>`
   display: flex;
   gap: 14px;
   padding: 12px;
-  opacity: ${props => (props.isOn ? 1 : 0.7)};
+  opacity: ${props => (props.$isOn ? 1 : 0.7)};
   transition: opacity 0.3s ease;
   position: relative;
 `;
@@ -88,7 +95,14 @@ export const MediocreMediaPlayerCard = () => {
 
   const { artVars, haVars } = useArtworkColors();
 
-  const { state } = usePlayer();
+  const {
+    state,
+    attributes: {
+      media_title: title,
+      media_artist: artist,
+      media_album_name: albumName,
+    },
+  } = usePlayer();
 
   const supportedFeatures = useSupportedFeatures();
   const hasNoPlaybackControls =
@@ -99,7 +113,7 @@ export const MediocreMediaPlayerCard = () => {
     !supportedFeatures.supportsRepeat;
 
   // Determine if the player is on
-  const isOn = !["off", "unavailable"].includes(state);
+  const isOn = state !== "off" && state !== "unavailable";
 
   // Check if grouping is available
   const hasGroupingFeature =
@@ -112,6 +126,9 @@ export const MediocreMediaPlayerCard = () => {
   };
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const artSize =
+    state === "off" || (!title && !artist && !albumName) ? 68 : 100;
 
   const artAction: InteractionConfig = action ?? {
     tap_action: { action: "more-info" },
@@ -139,14 +156,14 @@ export const MediocreMediaPlayerCard = () => {
   }, [entity_id]);
 
   return (
-    <Card
-      $artColorVars={artVars}
-      $haColorVars={haVars}
-      $useArtColors={use_art_colors}
-    >
-      <ha-card>
-        <CardContent isOn={isOn}>
-          <AlbumArt {...artActionProps} />
+    <ha-card>
+      <Card
+        $artColorVars={artVars}
+        $haColorVars={haVars}
+        $useArtColors={use_art_colors}
+      >
+        <CardContent $isOn={isOn} $useArtColors={use_art_colors}>
+          <AlbumArt size={artSize} iconSize="large" {...artActionProps} />
           <ContentContainer>
             <ContentLeft>
               <MetaInfo />
@@ -209,7 +226,7 @@ export const MediocreMediaPlayerCard = () => {
             setVisible={setIsPopupVisible}
           />
         )}
-      </ha-card>
-    </Card>
+      </Card>
+    </ha-card>
   );
 };

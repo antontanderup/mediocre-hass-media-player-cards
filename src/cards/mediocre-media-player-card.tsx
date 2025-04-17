@@ -1,4 +1,4 @@
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant, MediaPlayerEntity } from "@types";
 import { MediocreMediaPlayerCard } from "@components";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
@@ -20,8 +20,8 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
     // Check if main entity changed
     if (
       getDidMediaPlayerUpdate(
-        prevHass.states[this.config.entity_id],
-        hass.states[this.config.entity_id]
+        prevHass.states[this.config.entity_id] as MediaPlayerEntity,
+        hass.states[this.config.entity_id] as MediaPlayerEntity
       )
     ) {
       return true;
@@ -31,11 +31,27 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
     if (
       this.config.speaker_group?.entity_id &&
       getDidMediaPlayerUpdate(
-        prevHass.states[this.config.speaker_group.entity_id],
-        hass.states[this.config.speaker_group.entity_id]
+        prevHass.states[
+          this.config.speaker_group.entity_id
+        ] as MediaPlayerEntity,
+        hass.states[this.config.speaker_group.entity_id] as MediaPlayerEntity
       )
     ) {
       return true;
+    }
+
+    if (this.config.speaker_group?.entities) {
+      for (const entity of this.config.speaker_group.entities) {
+        if (
+          getDidMediaPlayerUpdate(
+            prevHass.states[entity] as MediaPlayerEntity,
+            hass.states[entity] as MediaPlayerEntity,
+            true
+          )
+        ) {
+          return true;
+        }
+      }
     }
 
     return false;

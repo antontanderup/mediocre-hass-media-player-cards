@@ -1,3 +1,4 @@
+export * from "./AlbumArt";
 export * from "./CardContext";
 export * from "./Chip";
 export * from "./EmotionContextProvider";
