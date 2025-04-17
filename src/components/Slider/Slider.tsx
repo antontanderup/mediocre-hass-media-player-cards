@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ChangeEvent } from "preact/compat";
+import { ChangeEvent, useEffect, useRef } from "preact/compat";
 
 export type SliderProps = {
   min: number;
@@ -15,6 +15,7 @@ export type SliderSize = "xsmall" | "small" | "medium" | "large";
 const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
   display: contents;
   --unselected-color: var(--divider-color);
+  --slider-progress: 0%;
 
   input[type="range"] {
     -webkit-appearance: none;
@@ -34,7 +35,7 @@ const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
     }
 
     &::-moz-range-progress {
-      background: var(--primary-color);
+      background: var(--primary-color); /* Revert to primary color */
       height: ${props => getSliderSize(props.sliderSize || "medium")};
     }
 
@@ -42,25 +43,28 @@ const SliderWrap = styled.div<{ sliderSize?: SliderSize }>`
     &::-webkit-slider-runnable-track {
       -webkit-appearance: none;
       height: ${props => getSliderSize(props.sliderSize || "medium")};
-      color: var(--primary-color);
+      background: linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) var(--slider-progress), var(--unselected-color) var(--slider-progress));
       margin-top: -1px;
+      border-radius: 6px;
     }
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 1px;
+      width: 8px;
       height: ${props => getSliderSize(props.sliderSize || "medium")};
-      background: var(--primary-color);
-      box-shadow: -100vw 0 0 100vw var(--primary-color);
+      background: var(--primary-text-color); /* Keep default text color */
       border: 0;
       margin: 0;
+      cursor: pointer;
     }
 
     &::-moz-range-thumb {
-      width: 0;
-      height: 0;
-      opacity: 0;
+      width: 8px;
+      height: 100%;
+      border-radius: 0;
       border: none;
+      background: var(--primary-text-color); /* Keep default text color */
+      cursor: pointer;
     }
 
     &:focus {
@@ -77,12 +81,25 @@ export const Slider = ({
   sliderSize,
   onChange,
 }: SliderProps) => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const updateSliderProgress = () => {
+    if (sliderRef.current) {
+      const percentage = ((value - min) / (max - min)) * 100;
+      sliderRef.current.style.setProperty('--slider-progress', `${percentage}%`);
+    }
+  };
+
+  useEffect(() => {
+    updateSliderProgress();
+  }, [value, min, max]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(parseFloat((e.target as HTMLInputElement).value));
   };
 
   return (
-    <SliderWrap sliderSize={sliderSize}>
+    <SliderWrap sliderSize={sliderSize} ref={sliderRef}>
       <input
         type="range"
         min={min}
