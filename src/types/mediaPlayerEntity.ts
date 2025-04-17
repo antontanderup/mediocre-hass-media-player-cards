@@ -9,8 +9,7 @@ export type MediaPlayerState =
   | "standby"
   | "buffering"
   | "unavailable"
-  | string; // Just to a make things a bit easier type wize
-
+  | string; // Just to make things a bit easier type-wise
 export type MediaPlayerRepeatMode = "off" | "all" | "one";
 
 export type MediaPlayerSupportedFeatures = number;
