@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
 import { IconButton, Slider, usePlayer } from "@components";
-import { getHass } from "@utils";
+import { getHass, getVolumeIcon } from "@utils";
 
 const VolumeContainer = styled.div`
   display: flex;
@@ -62,12 +62,6 @@ export const VolumeController = () => {
       />
     </VolumeContainer>
   );
-};
-
-export const getVolumeIcon = (volume, volumeMuted) => {
-  if (volume === 0 || volumeMuted) return "mdi:volume-off";
-  if (volume < 0.5) return "mdi:volume-medium";
-  return "mdi:volume-high";
 };
 
 export const VolumeTrigger = ({ onClick }: { onClick: () => void }) => {

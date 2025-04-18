@@ -4,6 +4,7 @@ export * from "./Chip";
 export * from "./EmotionContextProvider";
 export * from "./FormElements";
 export * from "./GlanceGuard";
+export * from "./GroupVolumeController";
 export * from "./HassContext";
 export * from "./Icon";
 export * from "./IconButton";
