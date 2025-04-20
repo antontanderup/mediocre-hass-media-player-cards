@@ -30,27 +30,12 @@ const TitleH3 = styled.h3`
 `;
 
 export const Title = () => {
-  const {
-    attributes: {
-      media_title: title,
-      media_artist: artist,
-      media_album_name: albumName,
-      source,
-    },
-    state,
-  } = usePlayer();
-  const titleText = title || source;
-
-  if (state === "off") {
-    return null;
-  }
+  const { title, subtitle } = usePlayer();
 
   return (
     <TitleWrap>
-      {!!titleText && <TitleH2>{titleText}</TitleH2>}
-      {(!!albumName || !!artist) && (
-        <TitleH3>{`${albumName !== title ? `${albumName} - ` : ""}${artist}`}</TitleH3>
-      )}
+      {!!title && <TitleH2>{title}</TitleH2>}
+      {!!subtitle && <TitleH3>{subtitle}</TitleH3>}
     </TitleWrap>
   );
 };

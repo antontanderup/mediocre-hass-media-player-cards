@@ -95,14 +95,7 @@ export const MediocreMediaPlayerCard = () => {
 
   const { artVars, haVars } = useArtworkColors();
 
-  const {
-    state,
-    attributes: {
-      media_title: title,
-      media_artist: artist,
-      media_album_name: albumName,
-    },
-  } = usePlayer();
+  const { state, subtitle } = usePlayer();
 
   const supportedFeatures = useSupportedFeatures();
   const hasNoPlaybackControls =
@@ -127,8 +120,7 @@ export const MediocreMediaPlayerCard = () => {
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-  const artSize =
-    state === "off" || (!title && !artist && !albumName) ? 68 : 100;
+  const artSize = state === "off" || !subtitle ? 68 : 100;
 
   const artAction: InteractionConfig = action ?? {
     tap_action: { action: "more-info" },
