@@ -97,6 +97,7 @@ export function useArtworkColors(): {
         --divider-color: ${hslToCss({ ...surfaceColor, l: 88 })};
         --clear-background-color: ${hslToCss({ ...surfaceColor, l: 100 })};
         --secondary-background-color: ${hslToCss({ ...onSurfaceColor, l: 95 })};
+        --chip-background-color: ${hslToCss({ ...onSurfaceColor, a: 0.15 })};
       `,
     };
   }, [palette, darkMode]);
@@ -143,6 +144,7 @@ export function useArtworkColors(): {
         --divider-color: ${hslToCss({ ...surfaceColor, l: 25 })};
         --clear-background-color: ${hslToCss({ ...surfaceColor, l: 0 })};
         --secondary-background-color: ${hslToCss({ ...onSurfaceColor, l: 19 })};
+        --chip-background-color: ${hslToCss({ ...onSurfaceColor, a: 0.15 })};
       `,
     };
   }, [palette, darkMode]);
@@ -179,6 +181,16 @@ const getContrastingHsl = ({
   return { h: newHue, s, l };
 };
 
-const hslToCss = ({ h, s, l }: { h: number; s: number; l: number }) => {
-  return `hsl(${h}deg ${s}% ${l}%)`;
+const hslToCss = ({
+  h,
+  s,
+  l,
+  a,
+}: {
+  h: number;
+  s: number;
+  l: number;
+  a?: number;
+}) => {
+  return `hsla(${h}deg, ${s}%, ${l}%, ${a ? a : 1})`;
 };

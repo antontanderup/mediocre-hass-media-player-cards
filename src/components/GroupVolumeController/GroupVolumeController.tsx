@@ -7,45 +7,48 @@ import {
   Slider,
   useHass,
 } from "@components";
-import { getHass, getVolumeIcon } from "@utils";
+import { getHass, getVolumeIcon, setVolume } from "@utils";
 import styled from "@emotion/styled";
 
-const SpeakerContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px;
-  border-radius: 8px 14px;
-  background-color: var(--chip-background-color);
+const SpeakersTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
 `;
 
-const SpeakerName = styled.h4`
-  margin: 0 8px 0 0;
+const SpeakerRow = styled.tr`
+  width: 100%;
+`;
+
+const NameCell = styled.td<{ $isMainSpeaker: boolean }>`
+  padding: 4px 8px 4px 0;
   font-size: 14px;
   min-width: 100px;
+  max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  ${props => (props.$isMainSpeaker ? "font-weight: 500;" : "")}
 `;
 
-const ControlsRow = styled.div`
+const ControlsCell = styled.td`
+  width: 100%;
+  padding: 0px 4px;
+`;
+
+const ButtonCell = styled.td`
+  white-space: nowrap;
+`;
+
+const ControlsContainer = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 8px;
-  flex: 1;
-`;
-
-const SliderContainer = styled.div`
-  flex: 1;
-  min-width: 100px;
+  width: 100%;
 `;
 
 const SpeakersList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: var(--chip-background-color);
 `;
 
 export type GroupSpeaker = {
@@ -132,53 +135,71 @@ export const GroupVolumeController = () => {
   }, []);
 
   // Handle volume change for a speaker
-  const handleVolumeChange = useCallback((entityId: string, volume: number) => {
-    hass.callService("media_player", "volume_set", {
-      entity_id: entityId,
-      volume_level: volume,
-    });
-  }, []);
+  const handleVolumeChange = useCallback(
+    (entityId: string, volume: number, isMainSpeaker: boolean) => {
+      // Use setVolume utility, with sync if this is the main speaker
+      setVolume(entityId, volume, isMainSpeaker);
+    },
+    []
+  );
 
-  const renderSpeaker = (speaker: GroupSpeaker) => {
+  const renderSpeaker = (
+    speaker: GroupSpeaker,
+    _index: number,
+    _groupedSpeakers: GroupSpeaker[]
+  ) => {
     const { entity_id, name, volume, muted, isGrouped, isMainSpeaker } =
       speaker;
     const isLoading = playersLoading.includes(entity_id);
     const isDisabled = isLoading || (isMainSpeaker && !isGrouped);
+
     return (
-      <SpeakerContainer>
-        <SpeakerName>{name}</SpeakerName>
-        <ControlsRow>
+      <SpeakerRow key={entity_id}>
+        <NameCell $isMainSpeaker={isMainSpeaker}>{name}</NameCell>
+        <ButtonCell>
           <IconButton
             size="x-small"
             onClick={() => handleToggleMute(entity_id, muted)}
             icon={getVolumeIcon(volume, muted)}
           />
-          <SliderContainer>
+        </ButtonCell>
+        <ControlsCell>
+          <ControlsContainer>
             <Slider
               min={0}
               max={1}
               step={0.01}
               value={volume}
               sliderSize="small"
-              onChange={value => handleVolumeChange(entity_id, value)}
+              onChange={value =>
+                handleVolumeChange(entity_id, value, isMainSpeaker)
+              }
             />
-          </SliderContainer>
+          </ControlsContainer>
+        </ControlsCell>
+        <ButtonCell>
           <IconButton
             size="x-small"
             onClick={() => handleToggleGroup(entity_id, isGrouped)}
-            icon={isGrouped ? "mdi:link-off" : "mdi:speaker-multiple"}
+            icon={isGrouped ? "mdi:close" : "mdi:plus"}
             disabled={isDisabled}
           />
-        </ControlsRow>
-      </SpeakerContainer>
+        </ButtonCell>
+      </SpeakerRow>
     );
   };
 
   return (
     <SpeakersList>
-      {availableSpeakers
-        .filter(speaker => speaker.isGrouped)
-        .map(speaker => renderSpeaker(speaker))}
+      <SpeakersTable>
+        <tbody>
+          {availableSpeakers
+            .filter(speaker => speaker.isGrouped)
+            .map((speaker, index, filteredSpeakers) =>
+              renderSpeaker(speaker, index, filteredSpeakers)
+            )}
+        </tbody>
+      </SpeakersTable>
     </SpeakersList>
   );
 };
