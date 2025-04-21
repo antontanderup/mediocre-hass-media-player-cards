@@ -19,21 +19,19 @@ const SpeakerGroupContainer = styled.div`
   gap: 12px;
 `;
 
-const GroupTitle = styled.div`
-  font-size: 14px;
+const GroupTitle = styled.h3`
+  font-size: 16px;
   font-weight: 500;
   color: var(--primary-text-color);
-  margin-top: 8px;
-  margin-right: 16px;
-  margin-left: 16px;
+  margin: 8px 16px 0px 16px;
 `;
 
 const GroupedSpeakers = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-left: 14px;
-  margin-right: 14px;
+  margin-left: 16px;
+  margin-right: 16px;
 `;
 
 const Chips = styled.div`

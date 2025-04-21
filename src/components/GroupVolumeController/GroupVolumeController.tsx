@@ -45,11 +45,7 @@ const ControlsContainer = styled.div`
   width: 100%;
 `;
 
-const SpeakersList = styled.div`
-  padding: 8px 14px;
-  border-radius: 8px;
-  background-color: var(--chip-background-color);
-`;
+const SpeakersList = styled.div``;
 
 export type GroupSpeaker = {
   entity_id: string;
