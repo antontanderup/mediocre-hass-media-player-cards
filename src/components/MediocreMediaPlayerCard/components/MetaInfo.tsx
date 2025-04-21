@@ -22,22 +22,12 @@ const ArtistText = styled.p`
 `;
 
 export const MetaInfo = () => {
-  const {
-    attributes: {
-      media_title: title,
-      media_artist: artist,
-      media_album_name: albumName,
-      source,
-      friendly_name: friendlyName,
-    },
-  } = usePlayer();
-  const titleText = title ?? source ?? friendlyName;
-  const artistText = `${albumName !== title ? `${albumName} - ` : ""}${artist}`;
+  const { title, subtitle } = usePlayer();
 
   return (
     <Fragment>
-      {!!titleText && <TitleText>{titleText}</TitleText>}
-      {(!!albumName || !!artist) && <ArtistText>{artistText}</ArtistText>}
+      {!!title && <TitleText>{title}</TitleText>}
+      {!!subtitle && <ArtistText>{subtitle}</ArtistText>}
     </Fragment>
   );
 };
