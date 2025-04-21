@@ -97,7 +97,6 @@ export function useArtworkColors(): {
         --divider-color: ${hslToCss({ ...surfaceColor, l: 88 })};
         --clear-background-color: ${hslToCss({ ...surfaceColor, l: 100 })};
         --secondary-background-color: ${hslToCss({ ...onSurfaceColor, l: 95 })};
-        --chip-background-color: ${hslToCss({ ...onSurfaceColor, a: 0.15 })};
       `,
     };
   }, [palette, darkMode]);
@@ -144,7 +143,6 @@ export function useArtworkColors(): {
         --divider-color: ${hslToCss({ ...surfaceColor, l: 25 })};
         --clear-background-color: ${hslToCss({ ...surfaceColor, l: 0 })};
         --secondary-background-color: ${hslToCss({ ...onSurfaceColor, l: 19 })};
-        --chip-background-color: ${hslToCss({ ...onSurfaceColor, a: 0.15 })};
       `,
     };
   }, [palette, darkMode]);
