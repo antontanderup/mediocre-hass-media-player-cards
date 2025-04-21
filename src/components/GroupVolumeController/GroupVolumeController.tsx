@@ -7,17 +7,17 @@ import styled from "@emotion/styled";
 const SpeakersTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 `;
 
 const SpeakerRow = styled.tr`
   width: 100%;
+  height: 32px;
 `;
 
 const NameCell = styled.td<{ $isMainSpeaker: boolean }>`
-  padding: 4px 8px 4px 0;
+  padding-right: 8px;
   font-size: 14px;
-  min-width: 100px;
-  max-width: 150px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -25,11 +25,11 @@ const NameCell = styled.td<{ $isMainSpeaker: boolean }>`
 `;
 
 const ControlsCell = styled.td`
-  width: 100%;
   padding: 0px 4px;
 `;
 
 const ButtonCell = styled.td`
+  width: 28px;
   white-space: nowrap;
 `;
 
