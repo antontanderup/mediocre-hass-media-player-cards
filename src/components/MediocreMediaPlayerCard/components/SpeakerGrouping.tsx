@@ -13,7 +13,7 @@ import {
 const SpeakerGroupContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 8px;
+  padding-top: 12px;
   padding-bottom: 16px;
   border-top: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
   gap: 12px;
@@ -23,7 +23,7 @@ const GroupTitle = styled.h3`
   font-size: 16px;
   font-weight: 500;
   color: var(--primary-text-color);
-  margin: 8px 16px 0px 16px;
+  margin: 0px 16px;
 `;
 
 const GroupedSpeakers = styled.div`
