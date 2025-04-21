@@ -131,7 +131,10 @@ export const SpeakerGrouping = () => {
         <Fragment>
           <GroupTitle>Grouped Speakers</GroupTitle>
           <GroupedSpeakers>
-            <GroupVolumeController />
+            <GroupVolumeController
+              entity_id={entity_id}
+              speaker_group={speaker_group}
+            />
           </GroupedSpeakers>
         </Fragment>
       )}

@@ -1,8 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import styled from "@emotion/styled";
-import { Slider, IconButton, Icon, Chip, useHass } from "@components";
+import { Chip, useHass, GroupVolumeController } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { Fragment } from "preact/jsx-runtime";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
 const SpeakerGroupContainer = styled.div`
@@ -17,26 +16,6 @@ const SpeakerList = styled.div`
   gap: 8px;
   margin-left: 16px;
   margin-right: 16px;
-`;
-
-const SpeakerItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const SpeakerName = styled.div<{ isMaster?: boolean }>`
-  font-size: 13px;
-  flex: 1;
-  ${props => (props.isMaster ? "font-weight: 500;" : "")}
-  color: var(--primary-text-color);
-`;
-
-const VolumeControl = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: 8px;
 `;
 
 const Chips = styled.div`
@@ -129,52 +108,15 @@ export const SpeakerGrouping = () => {
     [mainEntityId, playersLoading]
   );
 
-  // Handle volume change for a speaker
-  const handleVolumeChange = useCallback((entityId: string, volume: number) => {
-    hass.callService("media_player", "volume_set", {
-      entity_id: entityId,
-      volume_level: volume,
-    });
-  }, []);
-
   return (
     <SpeakerGroupContainer>
       {mainEntity?.attributes?.group_members?.length > 1 && (
-        <Fragment>
-          <SpeakerList>
-            {availableSpeakers
-              .filter(speaker => speaker.isGrouped)
-              .map(speaker => (
-                <SpeakerItem key={speaker.entity_id}>
-                  <IconButton
-                    size="x-small"
-                    onClick={() =>
-                      handleToggleGroup(speaker.entity_id, speaker.isGrouped)
-                    }
-                    icon={"mdi:link-variant-off"}
-                  />
-                  <SpeakerName isMaster={speaker.isMainSpeaker}>
-                    {speaker.name} {speaker.isMainSpeaker && "(Master)"}
-                  </SpeakerName>
-                  {speaker.isGrouped && (
-                    <VolumeControl>
-                      <Icon size="x-small" icon={"mdi:volume-high"} />
-                      <Slider
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={speaker.volume}
-                        sliderSize="small"
-                        onChange={value =>
-                          handleVolumeChange(speaker.entity_id, value)
-                        }
-                      />
-                    </VolumeControl>
-                  )}
-                </SpeakerItem>
-              ))}
-          </SpeakerList>
-        </Fragment>
+        <SpeakerList>
+          <GroupVolumeController
+            entity_id={entity_id}
+            speaker_group={speaker_group}
+          />
+        </SpeakerList>
       )}
       <Chips>
         {availableSpeakers

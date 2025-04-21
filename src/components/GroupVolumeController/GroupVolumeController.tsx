@@ -1,12 +1,6 @@
-import { useCallback, useContext, useMemo, useState } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "@types";
-import {
-  CardContext,
-  CardContextType,
-  IconButton,
-  Slider,
-  useHass,
-} from "@components";
+import { useCallback, useMemo, useState } from "preact/hooks";
+import type { CommonMediocreMediaPlayerCardConfig } from "@types";
+import { IconButton, Slider, useHass } from "@components";
 import { getHass, getVolumeIcon, setVolume } from "@utils";
 import styled from "@emotion/styled";
 
@@ -56,12 +50,16 @@ export type GroupSpeaker = {
   isMainSpeaker: boolean;
 };
 
-export const GroupVolumeController = () => {
-  const hass = useHass();
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+export type GroupVolumeControllerProps = Pick<
+  CommonMediocreMediaPlayerCardConfig,
+  "speaker_group" | "entity_id"
+>;
 
-  const { entity_id, speaker_group } = config;
+export const GroupVolumeController = ({
+  entity_id,
+  speaker_group,
+}: GroupVolumeControllerProps) => {
+  const hass = useHass();
 
   const [playersLoading, setPlayersLoading] = useState<string[]>([]);
 
