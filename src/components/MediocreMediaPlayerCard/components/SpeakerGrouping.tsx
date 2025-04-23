@@ -1,15 +1,15 @@
-import { useCallback, useContext, useMemo, useState } from "preact/hooks";
+import { useContext, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import { Fragment } from "preact/jsx-runtime";
 import {
-  Chip,
   CardContext,
   CardContextType,
   useHass,
   GroupVolumeController,
   IconButton,
 } from "@components";
+import { GroupChipsController } from "@components/GroupChipsController";
 
 const SpeakerGroupContainer = styled.div`
   display: flex;
@@ -49,28 +49,6 @@ const GroupedSpeakers = styled.div`
   margin-right: 16px;
 `;
 
-const Chips = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  justify-content: flex-start;
-  overflow-x: auto !important;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const SpeakerChip = styled(Chip)`
-  &:first-child {
-    margin-left: 16px;
-  }
-  &:last-child {
-    margin-right: 16px;
-  }
-`;
-
 const TitleRow = styled.div`
   display: flex;
   align-items: center;
@@ -83,68 +61,11 @@ export const SpeakerGrouping = () => {
 
   const { entity_id, speaker_group } = config;
 
-  const [playersLoading, setPlayersLoading] = useState<string[]>([]);
   const [syncMainSpeakerVolume, setSyncMainSpeakerVolume] = useState(true);
 
   // Use the specified entity_id for the group or fall back to the main entity_id
   const mainEntityId = speaker_group?.entity_id || entity_id;
   const mainEntity = hass.states[mainEntityId];
-
-  // Get all available speakers that can be grouped
-  const availableSpeakers = useMemo(() => {
-    if (!speaker_group?.entities?.length) return [];
-
-    return speaker_group.entities
-      .filter(id => hass.states[id])
-      .map(id => ({
-        entity_id: id,
-        name: hass.states[id].attributes.friendly_name,
-        volume: hass.states[id].attributes.volume_level || 0,
-        muted: hass.states[id].attributes.is_volume_muted || false,
-        isGrouped: mainEntity?.attributes?.group_members?.includes(id) || false,
-        isMainSpeaker:
-          mainEntity?.attributes?.group_members?.[0] === id || false,
-      }))
-      .sort((a, b) => {
-        if (a.entity_id === mainEntityId) return -1;
-        if (b.entity_id === mainEntityId) return 1;
-        return a.name.localeCompare(b.name);
-      });
-  }, [hass.states, speaker_group]);
-
-  // Handle joining/unjoining a speaker to/from the group
-  const handleToggleGroup = useCallback(
-    async (speakerId: string, isGrouped: boolean) => {
-      if (playersLoading.includes(speakerId)) return;
-      setPlayersLoading(prev => [...prev, speakerId]);
-      try {
-        const speaker = hass.states[speakerId];
-        if (isGrouped) {
-          // Remove from group
-          await hass.callService("media_player", "unjoin", {
-            entity_id: speakerId,
-          });
-        } else {
-          // Add to group
-          if (speaker.state === "off") {
-            await hass.callService("media_player", "turn_on", {
-              entity_id: speakerId,
-            });
-          }
-          await hass.callService("media_player", "join", {
-            entity_id: mainEntityId,
-            group_members: [speakerId],
-          });
-        }
-      } catch (e) {
-        console.error(e);
-      }
-      setPlayersLoading(prev => prev.filter(id => id !== speakerId));
-    },
-    [mainEntityId, playersLoading]
-  );
-
-  // Handle volume change for a speaker
 
   return (
     <SpeakerGroupContainer>
@@ -181,23 +102,11 @@ export const SpeakerGrouping = () => {
         </Fragment>
       )}
       <GroupTitle>Add speakers to group</GroupTitle>
-      <Chips>
-        {availableSpeakers
-          .filter(speaker => !speaker.isGrouped)
-          .map(speaker => (
-            <SpeakerChip
-              key={speaker.entity_id}
-              loading={playersLoading.includes(speaker.entity_id)}
-              onClick={() =>
-                handleToggleGroup(speaker.entity_id, speaker.isGrouped)
-              }
-              icon={speaker.isGrouped ? "mdi:close" : "mdi:plus"}
-              iconPosition="right"
-            >
-              {speaker.name}
-            </SpeakerChip>
-          ))}
-      </Chips>
+      <GroupChipsController
+        config={{ entity_id, speaker_group }}
+        showGrouped={false}
+        layout={{ horizontalMargin: 16 }}
+      />
     </SpeakerGroupContainer>
   );
 };

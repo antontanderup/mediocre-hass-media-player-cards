@@ -25,9 +25,12 @@ const ChipButton = styled.button<{ $loading?: boolean }>`
   line-height: 32px;
   padding: 0 12px;
   border-radius: 16px;
-  color: var(--card-background-color);
-  background-color: var(--primary-text-color);
-  --icon-primary-color: var(--card-background-color);
+  color: var(--mmpc-chip-foreground, var(--card-background-color));
+  background-color: var(--mmpc-chip-background, var(--primary-text-color));
+  --icon-primary-color: var(
+    --mmpc-chip-foreground,
+    var(--card-background-color)
+  );
   margin-right: 5px;
   align-items: center;
   gap: 4px;
