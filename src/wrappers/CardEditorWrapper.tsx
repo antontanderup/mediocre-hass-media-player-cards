@@ -1,5 +1,5 @@
 import { FunctionComponent, render } from "preact";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { EmotionContextProvider, GlanceGuard } from "@components";
 
 export type EditorCardProps<T> = {

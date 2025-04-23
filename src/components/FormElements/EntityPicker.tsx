@@ -1,4 +1,4 @@
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 import { useCallback, useEffect, useRef } from "preact/hooks";
 
 export type EntityPickerProps = {

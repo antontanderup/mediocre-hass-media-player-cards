@@ -1,25 +1,52 @@
 import styled from "@emotion/styled";
+import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 
 export type SliderProps = {
   min: number;
   max: number;
   step: number;
   value: number;
-  thumbSize?: HandleSize;
+  sliderSize?: SliderSize;
   onChange: (value: number) => void;
 };
 
-export type HandleSize = "xsmall" | "small" | "medium" | "large";
+export type SliderSize = "xsmall" | "small" | "medium" | "large";
 
-const SliderWrap = styled.div<{ thumbSize?: HandleSize }>`
-  display: contents;
+// Styled BaseUI slider components
+const StyledRoot = styled(BaseSlider.Root)`
+  width: 100%;
+  --unselected-color: var(--divider-color);
+  margin: 0;
+`;
 
-  > ha-slider {
-    width: 100%;
-    --_handle-height: ${props => getHandleSize(props.thumbSize)} !important;
-    --_handle-width: ${props => getHandleSize(props.thumbSize)} !important;
-    --_inactive-track-color: var(--divider-color, rgba(0, 0, 0, 0.1));
+const StyledControl = styled(BaseSlider.Control)`
+  position: relative;
+  cursor: pointer;
+`;
+
+const StyledTrack = styled(BaseSlider.Track)<{ sliderSize?: SliderSize }>`
+  background: var(--unselected-color);
+  height: ${props => getSliderSize(props.sliderSize || "medium")};
+  border-radius: 6px;
+  overflow: hidden;
+`;
+
+const StyledIndicator = styled(BaseSlider.Indicator)`
+  background: var(--primary-color);
+  height: 100%;
+  border-radius: 4px;
+`;
+
+const StyledThumb = styled(BaseSlider.Thumb)<{ sliderSize?: SliderSize }>`
+  width: 6px;
+  height: 64%;
+  background-color: var(--text-primary-color);
+  @media (prefers-color-scheme: light) {
+    background-color: var(--art-surface-color, rgba(255, 255, 255, 0.8));
   }
+  cursor: pointer;
+  border-radius: 2px;
+  margin-left: -8px;
 `;
 
 export const Slider = ({
@@ -27,33 +54,36 @@ export const Slider = ({
   max,
   step,
   value,
-  thumbSize,
+  sliderSize = "medium",
   onChange,
 }: SliderProps) => {
   return (
-    <SliderWrap thumbSize={thumbSize}>
-      <ha-slider
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onInput={e =>
-          onChange(parseFloat((e.target as HTMLInputElement).value))
-        }
-      />
-    </SliderWrap>
+    <StyledRoot
+      value={value}
+      onValueChange={value => onChange(value)}
+      min={min}
+      max={max}
+      step={step}
+    >
+      <StyledControl>
+        <StyledTrack sliderSize={sliderSize}>
+          <StyledIndicator />
+          <StyledThumb sliderSize={sliderSize} />
+        </StyledTrack>
+      </StyledControl>
+    </StyledRoot>
   );
 };
 
-const getHandleSize = (thumbSize: HandleSize) => {
-  switch (thumbSize) {
+const getSliderSize = (sliderSize: SliderSize) => {
+  switch (sliderSize) {
     case "xsmall":
-      return "8px";
-    case "small":
-      return "12px";
-    case "medium":
-      return "14px";
-    case "large":
       return "16px";
+    case "small":
+      return "22px";
+    case "medium":
+      return "28px";
+    case "large":
+      return "32px";
   }
 };

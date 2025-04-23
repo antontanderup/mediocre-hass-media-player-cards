@@ -2,15 +2,15 @@ import { useCallback, useMemo } from "preact/hooks";
 import styled from "@emotion/styled";
 import { IconButton, Slider, usePlayer } from "@components";
 import { Fragment } from "preact/jsx-runtime";
-import { getHass } from "@utils";
+import { getHass, getVolumeIcon } from "@utils";
 
 const VolumeContainer = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
   transition: all 0.3s ease;
-  max-height: 36px;
   margin-top: auto;
+  gap: 4px;
 `;
 
 const ControlButton = styled(IconButton)<{ muted?: boolean }>`
@@ -48,7 +48,7 @@ export const VolumeSlider = () => {
   return (
     <VolumeContainer>
       <ControlButton
-        size="small"
+        size="x-small"
         onClick={handleToggleMute}
         icon={VolumeIcon}
       />
@@ -57,17 +57,11 @@ export const VolumeSlider = () => {
         max={1}
         step={0.01}
         value={volume}
-        thumbSize={"small"}
+        sliderSize={"small"}
         onChange={handleVolumeChange}
       />
     </VolumeContainer>
   );
-};
-
-export const getVolumeIcon = (volume, volumeMuted) => {
-  if (volume === 0 || volumeMuted) return "mdi:volume-off";
-  if (volume < 0.5) return "mdi:volume-medium";
-  return "mdi:volume-high";
 };
 
 export const VolumeTrigger = ({

@@ -179,6 +179,16 @@ const getContrastingHsl = ({
   return { h: newHue, s, l };
 };
 
-const hslToCss = ({ h, s, l }: { h: number; s: number; l: number }) => {
-  return `hsl(${h}deg ${s}% ${l}%)`;
+const hslToCss = ({
+  h,
+  s,
+  l,
+  a,
+}: {
+  h: number;
+  s: number;
+  l: number;
+  a?: number;
+}) => {
+  return `hsla(${h}deg, ${s}%, ${l}%, ${a ? a : 1})`;
 };

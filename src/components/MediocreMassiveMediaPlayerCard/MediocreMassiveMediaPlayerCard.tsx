@@ -1,4 +1,4 @@
-import { AlbumArt, Title, Track } from "./components";
+import { Title, Track } from "./components";
 import { PlaybackControls } from "./components/PlaybackControls";
 import styled from "@emotion/styled";
 import { PlayerActions } from "./components/PlayerActions";
@@ -6,6 +6,7 @@ import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { useArtworkColors } from "@hooks";
+import { AlbumArt } from "@components";
 
 const Root = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
@@ -16,6 +17,7 @@ const Root = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
+  --mmpc-extra-horizontal-padding: 0px;
 
   ${props => props.$artColorVars ?? ""}
   ${props => {
@@ -38,6 +40,10 @@ const Root = styled.div<{
           max-height: calc(100vh - var(--header-height, 16px));
         `;
       }
+      case "popup": {
+        return `
+          --mmpc-extra-horizontal-padding: 12px;`;
+      }
       default: {
         return ``;
       }
@@ -55,6 +61,7 @@ const Wrap = styled.div<{
   mode: MediocreMassiveMediaPlayerCardConfig["mode"];
 }>`
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 16px;
   justify-content: space-around;
@@ -67,6 +74,7 @@ const Wrap = styled.div<{
         return `
           width: 90%;
           max-width: 400px;
+          padding: 16px;
         `;
       }
       case "popup": {
@@ -122,7 +130,7 @@ export const MediocreMassiveMediaPlayerCard = ({
       $useArtColors={use_art_colors}
     >
       <Wrap mode={mode}>
-        <AlbumArt />
+        <AlbumArt iconSize="x-large" borderRadius={8} />
         <ControlsWrapper>
           <Title />
           <Track />

@@ -4,7 +4,7 @@ import {
 } from "@components";
 import { getDidMediaPlayerUpdate } from "@utils";
 import { CardWrapper } from "@wrappers";
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant, MediaPlayerEntity } from "@types";
 
 class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMediaPlayerGroupCardConfig> {
   Card = MediocreChipMediaPlayerGroupCard;
@@ -13,8 +13,8 @@ class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMe
     if (!prevHass && hass) return true;
 
     return getDidMediaPlayerUpdate(
-      prevHass.states[this.config.entity_id],
-      hass.states[this.config.entity_id]
+      prevHass.states[this.config.entity_id] as MediaPlayerEntity,
+      hass.states[this.config.entity_id] as MediaPlayerEntity
     );
   };
 

@@ -12,6 +12,8 @@ const PlaybackControlsWrap = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  padding-left: var(--mmpc-extra-horizontal-padding, 0px);
+  padding-right: var(--mmpc-extra-horizontal-padding, 0px);
 `;
 
 export const PlaybackControls = () => {

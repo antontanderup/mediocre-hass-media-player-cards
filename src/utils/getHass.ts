@@ -1,4 +1,4 @@
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant } from "@types";
 
 export function getHass(): HomeAssistant {
   // @ts-expect-error but it's fine. This way we dont have worry about passing/context etc.

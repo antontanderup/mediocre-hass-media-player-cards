@@ -2,6 +2,11 @@ import { useMemo, useEffect, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import { ProgressBar, usePlayer } from "@components";
 
+const TrackWrap = styled.div`
+  padding-left: var(--mmpc-extra-horizontal-padding, 0px);
+  padding-right: var(--mmpc-extra-horizontal-padding, 0px);
+`;
+
 const TimeWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -69,7 +74,7 @@ export const Track = () => {
   }
 
   return (
-    <div>
+    <TrackWrap>
       <ProgressBar
         value={position.currentPosition}
         min={0}
@@ -79,6 +84,6 @@ export const Track = () => {
         <span>{position.prettyNow}</span>
         <span>{position.prettyEnd}</span>
       </TimeWrap>
-    </div>
+    </TrackWrap>
   );
 };

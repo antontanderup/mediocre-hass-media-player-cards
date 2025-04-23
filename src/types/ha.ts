@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HomeAssistant } from "custom-card-helpers";
+import { HomeAssistant as CCHHomeAssistant } from "custom-card-helpers";
 import "preact";
+import { MediaPlayerEntity } from "@types";
+
+export type HomeAssistant = Omit<CCHHomeAssistant, "states"> & {
+  states: CCHHomeAssistant["states"] & {
+    [key: `media_player.${string}`]: MediaPlayerEntity;
+  };
+};
 
 interface HaIconAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
   icon: string;
