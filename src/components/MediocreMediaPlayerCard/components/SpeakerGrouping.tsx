@@ -8,6 +8,7 @@ import {
   CardContextType,
   useHass,
   GroupVolumeController,
+  IconButton,
 } from "@components";
 
 const SpeakerGroupContainer = styled.div`
@@ -24,6 +25,20 @@ const GroupTitle = styled.h3`
   font-weight: 500;
   color: var(--primary-text-color);
   margin: 0px 16px;
+`;
+
+const SyncContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+  gap: 4px;
+  margin-right: 16px;
+`;
+
+const SyncText = styled.span`
+  font-size: 12px;
+  color: var(--secondary-text-color);
 `;
 
 const GroupedSpeakers = styled.div`
@@ -56,6 +71,11 @@ const SpeakerChip = styled(Chip)`
   }
 `;
 
+const TitleRow = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const SpeakerGrouping = () => {
   const hass = useHass();
   const { config } =
@@ -64,6 +84,7 @@ export const SpeakerGrouping = () => {
   const { entity_id, speaker_group } = config;
 
   const [playersLoading, setPlayersLoading] = useState<string[]>([]);
+  const [syncMainSpeakerVolume, setSyncMainSpeakerVolume] = useState(true);
 
   // Use the specified entity_id for the group or fall back to the main entity_id
   const mainEntityId = speaker_group?.entity_id || entity_id;
@@ -129,11 +150,32 @@ export const SpeakerGrouping = () => {
     <SpeakerGroupContainer>
       {mainEntity?.attributes?.group_members?.length > 1 && (
         <Fragment>
-          <GroupTitle>Grouped Speakers</GroupTitle>
+          <TitleRow>
+            <GroupTitle>Grouped Speakers</GroupTitle>
+            <SyncContainer>
+              <SyncText
+                onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+              >
+                Link Volume
+              </SyncText>
+              <IconButton
+                icon={
+                  syncMainSpeakerVolume
+                    ? "mdi:check-circle"
+                    : "mdi:circle-outline"
+                }
+                size="x-small"
+                onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+              />
+            </SyncContainer>
+          </TitleRow>
           <GroupedSpeakers>
             <GroupVolumeController
-              entity_id={entity_id}
-              speaker_group={speaker_group}
+              config={{
+                entity_id,
+                speaker_group,
+              }}
+              syncMainSpeaker={syncMainSpeakerVolume}
             />
           </GroupedSpeakers>
         </Fragment>

@@ -50,14 +50,17 @@ export type GroupSpeaker = {
   isMainSpeaker: boolean;
 };
 
-export type GroupVolumeControllerProps = Pick<
-  CommonMediocreMediaPlayerCardConfig,
-  "speaker_group" | "entity_id"
->;
+export type GroupVolumeControllerProps = {
+  config: Pick<
+    CommonMediocreMediaPlayerCardConfig,
+    "speaker_group" | "entity_id"
+  >;
+  syncMainSpeaker: boolean; // Wheter the main speaker will affect the volume of the group
+};
 
 export const GroupVolumeController = ({
-  entity_id,
-  speaker_group,
+  config: { speaker_group, entity_id },
+  syncMainSpeaker,
 }: GroupVolumeControllerProps) => {
   const hass = useHass();
 
@@ -132,9 +135,9 @@ export const GroupVolumeController = ({
   const handleVolumeChange = useCallback(
     (entityId: string, volume: number, isMainSpeaker: boolean) => {
       // Use setVolume utility, with sync if this is the main speaker
-      setVolume(entityId, volume, isMainSpeaker);
+      setVolume(entityId, volume, isMainSpeaker && syncMainSpeaker);
     },
-    []
+    [syncMainSpeaker]
   );
 
   const renderSpeaker = (

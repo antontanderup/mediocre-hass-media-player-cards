@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import styled from "@emotion/styled";
-import { Chip, useHass, GroupVolumeController } from "@components";
+import { Chip, useHass, GroupVolumeController, IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
@@ -16,6 +16,23 @@ const SpeakerList = styled.div`
   gap: 8px;
   margin-left: 16px;
   margin-right: 16px;
+`;
+
+const SyncContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+  gap: 4px;
+  opacity: 0.8;
+  // Below positioning hack is probably going to come back to bite me but hey, it works
+  position: absolute;
+  right: 56px;
+  top: 12px;
+`;
+
+const SyncText = styled.span`
+  font-size: 12px;
 `;
 
 const Chips = styled.div`
@@ -49,6 +66,7 @@ export const SpeakerGrouping = () => {
   const { entity_id, speaker_group } = config;
 
   const [playersLoading, setPlayersLoading] = useState<string[]>([]);
+  const [syncMainSpeakerVolume, setSyncMainSpeakerVolume] = useState(true);
 
   // Use the specified entity_id for the group or fall back to the main entity_id
   const mainEntityId = speaker_group?.entity_id || entity_id;
@@ -111,12 +129,33 @@ export const SpeakerGrouping = () => {
   return (
     <SpeakerGroupContainer>
       {mainEntity?.attributes?.group_members?.length > 1 && (
-        <SpeakerList>
-          <GroupVolumeController
-            entity_id={entity_id}
-            speaker_group={speaker_group}
-          />
-        </SpeakerList>
+        <div>
+          <SyncContainer>
+            <SyncText
+              onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+            >
+              Link Volume
+            </SyncText>
+            <IconButton
+              icon={
+                syncMainSpeakerVolume
+                  ? "mdi:check-circle"
+                  : "mdi:circle-outline"
+              }
+              size="x-small"
+              onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+            />
+          </SyncContainer>
+          <SpeakerList>
+            <GroupVolumeController
+              config={{
+                entity_id,
+                speaker_group,
+              }}
+              syncMainSpeaker={syncMainSpeakerVolume}
+            />
+          </SpeakerList>
+        </div>
       )}
       <Chips>
         {availableSpeakers
