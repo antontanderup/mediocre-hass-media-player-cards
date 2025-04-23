@@ -7,7 +7,7 @@ import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 const SpeakerGroupContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 `;
 
 const SpeakerList = styled.div`
