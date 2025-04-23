@@ -33,7 +33,7 @@ const SyncContainer = styled.div`
   align-items: center;
   margin-left: auto;
   gap: 4px;
-  margin-right: 16px;
+  margin-right: 19px;
 `;
 
 const SyncText = styled.span`
