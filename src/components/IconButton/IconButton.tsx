@@ -50,6 +50,10 @@ const Button = styled.button<{
       ? "var(--disabled-text-color, #999)"
       : "var(--primary-text-color, #333)"};
 
+  /* iOS fixes for stuck hover states */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
   &:hover {
     background-color: var(--secondary-background-color, rgba(0, 0, 0, 0.05));
   }
@@ -57,6 +61,17 @@ const Button = styled.button<{
   &:active {
     background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
   }
+
+  /* iOS-specific override to ensure hover doesn't get stuck */
+  @media (hover: none) {
+    &:hover {
+      background-color: transparent;
+    }
+    &:active {
+      background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
+    }
+  }
+
   > ha-icon {
     --mdc-icon-size: ${props => getButtonSize(props.$size)}px;
     width: ${props => getButtonSize(props.$size)}px;
