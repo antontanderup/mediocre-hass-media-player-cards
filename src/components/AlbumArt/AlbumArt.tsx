@@ -1,7 +1,7 @@
 import { Icon, IconSize, usePlayer } from "@components";
 import styled from "@emotion/styled";
 import { getDeviceIcon } from "@utils";
-import { ButtonHTMLAttributes, JSX } from "preact/compat";
+import { ButtonHTMLAttributes, JSX, useEffect, useState } from "preact/compat";
 
 export type AlbumArtProps = {
   size?: number | string;
@@ -91,6 +91,11 @@ export const AlbumArt = ({
   } = player.attributes;
   const state = player.state;
 
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    setError(false);
+  }, [albumArt]);
+
   return (
     <AlbumArtContainer
       $size={size}
@@ -98,7 +103,7 @@ export const AlbumArt = ({
       {...buttonProps}
     >
       <ContentContainer>
-        {albumArt && state !== "off" ? (
+        {albumArt && state !== "off" && !error ? (
           <StyledImage
             src={albumArt}
             alt={
@@ -106,6 +111,7 @@ export const AlbumArt = ({
                 ? `${title} by ${artist}`
                 : `Source: ${source}`
             }
+            onError={() => setError(true)}
           />
         ) : (
           <IconContainer>
