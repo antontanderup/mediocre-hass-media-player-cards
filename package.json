@@ -16,6 +16,7 @@
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.3",
     "preact": "^10.25.3"

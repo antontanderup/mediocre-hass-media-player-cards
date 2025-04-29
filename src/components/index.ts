@@ -9,6 +9,8 @@ export * from "./GroupVolumeController";
 export * from "./HassContext";
 export * from "./Icon";
 export * from "./IconButton";
+export * from "./Input";
+export * from "./MaSearch";
 export * from "./MediocreChipMediaPlayerGroupCard";
 export * from "./MediocreMassiveMediaPlayerCard";
 export * from "./MediocreMediaPlayerCard";

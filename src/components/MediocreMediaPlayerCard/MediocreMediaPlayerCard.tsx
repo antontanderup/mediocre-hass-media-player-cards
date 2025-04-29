@@ -7,6 +7,7 @@ import {
   MetaInfo,
   PlaybackControls,
   PlayerInfo,
+  Search,
   SpeakerGrouping,
 } from "./components";
 import { AlbumArt, IconButton, usePlayer } from "@components";
@@ -84,14 +85,22 @@ const ContentRow = styled.div`
 export const MediocreMediaPlayerCard = () => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { entity_id, custom_buttons, action, tap_opens_popup, use_art_colors } =
-    config;
+  const {
+    entity_id,
+    custom_buttons,
+    action,
+    tap_opens_popup,
+    use_art_colors,
+    ma_entity_id,
+  } = config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
+  const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
 
   const [showGrouping, setShowGrouping] = useState(false);
   const [showCustomButtons, setShowCustomButtons] = useState(false);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const { artVars, haVars } = useArtworkColors();
 
@@ -184,11 +193,11 @@ export const MediocreMediaPlayerCard = () => {
                     )}
                   </Fragment>
                 )}
-                {hasGroupingFeature && (
+                {hasMaSearch && (
                   <IconButton
                     size="x-small"
-                    onClick={toggleGrouping}
-                    icon={"mdi:speaker-multiple"}
+                    onClick={() => setShowSearch(!showSearch)}
+                    icon={"mdi:magnify"}
                   />
                 )}
               </ContentRow>
@@ -199,9 +208,16 @@ export const MediocreMediaPlayerCard = () => {
                     setSliderVisible={setShowVolumeSlider}
                   />
                 )}
+                {!!isOn && hasGroupingFeature && (
+                  <IconButton
+                    size="x-small"
+                    onClick={toggleGrouping}
+                    icon={"mdi:speaker-multiple"}
+                  />
+                )}
                 {(!isOn || hasNoPlaybackControls) && (
                   <IconButton
-                    size="small"
+                    size="x-small"
                     onClick={togglePower}
                     icon={"mdi:power"}
                   />
@@ -210,8 +226,10 @@ export const MediocreMediaPlayerCard = () => {
             </ContentRight>
           </ContentContainer>
         </CardContent>
+
         {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
         {showCustomButtons && <CustomButtons />}
+        {showSearch && <Search />}
         {isPopupVisible && (
           <MassivePopUp
             visible={isPopupVisible}

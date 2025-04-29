@@ -7,7 +7,6 @@ import { getHass, getVolumeIcon } from "@utils";
 const VolumeContainer = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
   transition: all 0.3s ease;
   margin-top: auto;
   gap: 4px;
@@ -81,13 +80,13 @@ export const VolumeTrigger = ({
     <Fragment>
       {!sliderVisible ? (
         <ControlButton
-          size="small"
+          size="x-small"
           onClick={() => setSliderVisible(true)}
           icon={volumeIcon}
         />
       ) : (
         <ControlButton
-          size="small"
+          size="x-small"
           onClick={() => setSliderVisible(false)}
           icon={"mdi:chevron-left"}
         />

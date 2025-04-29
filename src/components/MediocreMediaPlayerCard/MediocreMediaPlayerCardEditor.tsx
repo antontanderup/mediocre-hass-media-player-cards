@@ -224,6 +224,20 @@ export const MediocreMediaPlayerCardEditor = ({
       </FormGroup>
 
       <FormGroup>
+        <SubForm title="Music Assistant Configuration (optional)">
+          <FormGroup>
+            <EntityPicker
+              hass={hass}
+              value={safeConfig.ma_entity_id}
+              onChange={newValue => updateField("ma_entity_id", newValue)}
+              label="Music Assistant Entity ID (Optional)"
+              domains={["media_player"]}
+            />
+          </FormGroup>
+        </SubForm>
+      </FormGroup>
+
+      <FormGroup>
         <ButtonsContainer>
           {safeConfig.custom_buttons.map((button, index) => {
             const { name, icon, ...interactions } = button;

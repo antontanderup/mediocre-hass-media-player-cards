@@ -2,14 +2,21 @@ import { HomeAssistant } from "@types";
 import { useCallback } from "preact/hooks";
 
 export type TextInputProps = {
-  hass: HomeAssistant;
   value: string; // entity_id
   onChange: (value?: string) => void; // returns new entity id or undefined
   label?: string;
   required?: boolean;
   disabled?: boolean;
-  isIconInput?: boolean;
-};
+} & (
+  | {
+      hass: HomeAssistant;
+      isIconInput: true;
+    }
+  | {
+      hass?: HomeAssistant;
+      isIconInput?: false;
+    }
+);
 
 export const TextInput = ({
   hass,
