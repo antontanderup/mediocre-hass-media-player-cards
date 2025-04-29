@@ -55,7 +55,7 @@ export const PlayerContextProvider = ({
       friendlyName;
     const subtitle =
       !!albumName || !!artist
-        ? `${albumName !== title ? `${albumName} - ` : ""}${artist}`
+        ? `${!!albumName && albumName !== title ? `${albumName} - ` : ""}${artist ?? ""}`
         : undefined;
 
     return {
