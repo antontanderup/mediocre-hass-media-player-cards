@@ -3,6 +3,7 @@ import { getHass } from "@utils";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import styled from "@emotion/styled";
+import { Chip } from "../Chip/Chip";
 
 // Media types
 export type MediaType =
@@ -13,6 +14,9 @@ export type MediaType =
   | "radio"
   | "audiobook"
   | "podcast";
+
+// Filter types (includes "all" in addition to MediaType)
+export type FilterType = "all" | MediaType;
 
 // Base media item interface
 export interface MediaItem {
@@ -62,6 +66,21 @@ const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    height: 0px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-text-color, rgba(255, 255, 255, 0.3));
+    border-radius: 0px;
+  }
 `;
 
 const ResultsContainer = styled.div`
@@ -197,6 +216,7 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
   const [query, setQuery] = useState("");
   const debuncedQuery = useDebounce(query, 300);
   const [configEntry, setConfigEntry] = useState(null);
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   console.log("🚀 ~ Search ~ configEntry:", configEntry);
 
   useEffect(() => {
@@ -247,10 +267,11 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
 
   const renderArtists = (artists: Artist[]) => {
     if (!artists || artists.length === 0) return null;
+    if (activeFilter !== "all" && activeFilter !== "artist") return null;
 
     return (
       <div>
-        <SectionTitle>Artists</SectionTitle>
+        {activeFilter === "all" && <SectionTitle>Artists</SectionTitle>}
         <MediaGrid>
           {artists.slice(0, 6).map(artist => (
             <MediaItemContainer
@@ -268,10 +289,11 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
 
   const renderAlbums = (albums: Album[]) => {
     if (!albums || albums.length === 0) return null;
+    if (activeFilter !== "all" && activeFilter !== "album") return null;
 
     return (
       <div>
-        <SectionTitle>Albums</SectionTitle>
+        {activeFilter === "all" && <SectionTitle>Albums</SectionTitle>}
         <MediaGrid>
           {albums.slice(0, 6).map(album => (
             <MediaItemContainer key={album.uri} onClick={() => playItem(album)}>
@@ -289,10 +311,11 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
 
   const renderTracks = (tracks: Track[]) => {
     if (!tracks || tracks.length === 0) return null;
+    if (activeFilter !== "all" && activeFilter !== "track") return null;
 
     return (
       <div>
-        <SectionTitle>Tracks</SectionTitle>
+        {activeFilter === "all" && <SectionTitle>Tracks</SectionTitle>}
         <TrackListContainer>
           {tracks.slice(0, 5).map(track => (
             <TrackItem key={track.uri} onClick={() => playItem(track)}>
@@ -312,10 +335,11 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
 
   const renderPlaylists = (playlists: Playlist[]) => {
     if (!playlists || playlists.length === 0) return null;
+    if (activeFilter !== "all" && activeFilter !== "playlist") return null;
 
     return (
       <div>
-        <SectionTitle>Playlists</SectionTitle>
+        {activeFilter === "all" && <SectionTitle>Playlists</SectionTitle>}
         <MediaGrid>
           {playlists.slice(0, 6).map(playlist => (
             <MediaItemContainer
@@ -334,6 +358,58 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
   return (
     <SearchContainer>
       <Input placeholder="Search.." onChange={setQuery} value={query} />
+      <FilterContainer>
+        <Chip
+          onClick={() => setActiveFilter("all")}
+          icon="mdi:all-inclusive"
+          style={{
+            opacity: activeFilter === "all" ? 1 : 0.6,
+            fontWeight: activeFilter === "all" ? "bold" : "normal",
+          }}
+        >
+          All
+        </Chip>
+        <Chip
+          onClick={() => setActiveFilter("artist")}
+          icon="mdi:account-music"
+          style={{
+            opacity: activeFilter === "artist" ? 1 : 0.6,
+            fontWeight: activeFilter === "artist" ? "bold" : "normal",
+          }}
+        >
+          Artists
+        </Chip>
+        <Chip
+          onClick={() => setActiveFilter("album")}
+          icon="mdi:album"
+          style={{
+            opacity: activeFilter === "album" ? 1 : 0.6,
+            fontWeight: activeFilter === "album" ? "bold" : "normal",
+          }}
+        >
+          Albums
+        </Chip>
+        <Chip
+          onClick={() => setActiveFilter("track")}
+          icon="mdi:music-note"
+          style={{
+            opacity: activeFilter === "track" ? 1 : 0.6,
+            fontWeight: activeFilter === "track" ? "bold" : "normal",
+          }}
+        >
+          Tracks
+        </Chip>
+        <Chip
+          onClick={() => setActiveFilter("playlist")}
+          icon="mdi:playlist-music"
+          style={{
+            opacity: activeFilter === "playlist" ? 1 : 0.6,
+            fontWeight: activeFilter === "playlist" ? "bold" : "normal",
+          }}
+        >
+          Playlists
+        </Chip>
+      </FilterContainer>
       {results && (
         <ResultsContainer>
           {renderArtists(results.artists)}
