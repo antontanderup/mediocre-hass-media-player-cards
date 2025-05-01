@@ -1,20 +1,8 @@
 import { useCallback, useMemo } from "preact/hooks";
-import styled from "@emotion/styled";
 import { IconButton, Slider, usePlayer } from "@components";
 import { Fragment } from "preact/jsx-runtime";
 import { getHass, getVolumeIcon } from "@utils";
-
-const VolumeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
-  margin-top: auto;
-  gap: 4px;
-`;
-
-const ControlButton = styled(IconButton)<{ muted?: boolean }>`
-  opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
-`;
+import { css } from "@emotion/react";
 
 export const VolumeSlider = () => {
   const player = usePlayer();
@@ -45,12 +33,16 @@ export const VolumeSlider = () => {
   );
 
   return (
-    <VolumeContainer>
-      <ControlButton
-        size="x-small"
-        onClick={handleToggleMute}
-        icon={VolumeIcon}
-      />
+    <div
+      css={css`
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        width: 100%;
+        gap: 4px;
+      `}
+    >
+      <IconButton size="x-small" onClick={handleToggleMute} icon={VolumeIcon} />
       <Slider
         min={0}
         max={1}
@@ -59,7 +51,7 @@ export const VolumeSlider = () => {
         sliderSize={"small"}
         onChange={handleVolumeChange}
       />
-    </VolumeContainer>
+    </div>
   );
 };
 
@@ -79,13 +71,13 @@ export const VolumeTrigger = ({
   return (
     <Fragment>
       {!sliderVisible ? (
-        <ControlButton
+        <IconButton
           size="x-small"
           onClick={() => setSliderVisible(true)}
           icon={volumeIcon}
         />
       ) : (
-        <ControlButton
+        <IconButton
           size="x-small"
           onClick={() => setSliderVisible(false)}
           icon={"mdi:chevron-left"}

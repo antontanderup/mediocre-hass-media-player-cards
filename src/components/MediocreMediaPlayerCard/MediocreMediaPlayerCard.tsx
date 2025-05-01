@@ -52,34 +52,18 @@ const CardContent = styled.div<{ $isOn: boolean; $useArtColors?: boolean }>`
   position: relative;
 `;
 
-const ContentContainer = styled.div`
-  flex: 1;
+const CardRow = styled.div<{ $align?: "start" | "middle" | "end" }>`
   display: flex;
   flex-direction: row;
-  gap: 12px;
-  overflow: hidden;
-`;
-
-const ContentLeft = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
-const ContentRight = styled.div`
-  display: flex;
-  flex-direction: column;
   gap: 8px;
-  align-items: flex-end;
+  align-items: ${props => props.$align || "middle"};
   justify-content: space-between;
 `;
 
-const ContentRow = styled.div`
+const CardRowRight = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
-  align-items: flex-start;
 `;
 
 export const MediocreMediaPlayerCard = () => {
@@ -129,7 +113,8 @@ export const MediocreMediaPlayerCard = () => {
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-  const artSize = state === "off" || !subtitle ? 68 : 100;
+  const artSize =
+    state === "off" || (!subtitle && hasNoPlaybackControls) ? 68 : 100;
 
   const artAction: InteractionConfig = action ?? {
     tap_action: { action: "more-info" },
@@ -165,18 +150,24 @@ export const MediocreMediaPlayerCard = () => {
       >
         <CardContent $isOn={isOn} $useArtColors={use_art_colors}>
           <AlbumArt size={artSize} iconSize="large" {...artActionProps} />
-          <ContentContainer>
-            <ContentLeft>
-              <MetaInfo />
-              <PlayerInfo />
-              {showVolumeSlider || hasNoPlaybackControls ? (
-                <VolumeSlider />
-              ) : (
-                <PlaybackControls />
-              )}
-            </ContentLeft>
-            <ContentRight>
-              <ContentRow>
+          <div
+            css={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+            }}
+          >
+            <CardRow $align="start">
+              <div
+                css={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <MetaInfo />
+                <PlayerInfo />
+              </div>
+              <CardRowRight>
                 {hasCustomButtons && (
                   <Fragment>
                     {custom_buttons.length === 1 ? (
@@ -200,8 +191,27 @@ export const MediocreMediaPlayerCard = () => {
                     icon={"mdi:magnify"}
                   />
                 )}
-              </ContentRow>
-              <ContentRow>
+              </CardRowRight>
+            </CardRow>
+            <CardRow
+              css={{
+                marginTop: "auto",
+                minHeight: hasNoPlaybackControls ? "unset" : "36px",
+              }}
+            >
+              <div
+                css={{
+                  display: "flex",
+                  flexGrow: 1,
+                }}
+              >
+                {showVolumeSlider || hasNoPlaybackControls ? (
+                  <VolumeSlider />
+                ) : (
+                  <PlaybackControls />
+                )}
+              </div>
+              <CardRowRight>
                 {!!isOn && !hasNoPlaybackControls && (
                   <VolumeTrigger
                     sliderVisible={showVolumeSlider}
@@ -222,9 +232,9 @@ export const MediocreMediaPlayerCard = () => {
                     icon={"mdi:power"}
                   />
                 )}
-              </ContentRow>
-            </ContentRight>
-          </ContentContainer>
+              </CardRowRight>
+            </CardRow>
+          </div>
         </CardContent>
 
         {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
