@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import { Input as BaseInput } from "@base-ui-components/react/input";
+import { Icon } from "@components/Icon";
+import { css, keyframes } from "@emotion/react";
 
 interface InputProps {
   value?: string;
@@ -9,7 +11,17 @@ interface InputProps {
   type?: string;
   label?: string;
   name?: string;
+  loading?: boolean;
 }
+
+const spinAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 const StyledInput = styled(BaseInput)`
   --input-text-color: var(--primary-text-color);
@@ -42,6 +54,7 @@ const StyledInput = styled(BaseInput)`
 
 const InputContainer = styled.div`
   display: flex;
+  position: relative;
 `;
 
 const InputLabel = styled.label`
@@ -60,6 +73,7 @@ export const Input = ({
   type = "text",
   label,
   name,
+  loading = false,
 }: InputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.((e.target as HTMLInputElement).value);
@@ -76,6 +90,22 @@ export const Input = ({
         type={type}
         name={name}
       />
+      {loading && (
+        <Icon
+          size="x-small"
+          icon="mdi:loading"
+          css={css`
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            ha-icon {
+              pointer-events: none;
+              animation: ${spinAnimation} 1s linear infinite;
+            }
+          `}
+        />
+      )}
     </InputContainer>
   );
 };
