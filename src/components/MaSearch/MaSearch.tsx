@@ -86,6 +86,7 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
   ) => {
     if (!result) return null;
     if (activeFilter !== "all" && activeFilter !== mediaType) return null;
+    if (result.length === 0 && activeFilter === "all") return null;
 
     return (
       <div key={mediaType}>
