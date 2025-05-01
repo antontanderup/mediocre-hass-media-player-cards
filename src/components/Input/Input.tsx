@@ -12,6 +12,7 @@ interface InputProps {
   label?: string;
   name?: string;
   loading?: boolean;
+  className?: string;
 }
 
 const spinAnimation = keyframes`
@@ -74,13 +75,14 @@ export const Input = ({
   label,
   name,
   loading = false,
+  className,
 }: InputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.((e.target as HTMLInputElement).value);
   };
 
   return (
-    <InputContainer>
+    <InputContainer className={className}>
       {label && <InputLabel>{label}</InputLabel>}
       <StyledInput
         value={value}
@@ -96,7 +98,7 @@ export const Input = ({
           icon="mdi:loading"
           css={css`
             position: absolute;
-            right: 8px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             ha-icon {

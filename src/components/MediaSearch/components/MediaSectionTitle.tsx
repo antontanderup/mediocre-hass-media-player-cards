@@ -17,6 +17,7 @@ export const MediaSectionTitle = ({
         justifyContent: "space-between",
         cursor: onClick ? "pointer" : "default",
         margin: "0 4px",
+        padding: "0px var(--mmpc-search-padding, 0px)",
       }}
       onClick={onClick}
     >

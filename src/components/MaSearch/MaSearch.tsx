@@ -1,8 +1,9 @@
-import { Chip, Input, MediaTrack } from "@components";
+import { Input, MediaTrack } from "@components";
 import { getHass } from "@utils";
 import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
+  FilterChip,
   FilterContainer,
   MediaGrid,
   MediaItem,
@@ -38,9 +39,12 @@ const filters: MaFilterConfig[] = [
   { type: "podcast", label: "Podcasts", icon: "mdi:podcast" },
 ];
 
-// Styled components for media items
+export type MaSearchProps = {
+  maEntityId: string;
+  horizontalPadding?: number;
+};
 
-export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
+export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
   const [query, setQuery] = useState("");
   const debuncedQuery = useDebounce(query, 300);
 
@@ -59,7 +63,7 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
 
   const renderFilterChips = () => {
     return filters.map(filter => (
-      <Chip
+      <FilterChip
         key={filter.type}
         onClick={() => setActiveFilter(filter.type)}
         icon={filter.icon}
@@ -67,9 +71,10 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
           opacity: activeFilter === filter.type ? 1 : 0.6,
           fontWeight: activeFilter === filter.type ? "bold" : "normal",
         }}
+        $horizontalPadding={horizontalPadding}
       >
         {filter.label}
-      </Chip>
+      </FilterChip>
     ));
   };
 
@@ -131,12 +136,13 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
     );
   };
   return (
-    <SearchContainer>
+    <SearchContainer $horizontalPadding={horizontalPadding}>
       <Input
         placeholder="Search.."
         onChange={setQuery}
         value={query}
         loading={loading}
+        css={{ padding: "0px var(--mmpc-search-padding, 0px)" }}
       />
       <FilterContainer>{renderFilterChips()}</FilterContainer>
       {results &&
