@@ -12,7 +12,7 @@
 
     /* Preact Config */
     "jsx": "react-jsx",
-    "jsxImportSource": "preact",
+    "jsxImportSource": "@emotion/react",
     "skipLibCheck": true,
     "paths": {
       "react": ["./node_modules/preact/compat/"],

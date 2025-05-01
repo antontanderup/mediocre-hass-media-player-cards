@@ -51,6 +51,7 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "react/prop-types": "off", // Disable prop-types as we're using TypeScript for type checking
+      "react/no-unknown-property": ["error", { ignore: ["css"] }],
     },
   }
 );
