@@ -19,22 +19,6 @@ export const FilterContainer = styled.div`
   }
 `;
 
-export const SectionTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 500;
-  margin: 8px 0 8px 0;
-  color: var(--primary-text-color);
-  position: relative;
-  &:after {
-    content: ">";
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--secondary-text-color);
-    position: absolute;
-    right: 0;
-  }
-`;
-
 export const MediaGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

@@ -6,8 +6,8 @@ import {
   FilterContainer,
   MediaGrid,
   MediaItem,
+  MediaSectionTitle,
   SearchContainer,
-  SectionTitle,
   TrackListContainer,
 } from "@components/MediaSearch";
 import {
@@ -90,7 +90,9 @@ export const MaSearch = ({ maEntityId }: { maEntityId: string }) => {
     return (
       <div key={mediaType}>
         {activeFilter === "all" && (
-          <SectionTitle>{labelMap[mediaType]}</SectionTitle>
+          <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
+            {labelMap[mediaType]}
+          </MediaSectionTitle>
         )}
         {mediaType === "track" ? (
           <TrackListContainer>
