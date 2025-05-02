@@ -212,7 +212,6 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
               domains={["media_player"]}
             />
           </FormGroup>
-          <Label>Select Speakers (including main speaker)</Label>
           <FormGroup>
             <EntitiesPicker
               hass={hass}
@@ -220,7 +219,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
               onChange={newValue =>
                 updateField("speaker_group.entities", newValue)
               }
-              label="Speaker Group Entities (including main speaker)"
+              label="Select Speakers (including main speaker)"
               domains={["media_player"]}
             />
           </FormGroup>
