@@ -10,18 +10,26 @@ export function useSupportedFeatures() {
       source,
       supported_features: supportedFeatures,
     },
+    state,
   } = usePlayer();
 
-  const supportPreviousTrack = (supportedFeatures | 16) === supportedFeatures;
-  const supportNextTrack = (supportedFeatures | 32) === supportedFeatures;
+  const isOff = state === "off";
+  const supportPreviousTrack =
+    !isOff && (supportedFeatures | 16) === supportedFeatures;
+  const supportNextTrack =
+    !isOff && (supportedFeatures | 32) === supportedFeatures;
   const supportsShuffle =
+    !isOff &&
     shuffle !== undefined &&
     !["optical", "aux"].includes(source?.toLowerCase());
   const supportsRepeat =
-    repeat !== undefined && !["optical", "aux"].includes(source?.toLowerCase());
+    !isOff &&
+    repeat !== undefined &&
+    !["optical", "aux"].includes(source?.toLowerCase());
   const supportsTogglePlayPause =
-    (supportedFeatures & 4096) === 4096 ||
-    (supportedFeatures & 16384) === 16384;
+    !isOff &&
+    ((supportedFeatures & 4096) === 4096 ||
+      (supportedFeatures & 16384) === 16384);
 
   return useMemo(
     () => ({
