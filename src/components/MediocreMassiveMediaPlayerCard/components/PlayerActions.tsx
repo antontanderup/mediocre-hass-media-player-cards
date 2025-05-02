@@ -12,7 +12,6 @@ import {
   InteractionConfig,
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
-import { getHass } from "@utils";
 
 const PlayerActionsWrap = styled.div`
   background-color: var(--mmpc-surface-higher);
@@ -70,7 +69,7 @@ export const PlayerActions = () => {
       CardContext
     );
 
-  const { entity_id, custom_buttons, speaker_group, ma_entity_id } = config;
+  const { custom_buttons, speaker_group, ma_entity_id } = config;
 
   const [selected, setSelected] = useState<
     "volume" | "speaker-grouping" | "custom-buttons" | "search"
@@ -82,12 +81,6 @@ export const PlayerActions = () => {
     },
     [selected]
   );
-
-  const onTogglePower = useCallback(() => {
-    getHass().callService("media_player", "toggle", {
-      entity_id,
-    });
-  }, [entity_id]);
 
   return (
     <PlayerActionsWrap>
@@ -148,7 +141,6 @@ export const PlayerActions = () => {
           onClick={() => setSelected("search")}
         />
       )}
-      <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
     </PlayerActionsWrap>
   );
