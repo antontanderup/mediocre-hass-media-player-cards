@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { IconButton } from "@components";
+import { IconButton, MaSearch } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -64,23 +64,16 @@ const ModalHeader = styled.div`
   border-bottom: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
 `;
 
-const ModalContent = styled.div<{ padding?: string }>`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: ${props => props.padding ?? "16px"};
-`;
-
 export const PlayerActions = () => {
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
 
-  const { entity_id, custom_buttons, speaker_group } = config;
+  const { entity_id, custom_buttons, speaker_group, ma_entity_id } = config;
 
   const [selected, setSelected] = useState<
-    "volume" | "speaker-grouping" | "custom-buttons"
+    "volume" | "speaker-grouping" | "custom-buttons" | "search"
   >();
 
   const toggleSelected = useCallback(
@@ -113,6 +106,14 @@ export const PlayerActions = () => {
       >
         <SpeakerGrouping />
       </Modal>
+      <Modal
+        title="Search"
+        isOpen={selected === "search"}
+        onClose={() => setSelected(undefined)}
+        padding="16px 0px 16px 0px"
+      >
+        <MaSearch maEntityId={ma_entity_id} horizontalPadding={16} />
+      </Modal>
       {!!speaker_group && (
         <IconButton
           size="small"
@@ -121,9 +122,9 @@ export const PlayerActions = () => {
         />
       )}
       {custom_buttons
-        ?.slice(0, 2)
+        ?.slice(0, 1)
         .map((button, index) => <CustomButton key={index} button={button} />)}
-      {custom_buttons?.length > 3 && (
+      {custom_buttons?.length > 2 && (
         <Fragment>
           <IconButton
             size="small"
@@ -139,6 +140,13 @@ export const PlayerActions = () => {
             <CustomButtons />
           </Modal>
         </Fragment>
+      )}
+      {!!ma_entity_id && (
+        <IconButton
+          size="small"
+          icon={"mdi:magnify"}
+          onClick={() => setSelected("search")}
+        />
       )}
       <IconButton size="small" icon={"mdi:power"} onClick={onTogglePower} />
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
@@ -171,7 +179,18 @@ const Modal = ({
           onClick={onClose}
         />
       </ModalHeader>
-      <ModalContent padding={padding}>{children}</ModalContent>
+      <div
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+          maxHeight: "400px",
+          overflowY: "auto",
+          padding: padding ?? 16,
+        }}
+      >
+        {children}
+      </div>
     </ModalRoot>
   );
 };
