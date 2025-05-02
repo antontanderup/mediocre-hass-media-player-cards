@@ -52,18 +52,19 @@ const CardContent = styled.div<{ $isOn: boolean; $useArtColors?: boolean }>`
   position: relative;
 `;
 
-const CardRow = styled.div<{ $align?: "start" | "middle" | "end" }>`
+const CardRow = styled.div<{ $align?: "start" | "center" | "end" }>`
   display: flex;
   flex-direction: row;
   gap: 8px;
-  align-items: ${props => props.$align || "middle"};
+  align-items: ${props => props.$align || "center"};
   justify-content: space-between;
 `;
 
 const CardRowRight = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 4px;
+  min-width: max-content;
 `;
 
 export const MediocreMediaPlayerCard = () => {
@@ -160,8 +161,7 @@ export const MediocreMediaPlayerCard = () => {
             <CardRow $align="start">
               <div
                 css={{
-                  display: "flex",
-                  flexDirection: "column",
+                  display: "grid",
                 }}
               >
                 <MetaInfo />
@@ -198,11 +198,13 @@ export const MediocreMediaPlayerCard = () => {
                 marginTop: "auto",
                 minHeight: hasNoPlaybackControls ? "unset" : "36px",
               }}
+              $align={"center"}
             >
               <div
                 css={{
                   display: "flex",
                   flexGrow: 1,
+                  containerType: "inline-size",
                 }}
               >
                 {showVolumeSlider || hasNoPlaybackControls ? (

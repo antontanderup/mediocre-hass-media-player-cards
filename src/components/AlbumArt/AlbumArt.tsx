@@ -35,7 +35,9 @@ const AlbumArtContainer = styled.button<{
       height: ${props.$size};`
         : `
       width: ${props.$size}px;
-      height: ${props.$size}px;`;
+      height: ${props.$size}px;
+      flex-shrink: 0;
+      `;
     }
     return "";
   }}

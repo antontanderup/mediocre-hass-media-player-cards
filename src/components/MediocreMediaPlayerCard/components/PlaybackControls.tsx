@@ -24,6 +24,19 @@ const ControlButton = styled(IconButton)<{ muted?: boolean }>`
   opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
 `;
 
+// Hide shuffle and repeat buttons at small sizes
+const ShuffleButton = styled(ControlButton)`
+  @container (max-width: 150px) {
+    display: none;
+  }
+`;
+
+const RepeatButton = styled(ControlButton)`
+  @container (max-width: 130px) {
+    display: none;
+  }
+`;
+
 export const PlaybackControls = () => {
   const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
@@ -80,7 +93,7 @@ export const PlaybackControls = () => {
   return (
     <PlaybackControlsWrap>
       {!!supportsShuffle && (
-        <ControlButton
+        <ShuffleButton
           size="x-small"
           onClick={toggleShuffle}
           muted={!shuffle}
@@ -109,7 +122,7 @@ export const PlaybackControls = () => {
         />
       )}
       {!!supportsRepeat && (
-        <ControlButton
+        <RepeatButton
           size="x-small"
           onClick={toggleRepeat}
           muted={repeat === "off"}
