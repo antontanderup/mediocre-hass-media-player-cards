@@ -46,11 +46,11 @@ export type MaSearchProps = {
 
 export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
   const [query, setQuery] = useState("");
-  const debuncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 300);
 
   const [activeFilter, setActiveFilter] = useState<MaFilterType>("all");
 
-  const { results, loading } = useSearchQuery(debuncedQuery, activeFilter);
+  const { results, loading } = useSearchQuery(debouncedQuery, activeFilter);
 
   const playItem = useCallback(async (item: MaMediaItem) => {
     const hass = getHass();
