@@ -15,8 +15,8 @@ export const HassContextProvider = ({
   hass,
   children,
 }: HassContextType & {
-  children: React.ReactElement;
-}): React.ReactElement => {
+  children: preact.ComponentChildren;
+}): preact.ComponentChildren => {
   return (
     <HassContext.Provider value={{ hass }}>{children}</HassContext.Provider>
   );

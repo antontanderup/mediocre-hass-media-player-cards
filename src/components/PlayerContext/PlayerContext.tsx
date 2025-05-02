@@ -21,8 +21,8 @@ export const PlayerContextProvider = ({
 }: {
   entityId: string;
   hass: HomeAssistant;
-  children: React.ReactElement;
-}): React.ReactElement => {
+  children: preact.ComponentChildren;
+}): preact.ComponentChildren => {
   const contextValue = useMemo(() => {
     const player = hass.states[entityId] as MediaPlayerEntity;
 

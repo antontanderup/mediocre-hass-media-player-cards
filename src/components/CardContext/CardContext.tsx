@@ -17,8 +17,8 @@ export const CardContextProvider = <T,>({
   config,
   children,
 }: CardContextType<T> & {
-  children: React.ReactElement;
-}): React.ReactElement => {
+  children: preact.ComponentChildren;
+}): preact.ComponentChildren => {
   const contextValue = useMemo(() => {
     return { rootElement, config };
   }, [rootElement, config]);
