@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { MediaImage } from "./MediaImage";
 
 const MediaItemContainer = styled.div`
   display: flex;
@@ -15,19 +16,6 @@ const MediaItemContainer = styled.div`
   &:hover {
     transform: translateY(-4px);
   }
-`;
-
-const MediaImage = styled.div<{ imageUrl?: string | null }>`
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 4px;
-  background-size: cover;
-  background-position: center;
-  background-image: ${props =>
-    props.imageUrl
-      ? `url(${props.imageUrl})`
-      : `background: rgba(0, 0, 0, 0.10)`};
-  margin-bottom: 8px;
 `;
 
 const MediaName = styled.div`
@@ -70,7 +58,12 @@ export const MediaItem = ({
 }: MediaItemProps) => {
   return (
     <MediaItemContainer onClick={onClick}>
-      <MediaImage imageUrl={imageUrl} />
+      <MediaImage
+        css={{
+          marginBottom: 8,
+        }}
+        imageUrl={imageUrl}
+      />
       <MediaName>{name}</MediaName>
       <MediaArtist>{artist}</MediaArtist>
     </MediaItemContainer>
