@@ -43,3 +43,7 @@ export const TrackListContainer = styled.div`
   gap: 8px;
   padding: 0px var(--mmpc-search-padding, 0px);
 `;
+
+export const MediaEmptyState = styled.p`
+  padding: 0px var(--mmpc-search-padding, 0px);
+`;

@@ -5,6 +5,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import {
   FilterChip,
   FilterContainer,
+  MediaEmptyState,
   MediaGrid,
   MediaItem,
   MediaSectionTitle,
@@ -129,8 +130,10 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
             )}
           </MediaGrid>
         )}
-        {result.length == 0 && (
-          <p>{loading ? "Searching..." : "No results found."}</p>
+        {result.length === 0 && (
+          <MediaEmptyState>
+            {loading ? "Searching..." : "No results found."}
+          </MediaEmptyState>
         )}
       </div>
     );
