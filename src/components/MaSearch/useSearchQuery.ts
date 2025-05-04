@@ -1,6 +1,11 @@
-import { useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { getHass } from "@utils";
-import { MaFilterType, MaSearchResponse } from "./types";
+import {
+  MaEnqueueMode,
+  MaFilterType,
+  MaMediaItem,
+  MaSearchResponse,
+} from "./types";
 
 export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
   const [configEntry, setConfigEntry] = useState(null);
@@ -53,5 +58,18 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
       });
   }, [debounceQuery, configEntry, filter]);
 
-  return useMemo(() => ({ results, loading }), [results, loading]);
+  const playItem = useCallback(
+    async (item: MaMediaItem, targetEntity: string, enqueue: MaEnqueueMode) => {
+      const hass = getHass();
+      return hass.callService("music_assistant", "play_media", {
+        entity_id: targetEntity,
+        media_type: item.media_type,
+        media_id: item.uri,
+        enqueue,
+      });
+    },
+    []
+  );
+
+  return useMemo(() => ({ results, loading, playItem }), [results, loading]);
 };

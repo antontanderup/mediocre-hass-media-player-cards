@@ -11,6 +11,14 @@ export type MaMediaType =
 // Filter types (includes "all" in addition to MaMediaType)
 export type MaFilterType = "all" | MaMediaType;
 
+// Enqueue modes for media playback
+export type MaEnqueueMode =
+  | "play"
+  | "replace"
+  | "next"
+  | "replace_next"
+  | "add";
+
 // Filter configuration type
 export interface MaFilterConfig {
   type: MaFilterType;

@@ -1,6 +1,5 @@
 import { Input, MediaTrack } from "@components";
-import { getHass } from "@utils";
-import { useCallback, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
   FilterChip,
@@ -16,7 +15,6 @@ import {
   MaMediaType,
   MaFilterType,
   MaFilterConfig,
-  MaMediaItem,
   MaArtist,
   MaAlbum,
   MaTrack,
@@ -51,16 +49,10 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
 
   const [activeFilter, setActiveFilter] = useState<MaFilterType>("all");
 
-  const { results, loading } = useSearchQuery(debouncedQuery, activeFilter);
-
-  const playItem = useCallback(async (item: MaMediaItem) => {
-    const hass = getHass();
-    return hass.callService("music_assistant", "play_media", {
-      entity_id: maEntityId,
-      media_type: item.media_type,
-      media_id: item.uri,
-    });
-  }, []);
+  const { results, loading, playItem } = useSearchQuery(
+    debouncedQuery,
+    activeFilter
+  );
 
   const renderFilterChips = () => {
     return filters.map(filter => (
@@ -110,7 +102,7 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
                   imageUrl={item.image || item.album?.image}
                   title={item.name}
                   artist={item.artists.map(artist => artist.name).join(", ")}
-                  onClick={() => playItem(item)}
+                  onClick={() => playItem(item, maEntityId, "play")}
                 />
               )
             )}
@@ -124,7 +116,7 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
                   imageUrl={item.image}
                   name={item.name}
                   artist={item.artists?.map(artist => artist.name).join(", ")}
-                  onClick={() => playItem(item)}
+                  onClick={() => playItem(item, maEntityId, "play")}
                 />
               )
             )}
