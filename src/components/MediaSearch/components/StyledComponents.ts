@@ -21,6 +21,13 @@ export const FilterContainer = styled.div`
   }
 `;
 
+export const VerticalSeparator = styled.div`
+  height: 28px;
+  align-self: center;
+  border-right: 1px solid var(--divider-color);
+  margin-right: 4px;
+`;
+
 export const FilterChip = styled(Chip)<{ $horizontalPadding?: number }>`
   &:first-child {
     margin-left: ${props => props.$horizontalPadding ?? 0}px;

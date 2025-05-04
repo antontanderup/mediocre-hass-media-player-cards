@@ -1,5 +1,5 @@
 import { Input, MediaTrack } from "@components";
-import { useState } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
   FilterChip,
@@ -10,6 +10,7 @@ import {
   MediaSectionTitle,
   SearchContainer,
   TrackListContainer,
+  VerticalSeparator,
 } from "@components/MediaSearch";
 import {
   MaMediaType,
@@ -24,6 +25,7 @@ import {
   MaAudiobook,
   responseKeyMediaTypeMap,
   labelMap,
+  MaEnqueueMode,
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 
@@ -45,9 +47,22 @@ export type MaSearchProps = {
 
 export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
   const [query, setQuery] = useState("");
+  const [enqueueMode, setEnqueueMode] = useState<MaEnqueueMode>("play");
   const debouncedQuery = useDebounce(query, 300);
-
   const [activeFilter, setActiveFilter] = useState<MaFilterType>("all");
+
+  const toggleEnqueueMode = useCallback(() => {
+    const enqueueModes: MaEnqueueMode[] = [
+      "play",
+      "replace",
+      "next",
+      "replace_next",
+      "add",
+    ];
+    const currentIndex = enqueueModes.indexOf(enqueueMode);
+    const nextIndex = (currentIndex + 1) % enqueueModes.length;
+    setEnqueueMode(enqueueModes[nextIndex]);
+  }, [enqueueMode]);
 
   const { results, loading, playItem } = useSearchQuery(
     debouncedQuery,
@@ -102,7 +117,7 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
                   imageUrl={item.image || item.album?.image}
                   title={item.name}
                   artist={item.artists.map(artist => artist.name).join(", ")}
-                  onClick={() => playItem(item, maEntityId, "play")}
+                  onClick={() => playItem(item, maEntityId, enqueueMode)}
                 />
               )
             )}
@@ -116,7 +131,7 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
                   imageUrl={item.image}
                   name={item.name}
                   artist={item.artists?.map(artist => artist.name).join(", ")}
-                  onClick={() => playItem(item, maEntityId, "play")}
+                  onClick={() => playItem(item, maEntityId, enqueueMode)}
                 />
               )
             )}
@@ -139,11 +154,55 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
         loading={loading}
         css={{ padding: "0px var(--mmpc-search-padding, 0px)" }}
       />
-      <FilterContainer>{renderFilterChips()}</FilterContainer>
+      <FilterContainer>
+        <FilterChip
+          $horizontalPadding={horizontalPadding}
+          icon={getEnqueModeIcon(enqueueMode)}
+          onClick={toggleEnqueueMode}
+        >
+          {getEnqueueModeLabel(enqueueMode)}
+        </FilterChip>
+        <VerticalSeparator />
+        {renderFilterChips()}
+      </FilterContainer>
       {results &&
         Object.entries(results).map(([key, value]) => {
           return renderResult(value, responseKeyMediaTypeMap[key]);
         })}
     </SearchContainer>
   );
+};
+
+const getEnqueModeIcon = (enqueueMode: MaEnqueueMode) => {
+  switch (enqueueMode) {
+    case "play": // Play now
+      return "mdi:play-circle";
+    case "replace": // Replace the existing queue and play now
+      return "mdi:playlist-remove";
+    case "next": // Add to the current queue after the currently playing item
+      return "mdi:playlist-play";
+    case "replace_next": // Replace the current queue after the currently playing item
+      return "mdi:playlist-edit";
+    case "add": // Add to the end of the queue
+      return "mdi:playlist-plus";
+    default:
+      return "mdi:play-circle";
+  }
+};
+
+const getEnqueueModeLabel = (enqueueMode: MaEnqueueMode) => {
+  switch (enqueueMode) {
+    case "play":
+      return "Play now";
+    case "replace":
+      return "Replace queue";
+    case "next":
+      return "Add next";
+    case "replace_next":
+      return "Replace next";
+    case "add":
+      return "Add to queue";
+    default:
+      return "Play";
+  }
 };
