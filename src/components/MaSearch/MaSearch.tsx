@@ -27,6 +27,7 @@ import {
   MaEnqueueMode,
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
+import { Fragment } from "preact";
 
 const filters: MaFilterConfig[] = [
   { type: "all", label: "All", icon: "mdi:all-inclusive" },
@@ -101,7 +102,7 @@ export const MaSearch = ({
           onChange={setQuery}
           value={query}
           loading={loading}
-          css={{ padding: "0px var(--mmpc-search-padding, 0px)" }}
+          css={{ padding: "1px var(--mmpc-search-padding, 0px)" }}
         />
         <FilterContainer>
           <FilterChip
@@ -151,7 +152,7 @@ export const MaSearch = ({
     if (result.length === 0 && activeFilter === "all") return null;
 
     return (
-      <div key={mediaType}>
+      <Fragment key={mediaType}>
         {activeFilter === "all" && (
           <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
             {labelMap[mediaType]}
@@ -191,7 +192,7 @@ export const MaSearch = ({
             {loading ? "Searching..." : "No results found."}
           </MediaEmptyState>
         )}
-      </div>
+      </Fragment>
     );
   };
   return (
@@ -200,12 +201,13 @@ export const MaSearch = ({
       $searchBarPosition={searchBarPosition}
     >
       {searchBarPosition === "top" && renderSearchBar()}
-      <ResultsContainer $searchBarPosition={searchBarPosition}>
-        {results &&
-          Object.entries(results).map(([key, value]) => {
+      {results && (
+        <ResultsContainer $searchBarPosition={searchBarPosition}>
+          {Object.entries(results).map(([key, value]) => {
             return renderResult(value, responseKeyMediaTypeMap[key]);
           })}
-      </ResultsContainer>
+        </ResultsContainer>
+      )}
       {searchBarPosition === "bottom" && renderSearchBar()}
     </SearchContainer>
   );

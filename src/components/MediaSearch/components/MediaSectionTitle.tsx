@@ -18,6 +18,9 @@ export const MediaSectionTitle = ({
         cursor: onClick ? "pointer" : "default",
         margin: "0 4px",
         padding: "0px var(--mmpc-search-padding, 0px)",
+        "&:first-child": {
+          marginTop: -12,
+        },
       }}
       onClick={onClick}
     >
