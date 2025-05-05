@@ -53,19 +53,6 @@ const StyledInput = styled(BaseInput)`
   }
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  position: relative;
-`;
-
-const InputLabel = styled.label`
-  display: block;
-  margin-bottom: 8px;
-  color: var(--primary-text-color);
-  font-size: 14px;
-  font-weight: 500;
-`;
-
 export const Input = ({
   value = "",
   placeholder,
@@ -82,8 +69,26 @@ export const Input = ({
   };
 
   return (
-    <InputContainer className={className}>
-      {label && <InputLabel>{label}</InputLabel>}
+    <div
+      css={{
+        display: "flex",
+        position: "relative",
+      }}
+      className={className}
+    >
+      {label && (
+        <label
+          css={{
+            display: "block",
+            marginBottom: "8px",
+            color: "var(--primary-text-color)",
+            fontSize: "14px",
+            fontWeight: 500,
+          }}
+        >
+          {label}
+        </label>
+      )}
       <StyledInput
         value={value}
         placeholder={placeholder}
@@ -108,6 +113,6 @@ export const Input = ({
           `}
         />
       )}
-    </InputContainer>
+    </div>
   );
 };
