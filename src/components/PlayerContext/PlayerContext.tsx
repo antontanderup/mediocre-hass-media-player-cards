@@ -51,7 +51,7 @@ export const PlayerContextProvider = ({
 
     const title =
       (mediaTitle !== "" ? mediaTitle : undefined) ??
-      (!source.startsWith("media_player.") ? source : undefined) ??
+      (!!source && !source.startsWith("media_player.") ? source : undefined) ??
       friendlyName;
     const subtitle =
       !!albumName || !!artist
