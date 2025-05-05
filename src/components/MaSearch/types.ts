@@ -81,23 +81,3 @@ export interface MaSearchResponse {
   audiobooks: MaAudiobook[];
   podcasts: MaPodcast[];
 }
-
-export const responseKeyMediaTypeMap: { [key: string]: MaMediaType } = {
-  artists: "artist",
-  albums: "album",
-  tracks: "track",
-  playlists: "playlist",
-  radio: "radio",
-  audiobooks: "audiobook",
-  podcasts: "podcast",
-};
-
-export const labelMap: { [key in MaMediaType]: string } = {
-  artist: "Artists",
-  album: "Albums",
-  track: "Tracks",
-  playlist: "Playlists",
-  radio: "Radio",
-  audiobook: "Audiobooks",
-  podcast: "Podcasts",
-};

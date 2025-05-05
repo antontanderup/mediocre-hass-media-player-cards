@@ -23,8 +23,6 @@ import {
   MaRadio,
   MaPodcast,
   MaAudiobook,
-  responseKeyMediaTypeMap,
-  labelMap,
   MaEnqueueMode,
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
@@ -39,6 +37,26 @@ const filters: MaFilterConfig[] = [
   { type: "audiobook", label: "Audiobooks", icon: "mdi:book" },
   { type: "podcast", label: "Podcasts", icon: "mdi:podcast" },
 ];
+
+const responseKeyMediaTypeMap: { [key: string]: MaMediaType } = {
+  artists: "artist",
+  albums: "album",
+  tracks: "track",
+  playlists: "playlist",
+  radio: "radio",
+  audiobooks: "audiobook",
+  podcasts: "podcast",
+};
+
+const labelMap: { [key in MaMediaType]: string } = {
+  artist: "Artists",
+  album: "Albums",
+  track: "Tracks",
+  playlist: "Playlists",
+  radio: "Radio",
+  audiobook: "Audiobooks",
+  podcast: "Podcasts",
+};
 
 export type MaSearchProps = {
   maEntityId: string;
