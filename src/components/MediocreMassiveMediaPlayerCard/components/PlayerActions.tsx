@@ -105,7 +105,11 @@ export const PlayerActions = () => {
         onClose={() => setSelected(undefined)}
         padding="16px 0px 16px 0px"
       >
-        <MaSearch maEntityId={ma_entity_id} horizontalPadding={16} />
+        <MaSearch
+          maEntityId={ma_entity_id}
+          horizontalPadding={16}
+          searchBarPosition="bottom"
+        />
       </Modal>
       {!!speaker_group && (
         <IconButton

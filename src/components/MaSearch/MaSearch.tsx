@@ -8,6 +8,7 @@ import {
   MediaGrid,
   MediaItem,
   MediaSectionTitle,
+  ResultsContainer,
   SearchContainer,
   TrackListContainer,
   VerticalChipSeparator,
@@ -61,9 +62,14 @@ const labelMap: { [key in MaMediaType]: string } = {
 export type MaSearchProps = {
   maEntityId: string;
   horizontalPadding?: number;
+  searchBarPosition?: "top" | "bottom";
 };
 
-export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
+export const MaSearch = ({
+  maEntityId,
+  horizontalPadding,
+  searchBarPosition = "top",
+}: MaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<MaEnqueueMode>("play");
   const debouncedQuery = useDebounce(query, 300);
@@ -86,6 +92,31 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
     debouncedQuery,
     activeFilter
   );
+
+  const renderSearchBar = () => {
+    return (
+      <div css={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <Input
+          placeholder="Search.."
+          onChange={setQuery}
+          value={query}
+          loading={loading}
+          css={{ padding: "0px var(--mmpc-search-padding, 0px)" }}
+        />
+        <FilterContainer>
+          <FilterChip
+            $horizontalPadding={horizontalPadding}
+            icon={getEnqueModeIcon(enqueueMode)}
+            onClick={toggleEnqueueMode}
+          >
+            {getEnqueueModeLabel(enqueueMode)}
+          </FilterChip>
+          <VerticalChipSeparator />
+          {renderFilterChips()}
+        </FilterContainer>
+      </div>
+    );
+  };
 
   const renderFilterChips = () => {
     return filters.map(filter => (
@@ -164,29 +195,18 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
     );
   };
   return (
-    <SearchContainer $horizontalPadding={horizontalPadding}>
-      <Input
-        placeholder="Search.."
-        onChange={setQuery}
-        value={query}
-        loading={loading}
-        css={{ padding: "0px var(--mmpc-search-padding, 0px)" }}
-      />
-      <FilterContainer>
-        <FilterChip
-          $horizontalPadding={horizontalPadding}
-          icon={getEnqueModeIcon(enqueueMode)}
-          onClick={toggleEnqueueMode}
-        >
-          {getEnqueueModeLabel(enqueueMode)}
-        </FilterChip>
-        <VerticalChipSeparator />
-        {renderFilterChips()}
-      </FilterContainer>
-      {results &&
-        Object.entries(results).map(([key, value]) => {
-          return renderResult(value, responseKeyMediaTypeMap[key]);
-        })}
+    <SearchContainer
+      $horizontalPadding={horizontalPadding}
+      $searchBarPosition={searchBarPosition}
+    >
+      {searchBarPosition === "top" && renderSearchBar()}
+      <ResultsContainer $searchBarPosition={searchBarPosition}>
+        {results &&
+          Object.entries(results).map(([key, value]) => {
+            return renderResult(value, responseKeyMediaTypeMap[key]);
+          })}
+      </ResultsContainer>
+      {searchBarPosition === "bottom" && renderSearchBar()}
     </SearchContainer>
   );
 };

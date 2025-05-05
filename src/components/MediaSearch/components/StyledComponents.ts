@@ -1,10 +1,14 @@
 import { Chip } from "@components";
 import styled from "@emotion/styled";
 
-export const SearchContainer = styled.div<{ $horizontalPadding?: number }>`
+export const SearchContainer = styled.div<{
+  $horizontalPadding?: number;
+  $searchBarPosition: "top" | "bottom";
+}>`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  ${props => (props.$searchBarPosition === "top" ? "" : "overflow: hidden;")}
   --mmpc-search-padding: ${props => props.$horizontalPadding ?? 0}px;
 `;
 
@@ -19,6 +23,12 @@ export const FilterContainer = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const ResultsContainer = styled.div<{
+  $searchBarPosition: "top" | "bottom";
+}>`
+  ${props => (props.$searchBarPosition === "top" ? "" : "overflow-y: auto;")}
 `;
 
 export const VerticalChipSeparator = styled.div`
