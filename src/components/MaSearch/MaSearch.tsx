@@ -10,7 +10,7 @@ import {
   MediaSectionTitle,
   SearchContainer,
   TrackListContainer,
-  VerticalSeparator,
+  VerticalChipSeparator,
 } from "@components/MediaSearch";
 import {
   MaMediaType,
@@ -162,7 +162,7 @@ export const MaSearch = ({ maEntityId, horizontalPadding }: MaSearchProps) => {
         >
           {getEnqueueModeLabel(enqueueMode)}
         </FilterChip>
-        <VerticalSeparator />
+        <VerticalChipSeparator />
         {renderFilterChips()}
       </FilterContainer>
       {results &&

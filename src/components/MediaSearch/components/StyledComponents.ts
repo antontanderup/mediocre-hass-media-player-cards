@@ -21,11 +21,11 @@ export const FilterContainer = styled.div`
   }
 `;
 
-export const VerticalSeparator = styled.div`
+export const VerticalChipSeparator = styled.div`
   height: 28px;
   align-self: center;
   border-right: 1px solid var(--divider-color);
-  margin-right: 4px;
+  margin-right: 6px;
 `;
 
 export const FilterChip = styled(Chip)<{ $horizontalPadding?: number }>`
