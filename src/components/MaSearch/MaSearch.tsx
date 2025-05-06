@@ -2,17 +2,9 @@ import { Chip, Input, MediaTrack } from "@components";
 import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
-  FilterChip,
-  FilterContainer,
-  MediaEmptyState,
-  MediaGrid,
   MediaItem,
   MediaSectionTitle,
-  ResultsContainer,
-  SearchContainer,
   searchStyles,
-  TrackListContainer,
-  VerticalChipSeparator,
 } from "@components/MediaSearch";
 import {
   MaMediaType,
@@ -106,7 +98,7 @@ export const MaSearch = ({
           loading={loading}
           css={css({ padding: "1px var(--mmpc-search-padding, 0px)" })}
         />
-        <FilterContainer>
+        <div css={searchStyles.filterContainer}>
           <Chip
             css={searchStyles.chip}
             style={{
@@ -117,9 +109,9 @@ export const MaSearch = ({
           >
             {getEnqueueModeLabel(enqueueMode)}
           </Chip>
-          <VerticalChipSeparator />
+          <div css={searchStyles.verticalChipSeperator} />
           {renderFilterChips()}
-        </FilterContainer>
+        </div>
       </div>
     );
   };
@@ -165,7 +157,7 @@ export const MaSearch = ({
           </MediaSectionTitle>
         )}
         {mediaType === "track" ? (
-          <TrackListContainer>
+          <div css={searchStyles.trackListContainer}>
             {(activeFilter === "all" ? result.slice(0, 5) : result).map(
               item => (
                 <MediaTrack
@@ -177,9 +169,9 @@ export const MaSearch = ({
                 />
               )
             )}
-          </TrackListContainer>
+          </div>
         ) : (
-          <MediaGrid>
+          <div css={searchStyles.mediaGrid}>
             {(activeFilter === "all" ? result.slice(0, 6) : result).map(
               item => (
                 <MediaItem
@@ -191,31 +183,42 @@ export const MaSearch = ({
                 />
               )
             )}
-          </MediaGrid>
+          </div>
         )}
         {result.length === 0 && (
-          <MediaEmptyState>
+          <p css={searchStyles.mediaEmptyText}>
             {loading ? "Searching..." : "No results found."}
-          </MediaEmptyState>
+          </p>
         )}
       </Fragment>
     );
   };
   return (
-    <SearchContainer
-      $horizontalPadding={horizontalPadding}
-      $searchBarPosition={searchBarPosition}
+    <div
+      css={[
+        searchStyles.root,
+        searchBarPosition === "bottom" && searchStyles.rootSearchBarBottom,
+      ]}
+      style={{
+        "--mmpc-search-padding": `${horizontalPadding}px`,
+      }}
     >
       {searchBarPosition === "top" && renderSearchBar()}
       {results && (
-        <ResultsContainer $searchBarPosition={searchBarPosition}>
+        <div
+          css={
+            searchBarPosition === "bottom"
+              ? searchStyles.resultsContainerSearchBarBottom
+              : {}
+          }
+        >
           {Object.entries(results).map(([key, value]) => {
             return renderResult(value, responseKeyMediaTypeMap[key]);
           })}
-        </ResultsContainer>
+        </div>
       )}
       {searchBarPosition === "bottom" && renderSearchBar()}
-    </SearchContainer>
+    </div>
   );
 };
 
