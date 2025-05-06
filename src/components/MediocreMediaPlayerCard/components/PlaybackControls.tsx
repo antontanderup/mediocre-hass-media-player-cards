@@ -1,5 +1,4 @@
 import { useCallback, useContext } from "preact/hooks";
-import styled from "@emotion/styled";
 import {
   IconButton,
   CardContext,
@@ -9,33 +8,32 @@ import {
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { useSupportedFeatures } from "@hooks";
 import { getHass } from "@utils";
+import { css } from "@emotion/react";
 
-const PlaybackControlsWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: auto;
-  height: 36px; // fixed to prevent jumping
-  margin-left: -4px; // compensate for icon button padding
-`;
-
-const ControlButton = styled(IconButton)<{ muted?: boolean }>`
-  opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
-`;
-
-// Hide shuffle and repeat buttons at small sizes
-const ShuffleButton = styled(ControlButton)`
-  @container (max-width: 150px) {
-    display: none;
-  }
-`;
-
-const RepeatButton = styled(ControlButton)`
-  @container (max-width: 130px) {
-    display: none;
-  }
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: "auto",
+    height: "36px", // fixed to prevent jumping
+    marginLeft: "-4px", // compensate for icon button padding
+  }),
+  buttonMuted: css({
+    opacity: 0.8,
+  }),
+  shuffleButton: css({
+    "@container (max-width: 150px)": {
+      display: "none",
+    },
+  }),
+  repeatButton: css({
+    "@container (max-width: 130px)": {
+      display: "none",
+    },
+  }),
+};
 
 export const PlaybackControls = () => {
   const { config } =
@@ -91,41 +89,43 @@ export const PlaybackControls = () => {
   }, [repeat]);
 
   return (
-    <PlaybackControlsWrap>
+    <div css={styles.root}>
       {!!supportsShuffle && (
-        <ShuffleButton
+        <IconButton
+          css={[
+            styles.shuffleButton,
+            ...(!shuffle ? [styles.buttonMuted] : []),
+          ]}
           size="x-small"
           onClick={toggleShuffle}
-          muted={!shuffle}
           icon={shuffle ? "mdi:shuffle-variant" : "mdi:shuffle-disabled"}
         />
       )}
       {!!supportPreviousTrack && (
-        <ControlButton
+        <IconButton
           size="small"
           onClick={previousTrack}
           icon={"mdi:skip-previous"}
         />
       )}
       {supportsTogglePlayPause && (
-        <ControlButton
+        <IconButton
           size="medium"
           onClick={togglePlayback}
           icon={playing ? "mdi:pause-circle" : "mdi:play-circle"}
         />
       )}
       {!!supportNextTrack && (
-        <ControlButton
-          size="small"
-          onClick={nextTrack}
-          icon={"mdi:skip-next"}
-        />
+        <IconButton size="small" onClick={nextTrack} icon={"mdi:skip-next"} />
       )}
       {!!supportsRepeat && (
-        <RepeatButton
+        <IconButton
+          css={[
+            styles.repeatButton,
+            ...(repeat === "off" ? [styles.buttonMuted] : []),
+          ]}
           size="x-small"
           onClick={toggleRepeat}
-          muted={repeat === "off"}
           icon={
             repeat === "one"
               ? "mdi:repeat-once"
@@ -135,6 +135,6 @@ export const PlaybackControls = () => {
           }
         />
       )}
-    </PlaybackControlsWrap>
+    </div>
   );
 };

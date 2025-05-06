@@ -1,4 +1,4 @@
-import { Input, MediaTrack } from "@components";
+import { Chip, Input, MediaTrack } from "@components";
 import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
@@ -10,6 +10,7 @@ import {
   MediaSectionTitle,
   ResultsContainer,
   SearchContainer,
+  searchStyles,
   TrackListContainer,
   VerticalChipSeparator,
 } from "@components/MediaSearch";
@@ -28,6 +29,7 @@ import {
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 import { Fragment } from "preact";
+import { css } from "@emotion/react";
 
 const filters: MaFilterConfig[] = [
   { type: "all", label: "All", icon: "mdi:all-inclusive" },
@@ -96,22 +98,25 @@ export const MaSearch = ({
 
   const renderSearchBar = () => {
     return (
-      <div css={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div css={css({ display: "flex", flexDirection: "column", gap: 12 })}>
         <Input
           placeholder="Search.."
           onChange={setQuery}
           value={query}
           loading={loading}
-          css={{ padding: "1px var(--mmpc-search-padding, 0px)" }}
+          css={css({ padding: "1px var(--mmpc-search-padding, 0px)" })}
         />
         <FilterContainer>
-          <FilterChip
-            $horizontalPadding={horizontalPadding}
+          <Chip
+            css={searchStyles.chip}
+            style={{
+              "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
+            }}
             icon={getEnqueModeIcon(enqueueMode)}
             onClick={toggleEnqueueMode}
           >
             {getEnqueueModeLabel(enqueueMode)}
-          </FilterChip>
+          </Chip>
           <VerticalChipSeparator />
           {renderFilterChips()}
         </FilterContainer>
@@ -121,18 +126,19 @@ export const MaSearch = ({
 
   const renderFilterChips = () => {
     return filters.map(filter => (
-      <FilterChip
-        key={filter.type}
-        onClick={() => setActiveFilter(filter.type)}
-        icon={filter.icon}
+      <Chip
+        css={searchStyles.chip}
         style={{
+          "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
           opacity: activeFilter === filter.type ? 1 : 0.6,
           fontWeight: activeFilter === filter.type ? "bold" : "normal",
         }}
-        $horizontalPadding={horizontalPadding}
+        key={filter.type}
+        onClick={() => setActiveFilter(filter.type)}
+        icon={filter.icon}
       >
         {filter.label}
-      </FilterChip>
+      </Chip>
     ));
   };
 

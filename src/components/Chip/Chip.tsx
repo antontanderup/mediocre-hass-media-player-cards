@@ -1,7 +1,6 @@
 import { ButtonHTMLAttributes } from "preact/compat";
-import styled from "@emotion/styled";
 import { Icon } from "@components";
-import { keyframes } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 
 const spinAnimation = keyframes`
   from {
@@ -12,42 +11,44 @@ const spinAnimation = keyframes`
   }
 `;
 
-const ChipButton = styled.button<{ $loading?: boolean }>`
-  position: relative;
-  background: none;
-  border: none;
-  display: flex;
-  flex: 0;
-  flex-direction: row;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 32px;
-  padding: 0 12px;
-  border-radius: 16px;
-  color: var(--mmpc-chip-foreground, var(--card-background-color));
-  background-color: var(--mmpc-chip-background, var(--primary-text-color));
-  --icon-primary-color: var(
-    --mmpc-chip-foreground,
-    var(--card-background-color)
-  );
-  margin-right: 5px;
-  align-items: center;
-  gap: 4px;
-  text-wrap: nowrap;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  opacity: ${props => (props.$loading ? 0.3 : 1)};
-  ha-icon {
-    pointer-events: none;
-    animation: ${spinAnimation} 1s linear infinite;
-    ${props => (!props.$loading ? "animation: none;" : "")}
-  }
-`;
+const styles = {
+  root: css({
+    position: "relative",
+    background: "none",
+    border: "none",
+    display: "flex",
+    flex: 0,
+    flexDirection: "row",
+    height: "32px",
+    fontSize: "13px",
+    fontWeight: 500,
+    lineHeight: "32px",
+    padding: "0 12px",
+    borderRadius: "16px",
+    color: "var(--mmpc-chip-foreground, var(--card-background-color))",
+    backgroundColor: "var(--mmpc-chip-background, var(--primary-text-color))",
+    "--icon-primary-color":
+      "var(--mmpc-chip-foreground, var(--card-background-color))",
+    marginRight: "5px",
+    alignItems: "center",
+    gap: "4px",
+    textWrap: "nowrap",
+    cursor: "pointer",
+    "&:hover": {
+      opacity: 0.8,
+    },
+    opacity: 1,
+    "& ha-icon": {
+      pointerEvents: "none",
+    },
+  }),
+  rootLoading: css({
+    opacity: 0.8,
+    "& ha-icon": {
+      animation: `${spinAnimation} 1s linear infinite`,
+    },
+  }),
+};
 
 export type ChipProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: boolean;
@@ -72,10 +73,10 @@ export const Chip = ({
   };
 
   return (
-    <ChipButton $loading={loading} {...buttonProps}>
+    <button css={[styles.root, loading && styles.rootLoading]} {...buttonProps}>
       {iconPosition === "left" && renderIcon()}
       {children}
       {iconPosition === "right" && renderIcon()}
-    </ChipButton>
+    </button>
   );
 };

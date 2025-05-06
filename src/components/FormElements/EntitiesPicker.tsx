@@ -1,13 +1,15 @@
 import { HomeAssistant } from "@types";
 import { useCallback } from "preact/hooks";
-import styled from "@emotion/styled";
 import { EntityPicker } from "./EntityPicker";
+import { css } from "@emotion/react";
 
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+  }),
+};
 
 export type EntitiesPickerProps = {
   hass: HomeAssistant;
@@ -56,7 +58,7 @@ export const EntitiesPicker = ({
   );
 
   return (
-    <Root className="entities-picker">
+    <div css={styles.root} className="entities-picker">
       {label && <label>{label}</label>}
 
       {/* Render existing entities */}
@@ -84,6 +86,6 @@ export const EntitiesPicker = ({
         required={false}
         allowCustomEntity={allowCustomEntity}
       />
-    </Root>
+    </div>
   );
 };

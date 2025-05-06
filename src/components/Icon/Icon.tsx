@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 export type IconSize =
   | "xx-small"
@@ -15,29 +15,34 @@ export type IconProps = {
   className?: string;
 };
 
-const IconWrap = styled.div<{
-  $size: IconSize;
-}>`
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: ${props => getIconSize(props.$size)}px;
-  aspect-ratio: 1;
-
-  > ha-icon {
-    --mdc-icon-size: ${props => getIconSize(props.$size)}px;
-    width: ${props => getIconSize(props.$size)}px;
-    display: flex;
-  }
-`;
+const styles = {
+  root: css({
+    background: "none",
+    border: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    minWidth: "var(--mmpc-icon-size)",
+    aspectRatio: "1",
+    "& > ha-icon": {
+      "--mdc-icon-size": "var(--mmpc-icon-size)",
+      width: "var(--mmpc-icon-size)",
+      display: "flex",
+    },
+  }),
+};
 
 export const Icon = ({ icon, size = "medium", className }: IconProps) => {
   return (
-    <IconWrap $size={size} className={className}>
+    <div
+      css={styles.root}
+      style={{
+        "--mmpc-icon-size": `${getIconSize(size)}px`,
+      }}
+      className={className}
+    >
       <ha-icon icon={icon} />
-    </IconWrap>
+    </div>
   );
 };
 

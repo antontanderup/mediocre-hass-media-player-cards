@@ -4,6 +4,16 @@ import { Fragment } from "preact/jsx-runtime";
 import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
 
+const styles = {
+  root: css({
+    display: "flex",
+    alignItems: "center",
+    transition: "all 0.3s ease",
+    width: "100%",
+    gap: "4px",
+  }),
+};
+
 export const VolumeSlider = () => {
   const player = usePlayer();
   const entity_id = player.entity_id;
@@ -33,15 +43,7 @@ export const VolumeSlider = () => {
   );
 
   return (
-    <div
-      css={css`
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-        width: 100%;
-        gap: 4px;
-      `}
-    >
+    <div css={styles.root}>
       <IconButton size="x-small" onClick={handleToggleMute} icon={VolumeIcon} />
       <Slider
         min={0}

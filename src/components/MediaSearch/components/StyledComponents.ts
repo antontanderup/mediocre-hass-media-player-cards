@@ -38,6 +38,17 @@ export const VerticalChipSeparator = styled.div`
   margin-right: 6px;
 `;
 
+export const searchStyles = {
+  chip: {
+    "&:first-child": {
+      marginLeft: "var(--mmpc-chip-horizontal-margin, 0px)",
+    },
+    "&:last-child": {
+      marginRight: "var(--mmpc-chip-horizontal-margin, 0px)",
+    },
+  },
+};
+
 export const FilterChip = styled(Chip)<{ $horizontalPadding?: number }>`
   &:first-child {
     margin-left: ${props => props.$horizontalPadding ?? 0}px;

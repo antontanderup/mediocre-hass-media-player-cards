@@ -1,22 +1,24 @@
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMediaPlayerCardConfig } from "@types";
-import styled from "@emotion/styled";
 import { Icon, useHass, usePlayer } from "@components";
 import { getDeviceIcon } from "@utils";
+import { css } from "@emotion/react";
 
-const PlayerInfoWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-`;
-const FriendlyNameText = styled.span`
-  font-size: 11px;
-  color: var(--secondary-text-color, #888);
-  opacity: 0.8;
-  font-style: italic;
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "4px",
+  }),
+  friendlyName: css({
+    fontSize: "11px",
+    color: "var(--secondary-text-color, #888)",
+    opacity: 0.8,
+    fontStyle: "italic",
+  }),
+};
 
 export const PlayerInfo = () => {
   const hass = useHass();
@@ -36,12 +38,12 @@ export const PlayerInfo = () => {
     return null;
   }
   return (
-    <PlayerInfoWrap>
+    <div css={styles.root}>
       <Icon icon={mdiIcon} size={"xx-small"} />
-      <FriendlyNameText>{playerName}</FriendlyNameText>
+      <span css={styles.friendlyName}>{playerName}</span>
       {groupMembers && groupMembers.length > 1 && (
-        <FriendlyNameText>+{groupMembers.length - 1}</FriendlyNameText>
+        <span css={styles.friendlyName}>+{groupMembers.length - 1}</span>
       )}
-    </PlayerInfoWrap>
+    </div>
   );
 };
