@@ -49,6 +49,16 @@ export const PlayerContextProvider = ({
       };
     }
 
+    if (state === "unavailable") {
+      return {
+        player: {
+          ...player,
+          title: "Unavailable",
+          subtitle: `${entityId} unavailable`,
+        },
+      };
+    }
+
     let title = mediaTitle;
     if (!title || title === "") {
       if (
