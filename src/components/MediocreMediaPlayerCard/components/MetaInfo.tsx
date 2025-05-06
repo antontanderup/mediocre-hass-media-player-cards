@@ -1,33 +1,34 @@
 import { Fragment } from "preact/jsx-runtime";
-import styled from "@emotion/styled";
 import { usePlayer } from "@components/PlayerContext";
+import { css } from "@emotion/react";
 
-const TitleText = styled.h3`
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--primary-text-color, #333);
-`;
-
-const ArtistText = styled.p`
-  margin: 0px;
-  font-size: 14px;
-  color: var(--secondary-text-color, #666);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
+const styles = {
+  titleText: css({
+    margin: 0,
+    fontSize: "16px",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    color: "var(--primary-text-color, #333)",
+  }),
+  artistText: css({
+    margin: 0,
+    fontSize: "14px",
+    color: "var(--secondary-text-color, #666)",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }),
+};
 
 export const MetaInfo = () => {
   const { title, subtitle } = usePlayer();
 
   return (
     <Fragment>
-      {!!title && <TitleText>{title}</TitleText>}
-      {!!subtitle && <ArtistText>{subtitle}</ArtistText>}
+      {!!title && <h3 css={styles.titleText}>{title}</h3>}
+      {!!subtitle && <p css={styles.artistText}>{subtitle}</p>}
     </Fragment>
   );
 };

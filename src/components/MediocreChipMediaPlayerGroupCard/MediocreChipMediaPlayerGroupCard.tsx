@@ -1,7 +1,7 @@
 import { useContext } from "preact/hooks";
-import styled from "@emotion/styled";
 import { GroupChipsController } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
+import { css } from "@emotion/react";
 
 export type MediocreChipMediaPlayerGroupCardConfig = {
   entity_id: string;
@@ -18,11 +18,13 @@ export type GroupPlayer = Player & {
   isGrouping: boolean;
 };
 
-const Wrap = styled.div`
-  display: contents;
-  --mmpc-chip-background: var(--card-background-color);
-  --mmpc-chip-foreground: var(--primary-text-color);
-`;
+const styles = {
+  root: css({
+    display: "contents",
+    "--mmpc-chip-background": "var(--card-background-color)",
+    "--mmpc-chip-foreground": "var(--primary-text-color)",
+  }),
+};
 
 export const MediocreChipMediaPlayerGroupCard = () => {
   const { config } =
@@ -31,7 +33,7 @@ export const MediocreChipMediaPlayerGroupCard = () => {
     );
 
   return (
-    <Wrap>
+    <div css={styles.root}>
       <GroupChipsController
         config={{
           entity_id: config.entity_id,
@@ -41,6 +43,6 @@ export const MediocreChipMediaPlayerGroupCard = () => {
         }}
         showGrouped={true}
       />
-    </Wrap>
+    </div>
   );
 };
