@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 export type SliderProps = {
   min: number;
@@ -57,10 +58,32 @@ export const Slider = ({
   sliderSize = "medium",
   onChange,
 }: SliderProps) => {
+  const [internalValue, setInternalValue] = useState<number>(value);
+  const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
+
+  const handleValueChange = useCallback(
+    (newVolume: number) => {
+      setInternalValue(newVolume);
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        onChange(newVolume);
+      }, 200);
+    },
+    [onChange]
+  );
+
+  useEffect(() => {
+    if (value !== internalValue) {
+      setInternalValue(value);
+    }
+  }, [value]);
+
   return (
     <StyledRoot
-      value={value}
-      onValueChange={value => onChange(value)}
+      value={internalValue}
+      onValueChange={handleValueChange}
       min={min}
       max={max}
       step={step}
