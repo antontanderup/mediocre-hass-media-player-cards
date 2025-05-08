@@ -20,8 +20,8 @@ speaker_group:
 
 ### Explanation
 
-- `entity_id`: Set this to the Universal Media Player entity ID (e.g., `media_player.universal_living_room`).
-- `speaker_group.entity_id`: Specify the main media player entity ID for grouping (e.g., `media_player.living_room_speaker`).
+- `entity_id`: Set this to the Universal Media Player entity ID (e.g., `media_player.living_room_universal`).
+- `speaker_group.entity_id`: Specify the main media player entity ID for grouping (e.g., `media_player.living_room`).
 - `speaker_group.entities`: List the entity IDs of the speakers that can be grouped with the main media player.
 
 This setup allows you to use the Universal Media Player for playback control while managing speaker grouping with a different media player entity.
