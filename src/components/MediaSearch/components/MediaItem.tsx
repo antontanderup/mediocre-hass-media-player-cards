@@ -41,6 +41,9 @@ const styles = {
     WebkitBoxOrient: "vertical",
     width: "100%",
   }),
+  mediaImage: css({
+    marginBottom: 8,
+  }),
 };
 
 export type MediaItemProps = {
@@ -58,12 +61,7 @@ export const MediaItem = ({
 }: MediaItemProps) => {
   return (
     <div css={styles.root} onClick={onClick}>
-      <MediaImage
-        css={{
-          marginBottom: 8,
-        }}
-        imageUrl={imageUrl}
-      />
+      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} />
       <div css={styles.name}>{name}</div>
       <div css={styles.artist}>{artist}</div>
     </div>

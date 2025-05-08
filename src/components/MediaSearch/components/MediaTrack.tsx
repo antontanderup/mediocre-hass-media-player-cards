@@ -41,6 +41,10 @@ const styles = {
     overflow: "hidden",
     textOverflow: "ellipsis",
   }),
+  mediaImage: css({
+    width: 50,
+    height: 50,
+  }),
 };
 
 export type MediaTrackProps = {
@@ -58,13 +62,7 @@ export const MediaTrack = ({
 }: MediaTrackProps) => {
   return (
     <div css={styles.root} onClick={onClick}>
-      <MediaImage
-        css={{
-          width: 50,
-          height: 50,
-        }}
-        imageUrl={imageUrl}
-      />
+      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} />
       <div css={styles.trackInfo}>
         <div css={styles.trackName}>{title}</div>
         <div css={styles.trackArtist}>{artist}</div>

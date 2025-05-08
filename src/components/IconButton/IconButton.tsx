@@ -1,6 +1,5 @@
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 
 export type ButtonSize =
   | "xx-small"
@@ -28,59 +27,56 @@ const spinAnimation = keyframes`
   }
 `;
 
-const Button = styled.button<{
-  $disabled: boolean;
-  $size: ButtonSize;
-  $loading: boolean;
-}>`
-  position: relative;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-  padding: ${props => (props.$size === "xx-small" ? 0 : 4)}px;
-  min-width: ${props => getButtonSize(props.$size)}px;
-  aspect-ratio: 1;
-  color: ${props =>
-    props.disabled
-      ? "var(--disabled-text-color, #999)"
-      : "var(--primary-text-color, #333)"};
-
-  /* iOS fixes for stuck hover states */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-
-  &:hover {
-    background-color: var(--secondary-background-color, rgba(0, 0, 0, 0.05));
-  }
-
-  &:active {
-    background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
-  }
-
-  /* iOS-specific override to ensure hover doesn't get stuck */
-  @media (hover: none) {
-    &:hover {
-      background-color: transparent;
-    }
-    &:active {
-      background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
-    }
-  }
-
-  > ha-icon {
-    --mdc-icon-size: ${props => getButtonSize(props.$size)}px;
-    width: ${props => getButtonSize(props.$size)}px;
-    display: flex;
-    pointer-events: none;
-    animation: ${spinAnimation} 1s linear infinite;
-    ${props => (!props.$loading ? "animation: none;" : "")};
-  }
-`;
+const styles = {
+  root: css({
+    position: "relative",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%",
+    transition: "background-color 0.2s",
+    padding: 4,
+    minWidth: "var(--mmpc-icon-button-size)",
+    aspectRatio: "1",
+    color: "var(--primary-text-color, #333)",
+    touchAction: "manipulation", // iOS fixes for stuck hover states
+    "-webkit-tap-highlight-color": "transparent",
+    "&:hover": {
+      backgroundColor: "var(--secondary-background-color, rgba(0, 0, 0, 0.05))",
+    },
+    "&:active": {
+      backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
+    },
+    "@media (hover: none)": {
+      "&:hover": {
+        backgroundColor: "transparent",
+      },
+      "&:active": {
+        backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
+      },
+    },
+    "> ha-icon": {
+      "--mdc-icon-size": "var(--mmpc-icon-button-size)",
+      width: "var(--mmpc-icon-button-size)",
+      display: "flex",
+      pointerEvents: "none",
+    },
+  }),
+  rootDisabled: css({
+    color: "var(--disabled-text-color, #999)",
+  }),
+  rootXxsmall: css({
+    padding: 0,
+  }),
+  rootLoading: css({
+    "> ha-icon": {
+      animation: `${spinAnimation} 1s linear infinite`,
+    },
+  }),
+};
 
 export const IconButton = ({
   icon,
@@ -92,17 +88,23 @@ export const IconButton = ({
   ...buttonProps
 }: IconButtonProps) => {
   return (
-    <Button
+    <button
       disabled={disabled}
-      $disabled={disabled}
-      $size={size}
-      $loading={loading}
+      css={[
+        styles.root,
+        disabled && styles.rootDisabled,
+        size === "xx-small" && styles.rootXxsmall,
+        loading && styles.rootLoading,
+      ]}
+      style={{
+        "--mmpc-icon-button-size": `${getButtonSize(size)}px`,
+      }}
       className={className}
       {...buttonProps}
     >
       {loading ? <ha-icon icon="mdi:loading" /> : <ha-icon icon={icon} />}
       {renderLongPressIndicator && renderLongPressIndicator()}
-    </Button>
+    </button>
   );
 };
 

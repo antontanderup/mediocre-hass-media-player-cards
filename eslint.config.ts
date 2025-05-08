@@ -53,7 +53,7 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "react/prop-types": "off", // Disable prop-types as we're using TypeScript for type checking
-      "@emotion/syntax-preference": [1, "object"],
+      "@emotion/syntax-preference": [2, "object"],
       "react/no-unknown-property": ["error", { ignore: ["css"] }],
     },
   }

@@ -10,6 +10,12 @@ export const searchStyles = {
   rootSearchBarBottom: css({
     overflow: "hidden",
   }),
+  searchBarContainer: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+  }),
+  searchInput: css({ padding: "1px var(--mmpc-search-padding, 0px)" }),
   filterContainer: css({
     display: "flex",
     flexDirection: "row",

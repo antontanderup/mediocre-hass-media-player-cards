@@ -1,20 +1,21 @@
 import { useCallback, useMemo } from "preact/hooks";
-import styled from "@emotion/styled";
 import { IconButton, Slider, usePlayer } from "@components";
 import { getHass, getVolumeIcon } from "@utils";
+import { css } from "@emotion/react";
 
-const VolumeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  max-height: 36px;
-  margin-top: auto;
-  gap: 8px;
-`;
-
-const ControlButton = styled(IconButton)<{ muted?: boolean }>`
-  opacity: ${props => (props.muted ? 0.8 : 1)}; // reduce opacity if muted
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    alignItems: "center",
+    flex: 1,
+    maxHeight: "36px",
+    marginTop: "auto",
+    gap: "8px",
+  }),
+  buttonMuted: css({
+    opacity: 0.8,
+  }),
+};
 
 export const VolumeController = () => {
   const player = usePlayer();
@@ -46,8 +47,9 @@ export const VolumeController = () => {
   );
 
   return (
-    <VolumeContainer>
-      <ControlButton
+    <div css={styles.root}>
+      <IconButton
+        css={volumeMuted ? styles.buttonMuted : {}}
         size="small"
         onClick={handleToggleMute}
         icon={VolumeIcon}
@@ -60,7 +62,7 @@ export const VolumeController = () => {
         sliderSize={"large"}
         onChange={handleVolumeChange}
       />
-    </VolumeContainer>
+    </div>
   );
 };
 
@@ -71,5 +73,5 @@ export const VolumeTrigger = ({ onClick }: { onClick: () => void }) => {
   const volumeMuted = player.attributes?.is_volume_muted ?? false;
   const volumeIcon = getVolumeIcon(volume, volumeMuted);
 
-  return <ControlButton size="small" onClick={onClick} icon={volumeIcon} />;
+  return <IconButton size="small" onClick={onClick} icon={volumeIcon} />;
 };

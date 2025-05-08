@@ -1,41 +1,40 @@
-import styled from "@emotion/styled";
 import { usePlayer } from "@components";
+import { css } from "@emotion/react";
 
-const TitleWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  color: var(--primary-text-color, #fff);
-  padding-left: var(--mmpc-extra-horizontal-padding, 0px);
-  padding-right: var(--mmpc-extra-horizontal-padding, 0px);
-  > h2,
-  > h3 {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 100%;
-  }
-`;
-
-const TitleH2 = styled.h2`
-  margin: 0px;
-`;
-
-const TitleH3 = styled.h3`
-  margin: 0px;
-  font-weight: normal;
-  color: var(--secondary-text-color, #fff);
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "8px",
+    textAlign: "center",
+    color: "var(--primary-text-color, #fff)",
+    paddingLeft: "var(--mmpc-extra-horizontal-padding, 0px)",
+    paddingRight: "var(--mmpc-extra-horizontal-padding, 0px)",
+    "> h2, > h3": {
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      width: "100%",
+    },
+  }),
+  titleH2: css({
+    margin: 0,
+  }),
+  titleH3: css({
+    margin: 0,
+    fontWeight: "normal",
+    color: "var(--secondary-text-color, #fff)",
+  }),
+};
 
 export const Title = () => {
   const { title, subtitle } = usePlayer();
 
   return (
-    <TitleWrap>
-      {!!title && <TitleH2>{title}</TitleH2>}
-      {!!subtitle && <TitleH3>{subtitle}</TitleH3>}
-    </TitleWrap>
+    <div css={styles.root}>
+      {!!title && <h2 css={styles.titleH2}>{title}</h2>}
+      {!!subtitle && <h3 css={styles.titleH3}>{subtitle}</h3>}
+    </div>
   );
 };

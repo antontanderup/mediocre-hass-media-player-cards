@@ -21,7 +21,6 @@ import {
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 import { Fragment } from "preact";
-import { css } from "@emotion/react";
 
 const filters: MaFilterConfig[] = [
   { type: "all", label: "All", icon: "mdi:all-inclusive" },
@@ -90,13 +89,13 @@ export const MaSearch = ({
 
   const renderSearchBar = () => {
     return (
-      <div css={css({ display: "flex", flexDirection: "column", gap: 12 })}>
+      <div css={searchStyles.searchBarContainer}>
         <Input
           placeholder="Search.."
           onChange={setQuery}
           value={query}
           loading={loading}
-          css={css({ padding: "1px var(--mmpc-search-padding, 0px)" })}
+          css={searchStyles.searchInput}
         />
         <div css={searchStyles.filterContainer}>
           <Chip

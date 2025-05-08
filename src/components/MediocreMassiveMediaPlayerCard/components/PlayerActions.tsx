@@ -1,6 +1,5 @@
 import { useCallback, useContext, useState } from "preact/hooks";
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import { IconButton, MaSearch } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
@@ -13,20 +12,6 @@ import {
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
 
-const PlayerActionsWrap = styled.div`
-  background-color: var(--mmpc-surface-higher);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 12px;
-  padding: 12px;
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  box-shadow: 0 15px 100px var(--clear-background-color);
-`;
-
 const slideUpFadeIn = keyframes`
   from {
     transform: translateY(30px);
@@ -38,30 +23,52 @@ const slideUpFadeIn = keyframes`
   }
 `;
 
-const ModalRoot = styled.div`
-  position: absolute;
-  bottom: calc(100% + 12px);
-  left: 0;
-  width: 100%;
-  background-color: var(--mmpc-surface-higher);
-  border-radius: 12px;
-  box-sizing: border-box;
-  animation: ${slideUpFadeIn} 0.3s ease forwards;
-  box-shadow: 0 0px 80px var(--clear-background-color);
-`;
-
-const ModalHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  > h4 {
-    margin: 0;
-  }
-  padding: 8px 16px;
-  color: var(--primary-text-color, #fff);
-  border-bottom: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-`;
+const styles = {
+  root: css({
+    backgroundColor: "var(--mmpc-surface-higher)",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: "12px",
+    padding: "12px",
+    width: "100%",
+    position: "relative",
+    boxSizing: "border-box",
+    boxShadow: "0 15px 100px var(--clear-background-color)",
+  }),
+  modalRoot: css({
+    position: "absolute",
+    bottom: "calc(100% + 12px)",
+    left: 0,
+    width: "100%",
+    backgroundColor: "var(--mmpc-surface-higher)",
+    borderRadius: "12px",
+    boxSizing: "border-box",
+    animation: `${slideUpFadeIn} 0.3s ease forwards`,
+    boxShadow: "0 0px 80px var(--clear-background-color)",
+  }),
+  modalHeader: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "8px 16px",
+    color: "var(--primary-text-color, #fff)",
+    borderBottom: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    "> h4": {
+      margin: 0,
+    },
+  }),
+  modalContent: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+    maxHeight: "400px",
+    overflowY: "auto",
+    padding: "var(--mmpc-modal-padding, 16px)",
+  }),
+};
 
 export const PlayerActions = () => {
   const { config } =
@@ -83,7 +90,7 @@ export const PlayerActions = () => {
   );
 
   return (
-    <PlayerActionsWrap>
+    <div css={styles.root}>
       <Modal
         title="Volume"
         isOpen={selected === "volume"}
@@ -146,7 +153,7 @@ export const PlayerActions = () => {
         />
       )}
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
-    </PlayerActionsWrap>
+    </div>
   );
 };
 
@@ -165,8 +172,8 @@ const Modal = ({
 }) => {
   if (!isOpen) return null;
   return (
-    <ModalRoot>
-      <ModalHeader>
+    <div css={styles.modalRoot}>
+      <div css={styles.modalHeader}>
         <h4>{title}</h4>
         <IconButton
           type="button"
@@ -174,20 +181,16 @@ const Modal = ({
           icon={"mdi:close"}
           onClick={onClose}
         />
-      </ModalHeader>
+      </div>
       <div
-        css={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-          maxHeight: "400px",
-          overflowY: "auto",
-          padding: padding ?? 16,
+        css={styles.modalContent}
+        style={{
+          "--mmpc-modal-padding": padding ?? 16,
         }}
       >
         {children}
       </div>
-    </ModalRoot>
+    </div>
   );
 };
 
