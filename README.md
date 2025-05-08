@@ -84,6 +84,7 @@ Both cards support these options:
 | `speaker_group.entity_id` | string | -        | Entity ID of the main speaker if different from the media player |
 | `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
 | `custom_buttons`          | array  | -        | List of custom buttons to display                                |
+| `ma_entity_id`            | string | -        | Music Assistant entity id (adds search)                          |
 
 The Mediocre Media Player Card has additional options:
 
@@ -128,6 +129,22 @@ custom_buttons:
         entity_id: media_player.living_room_speaker
       data: {}
 ```
+
+## Music Assistant Integration
+
+Both the Mediocre Media Player Card and the Mediocre Massive Media Player Card support Music Assistant. By specifying a `ma_entity_id`, you can enable Music Assistant-specific features (currently just search). Even if your main entity_id is the same as your music assistant entity_id you need to specify it in the `ma_entity_id`. This allows you to use the card with a different entity_id than your music assistant but trigger actions on a music assistant entity.
+
+### Configuration
+
+```yaml
+type: "custom:mediocre-media-player-card"
+entity_id: media_player.living_room_musiccast
+ma_entity_id: media_player.living_room_musicassistant
+```
+
+| Option         | Type   | Default | Description                                 |
+| -------------- | ------ | ------- | ------------------------------------------- |
+| `ma_entity_id` | string | -       | The entity ID of the Music Assistant player |
 
 ### Mediocre Chip Media Player Group Card
 
