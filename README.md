@@ -45,8 +45,7 @@ resources:
 
 A standard-sized media player card. Supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant).
 
-<img src="https://github.com/user-attachments/assets/2178b5d4-ea8f-46cf-9737-149e1da935c5" width="500px" alt="Mediocre Media Player Card Screenshot 3" />
-<img src="https://github.com/user-attachments/assets/dd94d59e-258e-4195-9b9c-4e5b2b9ae9a1" width="500px" alt="Mediocre Media Player Card Screenshot 2" />
+<img src="https://github.com/user-attachments/assets/a4ad8f2c-aafe-424f-9626-ff3353cbd605" width="500px" alt="Mediocre Media Player Card Screenshot 2" />
 
 #### Configuration
 
