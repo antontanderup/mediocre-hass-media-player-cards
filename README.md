@@ -62,7 +62,7 @@ speaker_group:
 
 ### Mediocre Massive Media Player Card
 
-A full-sized media player card. Can be displayed as a regular card (mode: card), embedded in other cards (mode: in-card), or used in panel view (mode: panel). Just like the regular card it supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant). In fact they share most of the configuration options.
+A full-sized media player card. Just like the regular card it supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant). In fact they share most of the configuration options.
 
 <img src="https://github.com/user-attachments/assets/8340e509-c7af-4a10-bbb1-8b8086a87e57" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
 
