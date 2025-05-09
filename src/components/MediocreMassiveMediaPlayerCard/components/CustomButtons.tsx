@@ -1,5 +1,4 @@
 import { useContext } from "preact/hooks";
-import styled from "@emotion/styled";
 import type {
   MediocreMassiveMediaPlayerCardConfig,
   MediocreMediaPlayerCardConfig,
@@ -8,28 +7,30 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
 import { Chip } from "@components";
 import { useActionProps } from "@hooks";
+import { css } from "@emotion/react";
 
-const CustomButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 2px;
-  overflow-x: auto !important;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const ButtonChip = styled(Chip)`
-  &:first-child {
-    margin-left: 16px;
-  }
-  &:last-child {
-    margin-right: 16px;
-  }
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    gap: "2px",
+    overflowX: "auto",
+    scrollbarWidth: "none",
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  }),
+  chip: css({
+    "&:first-child": {
+      marginLeft: "16px",
+    },
+    "&:last-child": {
+      marginRight: "16px",
+    },
+  }),
+};
 
 export const CustomButtons = () => {
   const { config } =
@@ -40,11 +41,11 @@ export const CustomButtons = () => {
   const { custom_buttons } = config;
 
   return (
-    <CustomButtonsContainer>
+    <div css={styles.root}>
       {custom_buttons.map((button, index) => (
         <CustomButton key={index} button={button} />
       ))}
-    </CustomButtonsContainer>
+    </div>
   );
 };
 
@@ -68,9 +69,9 @@ const CustomButton = ({
   });
 
   return (
-    <ButtonChip icon={icon} {...actionProps}>
+    <Chip css={styles.chip} icon={icon} {...actionProps}>
       {!!name && <span>{name}</span>}
       {actionProps.renderLongPressIndicator()}
-    </ButtonChip>
+    </Chip>
   );
 };

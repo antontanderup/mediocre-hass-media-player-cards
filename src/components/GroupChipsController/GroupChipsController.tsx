@@ -1,29 +1,30 @@
 import { Chip, useHass } from "@components";
-import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 import { CommonMediocreMediaPlayerCardConfig } from "@types";
 import { FC, useCallback, useMemo, useState } from "preact/compat";
 
-const Chips = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  justify-content: flex-start;
-  overflow-x: auto !important;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const SpeakerChip = styled(Chip)<{ $horizontalMargin?: number }>`
-  &:first-child {
-    margin-left: ${props => props.$horizontalMargin ?? 0}px;
-  }
-  &:last-child {
-    margin-right: ${props => props.$horizontalMargin ?? 0}px;
-  }
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    gap: "2px",
+    justifyContent: "flex-start",
+    overflowX: "auto",
+    scrollbarWidth: "none",
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  }),
+  speakerChip: css({
+    "&:first-child": {
+      marginLeft: "var(--mmpc-chip-horizontal-margin, 0px)",
+    },
+    "&:last-child": {
+      marginRight: "var(--mmpc-chip-horizontal-margin, 0px)",
+    },
+  }),
+};
 
 export type GroupChipsControllerProps = {
   config: Pick<
@@ -115,9 +116,10 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
   );
 
   return (
-    <Chips>
+    <div css={styles.root}>
       {availableSpeakers.map(speaker => (
-        <SpeakerChip
+        <Chip
+          css={styles.speakerChip}
           key={speaker.entity_id}
           loading={playersLoading.includes(speaker.entity_id)}
           onClick={() =>
@@ -125,11 +127,13 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
           }
           icon={speaker.isGrouped ? "mdi:close" : "mdi:plus"}
           iconPosition="right"
-          $horizontalMargin={layout?.horizontalMargin}
+          style={{
+            "--mmpc-chip-horizontal-margin": `${layout?.horizontalMargin ?? 0}px`,
+          }}
         >
           {speaker.name}
-        </SpeakerChip>
+        </Chip>
       ))}
-    </Chips>
+    </div>
   );
 };

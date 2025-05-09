@@ -1,5 +1,4 @@
 import { useContext, useState } from "preact/hooks";
-import styled from "@emotion/styled";
 import {
   useHass,
   GroupVolumeController,
@@ -8,37 +7,36 @@ import {
 } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
+import { css } from "@emotion/react";
 
-const SpeakerGroupContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-
-const SpeakerList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-left: 16px;
-  margin-right: 16px;
-`;
-
-const SyncContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-left: auto;
-  gap: 4px;
-  opacity: 0.8;
-  // Below positioning hack is probably going to come back to bite me but hey, it works
-  position: absolute;
-  right: 56px;
-  top: 12px;
-`;
-
-const SyncText = styled.span`
-  font-size: 12px;
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: "18px",
+  }),
+  speakerList: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    marginLeft: "16px",
+    marginRight: "16px",
+  }),
+  syncContainer: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: "auto",
+    gap: "4px",
+    opacity: 0.8,
+    position: "absolute", // Positioning hack is probably going to come back to bite me but hey, it works
+    right: "56px",
+    top: "12px",
+  }),
+  syncText: css({
+    fontSize: "12px",
+  }),
+};
 
 export const SpeakerGrouping = () => {
   const hass = useHass();
@@ -56,15 +54,16 @@ export const SpeakerGrouping = () => {
   const mainEntity = hass.states[mainEntityId];
 
   return (
-    <SpeakerGroupContainer>
+    <div css={styles.root}>
       {mainEntity?.attributes?.group_members?.length > 1 && (
         <div>
-          <SyncContainer>
-            <SyncText
+          <div css={styles.syncContainer}>
+            <span
+              css={styles.syncText}
               onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
             >
               Link Volume
-            </SyncText>
+            </span>
             <IconButton
               icon={
                 syncMainSpeakerVolume
@@ -74,8 +73,8 @@ export const SpeakerGrouping = () => {
               size="x-small"
               onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
             />
-          </SyncContainer>
-          <SpeakerList>
+          </div>
+          <div css={styles.speakerList}>
             <GroupVolumeController
               config={{
                 entity_id,
@@ -83,7 +82,7 @@ export const SpeakerGrouping = () => {
               }}
               syncMainSpeaker={syncMainSpeakerVolume}
             />
-          </SpeakerList>
+          </div>
         </div>
       )}
       <GroupChipsController
@@ -91,6 +90,6 @@ export const SpeakerGrouping = () => {
         showGrouped={false}
         layout={{ horizontalMargin: 16 }}
       />
-    </SpeakerGroupContainer>
+    </div>
   );
 };

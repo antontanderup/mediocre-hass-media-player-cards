@@ -2,44 +2,41 @@ import { useCallback, useMemo, useState } from "preact/hooks";
 import type { CommonMediocreMediaPlayerCardConfig } from "@types";
 import { IconButton, Slider, useHass } from "@components";
 import { getHass, getVolumeIcon, setVolume } from "@utils";
-import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
-const SpeakersTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-`;
-
-const SpeakerRow = styled.tr`
-  width: 100%;
-  height: 32px;
-`;
-
-const NameCell = styled.td<{ $isMainSpeaker: boolean }>`
-  padding-right: 8px;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  ${props => (props.$isMainSpeaker ? "font-weight: 500;" : "")}
-`;
-
-const ControlsCell = styled.td`
-  padding: 0px 4px;
-`;
-
-const ButtonCell = styled.td`
-  width: 28px;
-  white-space: nowrap;
-`;
-
-const ControlsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const SpeakersList = styled.div``;
+const styles = {
+  speakersTable: css({
+    width: "100%",
+    borderCollapse: "collapse",
+    tableLayout: "fixed",
+  }),
+  speakerRow: css({
+    width: "100%",
+    height: "32px",
+  }),
+  nameCell: css({
+    paddingRight: "8px",
+    fontSize: "14px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }),
+  nameCellMainSpeaker: css({
+    fontWeight: 500,
+  }),
+  controlsCell: css({
+    padding: "0px 4px",
+  }),
+  buttonCell: css({
+    width: "28px",
+    whiteSpace: "nowrap",
+  }),
+  controlsContainer: css({
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+  }),
+};
 
 export type GroupSpeaker = {
   entity_id: string;
@@ -151,17 +148,21 @@ export const GroupVolumeController = ({
     const isDisabled = isLoading || (isMainSpeaker && !isGrouped);
 
     return (
-      <SpeakerRow key={entity_id}>
-        <NameCell $isMainSpeaker={isMainSpeaker}>{name}</NameCell>
-        <ButtonCell>
+      <tr css={styles.speakerRow} key={entity_id}>
+        <td
+          css={[styles.nameCell, isMainSpeaker && styles.nameCellMainSpeaker]}
+        >
+          {name}
+        </td>
+        <td css={styles.buttonCell}>
           <IconButton
             size="x-small"
             onClick={() => handleToggleMute(entity_id, muted)}
             icon={getVolumeIcon(volume, muted)}
           />
-        </ButtonCell>
-        <ControlsCell>
-          <ControlsContainer>
+        </td>
+        <td css={styles.controlsCell}>
+          <div css={styles.controlsContainer}>
             <Slider
               min={0}
               max={1}
@@ -172,23 +173,23 @@ export const GroupVolumeController = ({
                 handleVolumeChange(entity_id, value, isMainSpeaker)
               }
             />
-          </ControlsContainer>
-        </ControlsCell>
-        <ButtonCell>
+          </div>
+        </td>
+        <td css={styles.buttonCell}>
           <IconButton
             size="x-small"
             onClick={() => handleToggleGroup(entity_id, isGrouped)}
             icon={isGrouped ? "mdi:close" : "mdi:plus"}
             disabled={isDisabled}
           />
-        </ButtonCell>
-      </SpeakerRow>
+        </td>
+      </tr>
     );
   };
 
   return (
-    <SpeakersList>
-      <SpeakersTable>
+    <div>
+      <table css={styles.speakersTable}>
         <tbody>
           {availableSpeakers
             .filter(speaker => speaker.isGrouped)
@@ -196,7 +197,7 @@ export const GroupVolumeController = ({
               renderSpeaker(speaker, index, filteredSpeakers)
             )}
         </tbody>
-      </SpeakersTable>
-    </SpeakersList>
+      </table>
+    </div>
   );
 };

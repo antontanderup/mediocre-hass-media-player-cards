@@ -1,20 +1,22 @@
 import { useCallback, useContext } from "preact/hooks";
-import styled from "@emotion/styled";
 import { IconButton, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useSupportedFeatures } from "@hooks";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { getHass } from "@utils";
+import { css } from "@emotion/react";
 
-const PlaybackControlsWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  padding-left: var(--mmpc-extra-horizontal-padding, 0px);
-  padding-right: var(--mmpc-extra-horizontal-padding, 0px);
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    paddingLeft: "var(--mmpc-extra-horizontal-padding, 0px)",
+    paddingRight: "var(--mmpc-extra-horizontal-padding, 0px)",
+  }),
+};
 
 export const PlaybackControls = () => {
   const { config } =
@@ -72,7 +74,7 @@ export const PlaybackControls = () => {
   }, [repeat]);
 
   return (
-    <PlaybackControlsWrap>
+    <div css={styles.root}>
       {supportsShuffle && (
         <IconButton
           size="small"
@@ -110,6 +112,6 @@ export const PlaybackControls = () => {
           }
         />
       )}
-    </PlaybackControlsWrap>
+    </div>
   );
 };

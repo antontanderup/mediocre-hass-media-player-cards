@@ -1,5 +1,4 @@
 import { useContext, useState } from "preact/hooks";
-import styled from "@emotion/styled";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import { Fragment } from "preact/jsx-runtime";
 import {
@@ -10,49 +9,47 @@ import {
   IconButton,
 } from "@components";
 import { GroupChipsController } from "@components/GroupChipsController";
+import { css } from "@emotion/react";
 
-const SpeakerGroupContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 12px;
-  padding-bottom: 16px;
-  border-top: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-  gap: 12px;
-`;
-
-const GroupTitle = styled.h3`
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--primary-text-color);
-  margin: 0px 16px;
-`;
-
-const SyncContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-left: auto;
-  gap: 4px;
-  margin-right: 19px;
-`;
-
-const SyncText = styled.span`
-  font-size: 12px;
-  color: var(--secondary-text-color);
-`;
-
-const GroupedSpeakers = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-left: 16px;
-  margin-right: 16px;
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  align-items: center;
-`;
+const styles = {
+  speakerGroupContainer: css({
+    display: "flex",
+    flexDirection: "column",
+    paddingTop: "12px",
+    paddingBottom: "16px",
+    borderTop: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    gap: "12px",
+  }),
+  groupTitle: css({
+    fontSize: "16px",
+    fontWeight: 500,
+    color: "var(--primary-text-color)",
+    margin: "0px 16px",
+  }),
+  syncContainer: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: "auto",
+    gap: "4px",
+    marginRight: "19px",
+  }),
+  syncText: css({
+    fontSize: "12px",
+    color: "var(--secondary-text-color)",
+  }),
+  groupedSpeakers: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    marginLeft: "16px",
+    marginRight: "16px",
+  }),
+  titleRow: css({
+    display: "flex",
+    alignItems: "center",
+  }),
+};
 
 export const SpeakerGrouping = () => {
   const hass = useHass();
@@ -68,17 +65,18 @@ export const SpeakerGrouping = () => {
   const mainEntity = hass.states[mainEntityId];
 
   return (
-    <SpeakerGroupContainer>
+    <div css={styles.speakerGroupContainer}>
       {mainEntity?.attributes?.group_members?.length > 1 && (
         <Fragment>
-          <TitleRow>
-            <GroupTitle>Grouped Speakers</GroupTitle>
-            <SyncContainer>
-              <SyncText
+          <div css={styles.titleRow}>
+            <h3 css={styles.groupTitle}>Grouped Speakers</h3>
+            <div css={styles.syncContainer}>
+              <span
+                css={styles.syncText}
                 onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
               >
                 Link Volume
-              </SyncText>
+              </span>
               <IconButton
                 icon={
                   syncMainSpeakerVolume
@@ -88,9 +86,9 @@ export const SpeakerGrouping = () => {
                 size="x-small"
                 onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
               />
-            </SyncContainer>
-          </TitleRow>
-          <GroupedSpeakers>
+            </div>
+          </div>
+          <div css={styles.groupedSpeakers}>
             <GroupVolumeController
               config={{
                 entity_id,
@@ -98,15 +96,15 @@ export const SpeakerGrouping = () => {
               }}
               syncMainSpeaker={syncMainSpeakerVolume}
             />
-          </GroupedSpeakers>
+          </div>
         </Fragment>
       )}
-      <GroupTitle>Add speakers to group</GroupTitle>
+      <h3 css={styles.groupTitle}>Add speakers to group</h3>
       <GroupChipsController
         config={{ entity_id, speaker_group }}
         showGrouped={false}
         layout={{ horizontalMargin: 16 }}
       />
-    </SpeakerGroupContainer>
+    </div>
   );
 };

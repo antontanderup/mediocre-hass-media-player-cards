@@ -1,35 +1,39 @@
 import { useState } from "preact/hooks";
-import styled from "@emotion/styled";
 import { IconButton } from "@components";
 import { JSX } from "preact";
+import { css } from "@emotion/react";
 
-const SubFormContainer = styled.div`
-  border: 1px solid var(--divider-color, #e0e0e0);
-  border-radius: 8px;
-  position: relative;
-  margin-bottom: 16px;
-  background-color: var(--card-background-color, #fff);
-`;
-
-const SubFormHeader = styled.div<{ $expanded: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: ${props =>
-    props.$expanded ? "1px solid var(--divider-color, #e0e0e0)" : "none"};
-`;
-
-const SubFormTitle = styled.h3`
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const SubFormContent = styled.div<{ $expanded: boolean }>`
-  padding: 16px;
-  display: ${props => (props.$expanded ? "block" : "none")};
-`;
+const styles = {
+  root: css({
+    border: "1px solid var(--divider-color, #e0e0e0)",
+    borderRadius: "8px",
+    position: "relative",
+    marginBottom: "16px",
+    backgroundColor: "var(--card-background-color, #fff)",
+  }),
+  header: css({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "12px 16px",
+    borderBottom: "none",
+  }),
+  headerExpanded: css({
+    borderBottom: "1px solid var(--divider-color, #e0e0e0)",
+  }),
+  title: css({
+    margin: 0,
+    fontSize: "16px",
+    fontWeight: 500,
+  }),
+  content: css({
+    padding: 16,
+    display: "none",
+  }),
+  contentExpanded: css({
+    display: "block",
+  }),
+};
 
 export const SubForm = ({
   title,
@@ -43,17 +47,19 @@ export const SubForm = ({
   const [expanded, setExpanded] = useState(initiallyExpanded);
 
   return (
-    <SubFormContainer>
-      <SubFormHeader $expanded={expanded}>
-        <SubFormTitle>{title}</SubFormTitle>
+    <div css={styles.root}>
+      <div css={[styles.header, expanded && styles.headerExpanded]}>
+        <h3 css={styles.title}>{title}</h3>
         <IconButton
           onClick={() => setExpanded(!expanded)}
           icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
           type="button"
           size={"small"}
         />
-      </SubFormHeader>
-      <SubFormContent $expanded={expanded}>{children}</SubFormContent>
-    </SubFormContainer>
+      </div>
+      <div css={[styles.content, expanded && styles.contentExpanded]}>
+        {children}
+      </div>
+    </div>
   );
 };

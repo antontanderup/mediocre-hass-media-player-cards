@@ -1,35 +1,36 @@
 import { useContext } from "preact/hooks";
-import styled from "@emotion/styled";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
 import { Chip, IconButton } from "@components";
 import { useActionProps } from "@hooks";
+import { css } from "@emotion/react";
 
-const CustomButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  overflow-x: auto !important;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-top: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-  gap: 2px;
-`;
-
-const ChipButton = styled(Chip)`
-  &:first-child {
-    margin-left: 16px;
-  }
-  &:last-child {
-    margin-right: 16px;
-  }
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    overflowX: "auto",
+    scrollbarWidth: "none",
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+    paddingTop: "16px",
+    paddingBottom: "16px",
+    borderTop: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    gap: "2px",
+  }),
+  chip: css({
+    "&:first-child": {
+      marginLeft: 16,
+    },
+    "&:last-child": {
+      marginRight: 16,
+    },
+  }),
+};
 
 export const CustomButtons = () => {
   const { config } =
@@ -38,11 +39,11 @@ export const CustomButtons = () => {
   const { custom_buttons } = config;
 
   return (
-    <CustomButtonsContainer>
+    <div css={styles.root}>
       {custom_buttons.map((button, index) => (
         <CustomButton key={index} button={button} />
       ))}
-    </CustomButtonsContainer>
+    </div>
   );
 };
 
@@ -77,9 +78,9 @@ export const CustomButton = ({
   }
 
   return (
-    <ChipButton icon={icon} {...actionProps}>
+    <Chip css={styles.chip} icon={icon} {...actionProps}>
       {!!name && <span>{name}</span>}
       {actionProps.renderLongPressIndicator()}
-    </ChipButton>
+    </Chip>
   );
 };

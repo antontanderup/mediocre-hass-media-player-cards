@@ -1,21 +1,22 @@
 import { useMemo, useEffect, useState } from "preact/hooks";
-import styled from "@emotion/styled";
 import { ProgressBar, usePlayer } from "@components";
+import { css } from "@emotion/react";
 
-const TrackWrap = styled.div`
-  padding-left: var(--mmpc-extra-horizontal-padding, 0px);
-  padding-right: var(--mmpc-extra-horizontal-padding, 0px);
-`;
-
-const TimeWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 4px;
-  color: var(--secondary-text-color, #888);
-  height: 20px;
-  margin-bottom: -20px;
-`;
+const styles = {
+  root: css({
+    paddingLeft: "var(--mmpc-extra-horizontal-padding, 0px)",
+    paddingRight: "var(--mmpc-extra-horizontal-padding, 0px)",
+  }),
+  timeWrap: css({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: "4px",
+    color: "var(--secondary-text-color, #888)",
+    height: "20px",
+    marginBottom: "-20px",
+  }),
+};
 
 export const Track = () => {
   const player = usePlayer();
@@ -74,16 +75,16 @@ export const Track = () => {
   }
 
   return (
-    <TrackWrap>
+    <div css={styles.root}>
       <ProgressBar
         value={position.currentPosition}
         min={0}
         max={position.mediaDuration}
       />
-      <TimeWrap>
+      <div css={styles.timeWrap}>
         <span>{position.prettyNow}</span>
         <span>{position.prettyEnd}</span>
-      </TimeWrap>
-    </TrackWrap>
+      </div>
+    </div>
   );
 };

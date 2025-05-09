@@ -11,8 +11,7 @@ import {
   useHass,
   usePlayer,
 } from "@components";
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import { useActionProps } from "@hooks";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { getDeviceIcon } from "@utils";
@@ -28,89 +27,82 @@ const slideUp = keyframes`
   }
 `;
 
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 8; // Above header and below dialogs
-  transition: opacity 0.3s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  @media screen and (min-height: 832px) {
-    align-items: center;
-  }
-`;
-
-const ClickableBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-`;
-
-const PopUpContainer = styled.div`
-  animation: ${slideUp} 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  max-height: 98vh;
-  height: fit-content;
-  width: 424px;
-  max-width: 98vw;
-  margin-botton: 16px;
-  background-color: var(--ha-card-background, var(--card-background-color));
-  overflow: hidden;
-  box-shadow: 0px 10px 20px var(--clear-background-color);
-  border-top-left-radius: var(--ha-dialog-border-radius, 28px);
-  border-top-right-radius: var(--ha-dialog-border-radius, 28px);
-  @media screen and (min-height: 832px) {
-    border-radius: var(--ha-dialog-border-radius, 28px);
-    box-shadow: 0px 0px 20px var(--clear-background-color);
-  }
-
-  @media (prefers-color-scheme: light) {
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const PopUpContent = styled.div`
-  display: grid;
-  height: 100%;
-`;
-
 const headerHeight = 58;
-const PopUpHeader = styled.div`
-  display: flex;
-  height: ${headerHeight}px;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0px 16px;
-  border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-  gap: 8px;
-`;
 
-const Title = styled.h2`
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--primary-text-color, #212121);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-right: auto;
-`;
-
-const PopupMediocreMassiveMediaPlayerCard = styled(
-  MediocreMassiveMediaPlayerCard
-)`
-  max-height: calc(98vh - ${headerHeight}px);
-  max-width: 98vw;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-`;
+const styles = {
+  overlay: css({
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 8, // Above header and below dialogs
+    transition: "opacity 0.3s ease-in-out",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    "@media screen and (min-height: 832px)": {
+      alignItems: "center",
+    },
+  }),
+  clickableBackground: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+  }),
+  popUpContainer: css({
+    animation: `${slideUp} 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards`,
+    maxHeight: "98vh",
+    height: "fit-content",
+    width: "424px",
+    maxWidth: "98vw",
+    backgroundColor: "var(--ha-card-background, var(--card-background-color))",
+    overflow: "hidden",
+    boxShadow: "0px 10px 20px var(--clear-background-color)",
+    borderTopLeftRadius: "var(--ha-dialog-border-radius, 28px)",
+    borderTopRightRadius: "var(--ha-dialog-border-radius, 28px)",
+    "@media screen and (min-height: 832px)": {
+      borderRadius: "var(--ha-dialog-border-radius, 28px)",
+      boxShadow: "0px 0px 20px var(--clear-background-color)",
+    },
+    "@media (prefers-color-scheme: light)": {
+      boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",
+    },
+  }),
+  popUpContent: css({
+    display: "grid",
+    height: "100%",
+  }),
+  popUpHeader: css({
+    display: "flex",
+    height: headerHeight,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    padding: "0px 16px",
+    borderBottom: "1px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    gap: "8px",
+  }),
+  title: css({
+    margin: 0,
+    fontSize: "18px",
+    fontWeight: 500,
+    color: "var(--primary-text-color, #212121)",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    marginRight: "auto",
+  }),
+  massiveCard: css({
+    maxHeight: `calc(98vh - ${headerHeight}px)`,
+    maxWidth: "98vw",
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+  }),
+};
 
 export const MassivePopUp = ({
   visible,
@@ -158,18 +150,19 @@ export const MassivePopUp = ({
   if (!visible) {
     return null;
   }
+
   return (
-    <Overlay>
-      <ClickableBackground onClick={() => setVisible(false)} />
-      <PopUpContainer>
-        <PopUpHeader>
+    <div css={styles.overlay}>
+      <div css={styles.clickableBackground} onClick={() => setVisible(false)} />
+      <div css={styles.popUpContainer}>
+        <div css={styles.popUpHeader}>
           <Icon size={"small"} icon={mdiIcon} />
-          <Title>
+          <h2 css={styles.title}>
             {friendlyName}
             {groupMembers?.length > 1 && (
               <span> +{groupMembers.length - 1}</span>
             )}
-          </Title>
+          </h2>
           <IconButton
             size="small"
             {...moreInfoButtonProps}
@@ -180,13 +173,13 @@ export const MassivePopUp = ({
             size="small"
             onClick={() => setVisible(false)}
           />
-        </PopUpHeader>
-        <PopUpContent>
+        </div>
+        <div css={styles.popUpContent}>
           <CardContextProvider rootElement={rootElement} config={massiveConfig}>
-            <PopupMediocreMassiveMediaPlayerCard />
+            <MediocreMassiveMediaPlayerCard css={styles.massiveCard} />
           </CardContextProvider>
-        </PopUpContent>
-      </PopUpContainer>
-    </Overlay>
+        </div>
+      </div>
+    </div>
   );
 };

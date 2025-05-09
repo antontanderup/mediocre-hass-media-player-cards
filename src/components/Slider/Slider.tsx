@@ -1,5 +1,6 @@
-import styled from "@emotion/styled";
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
+import { css } from "@emotion/react";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 export type SliderProps = {
   min: number;
@@ -12,42 +13,39 @@ export type SliderProps = {
 
 export type SliderSize = "xsmall" | "small" | "medium" | "large";
 
-// Styled BaseUI slider components
-const StyledRoot = styled(BaseSlider.Root)`
-  width: 100%;
-  --unselected-color: var(--divider-color);
-  margin: 0;
-`;
-
-const StyledControl = styled(BaseSlider.Control)`
-  position: relative;
-  cursor: pointer;
-`;
-
-const StyledTrack = styled(BaseSlider.Track)<{ sliderSize?: SliderSize }>`
-  background: var(--unselected-color);
-  height: ${props => getSliderSize(props.sliderSize || "medium")};
-  border-radius: 6px;
-  overflow: hidden;
-`;
-
-const StyledIndicator = styled(BaseSlider.Indicator)`
-  background: var(--primary-color);
-  height: 100%;
-  border-radius: 4px;
-`;
-
-const StyledThumb = styled(BaseSlider.Thumb)<{ sliderSize?: SliderSize }>`
-  width: 6px;
-  height: 64%;
-  background-color: var(--text-primary-color);
-  @media (prefers-color-scheme: light) {
-    background-color: var(--art-surface-color, rgba(255, 255, 255, 0.8));
-  }
-  cursor: pointer;
-  border-radius: 2px;
-  margin-left: -8px;
-`;
+const styles = {
+  root: css({
+    width: "100%",
+    "--unselected-color": "var(--divider-color)",
+    margin: "0",
+  }),
+  control: css({
+    position: "relative",
+    cursor: "pointer",
+  }),
+  track: css({
+    background: "var(--unselected-color)",
+    height: "var(--mmpc-slider-height)",
+    borderRadius: "6px",
+    overflow: "hidden",
+  }),
+  indicator: css({
+    background: "var(--primary-color)",
+    height: "100%",
+    borderRadius: "4px",
+  }),
+  thumb: css({
+    width: "6px",
+    height: "64%",
+    backgroundColor: "var(--text-primary-color)",
+    "@media (prefers-color-scheme: light)": {
+      backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    },
+    cursor: "pointer",
+    borderRadius: "2px",
+    marginLeft: "-8px",
+  }),
+};
 
 export const Slider = ({
   min,
@@ -57,21 +55,49 @@ export const Slider = ({
   sliderSize = "medium",
   onChange,
 }: SliderProps) => {
+  const [internalValue, setInternalValue] = useState<number>(value);
+  const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
+
+  const handleValueChange = useCallback(
+    (newVolume: number) => {
+      setInternalValue(newVolume);
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        onChange(newVolume);
+      }, 200);
+    },
+    [onChange]
+  );
+
+  useEffect(() => {
+    if (value !== internalValue) {
+      setInternalValue(value);
+    }
+  }, [value]);
+
   return (
-    <StyledRoot
-      value={value}
-      onValueChange={value => onChange(value)}
+    <BaseSlider.Root
+      css={styles.root}
+      value={internalValue}
+      onValueChange={handleValueChange}
       min={min}
       max={max}
       step={step}
     >
-      <StyledControl>
-        <StyledTrack sliderSize={sliderSize}>
-          <StyledIndicator />
-          <StyledThumb sliderSize={sliderSize} />
-        </StyledTrack>
-      </StyledControl>
-    </StyledRoot>
+      <BaseSlider.Control css={styles.control}>
+        <BaseSlider.Track
+          css={styles.track}
+          style={{
+            "--mmpc-slider-height": getSliderSize(sliderSize),
+          }}
+        >
+          <BaseSlider.Indicator css={styles.indicator} />
+          <BaseSlider.Thumb css={styles.thumb} />
+        </BaseSlider.Track>
+      </BaseSlider.Control>
+    </BaseSlider.Root>
   );
 };
 

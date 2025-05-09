@@ -1,17 +1,10 @@
-import { Input, MediaTrack } from "@components";
+import { Chip, Input, MediaTrack } from "@components";
 import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
-  FilterChip,
-  FilterContainer,
-  MediaEmptyState,
-  MediaGrid,
   MediaItem,
   MediaSectionTitle,
-  ResultsContainer,
-  SearchContainer,
-  TrackListContainer,
-  VerticalChipSeparator,
+  searchStyles,
 } from "@components/MediaSearch";
 import {
   MaMediaType,
@@ -96,43 +89,47 @@ export const MaSearch = ({
 
   const renderSearchBar = () => {
     return (
-      <div css={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div css={searchStyles.searchBarContainer}>
         <Input
           placeholder="Search.."
           onChange={setQuery}
           value={query}
           loading={loading}
-          css={{ padding: "1px var(--mmpc-search-padding, 0px)" }}
+          css={searchStyles.searchInput}
         />
-        <FilterContainer>
-          <FilterChip
-            $horizontalPadding={horizontalPadding}
+        <div css={searchStyles.filterContainer}>
+          <Chip
+            css={searchStyles.chip}
+            style={{
+              "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
+            }}
             icon={getEnqueModeIcon(enqueueMode)}
             onClick={toggleEnqueueMode}
           >
             {getEnqueueModeLabel(enqueueMode)}
-          </FilterChip>
-          <VerticalChipSeparator />
+          </Chip>
+          <div css={searchStyles.verticalChipSeperator} />
           {renderFilterChips()}
-        </FilterContainer>
+        </div>
       </div>
     );
   };
 
   const renderFilterChips = () => {
     return filters.map(filter => (
-      <FilterChip
-        key={filter.type}
-        onClick={() => setActiveFilter(filter.type)}
-        icon={filter.icon}
+      <Chip
+        css={searchStyles.chip}
         style={{
+          "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
           opacity: activeFilter === filter.type ? 1 : 0.6,
           fontWeight: activeFilter === filter.type ? "bold" : "normal",
         }}
-        $horizontalPadding={horizontalPadding}
+        key={filter.type}
+        onClick={() => setActiveFilter(filter.type)}
+        icon={filter.icon}
       >
         {filter.label}
-      </FilterChip>
+      </Chip>
     ));
   };
 
@@ -159,7 +156,7 @@ export const MaSearch = ({
           </MediaSectionTitle>
         )}
         {mediaType === "track" ? (
-          <TrackListContainer>
+          <div css={searchStyles.trackListContainer}>
             {(activeFilter === "all" ? result.slice(0, 5) : result).map(
               item => (
                 <MediaTrack
@@ -171,9 +168,9 @@ export const MaSearch = ({
                 />
               )
             )}
-          </TrackListContainer>
+          </div>
         ) : (
-          <MediaGrid>
+          <div css={searchStyles.mediaGrid}>
             {(activeFilter === "all" ? result.slice(0, 6) : result).map(
               item => (
                 <MediaItem
@@ -185,31 +182,42 @@ export const MaSearch = ({
                 />
               )
             )}
-          </MediaGrid>
+          </div>
         )}
         {result.length === 0 && (
-          <MediaEmptyState>
+          <p css={searchStyles.mediaEmptyText}>
             {loading ? "Searching..." : "No results found."}
-          </MediaEmptyState>
+          </p>
         )}
       </Fragment>
     );
   };
   return (
-    <SearchContainer
-      $horizontalPadding={horizontalPadding}
-      $searchBarPosition={searchBarPosition}
+    <div
+      css={[
+        searchStyles.root,
+        searchBarPosition === "bottom" && searchStyles.rootSearchBarBottom,
+      ]}
+      style={{
+        "--mmpc-search-padding": `${horizontalPadding}px`,
+      }}
     >
       {searchBarPosition === "top" && renderSearchBar()}
       {results && (
-        <ResultsContainer $searchBarPosition={searchBarPosition}>
+        <div
+          css={
+            searchBarPosition === "bottom"
+              ? searchStyles.resultsContainerSearchBarBottom
+              : {}
+          }
+        >
           {Object.entries(results).map(([key, value]) => {
             return renderResult(value, responseKeyMediaTypeMap[key]);
           })}
-        </ResultsContainer>
+        </div>
       )}
       {searchBarPosition === "bottom" && renderSearchBar()}
-    </SearchContainer>
+    </div>
   );
 };
 

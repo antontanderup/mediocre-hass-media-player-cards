@@ -15,57 +15,60 @@ import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
-import styled from "@emotion/styled";
 import { MassivePopUp } from "./components/MassivePopUp";
 import { getHass } from "@utils";
+import { css } from "@emotion/react";
 
-const Card = styled.div<{
-  $artColorVars?: string;
-  $haColorVars?: string;
-  $useArtColors?: boolean;
-}>`
-  border-radius: var(--ha-card-border-radius, 12px);
-  overflow: hidden;
-  ${props => props.$artColorVars ?? ""}
-  ${props => {
-    if (props.$useArtColors && !!props.$haColorVars) {
-      return props.$haColorVars;
-    } else return "";
-  }}
-  ${props =>
-    props.$useArtColors &&
-    `
-    background: 
+const styles = {
+  card: css({
+    borderRadius: "var(--ha-card-border-radius, 12px)",
+    overflow: "hidden",
+  }),
+  cardArtBackground: css({
+    background: `
       radial-gradient( circle at bottom right, var(--art-color, transparent) -500%, transparent 40% ),
       radial-gradient( circle at top center, var(--art-color, transparent) -500%, transparent 40% ),
       radial-gradient( circle at bottom center, var(--art-color, transparent) -500%, transparent 40% ),
-      radial-gradient( circle at top left, var(--art-color, transparent) -500%, transparent 40% );
-  `}
-`;
-
-const CardContent = styled.div<{ $isOn: boolean; $useArtColors?: boolean }>`
-  display: flex;
-  gap: 14px;
-  padding: 12px;
-  opacity: ${props => (props.$isOn ? 1 : 0.7)};
-  transition: opacity 0.3s ease;
-  position: relative;
-`;
-
-const CardRow = styled.div<{ $align?: "start" | "center" | "end" }>`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: ${props => props.$align || "center"};
-  justify-content: space-between;
-`;
-
-const CardRowRight = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 4px;
-  min-width: max-content;
-`;
+      radial-gradient( circle at top left, var(--art-color, transparent) -500%, transparent 40% )`,
+  }),
+  cardContent: css({
+    display: "flex",
+    gap: "14px",
+    padding: "12px",
+    opacity: 1,
+    transition: "opacity 0.3s ease",
+    position: "relative",
+  }),
+  cardRowRight: css({
+    display: "grid",
+    gridTemplateColumns: "repeat(2, auto)",
+    gap: "4px",
+    minWidth: "max-content",
+  }),
+  cardRow: css({
+    display: "flex",
+    flexDirection: "row",
+    gap: "8px",
+    alignItems: "center",
+    justifyContent: "space-between",
+  }),
+  alignStart: css({
+    alignItems: "start",
+  }),
+  cardColumn: css({
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+  }),
+  grid: css({
+    display: "grid",
+  }),
+  controlsContainer: css({
+    display: "flex",
+    flexGrow: 1,
+    containerType: "inline-size",
+  }),
+};
 
 export const MediocreMediaPlayerCard = () => {
   const { rootElement, config } =
@@ -144,30 +147,22 @@ export const MediocreMediaPlayerCard = () => {
 
   return (
     <ha-card>
-      <Card
-        $artColorVars={artVars}
-        $haColorVars={haVars}
-        $useArtColors={use_art_colors}
+      <div
+        css={[styles.card, use_art_colors && styles.cardArtBackground]}
+        style={{
+          ...(artVars ?? {}),
+          ...(haVars && use_art_colors ? haVars : {}),
+        }}
       >
-        <CardContent $isOn={isOn} $useArtColors={use_art_colors}>
+        <div css={styles.cardContent} style={{ opacity: isOn ? 1 : 0.7 }}>
           <AlbumArt size={artSize} iconSize="large" {...artActionProps} />
-          <div
-            css={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-            }}
-          >
-            <CardRow $align="start">
-              <div
-                css={{
-                  display: "grid",
-                }}
-              >
+          <div css={styles.cardColumn}>
+            <div css={[styles.cardRow, styles.alignStart]}>
+              <div css={styles.grid}>
                 <MetaInfo />
                 <PlayerInfo />
               </div>
-              <CardRowRight>
+              <div css={styles.cardRowRight}>
                 {hasCustomButtons && (
                   <Fragment>
                     {custom_buttons.length === 1 ? (
@@ -191,29 +186,23 @@ export const MediocreMediaPlayerCard = () => {
                     icon={"mdi:magnify"}
                   />
                 )}
-              </CardRowRight>
-            </CardRow>
-            <CardRow
-              css={{
+              </div>
+            </div>
+            <div
+              css={styles.cardRow}
+              style={{
                 marginTop: "auto",
                 minHeight: hasNoPlaybackControls ? "unset" : "36px",
               }}
-              $align={"center"}
             >
-              <div
-                css={{
-                  display: "flex",
-                  flexGrow: 1,
-                  containerType: "inline-size",
-                }}
-              >
+              <div css={styles.controlsContainer}>
                 {showVolumeSlider || hasNoPlaybackControls ? (
                   <VolumeSlider />
                 ) : (
                   <PlaybackControls />
                 )}
               </div>
-              <CardRowRight>
+              <div css={styles.cardRowRight}>
                 {!!isOn && !hasNoPlaybackControls && (
                   <VolumeTrigger
                     sliderVisible={showVolumeSlider}
@@ -234,10 +223,10 @@ export const MediocreMediaPlayerCard = () => {
                     icon={"mdi:power"}
                   />
                 )}
-              </CardRowRight>
-            </CardRow>
+              </div>
+            </div>
           </div>
-        </CardContent>
+        </div>
 
         {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
         {showCustomButtons && <CustomButtons />}
@@ -248,7 +237,7 @@ export const MediocreMediaPlayerCard = () => {
             setVisible={setIsPopupVisible}
           />
         )}
-      </Card>
+      </div>
     </ha-card>
   );
 };

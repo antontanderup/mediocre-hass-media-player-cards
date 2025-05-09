@@ -1,47 +1,50 @@
-import styled from "@emotion/styled";
 import { MediaImage } from "./MediaImage";
+import { css } from "@emotion/react";
 
-const MediaItemContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-  border-radius: 8px;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  @media (prefers-color-scheme: light) {
-    background: rgba(0, 0, 0, 0.05);
-  }
-  &:hover {
-    transform: translateY(-4px);
-  }
-`;
-
-const MediaName = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  width: 100%;
-  color: var(--primary-text-color);
-`;
-
-const MediaArtist = styled.div`
-  font-size: 12px;
-  color: var(--secondary-text-color);
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  width: 100%;
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    cursor: "pointer",
+    transition: "transform 0.2s",
+    borderRadius: "8px",
+    padding: "8px",
+    background: "rgba(255, 255, 255, 0.05)",
+    "@media (prefers-color-scheme: light)": {
+      background: "rgba(0, 0, 0, 0.05)",
+    },
+    "&:hover": {
+      transform: "translateY(-4px)",
+    },
+  }),
+  name: css({
+    fontSize: "14px",
+    fontWeight: 500,
+    textAlign: "center",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    width: "100%",
+    color: "var(--primary-text-color)",
+  }),
+  artist: css({
+    fontSize: "12px",
+    color: "var(--secondary-text-color)",
+    textAlign: "center",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: "vertical",
+    width: "100%",
+  }),
+  mediaImage: css({
+    marginBottom: 8,
+  }),
+};
 
 export type MediaItemProps = {
   imageUrl?: string | null;
@@ -57,15 +60,10 @@ export const MediaItem = ({
   onClick,
 }: MediaItemProps) => {
   return (
-    <MediaItemContainer onClick={onClick}>
-      <MediaImage
-        css={{
-          marginBottom: 8,
-        }}
-        imageUrl={imageUrl}
-      />
-      <MediaName>{name}</MediaName>
-      <MediaArtist>{artist}</MediaArtist>
-    </MediaItemContainer>
+    <div css={styles.root} onClick={onClick}>
+      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} />
+      <div css={styles.name}>{name}</div>
+      <div css={styles.artist}>{artist}</div>
+    </div>
   );
 };
