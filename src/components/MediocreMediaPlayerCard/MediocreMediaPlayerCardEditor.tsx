@@ -145,6 +145,7 @@ export const MediocreMediaPlayerCardEditor = ({
     use_art_colors: config.use_art_colors ?? false,
     speaker_group: config.speaker_group || { entity_id: "", entities: [] },
     custom_buttons: config.custom_buttons || [],
+    search: config.search || { enabled: false },
   };
 
   return (

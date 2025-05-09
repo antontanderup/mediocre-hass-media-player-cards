@@ -13,6 +13,10 @@ export type CommonMediocreMediaPlayerCardConfig = {
     name: string;
   })[];
   ma_entity_id?: string; // MusicAssistant entity_id (adds MA specific features)
+  search?: {
+    enabled?: boolean;
+    entity_id?: string; // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+  };
 };
 
 export type MediocreMediaPlayerCardConfig =

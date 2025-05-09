@@ -1,7 +1,7 @@
 import { useContext } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MaSearch } from "@components/MaSearch";
+import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
 
 const styles = {
@@ -17,11 +17,22 @@ const styles = {
 export const Search = () => {
   const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { ma_entity_id } = config;
+  const { ma_entity_id, search, entity_id } = config;
 
-  return (
-    <div css={styles.root}>
-      <MaSearch maEntityId={ma_entity_id} horizontalPadding={12} />
-    </div>
-  );
+  const renderSearch = () => {
+    if (ma_entity_id) {
+      return <MaSearch maEntityId={ma_entity_id} horizontalPadding={12} />;
+    }
+    if (search?.enabled) {
+      return (
+        <HaSearch
+          entityId={search.entity_id ?? entity_id}
+          horizontalPadding={12}
+        />
+      );
+    }
+    return null;
+  };
+
+  return <div css={styles.root}>{renderSearch()}</div>;
 };
