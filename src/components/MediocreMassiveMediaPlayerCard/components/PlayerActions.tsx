@@ -185,7 +185,7 @@ const Modal = ({
       <div
         css={styles.modalContent}
         style={{
-          "--mmpc-modal-padding": padding ?? 16,
+          "--mmpc-modal-padding": padding ?? "16px",
         }}
       >
         {children}
