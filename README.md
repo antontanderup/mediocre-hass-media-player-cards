@@ -63,7 +63,7 @@ speaker_group:
 
 A full-sized media player card. Just like the regular card it supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant). In fact they share most of the configuration options.
 
-<img src="https://github.com/user-attachments/assets/8340e509-c7af-4a10-bbb1-8b8086a87e57" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
+<img src="https://github.com/user-attachments/assets/793f9b8f-032b-4309-b8ef-1f38935e448a" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
 
 #### Configuration
 
