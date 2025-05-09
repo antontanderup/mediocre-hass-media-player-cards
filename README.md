@@ -8,7 +8,8 @@ A bunch of custom media player cards for Home Assistant that let you group speak
 
 ## Installation
 
-### HACS
+<details>
+<summary>### HACS</summary>
 
 1. Open HACS in your Home Assistant instance
 2. Click the three dots in the top right corner
@@ -19,7 +20,10 @@ A bunch of custom media player cards for Home Assistant that let you group speak
 7. Search for "Mediocre Hass Media Player Cards"
 8. Install it and reload your browser
 
-### Manual Installation
+</details>
+
+<details>
+<summary>### Manual Installation</summary>
 
 1. Grab the latest release from the [releases page](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
 2. Copy the JavaScript file to your `www/` directory in your Home Assistant setup
@@ -32,6 +36,8 @@ resources:
 ```
 
 4. Refresh your browser
+
+</details>
 
 ## Available Cards
 
