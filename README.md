@@ -135,6 +135,7 @@ custom_buttons:
 ```
 
 ## Music Assistant Integration
+![image](https://github.com/user-attachments/assets/83ae321a-3abf-4e73-8493-6ef54efa5140)
 
 Both the Mediocre Media Player Card and the Mediocre Massive Media Player Card support Music Assistant. By specifying a `ma_entity_id`, you can enable Music Assistant-specific features (currently just search). Even if your main entity_id is the same as your music assistant entity_id you need to specify it in the `ma_entity_id`. This allows you to use the card with a different entity_id than your music assistant but trigger actions on a music assistant entity.
 
