@@ -113,6 +113,7 @@ action:
 ```
 
 ### Custom Buttons
+![image](https://github.com/user-attachments/assets/5cb62175-25fc-4594-a003-89a801320aba)
 
 You can add custom buttons with specific actions:
 
