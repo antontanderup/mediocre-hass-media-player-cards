@@ -1,6 +1,6 @@
 # Mediocre Media Player Cards
 
-<img src="https://github.com/user-attachments/assets/ac81afa5-205f-430b-ba3a-d488e329f112" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
+<img src="https://github.com/user-attachments/assets/2ba5d55d-6fd3-4508-ae1c-60d9f22ebe81" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
 
 Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more.
 
