@@ -2,9 +2,9 @@
 
 <img src="https://github.com/user-attachments/assets/ac81afa5-205f-430b-ba3a-d488e329f112" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
 
-A bunch of custom media player cards for Home Assistant that let you group speakers and do some custom actions.
+Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more.
 
-> **Note:** This is a prerelease version, so you might encounter some bugs.
+> **Note:** This is a pretty new project, so you might encounter some bugs. If you do, please do report them.
 
 ## Installation
 
@@ -43,7 +43,7 @@ resources:
 
 ### Mediocre Media Player Card
 
-A standard-sized media player card with speaker grouping support that fits nicely in dashboards.
+A standard-sized media player card. Supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant).
 
 <img src="https://github.com/user-attachments/assets/2178b5d4-ea8f-46cf-9737-149e1da935c5" width="500px" alt="Mediocre Media Player Card Screenshot 3" />
 <img src="https://github.com/user-attachments/assets/dd94d59e-258e-4195-9b9c-4e5b2b9ae9a1" width="500px" alt="Mediocre Media Player Card Screenshot 2" />
@@ -62,7 +62,7 @@ speaker_group:
 
 ### Mediocre Massive Media Player Card
 
-A full-sized media player card that can be used in various modes. It provides an immersive media control experience with all features at a glance and can be displayed as a regular card (mode: card), embedded in other cards (mode: in-card), or used in panel view (mode: panel).
+A full-sized media player card. Can be displayed as a regular card (mode: card), embedded in other cards (mode: in-card), or used in panel view (mode: panel). Just like the regular card it supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant). In fact they share most of the configuration options.
 
 <img src="https://github.com/user-attachments/assets/8340e509-c7af-4a10-bbb1-8b8086a87e57" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
 
@@ -78,12 +78,7 @@ speaker_group:
     - media_player.bedroom_speaker
 ```
 
-## Additional Documentation
-
-- [Using Universal Media Player with Mediocre Media Player Cards](./docs/README_UMP.md)
-- [Search Functionality with Mediocre Media Player Cards](./docs/README_SEARCH.md)
-
-## Configuration Options
+## Shared Configuration Options
 
 Both cards support these options:
 
@@ -108,8 +103,6 @@ The Mediocre Massive Media Player Card has additional options:
 | Option | Type   | Default | Description                                                                                            |
 | ------ | ------ | ------- | ------------------------------------------------------------------------------------------------------ |
 | `mode` | string | `card`  | Display mode: `card` (regular HA card), `in-card` (no card wrapper), or `panel` (panel optimized view) |
-
-> **Note:** When `tap_opens_popup` is set to true on the regular Media Player Card, it will display the Massive Media Player Card in a popup.
 
 ### Action Configuration
 
@@ -180,6 +173,11 @@ entities:
 | ----------- | ------ | -------- | ------------------------------------------------------------ |
 | `entity_id` | string | Required | The entity ID of the main media player to group others with  |
 | `entities`  | array  | Required | List of entity IDs that can be grouped with the main speaker |
+
+## Additional Documentation
+
+- [Using Universal Media Player with Mediocre Media Player Cards](./docs/README_UMP.md)
+- [Search Functionality with Mediocre Media Player Cards](./docs/README_SEARCH.md)
 
 ## Troubleshooting
 
