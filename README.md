@@ -72,6 +72,11 @@ speaker_group:
     - media_player.bedroom_speaker
 ```
 
+## Additional Documentation
+
+- [Using Universal Media Player with Mediocre Media Player Cards](./docs/README_UMP.md)
+- [Search Functionality with Mediocre Media Player Cards](./docs/README_SEARCH.md)
+
 ## Configuration Options
 
 Both cards support these options:
