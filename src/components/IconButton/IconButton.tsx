@@ -1,5 +1,6 @@
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
-import { css, keyframes } from "@emotion/react";
+import { css } from "@emotion/react";
+import { Spinner } from "../Spinner";
 
 export type ButtonSize =
   | "xx-small"
@@ -17,15 +18,6 @@ export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: boolean;
   renderLongPressIndicator?: () => JSX.Element | null;
 };
-
-const spinAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
 
 const styles = {
   root: css({
@@ -71,11 +63,6 @@ const styles = {
   rootXxsmall: css({
     padding: 0,
   }),
-  rootLoading: css({
-    "> ha-icon": {
-      animation: `${spinAnimation} 1s linear infinite`,
-    },
-  }),
 };
 
 export const IconButton = ({
@@ -94,7 +81,6 @@ export const IconButton = ({
         styles.root,
         disabled && styles.rootDisabled,
         size === "xx-small" && styles.rootXxsmall,
-        loading && styles.rootLoading,
       ]}
       style={{
         "--mmpc-icon-button-size": `${getButtonSize(size)}px`,
@@ -102,7 +88,7 @@ export const IconButton = ({
       className={className}
       {...buttonProps}
     >
-      {loading ? <ha-icon icon="mdi:loading" /> : <ha-icon icon={icon} />}
+      {loading ? <Spinner size={size} /> : <ha-icon icon={icon} />}
       {renderLongPressIndicator && renderLongPressIndicator()}
     </button>
   );

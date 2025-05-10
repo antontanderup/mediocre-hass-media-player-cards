@@ -1,4 +1,5 @@
 # Search Functionality with Mediocre Media Player Cards
+
 ![image](https://github.com/user-attachments/assets/2cc64202-a8da-44e1-a7a7-df3941a3ff38)
 
 The Mediocre Media Player Cards support search functionality when used with a Music Assistant player. By specifying the `ma_entity_id` option, you can enable search features directly within the card.
