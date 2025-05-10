@@ -1,3 +1,4 @@
+import { useCallback, useState } from "preact/hooks";
 import { MediaImage } from "./MediaImage";
 import { css } from "@emotion/react";
 
@@ -51,7 +52,7 @@ export type MediaTrackProps = {
   imageUrl?: string | null;
   title: string;
   artist: string;
-  onClick: () => void;
+  onClick: () => Promise<void>;
 };
 
 export const MediaTrack = ({
@@ -60,9 +61,15 @@ export const MediaTrack = ({
   artist,
   onClick,
 }: MediaTrackProps) => {
+  const [loading, setLoading] = useState(false);
+  const handleOnClick = useCallback(async () => {
+    setLoading(true);
+    await onClick();
+    setLoading(false);
+  }, [onClick]);
   return (
-    <div css={styles.root} onClick={onClick}>
-      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} />
+    <div css={styles.root} onClick={handleOnClick}>
+      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} loading={loading} />
       <div css={styles.trackInfo}>
         <div css={styles.trackName}>{title}</div>
         <div css={styles.trackArtist}>{artist}</div>

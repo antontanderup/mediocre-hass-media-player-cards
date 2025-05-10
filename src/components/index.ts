@@ -19,4 +19,5 @@ export * from "./MediocreMediaPlayerCard";
 export * from "./PlayerContext";
 export * from "./ProgressBar";
 export * from "./Slider";
+export * from "./Spinner";
 export * from "./SubForm";

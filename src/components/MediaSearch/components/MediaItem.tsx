@@ -1,3 +1,4 @@
+import { useCallback, useState } from "preact/hooks";
 import { MediaImage } from "./MediaImage";
 import { css } from "@emotion/react";
 
@@ -59,9 +60,17 @@ export const MediaItem = ({
   artist,
   onClick,
 }: MediaItemProps) => {
+
+  const [loading, setLoading] = useState(false);
+  const handleOnClick = useCallback(async () => {
+    setLoading(true);
+    await onClick();
+    setLoading(false);
+  }, [onClick]);
+
   return (
-    <div css={styles.root} onClick={onClick}>
-      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} />
+    <div css={styles.root} onClick={handleOnClick}>
+      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} loading={loading} />
       <div css={styles.name}>{name}</div>
       <div css={styles.artist}>{artist}</div>
     </div>
