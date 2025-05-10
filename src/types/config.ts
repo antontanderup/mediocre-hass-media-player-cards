@@ -12,7 +12,7 @@ export type CommonMediocreMediaPlayerCardConfig = {
     icon: string;
     name: string;
   })[];
-  ma_entity_id?: string; // MusicAssistant entity_id (adds MA specific features)
+  ma_entity_id?: string; // MusicAssistant entity_id (adds MA specific features (currently search))
   search?: {
     enabled?: boolean;
     entity_id?: string; // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
