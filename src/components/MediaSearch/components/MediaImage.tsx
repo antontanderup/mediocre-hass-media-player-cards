@@ -12,22 +12,32 @@ const styles = {
     backgroundImage: "var(--mmpc-media-image-background)",
     "--icon-primary-color": "var(--card-background-color)",
     position: "relative",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   }),
-  spinner: css({
+  icon: css({
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
+    "--icon-primary-color": "var(--primary-text-color, #333)",
+    backgroundColor: "var(--card-background-color)",
+    borderRadius: "50%",
+    padding: "4px",
   }),
 };
 
 export type MediaImageProps = {
   imageUrl?: string | null;
   loading?: boolean;
+  done?: boolean;
   className?: string;
 };
 
-export const MediaImage = ({ imageUrl, loading, className }: MediaImageProps) => {
+export const MediaImage = ({
+  imageUrl,
+  loading,
+  done,
+  className,
+}: MediaImageProps) => {
   return (
     <div
       css={styles.root}
@@ -39,7 +49,10 @@ export const MediaImage = ({ imageUrl, loading, className }: MediaImageProps) =>
       className={className}
     >
       {!imageUrl && <Icon icon="mdi:image-broken-variant" size="small" />}
-      {loading && <Spinner css={styles.spinner} size="medium" />}
+      {loading && <Spinner css={styles.icon} size="x-small" />}
+      {!loading && done && (
+        <Icon icon="mdi:check" size="x-small" css={styles.icon} />
+      )}
     </div>
   );
 };

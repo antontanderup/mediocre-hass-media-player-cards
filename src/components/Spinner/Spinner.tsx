@@ -1,3 +1,4 @@
+import { Icon, IconProps } from "@components";
 import { css, keyframes } from "@emotion/react";
 
 export type SpinnerSize =
@@ -9,10 +10,7 @@ export type SpinnerSize =
   | "x-large"
   | "xx-large";
 
-export type SpinnerProps = {
-  size?: SpinnerSize;
-  className?: string;
-};
+export type SpinnerProps = Omit<IconProps, "icon">;
 
 const spinAnimation = keyframes`
   from {
@@ -33,34 +31,6 @@ const styles = {
   }),
 };
 
-export const Spinner = ({ size = "medium", className }: SpinnerProps) => {
-  return (
-    <ha-icon
-      icon="mdi:loading"
-      css={styles.spinner}
-      style={{
-        "--mmpc-spinner-size": `${getSpinnerSize(size)}px`,
-      }}
-      className={className}
-    />
-  );
-};
-
-const getSpinnerSize = (size: SpinnerSize) => {
-  switch (size) {
-    case "xx-small":
-      return 12;
-    case "x-small":
-      return 18;
-    case "small":
-      return 24;
-    case "medium":
-      return 32;
-    case "large":
-      return 48;
-    case "x-large":
-      return 80;
-    case "xx-large":
-      return 120;
-  }
+export const Spinner = (props: SpinnerProps) => {
+  return <Icon icon="mdi:loading" css={styles.spinner} {...props} />;
 };

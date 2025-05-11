@@ -60,17 +60,27 @@ export const MediaItem = ({
   artist,
   onClick,
 }: MediaItemProps) => {
-
   const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
   const handleOnClick = useCallback(async () => {
     setLoading(true);
-    await onClick();
+    try {
+      await onClick();
+      setDone(true);
+    } catch (error) {
+      console.error("Error in MediaItem onClick:", error);
+    }
     setLoading(false);
   }, [onClick]);
 
   return (
     <div css={styles.root} onClick={handleOnClick}>
-      <MediaImage css={styles.mediaImage} imageUrl={imageUrl} loading={loading} />
+      <MediaImage
+        css={styles.mediaImage}
+        imageUrl={imageUrl}
+        loading={loading}
+        done={done}
+      />
       <div css={styles.name}>{name}</div>
       <div css={styles.artist}>{artist}</div>
     </div>
