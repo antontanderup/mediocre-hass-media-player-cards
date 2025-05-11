@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
 import { css } from "@emotion/react";
-import { Spinner } from "../Spinner";
+import { Spinner } from "@components";
 
 export type ButtonSize =
   | "xx-small"
