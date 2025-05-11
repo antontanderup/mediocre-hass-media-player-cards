@@ -1,15 +1,6 @@
 import { ButtonHTMLAttributes } from "preact/compat";
-import { Icon } from "@components";
-import { css, keyframes } from "@emotion/react";
-
-const spinAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
+import { Icon, Spinner } from "@components";
+import { css } from "@emotion/react";
 
 const styles = {
   root: css({
@@ -44,9 +35,6 @@ const styles = {
   }),
   rootLoading: css({
     opacity: 0.8,
-    "& ha-icon": {
-      animation: `${spinAnimation} 1s linear infinite`,
-    },
   }),
 };
 
@@ -65,7 +53,7 @@ export const Chip = ({
 }: ChipProps) => {
   const renderIcon = () => {
     if (loading) {
-      return <Icon size="x-small" icon="mdi:loading" />;
+      return <Spinner size="x-small" />;
     }
     if (icon) {
       return <Icon size="x-small" icon={icon} />;
