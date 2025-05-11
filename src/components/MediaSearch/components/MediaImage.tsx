@@ -1,6 +1,12 @@
 import { Icon } from "@components/Icon";
 import { Spinner } from "@components/Spinner";
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
+
+const fadeOut = keyframes({
+  "0%": { opacity: 1, transform: "translateY(0px)" },
+  "90%": { opacity: 1, transform: "translateY(0px)" },
+  "100%": { opacity: 0, transform: "translateY(-20px)" },
+});
 
 const styles = {
   root: css({
@@ -15,6 +21,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   }),
   icon: css({
     position: "absolute",
@@ -22,6 +29,9 @@ const styles = {
     backgroundColor: "var(--card-background-color)",
     borderRadius: "50%",
     padding: "4px",
+  }),
+  done: css({
+    animation: `${fadeOut} 2s forwards`,
   }),
 };
 
@@ -51,7 +61,11 @@ export const MediaImage = ({
       {!imageUrl && <Icon icon="mdi:image-broken-variant" size="small" />}
       {loading && <Spinner css={styles.icon} size="x-small" />}
       {!loading && done && (
-        <Icon icon="mdi:check" size="x-small" css={styles.icon} />
+        <Icon
+          icon="mdi:check"
+          size="x-small"
+          css={[styles.icon, styles.done]}
+        />
       )}
     </div>
   );
