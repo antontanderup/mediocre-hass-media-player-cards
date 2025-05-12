@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import { IconButton, MaSearch } from "@components";
+import { HaSearch, IconButton, MaSearch } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -76,7 +76,7 @@ export const PlayerActions = () => {
       CardContext
     );
 
-  const { custom_buttons, speaker_group, ma_entity_id } = config;
+  const { custom_buttons, speaker_group, ma_entity_id, search } = config;
 
   const [selected, setSelected] = useState<
     "volume" | "speaker-grouping" | "custom-buttons" | "search"
@@ -112,11 +112,19 @@ export const PlayerActions = () => {
         onClose={() => setSelected(undefined)}
         padding="16px 0px 16px 0px"
       >
-        <MaSearch
-          maEntityId={ma_entity_id}
-          horizontalPadding={16}
-          searchBarPosition="bottom"
-        />
+        {ma_entity_id ? (
+          <MaSearch
+            maEntityId={ma_entity_id}
+            horizontalPadding={16}
+            searchBarPosition="bottom"
+          />
+        ) : (
+          <HaSearch
+            entityId={search?.entity_id ?? config.entity_id}
+            horizontalPadding={16}
+            searchBarPosition="bottom"
+          />
+        )}
       </Modal>
       {!!speaker_group && (
         <IconButton
@@ -145,13 +153,14 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       )}
-      {!!ma_entity_id && (
-        <IconButton
-          size="small"
-          icon={"mdi:magnify"}
-          onClick={() => setSelected("search")}
-        />
-      )}
+      {!!ma_entity_id ||
+        (search?.enabled && (
+          <IconButton
+            size="small"
+            icon={"mdi:magnify"}
+            onClick={() => setSelected("search")}
+          />
+        ))}
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
     </div>
   );
