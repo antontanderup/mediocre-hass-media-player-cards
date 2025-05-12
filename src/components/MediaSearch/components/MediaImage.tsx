@@ -2,9 +2,9 @@ import { Icon } from "@components/Icon";
 import { Spinner } from "@components/Spinner";
 import { css, keyframes } from "@emotion/react";
 
-const fadeOut = keyframes({
+const fadeInOut = keyframes({
   "0%": { opacity: 1, transform: "translateY(0px)" },
-  "90%": { opacity: 1, transform: "translateY(0px)" },
+  "85%": { opacity: 1, transform: "translateY(0px)" },
   "100%": { opacity: 0, transform: "translateY(-20px)" },
 });
 
@@ -21,7 +21,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden",
   }),
   icon: css({
     position: "absolute",
@@ -31,7 +30,7 @@ const styles = {
     padding: "4px",
   }),
   done: css({
-    animation: `${fadeOut} 2s forwards`,
+    animation: `${fadeInOut} 3s forwards`,
   }),
 };
 
