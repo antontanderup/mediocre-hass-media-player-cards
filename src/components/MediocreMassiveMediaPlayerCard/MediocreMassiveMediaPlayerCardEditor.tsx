@@ -149,6 +149,7 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
     use_art_colors: config.use_art_colors ?? false,
     speaker_group: config.speaker_group || { entity_id: "", entities: [] },
     custom_buttons: config.custom_buttons || [],
+    search: config.search || { enabled: false },
   };
 
   return (
@@ -220,6 +221,29 @@ export const MediocreMassiveMediaPlayerCardEditor = ({
                 updateField("speaker_group.entities", newValue)
               }
               label="Select Speakers (including main speaker)"
+              domains={["media_player"]}
+            />
+          </FormGroup>
+        </SubForm>
+      </FormGroup>
+
+      <FormGroup>
+        <SubForm title="Search (optional)">
+          <FormGroup>
+            <ToggleContainer>
+              <Toggle
+                type="checkbox"
+                id="search.enabled"
+                checked={safeConfig.search.enabled}
+                onChange={e => updateField("search.enabled", e.target.checked)}
+              />
+              <ToggleLabel htmlFor="search.enabled">Enable Search</ToggleLabel>
+            </ToggleContainer>
+            <EntityPicker
+              hass={hass}
+              value={safeConfig.search.entity_id}
+              onChange={newValue => updateField("search.entity_id", newValue)}
+              label="Search target (Optional, if not set, will use the main entity_id)"
               domains={["media_player"]}
             />
           </FormGroup>

@@ -224,6 +224,29 @@ export const MediocreMediaPlayerCardEditor = ({
       </FormGroup>
 
       <FormGroup>
+        <SubForm title="Search (optional)">
+          <FormGroup>
+            <ToggleContainer>
+              <Toggle
+                type="checkbox"
+                id="search.enabled"
+                checked={safeConfig.search.enabled}
+                onChange={e => updateField("search.enabled", e.target.checked)}
+              />
+              <ToggleLabel htmlFor="search.enabled">Enable Search</ToggleLabel>
+            </ToggleContainer>
+            <EntityPicker
+              hass={hass}
+              value={safeConfig.search.entity_id}
+              onChange={newValue => updateField("search.entity_id", newValue)}
+              label="Search target (Optional, if not set, will use the main entity_id)"
+              domains={["media_player"]}
+            />
+          </FormGroup>
+        </SubForm>
+      </FormGroup>
+
+      <FormGroup>
         <SubForm title="Music Assistant Configuration (optional)">
           <FormGroup>
             <EntityPicker
