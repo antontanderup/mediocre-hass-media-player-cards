@@ -63,6 +63,7 @@ export const MediaItem = ({
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const handleOnClick = useCallback(async () => {
+    setDone(false);
     setLoading(true);
     try {
       await onClick();
