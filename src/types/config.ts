@@ -14,7 +14,7 @@ export type CommonMediocreMediaPlayerCardConfig = {
   })[];
   ma_entity_id?: string; // MusicAssistant entity_id (adds MA specific features (currently search))
   search?: {
-    enabled?: boolean;
+    enabled?: boolean; // Enables regular Home Assistant search_media functionality
     entity_id?: string; // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
   };
 };

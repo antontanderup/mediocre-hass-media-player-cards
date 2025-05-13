@@ -2,7 +2,7 @@
 
 <img src="https://github.com/user-attachments/assets/2ba5d55d-6fd3-4508-ae1c-60d9f22ebe81" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
 
-Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more.
+Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more. A visual editor is available for all media player card configuration options.
 
 > **Note:** This is a pretty new project, so you might encounter some bugs. If you do, please do report them.
 
@@ -176,6 +176,10 @@ entities:
 | ----------- | ------ | -------- | ------------------------------------------------------------ |
 | `entity_id` | string | Required | The entity ID of the main media player to group others with  |
 | `entities`  | array  | Required | List of entity IDs that can be grouped with the main speaker |
+
+## Search Functionality
+
+Both the Mediocre Media Player Card and the Mediocre Massive Media Player Card support search functionality. By specifying a `ma_entity_id`, you can enable Music Assistant-specific search features directly within the card. Alternatively, enabling the `search.enabled` option will use the regular Home Assistant `search_media` functionality. Read more about configuring the cards for search [here](./docs/README_SEARCH.md).
 
 ## Additional Documentation
 
