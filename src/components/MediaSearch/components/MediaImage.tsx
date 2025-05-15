@@ -1,4 +1,4 @@
-import { Icon } from "@components/Icon";
+import { getIconSize, Icon } from "@components/Icon";
 import { Spinner } from "@components/Spinner";
 import { css, keyframes } from "@emotion/react";
 
@@ -27,7 +27,10 @@ const styles = {
     "--icon-primary-color": "var(--primary-text-color, #333)",
     backgroundColor: "var(--card-background-color)",
     borderRadius: "50%",
-    padding: "4px",
+    padding: "2px",
+    // below needed for iOS quirk
+    width: getIconSize("x-small") + 4,
+    height: getIconSize("x-small") + 4,
   }),
   done: css({
     animation: `${fadeInOut} 3s forwards`,

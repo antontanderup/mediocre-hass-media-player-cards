@@ -27,6 +27,7 @@ const styles = {
     "& > ha-icon": {
       "--mdc-icon-size": "var(--mmpc-icon-size)",
       width: "var(--mmpc-icon-size)",
+      height: "var(--mmpc-icon-size)",
       display: "flex",
     },
   }),
@@ -46,7 +47,7 @@ export const Icon = ({ icon, size = "medium", className }: IconProps) => {
   );
 };
 
-const getIconSize = (size: IconSize) => {
+export const getIconSize = (size: IconSize) => {
   switch (size) {
     case "xx-small":
       return 12;
