@@ -57,6 +57,7 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
     if (!speaker_group?.entities?.length) return [];
 
     return speaker_group.entities
+      .filter(id => id !== mainEntityId)
       .filter(id => hass.states[id])
       .map(id => ({
         entity_id: id,
@@ -64,8 +65,6 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
         volume: hass.states[id].attributes.volume_level || 0,
         muted: hass.states[id].attributes.is_volume_muted || false,
         isGrouped: mainEntity?.attributes?.group_members?.includes(id) || false,
-        isMainSpeaker:
-          mainEntity?.attributes?.group_members?.[0] === id || false,
       }))
       .filter(speaker => {
         if (showGrouped) return true;
