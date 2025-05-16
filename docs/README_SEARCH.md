@@ -11,7 +11,7 @@ Here is an example configuration to enable search with Music Assistant:
 ```yaml
 type: "custom:mediocre-media-player-card"
 entity_id: media_player.living_room
-ma_entity_id: media_assistant.living_room_ma
+ma_entity_id: media_player.living_room_ma
 ```
 
 And here is an example configuration to enable search with a search_media enabled media player:
@@ -26,7 +26,7 @@ search:
 ### Explanation
 
 - `entity_id`: Set this to the media player entity ID (e.g., `media_player.living_room`). This can also just be the Music Assistant media player entity.
-- `ma_entity_id`: Specify the Music Assistant entity ID (e.g., `media_assistant.living_room_ma`). This enables Music Assistant-specific features, including search. If this is present, search will automatically work using Music Assistant (no need for further configuration).
+- `ma_entity_id`: Specify the Music Assistant entity ID (e.g., `media_player.living_room_ma`). This enables Music Assistant-specific features, including search. If this is present, search will automatically work using Music Assistant (no need for further configuration).
 - `search.enabled`: Set this to `true` to enable the regular Home Assistant `search_media` functionality. If `ma_entity_id` is also specified, Music Assistant search will take precedence.
 - `search.entity_id`: If you want to use a different entity for search, you can specify it here. This is useful if you want to use a different media player for search functionality (when using universal media player).
 
