@@ -78,6 +78,9 @@ export const PlayerActions = () => {
 
   const { custom_buttons, speaker_group, ma_entity_id, search } = config;
 
+  const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
+  const hasSearch = hasMaSearch || search?.enabled;
+
   const [selected, setSelected] = useState<
     "volume" | "speaker-grouping" | "custom-buttons" | "search"
   >();
@@ -153,14 +156,13 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       )}
-      {!!ma_entity_id ||
-        (search?.enabled && (
-          <IconButton
-            size="small"
-            icon={"mdi:magnify"}
-            onClick={() => setSelected("search")}
-          />
-        ))}
+      {hasSearch && (
+        <IconButton
+          size="small"
+          icon={"mdi:magnify"}
+          onClick={() => setSelected("search")}
+        />
+      )}
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
     </div>
   );
