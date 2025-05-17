@@ -69,9 +69,16 @@ export const GroupVolumeController = ({
 
   // Get all available speakers that can be grouped
   const availableSpeakers: GroupSpeaker[] = useMemo(() => {
-    if (!speaker_group?.entities?.length) return [];
+    if (!speaker_group?.entities?.length && !mainEntity) return [];
 
-    return speaker_group.entities
+    const speakerEntities = [...(speaker_group?.entities || [])];
+
+    // Add main entity if it exists and isn't already in the list
+    if (mainEntity && !speakerEntities.includes(mainEntityId)) {
+      speakerEntities.push(mainEntityId);
+    }
+
+    return speakerEntities
       .filter(id => hass.states[id])
       .map(id => ({
         entity_id: id,
@@ -87,7 +94,7 @@ export const GroupVolumeController = ({
         if (b.entity_id === mainEntityId) return 1;
         return a.name.localeCompare(b.name);
       });
-  }, [hass.states, speaker_group]);
+  }, [hass.states, speaker_group, mainEntityId, mainEntity]);
 
   // Handle joining/unjoining a speaker to/from the group
   const handleToggleGroup = useCallback(
