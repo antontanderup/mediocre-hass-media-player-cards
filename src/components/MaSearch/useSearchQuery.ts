@@ -18,10 +18,14 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
       .callApi("GET", "config/config_entries/entry")
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((entries: any[]) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const entry = entries.find((entry: any) => {
-          return entry.domain === "music_assistant";
-        });
+        const maEntries = entries.filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (entry: any) => entry.domain === "music_assistant"
+        );
+        const entry = maEntries.find(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (entry: any) => entry.state === "loaded"
+        );
         if (entry) {
           setConfigEntry(entry.entry_id);
         }
