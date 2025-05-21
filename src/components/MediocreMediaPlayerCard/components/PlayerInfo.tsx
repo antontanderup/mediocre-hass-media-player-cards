@@ -4,6 +4,7 @@ import { MediocreMediaPlayerCardConfig } from "@types";
 import { Icon, useHass, usePlayer } from "@components";
 import { getDeviceIcon } from "@utils";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
@@ -14,7 +15,7 @@ const styles = {
   }),
   friendlyName: css({
     fontSize: "11px",
-    color: "var(--secondary-text-color, #888)",
+    color: theme.colors.onCardMuted,
     opacity: 0.8,
     fontStyle: "italic",
   }),

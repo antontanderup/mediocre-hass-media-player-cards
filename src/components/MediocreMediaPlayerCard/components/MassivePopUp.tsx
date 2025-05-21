@@ -15,6 +15,7 @@ import { css, keyframes } from "@emotion/react";
 import { useActionProps } from "@hooks";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { getDeviceIcon } from "@utils";
+import { theme } from "@constants";
 
 const slideUp = keyframes`
   from {
@@ -59,7 +60,7 @@ const styles = {
     height: "fit-content",
     width: "424px",
     maxWidth: "98vw",
-    backgroundColor: "var(--ha-card-background, var(--card-background-color))",
+    backgroundColor: theme.colors.dialog,
     overflow: "hidden",
     boxShadow: "0px 10px 20px var(--clear-background-color)",
     borderTopLeftRadius: "var(--ha-dialog-border-radius, 28px)",
@@ -89,7 +90,7 @@ const styles = {
     margin: 0,
     fontSize: "18px",
     fontWeight: 500,
-    color: "var(--primary-text-color, #212121)",
+    color: theme.colors.onDialog,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",

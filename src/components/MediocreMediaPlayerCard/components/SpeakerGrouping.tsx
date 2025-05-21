@@ -10,6 +10,7 @@ import {
 } from "@components";
 import { GroupChipsController } from "@components/GroupChipsController";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   speakerGroupContainer: css({
@@ -17,13 +18,13 @@ const styles = {
     flexDirection: "column",
     paddingTop: "12px",
     paddingBottom: "16px",
-    borderTop: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    borderTop: `0.5px solid ${theme.colors.onCardDivider}`,
     gap: "12px",
   }),
   groupTitle: css({
     fontSize: "16px",
     fontWeight: 500,
-    color: "var(--primary-text-color)",
+    color: theme.colors.onCard,
     margin: "0px 16px",
   }),
   syncContainer: css({
@@ -36,7 +37,7 @@ const styles = {
   }),
   syncText: css({
     fontSize: "12px",
-    color: "var(--secondary-text-color)",
+    color: theme.colors.onCardMuted,
   }),
   groupedSpeakers: css({
     display: "flex",
