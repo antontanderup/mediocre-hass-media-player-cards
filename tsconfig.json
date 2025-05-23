@@ -28,7 +28,7 @@
       "@wrappers": ["./src/wrappers/index"],
       "@wrappers/*": ["./src/wrappers/*"],
       "@constants": ["./src/constants/index"],
-      "@constants/*": ["./src/constants/*"],
+      "@constants/*": ["./src/constants/*"]
     }
   },
   "exclude": ["dist"],
