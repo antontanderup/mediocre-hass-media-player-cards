@@ -1,6 +1,7 @@
 import { useMemo, useEffect, useState } from "preact/hooks";
 import { ProgressBar, usePlayer } from "@components";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
@@ -12,7 +13,7 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: "4px",
-    color: "var(--secondary-text-color, #888)",
+    color: theme.colors.onDialogMuted,
     height: "20px",
     marginBottom: "-20px",
   }),

@@ -1,4 +1,5 @@
 import { usePlayer } from "@components";
+import { theme } from "@constants";
 import { css } from "@emotion/react";
 
 const styles = {
@@ -8,7 +9,7 @@ const styles = {
     alignItems: "center",
     gap: "8px",
     textAlign: "center",
-    color: "var(--primary-text-color, #fff)",
+    color: theme.colors.onDialog,
     paddingLeft: "var(--mmpc-extra-horizontal-padding, 0px)",
     paddingRight: "var(--mmpc-extra-horizontal-padding, 0px)",
     "> h2, > h3": {
@@ -24,7 +25,7 @@ const styles = {
   titleH3: css({
     margin: 0,
     fontWeight: "normal",
-    color: "var(--secondary-text-color, #fff)",
+    color: theme.colors.onDialogMuted,
   }),
 };
 

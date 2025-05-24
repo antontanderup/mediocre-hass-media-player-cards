@@ -7,6 +7,7 @@ import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { useArtworkColors } from "@hooks";
 import { AlbumArt } from "@components";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
@@ -18,7 +19,7 @@ const styles = {
     "*": {
       boxSizing: "border-box",
     },
-    "--mmpc-surface-higher": "var(--card-background-color)",
+    "--mmpc-surface-higher": theme.colors.card,
   }),
   rootPanelMode: css({
     width: "100%",

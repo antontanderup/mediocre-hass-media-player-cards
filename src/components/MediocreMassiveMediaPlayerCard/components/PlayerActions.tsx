@@ -11,6 +11,7 @@ import {
   InteractionConfig,
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
+import { theme } from "@constants";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -55,7 +56,7 @@ const styles = {
     alignItems: "center",
     padding: "8px 16px",
     color: "var(--primary-text-color, #fff)",
-    borderBottom: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    borderBottom: `0.5px solid ${theme.colors.onCardDivider}`,
     "> h4": {
       margin: 0,
     },
