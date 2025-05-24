@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes } from "preact/compat";
 import { Icon, Spinner } from "@components";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
@@ -16,10 +17,9 @@ const styles = {
     lineHeight: "32px",
     padding: "0 12px",
     borderRadius: "16px",
-    color: "var(--mmpc-chip-foreground, var(--card-background-color))",
-    backgroundColor: "var(--mmpc-chip-background, var(--primary-text-color))",
-    "--icon-primary-color":
-      "var(--mmpc-chip-foreground, var(--card-background-color))",
+    color: `var(--mmpc-chip-foreground, ${theme.colors.card})`,
+    backgroundColor: `var(--mmpc-chip-background, ${theme.colors.onCard})`,
+    "--icon-primary-color": `var(--mmpc-chip-foreground, ${theme.colors.card})`,
     marginRight: "5px",
     alignItems: "center",
     gap: "4px",

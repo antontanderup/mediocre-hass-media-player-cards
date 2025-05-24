@@ -3,13 +3,14 @@ import type { MediocreMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
     maxHeight: 300,
     paddingTop: 12,
     paddingBottom: 12,
-    borderTop: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    borderTop: `0.5px solid ${theme.colors.onCardDivider}`,
     overflowY: "auto",
   }),
 };

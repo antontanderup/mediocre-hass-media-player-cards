@@ -56,7 +56,7 @@ export const EntityPicker = (props: EntityPickerProps) => {
       ref={formRef}
       hass={hass}
       value={value}
-      label={label || "Entity"}
+      label={label}
       includeDomains={domains}
       disabled={disabled}
       required={required}

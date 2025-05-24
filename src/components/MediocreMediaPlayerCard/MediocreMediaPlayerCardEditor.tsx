@@ -17,6 +17,7 @@ import {
   ToggleLabel,
   SubForm,
 } from "@components";
+import { css } from "@emotion/react";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -160,7 +161,9 @@ export const MediocreMediaPlayerCardEditor = ({
           required
         />
       </FormGroup>
-      <FormGroup>
+      <FormGroup
+        css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
+      >
         <ToggleContainer>
           <Toggle
             type="checkbox"
@@ -172,22 +175,22 @@ export const MediocreMediaPlayerCardEditor = ({
             Use album art colors
           </ToggleLabel>
         </ToggleContainer>
+        <ToggleContainer>
+          <Toggle
+            type="checkbox"
+            id="tap_opens_popup"
+            checked={safeConfig.tap_opens_popup || false}
+            onChange={e => updateField("tap_opens_popup", e.target.checked)}
+          />
+          <ToggleLabel htmlFor="tap_opens_popup">Tap opens popup.</ToggleLabel>
+        </ToggleContainer>
       </FormGroup>
 
       <FormGroup>
         <SubForm title="Interactions">
-          <ToggleContainer>
-            <Toggle
-              type="checkbox"
-              id="tap_opens_popup"
-              checked={safeConfig.tap_opens_popup || false}
-              onChange={e => updateField("tap_opens_popup", e.target.checked)}
-            />
-            <ToggleLabel htmlFor="tap_opens_popup">
-              Tap opens popup (this will override any setting under tap in
-              action)
-            </ToggleLabel>
-          </ToggleContainer>
+          {safeConfig.tap_opens_popup && (
+            <Label>Tap action overridden by "tap opens popup".</Label>
+          )}
           <InteractionsPicker
             hass={hass}
             value={safeConfig.action || {}}

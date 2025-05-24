@@ -1,5 +1,6 @@
 import { Input as BaseInput } from "@base-ui-components/react/input";
 import { Icon } from "@components/Icon";
+import { theme } from "@constants";
 import { css, keyframes } from "@emotion/react";
 
 interface InputProps {
@@ -31,7 +32,7 @@ const styles = {
   label: css({
     display: "block",
     marginBottom: "8px",
-    color: "var(--primary-text-color)",
+    color: theme.colors.onCard,
     fontSize: "14px",
     fontWeight: 500,
   }),

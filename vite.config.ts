@@ -22,6 +22,7 @@ export default defineConfig(({}) => {
         "@types": path.resolve(__dirname, "./src/types"),
         "@utils": path.resolve(__dirname, "./src/utils"),
         "@wrappers": path.resolve(__dirname, "./src/wrappers"),
+        "@constants": path.resolve(__dirname, "./src/constants"),
       },
     },
     build: {

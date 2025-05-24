@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
 import { css } from "@emotion/react";
 import { Spinner } from "@components";
+import { theme } from "@constants";
 
 export type ButtonSize =
   | "xx-small"
@@ -33,7 +34,7 @@ const styles = {
     padding: 4,
     minWidth: "var(--mmpc-icon-button-size)",
     aspectRatio: "1",
-    color: "var(--primary-text-color, #333)",
+    color: theme.colors.onCard,
     touchAction: "manipulation", // iOS fixes for stuck hover states
     "-webkit-tap-highlight-color": "transparent",
     "&:hover": {

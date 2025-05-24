@@ -1,6 +1,7 @@
 import { Fragment } from "preact/jsx-runtime";
 import { usePlayer } from "@components/PlayerContext";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   titleText: css({
@@ -10,12 +11,12 @@ const styles = {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    color: "var(--primary-text-color, #333)",
+    color: theme.colors.onCard,
   }),
   artistText: css({
     margin: 0,
     fontSize: "14px",
-    color: "var(--secondary-text-color, #666)",
+    color: theme.colors.onCardMuted,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",

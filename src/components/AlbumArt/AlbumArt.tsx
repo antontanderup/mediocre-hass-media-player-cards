@@ -1,4 +1,5 @@
 import { Icon, IconSize, usePlayer } from "@components";
+import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { getDeviceIcon } from "@utils";
 import { ButtonHTMLAttributes, JSX, useEffect, useState } from "preact/compat";
@@ -48,8 +49,8 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    "--icon-primary-color": "var(--card-background-color)",
-    backgroundColor: "var(--primary-text-color)",
+    "--icon-primary-color": theme.colors.card,
+    backgroundColor: theme.colors.onCard,
     opacity: 0.5,
     borderRadius: "var(--mmpc-art-border-radius, 4px)",
     height: "100%",

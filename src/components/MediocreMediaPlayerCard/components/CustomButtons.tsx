@@ -5,6 +5,7 @@ import { InteractionConfig } from "@types";
 import { Chip, IconButton } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
@@ -19,7 +20,7 @@ const styles = {
     },
     paddingTop: "16px",
     paddingBottom: "16px",
-    borderTop: "0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))",
+    borderTop: `0.5px solid ${theme.colors.onCardDivider}`,
     gap: "2px",
   }),
   chip: css({
