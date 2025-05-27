@@ -1,5 +1,5 @@
 import { Chip, Input, MediaTrack } from "@components";
-import { useCallback, useMemo, useState } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
   MediaItem,
@@ -7,39 +7,29 @@ import {
   searchStyles,
 } from "@components/MediaSearch";
 import {
-  HaMediaClass,
   HaFilterConfig,
   HaEnqueueMode,
   HaFilterType,
-  HaMediaItem,
+  HaContentType,
+  HaFilterResult,
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 import { Fragment } from "preact";
 
 const filters: HaFilterConfig[] = [
   { type: "all", label: "All", icon: "mdi:all-inclusive" },
-  { type: "artist", label: "Artists", icon: "mdi:account-music" },
-  { type: "album", label: "Albums", icon: "mdi:album" },
-  { type: "track", label: "Tracks", icon: "mdi:music-note" },
-  { type: "playlist", label: "Playlists", icon: "mdi:playlist-music" },
-  { type: "podcast", label: "Podcasts", icon: "mdi:podcast" },
+  { type: "artists", label: "Artists", icon: "mdi:account-music" },
+  { type: "albums", label: "Albums", icon: "mdi:album" },
+  { type: "tracks", label: "Tracks", icon: "mdi:music-note" },
+  { type: "playlists", label: "Playlists", icon: "mdi:playlist-music" },
 ];
 
-const responseKeyMediaTypeMap: { [key: string]: HaMediaClass } = {
-  artists: "artist",
-  albums: "album",
-  tracks: "track",
-  playlists: "playlist",
-  podcasts: "podcast",
-};
-
-const labelMap: { [key in HaMediaClass]: string } = {
-  artist: "Artists",
+const labelMap: { [key in HaContentType]: string } = {
+  artists: "Artists",
+  albums: "Albums",
+  tracks: "Tracks",
+  playlists: "Playlists",
   music: "Music",
-  album: "Albums",
-  track: "Tracks",
-  playlist: "Playlists",
-  podcast: "Podcasts",
 };
 
 export type HaSearchProps = {
@@ -117,21 +107,22 @@ export const HaSearch = ({
     ));
   };
 
-  const renderResult = (result: HaMediaItem[], mediaType: HaMediaClass) => {
+  const renderResult = (result: HaFilterResult[number]) => {
     if (!result) return null;
+    const { type: mediaType, results } = result;
     if (activeFilter !== "all" && activeFilter !== mediaType) return null;
-    if (result.length === 0 && activeFilter === "all") return null;
+    if (results.length === 0 && activeFilter === "all") return null;
 
     return (
       <Fragment key={mediaType}>
         {activeFilter === "all" && (
-          <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
+          <MediaSectionTitle onClick={() => setActiveFilter("all")}>
             {labelMap[mediaType]}
           </MediaSectionTitle>
         )}
-        {mediaType === "track" ? (
+        {mediaType === "tracks" ? (
           <div css={searchStyles.trackListContainer}>
-            {(activeFilter === "all" ? result.slice(0, 5) : result).map(
+            {(activeFilter === "all" ? results.slice(0, 5) : results).map(
               item => (
                 <MediaTrack
                   key={item.media_content_id}
@@ -144,7 +135,7 @@ export const HaSearch = ({
           </div>
         ) : (
           <div css={searchStyles.mediaGrid}>
-            {(activeFilter === "all" ? result.slice(0, 6) : result).map(
+            {(activeFilter === "all" ? results.slice(0, 6) : results).map(
               item => (
                 <MediaItem
                   key={item.media_content_id}
@@ -156,7 +147,7 @@ export const HaSearch = ({
             )}
           </div>
         )}
-        {result.length === 0 && (
+        {results.length === 0 && (
           <p css={searchStyles.mediaEmptyText}>
             {loading ? "Searching..." : "No results found."}
           </p>
@@ -164,18 +155,6 @@ export const HaSearch = ({
       </Fragment>
     );
   };
-
-  const sortedResults = useMemo(() => {
-    if (!results) return null;
-    const sorted: { [key: string]: HaMediaItem[] } = {
-      artists: results.result.filter(item => item.media_class === "artist"),
-      albums: results.result.filter(item => item.media_class === "album"),
-      tracks: results.result.filter(item => item.media_class === "track"),
-      playlists: results.result.filter(item => item.media_class === "playlist"),
-      podcasts: results.result.filter(item => item.media_class === "podcast"),
-    };
-    return sorted;
-  }, [results]);
 
   return (
     <div
@@ -196,9 +175,7 @@ export const HaSearch = ({
               : {}
           }
         >
-          {Object.entries(sortedResults).map(([key, value]) => {
-            return renderResult(value, responseKeyMediaTypeMap[key]);
-          })}
+          {results.map(renderResult)}
         </div>
       )}
       {error && (
