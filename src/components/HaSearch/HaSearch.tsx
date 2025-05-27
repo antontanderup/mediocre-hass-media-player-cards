@@ -10,7 +10,6 @@ import {
   HaFilterConfig,
   HaEnqueueMode,
   HaFilterType,
-  HaContentType,
   HaFilterResult,
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
@@ -23,14 +22,6 @@ const filters: HaFilterConfig[] = [
   { type: "tracks", label: "Tracks", icon: "mdi:music-note" },
   { type: "playlists", label: "Playlists", icon: "mdi:playlist-music" },
 ];
-
-const labelMap: { [key in HaContentType]: string } = {
-  artists: "Artists",
-  albums: "Albums",
-  tracks: "Tracks",
-  playlists: "Playlists",
-  music: "Music",
-};
 
 export type HaSearchProps = {
   entityId: string;
@@ -109,15 +100,15 @@ export const HaSearch = ({
 
   const renderResult = (result: HaFilterResult[number]) => {
     if (!result) return null;
-    const { type: mediaType, results } = result;
+    const { type: mediaType, label, results } = result;
     if (activeFilter !== "all" && activeFilter !== mediaType) return null;
     if (results.length === 0 && activeFilter === "all") return null;
 
     return (
       <Fragment key={mediaType}>
         {activeFilter === "all" && (
-          <MediaSectionTitle onClick={() => setActiveFilter("all")}>
-            {labelMap[mediaType]}
+          <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
+            {label}
           </MediaSectionTitle>
         )}
         {mediaType === "tracks" ? (
