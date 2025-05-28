@@ -125,6 +125,7 @@ export const PlayerActions = () => {
         ) : (
           <HaSearch
             entityId={search?.entity_id ?? config.entity_id}
+            showFavorites={search?.show_favorites ?? false}
             horizontalPadding={16}
             searchBarPosition="bottom"
           />

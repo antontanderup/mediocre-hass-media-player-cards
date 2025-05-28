@@ -32,7 +32,7 @@ export const MediaSectionTitle = ({
   return (
     <div css={styles.root} onClick={onClick}>
       <h3 css={styles.title}>{children}</h3>
-      <Icon icon="mdi:chevron-right" size={"small"} />
+      {!!onClick && <Icon icon="mdi:chevron-right" size={"small"} />}
     </div>
   );
 };

@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 import { Fragment } from "preact";
+import { useMediaBrowserFavorites } from "./useMediaBrowserFavorites";
 
 const filters: HaFilterConfig[] = [
   { type: "all", label: "All", icon: "mdi:all-inclusive" },
@@ -25,18 +26,20 @@ const filters: HaFilterConfig[] = [
 
 export type HaSearchProps = {
   entityId: string;
+  showFavorites: boolean;
   horizontalPadding?: number;
   searchBarPosition?: "top" | "bottom";
 };
 
 export const HaSearch = ({
   entityId,
+  showFavorites,
   horizontalPadding,
   searchBarPosition = "top",
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("play");
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 600);
   const [activeFilter, setActiveFilter] = useState<HaFilterType>("all");
 
   const toggleEnqueueMode = useCallback(() => {
@@ -50,6 +53,11 @@ export const HaSearch = ({
     debouncedQuery,
     activeFilter,
     entityId
+  );
+
+  const { favorites } = useMediaBrowserFavorites(
+    entityId,
+    query === "" && showFavorites
   );
 
   const renderSearchBar = () => {
@@ -98,7 +106,7 @@ export const HaSearch = ({
     ));
   };
 
-  const renderResult = (result: HaFilterResult[number]) => {
+  const renderResult = (result: HaFilterResult[number], isLoading: boolean) => {
     if (!result) return null;
     const { type: mediaType, label, results } = result;
     if (activeFilter !== "all" && activeFilter !== mediaType) return null;
@@ -140,7 +148,7 @@ export const HaSearch = ({
         )}
         {results.length === 0 && (
           <p css={searchStyles.mediaEmptyText}>
-            {loading ? "Searching..." : "No results found."}
+            {isLoading ? "Searching..." : "No results found."}
           </p>
         )}
       </Fragment>
@@ -158,7 +166,7 @@ export const HaSearch = ({
       }}
     >
       {searchBarPosition === "top" && renderSearchBar()}
-      {results && (
+      {results && query !== "" && (
         <div
           css={
             searchBarPosition === "bottom"
@@ -166,8 +174,22 @@ export const HaSearch = ({
               : {}
           }
         >
-          {results.map(renderResult)}
+          {results.map(item => renderResult(item, loading))}
         </div>
+      )}
+      {query === "" && favorites.length > 0 && (
+        <Fragment>
+          <div css={searchStyles.mediaGrid}>
+            {favorites.map(item => (
+              <MediaItem
+                key={item.media_content_id + item.title}
+                imageUrl={item.thumbnail}
+                name={item.title}
+                onClick={() => playItem(item, entityId, enqueueMode)}
+              />
+            ))}
+          </div>
+        </Fragment>
       )}
       {error && (
         <div

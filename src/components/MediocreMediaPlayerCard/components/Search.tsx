@@ -28,6 +28,7 @@ export const Search = () => {
       return (
         <HaSearch
           entityId={search.entity_id ?? entity_id}
+          showFavorites={search.show_favorites}
           horizontalPadding={12}
         />
       );
