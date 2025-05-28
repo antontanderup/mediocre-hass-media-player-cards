@@ -238,6 +238,21 @@ export const MediocreMediaPlayerCardEditor = ({
               />
               <ToggleLabel htmlFor="search.enabled">Enable Search</ToggleLabel>
             </ToggleContainer>
+            {safeConfig.search.enabled && (
+              <ToggleContainer>
+                <Toggle
+                  type="checkbox"
+                  id="search.show_favorites"
+                  checked={safeConfig.search.show_favorites || false}
+                  onChange={e =>
+                    updateField("search.show_favorites", e.target.checked)
+                  }
+                />
+                <ToggleLabel htmlFor="search.show_favorites">
+                  Show Favorites when not searching
+                </ToggleLabel>
+              </ToggleContainer>
+            )}
             <EntityPicker
               hass={hass}
               value={safeConfig.search.entity_id}
