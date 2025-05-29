@@ -9,7 +9,7 @@ The Mediocre Media Player Card supports some customization through CSS variables
 These variables control the appearance of dialog boxes and overlays:
 
 - `--mmpc-dialog`: Background color for built in modal
-- `--mmpc-on-dialog`: Primary text color in
+- `--mmpc-on-dialog`: Primary text color
 - `--mmpc-on-dialog-muted`: Secondary/muted text color
 - `--mmpc-on-dialog-divider`: Divider color
 
