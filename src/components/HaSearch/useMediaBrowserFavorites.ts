@@ -18,7 +18,6 @@ export const useMediaBrowserFavorites = (
         const response = (await hass.callWS({
           type: "media_player/browse_media",
           entity_id: targetEntity,
-          media_content_id: "favorites",
           media_content_type: "favorites",
         })) as { children?: HaMediaItem[] };
 
