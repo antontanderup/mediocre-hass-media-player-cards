@@ -26,23 +26,20 @@ export const useMediaBrowserFavorites = (
 
     hass.connection
       .sendMessagePromise(message)
-      .then(
-        (response: {
-          response: {
-            response: { [key: string]: { children: HaMediaItem[] } };
-          };
-        }) => {
-          if (!response.response[targetEntity]) {
-            return;
-          }
-          setIsFetching(false);
-          setMediaItems(response.response[targetEntity].children);
+      .then(res => {
+        const response = res as {
+          response: { [key: string]: { children: HaMediaItem[] } };
+        };
+        if (!response.response[targetEntity]) {
+          return;
         }
-      )
+        setIsFetching(false);
+        setMediaItems(response.response[targetEntity].children);
+      })
       .catch(err => {
         console.error("Error fetching search results:", err);
         setIsFetching(false);
-        setMediaItems(null);
+        setMediaItems([]);
       });
   }, [targetEntity, enabled]);
 

@@ -37,7 +37,10 @@ export const useSearchQuery = (
 
     hass.connection
       .sendMessagePromise(message)
-      .then((response: { response: HaSearchResponse }) => {
+      .then(res => {
+        const response = res as {
+          response: { [key: string]: HaSearchResponse };
+        };
         if (!response.response[targetEntity]) {
           return;
         }
