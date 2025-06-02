@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { HTMLAttributes } from "preact/compat";
+import { HTMLAttributes, InputHTMLAttributes } from "preact/compat";
 
 const styles = {
   formGroup: css({
@@ -64,11 +64,19 @@ export const ButtonsContainer = (props: HTMLAttributes<HTMLDivElement>) => {
   return <div css={styles.buttonsContainer} {...props} />;
 };
 
-export const Button = (props: HTMLAttributes<HTMLButtonElement>) => {
+export const Button = (
+  props: HTMLAttributes<HTMLButtonElement> & {
+    type: "button" | "reset" | "submit" | undefined;
+  }
+) => {
   return <button css={styles.button} {...props} />;
 };
 
-export const DeleteButton = (props: HTMLAttributes<HTMLButtonElement>) => {
+export const DeleteButton = (
+  props: HTMLAttributes<HTMLButtonElement> & {
+    type: "button" | "reset" | "submit" | undefined;
+  }
+) => {
   return <button css={[styles.button, styles.deleteButton]} {...props} />;
 };
 
@@ -80,10 +88,12 @@ export const ToggleContainer = (props: HTMLAttributes<HTMLDivElement>) => {
   return <div css={styles.toggleContainer} {...props} />;
 };
 
-export const ToggleLabel = (props: HTMLAttributes<HTMLLabelElement>) => {
+export const ToggleLabel = (
+  props: HTMLAttributes<HTMLLabelElement> & { htmlFor?: string }
+) => {
   return <label css={styles.toggleLabel} {...props} />;
 };
 
-export const Toggle = (props: HTMLAttributes<HTMLInputElement>) => {
-  return <input css={styles.toggle} {...props} />;
+export const Toggle = (props: InputHTMLAttributes<HTMLInputElement>) => {
+  return <input type="checkbox" css={styles.toggle} {...props} />;
 };

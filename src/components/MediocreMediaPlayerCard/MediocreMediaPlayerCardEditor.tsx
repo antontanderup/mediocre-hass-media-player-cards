@@ -1,6 +1,7 @@
-import { HomeAssistant } from "@types";
-import { InteractionConfig, MediocreMediaPlayerCardConfig } from "@types";
-import { useCallback } from "preact/hooks";
+import { HomeAssistant, MediocreMediaPlayerCardConfigSchema } from "@types";
+import { MediocreMediaPlayerCardConfig } from "@types";
+import { useCallback, useEffect } from "preact/hooks";
+import { useForm } from "@tanstack/react-form";
 import {
   Button,
   ButtonsContainer,
@@ -18,6 +19,7 @@ import {
   SubForm,
 } from "@components";
 import { css } from "@emotion/react";
+import { FC } from "preact/compat";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -25,15 +27,89 @@ export type MediocreMediaPlayerCardEditorProps = {
   config: MediocreMediaPlayerCardConfig;
 };
 
-export const MediocreMediaPlayerCardEditor = ({
-  config,
-  rootElement,
-  hass,
-}: MediocreMediaPlayerCardEditorProps) => {
-  if (!config || !hass || !rootElement) {
-    console.error("No config or hass");
+const getDefaultValuesFromConfig = (config: MediocreMediaPlayerCardConfig) => ({
+  type: `custom:${import.meta.env.VITE_MEDIA_PLAYER_CARD}`,
+  entity_id: config?.entity_id || "",
+  use_art_colors: config?.use_art_colors ?? false,
+  tap_opens_popup: config?.tap_opens_popup ?? false,
+  action: config?.action || {},
+  speaker_group: {
+    entity_id: config?.speaker_group?.entity_id || undefined,
+    entities: config?.speaker_group?.entities || [],
+  },
+  search: {
+    enabled: config?.search?.enabled ?? false,
+    show_favorites: config?.search?.show_favorites ?? false,
+    entity_id: config?.search?.entity_id || undefined,
+  },
+  ma_entity_id: config?.ma_entity_id || undefined,
+  custom_buttons: config?.custom_buttons || [],
+});
+
+// While not strictly nessary this removes unnessesary values from the config
+const getSimpleConfigFromFormValues = (
+  formValues: MediocreMediaPlayerCardConfig
+) => {
+  const config: MediocreMediaPlayerCardConfig & { type: string } = {
+    type: `custom:${import.meta.env.VITE_MEDIA_PLAYER_CARD}`,
+    entity_id: formValues.entity_id,
+  };
+
+  if (formValues.use_art_colors) {
+    config.use_art_colors = formValues.use_art_colors;
   }
 
+  if (formValues.tap_opens_popup) {
+    config.tap_opens_popup = formValues.tap_opens_popup;
+  }
+
+  if (formValues.action && Object.keys(formValues.action).length > 0) {
+    config.action = formValues.action;
+  }
+
+  if (
+    formValues.speaker_group?.entity_id ||
+    (formValues.speaker_group?.entities?.length ?? 0) > 0
+  ) {
+    config.speaker_group = {
+      entities: formValues.speaker_group?.entities || [],
+    };
+    if (formValues.speaker_group?.entity_id) {
+      config.speaker_group.entity_id = formValues.speaker_group.entity_id;
+    }
+  }
+
+  if (
+    formValues.search?.enabled ||
+    formValues.search?.show_favorites ||
+    formValues.search?.entity_id
+  ) {
+    config.search = {};
+    if (formValues.search.enabled) {
+      config.search.enabled = formValues.search.enabled;
+    }
+    if (formValues.search.show_favorites) {
+      config.search.show_favorites = formValues.search.show_favorites;
+    }
+    if (formValues.search.entity_id) {
+      config.search.entity_id = formValues.search.entity_id;
+    }
+  }
+
+  if (formValues.ma_entity_id) {
+    config.ma_entity_id = formValues.ma_entity_id;
+  }
+
+  if ((formValues.custom_buttons?.length ?? 0) > 0) {
+    config.custom_buttons = formValues.custom_buttons;
+  }
+
+  return config;
+};
+
+export const MediocreMediaPlayerCardEditor: FC<
+  MediocreMediaPlayerCardEditorProps
+> = ({ config, rootElement, hass }) => {
   const updateConfig = useCallback(
     (newConfig: MediocreMediaPlayerCardConfig) => {
       const event = new Event("config-changed", {
@@ -47,281 +123,350 @@ export const MediocreMediaPlayerCardEditor = ({
     [rootElement]
   );
 
-  // Direct update function - creates a new config object and calls updateConfig
-  const updateField = useCallback(
-    (
-      path: string,
-      value: string | { [key: string]: string } | InteractionConfig | string[]
-    ) => {
-      if (!config) return;
-
-      const pathParts = path.split(".");
-      const newConfig = { ...config };
-
-      let current = newConfig;
-      for (let i = 0; i < pathParts.length - 1; i++) {
-        if (!current[pathParts[i]]) {
-          current[pathParts[i]] = {};
-        }
-        current = current[pathParts[i]];
-      }
-
-      current[pathParts[pathParts.length - 1]] = value;
-      updateConfig(newConfig);
+  const form = useForm({
+    defaultValues: getDefaultValuesFromConfig(config),
+    validators: {
+      onChange: MediocreMediaPlayerCardConfigSchema,
     },
-    [config, updateConfig]
-  );
+    onSubmit: ({ value }) => {
+      updateConfig(getSimpleConfigFromFormValues(value));
+    },
+    listeners: {
+      onChange: ({ formApi }) => {
+        // autosave logic
+        if (formApi.state.isValid) {
+          formApi.handleSubmit();
+        } else {
+          console.log(formApi.state.errors);
+        }
+      },
+      onChangeDebounceMs: 500,
+    },
+  });
 
   const addCustomButton = useCallback(() => {
-    const newButtons: MediocreMediaPlayerCardConfig["custom_buttons"] = [
-      ...(config.custom_buttons || []),
+    const currentButtons = form.getFieldValue("custom_buttons") || [];
+    form.setFieldValue("custom_buttons", [
+      ...currentButtons,
       {
         icon: "mdi:paper-roll",
         name: "New Button",
         tap_action: { action: "toggle" },
       },
-    ];
-
-    updateConfig({
-      ...config,
-      custom_buttons: newButtons,
-    });
-  }, [config, updateConfig]);
+    ]);
+  }, [form]);
 
   const removeCustomButton = useCallback(
     (index: number) => {
-      const newButtons = [...(config.custom_buttons || [])];
+      const currentButtons = form.getFieldValue("custom_buttons") || [];
+      const newButtons = [...currentButtons];
       newButtons.splice(index, 1);
-
-      updateConfig({
-        ...config,
-        custom_buttons: newButtons,
-      });
+      form.setFieldValue("custom_buttons", newButtons);
     },
-    [config, updateConfig]
+    [form]
   );
 
-  const updateCustomButton = useCallback(
-    (index: number, field: string, value: string) => {
-      const newButtons = [...(config.custom_buttons || [])];
-      newButtons[index] = {
-        ...newButtons[index],
-        [field]: value,
-      };
+  // Reset form when config changes externally
+  useEffect(() => {
+    const currentFormValues = form.state.values;
+    const newConfigValues = getDefaultValuesFromConfig(config);
 
-      updateConfig({
-        ...config,
-        custom_buttons: newButtons,
-      });
-    },
-    [config, updateConfig]
-  );
-
-  const updateButtonInteractions = useCallback(
-    (
-      index: number,
-      interactions: Partial<
-        MediocreMediaPlayerCardConfig["custom_buttons"][number]
-      >
-    ) => {
-      const newButtons = [...(config.custom_buttons || [])];
-      newButtons[index] = {
-        ...newButtons[index],
-        ...interactions,
-      };
-
-      updateConfig({
-        ...config,
-        custom_buttons: newButtons,
-      });
-    },
-    [config, updateConfig]
-  );
+    // Check if the external config is different from current form values
+    if (JSON.stringify(currentFormValues) !== JSON.stringify(newConfigValues)) {
+      form.reset();
+    }
+  }, [config, form]);
 
   if (!config || !hass) return null;
 
-  // Ensure these properties exist with default values to avoid errors
-  const safeConfig: typeof config = {
-    ...config,
-    use_art_colors: config.use_art_colors ?? false,
-    speaker_group: config.speaker_group || { entity_id: "", entities: [] },
-    custom_buttons: config.custom_buttons || [],
-    search: config.search || { enabled: false, show_favorites: false },
-  };
-
   return (
-    <form>
-      <FormGroup>
-        <EntityPicker
-          hass={hass}
-          value={safeConfig.entity_id}
-          onChange={newValue => updateField("entity_id", newValue)}
-          label="Media Player Entity"
-          domains={["media_player"]}
-          required
-        />
-      </FormGroup>
+    <form
+      onSubmit={(e: {
+        preventDefault: () => void;
+        stopPropagation: () => void;
+      }) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+    >
+      <form.Subscribe
+        selector={state => [state.errorMap]}
+        children={([errorMap]) =>
+          errorMap.onChange ? (
+            <div>
+              <em>
+                There was an error on the form: {errorMap.onChange.toString()}
+              </em>
+            </div>
+          ) : null
+        }
+      />
+      <form.Field name="entity_id">
+        {field => (
+          <FormGroup>
+            <EntityPicker
+              hass={hass}
+              value={field.state.value}
+              onChange={value => field.handleChange(value ?? "")}
+              label="Media Player Entity"
+              domains={["media_player"]}
+              required
+            />
+          </FormGroup>
+        )}
+      </form.Field>
       <FormGroup
         css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
       >
-        <ToggleContainer>
-          <Toggle
-            type="checkbox"
-            id="use_art_colors"
-            checked={safeConfig.use_art_colors}
-            onChange={e => updateField("use_art_colors", e.target.checked)}
-          />
-          <ToggleLabel htmlFor="use_art_colors">
-            Use album art colors
-          </ToggleLabel>
-        </ToggleContainer>
-        <ToggleContainer>
-          <Toggle
-            type="checkbox"
-            id="tap_opens_popup"
-            checked={safeConfig.tap_opens_popup || false}
-            onChange={e => updateField("tap_opens_popup", e.target.checked)}
-          />
-          <ToggleLabel htmlFor="tap_opens_popup">Tap opens popup.</ToggleLabel>
-        </ToggleContainer>
-      </FormGroup>
+        <form.Field name="use_art_colors">
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="use_art_colors"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="use_art_colors">
+                Use album art colors
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
 
+        <form.Field name="tap_opens_popup">
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="tap_opens_popup"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange((e.target as HTMLInputElement).checked)
+                }
+              />
+              <ToggleLabel htmlFor="tap_opens_popup">
+                Tap opens popup.
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
+      </FormGroup>
       <FormGroup>
         <SubForm title="Interactions">
-          {safeConfig.tap_opens_popup && (
-            <Label>Tap action overridden by "tap opens popup".</Label>
-          )}
-          <InteractionsPicker
-            hass={hass}
-            value={safeConfig.action || {}}
-            onChange={newValue => updateField("action", newValue)}
-          />
+          <form.Field name="tap_opens_popup">
+            {tapField => (
+              <>
+                {tapField.state.value && (
+                  <Label>Tap action overridden by "tap opens popup".</Label>
+                )}
+              </>
+            )}
+          </form.Field>
+          <form.Field name="action">
+            {field => (
+              <InteractionsPicker
+                hass={hass}
+                value={field.state.value}
+                onChange={value => field.handleChange(value ?? {})}
+              />
+            )}
+          </form.Field>
         </SubForm>
       </FormGroup>
-
       <FormGroup>
         <SubForm title="Speaker Group Configuration (optional)">
-          <FormGroup>
-            <EntityPicker
-              hass={hass}
-              value={safeConfig.speaker_group.entity_id}
-              onChange={newValue =>
-                updateField("speaker_group.entity_id", newValue)
-              }
-              label="Main Speaker Entity ID (Optional)"
-              domains={["media_player"]}
-            />
-          </FormGroup>
-          <FormGroup>
-            <EntitiesPicker
-              hass={hass}
-              value={safeConfig.speaker_group.entities}
-              onChange={newValue =>
-                updateField("speaker_group.entities", newValue)
-              }
-              label="Select Speakers (including main speaker)"
-              domains={["media_player"]}
-            />
-          </FormGroup>
+          <form.Field name="speaker_group.entity_id">
+            {field => (
+              <FormGroup>
+                <EntityPicker
+                  hass={hass}
+                  value={field.state.value || ""}
+                  onChange={value => field.handleChange(value || undefined)}
+                  label="Main Speaker Entity ID (Optional)"
+                  domains={["media_player"]}
+                />
+              </FormGroup>
+            )}
+          </form.Field>
+
+          <form.Field name="speaker_group.entities">
+            {field => (
+              <FormGroup>
+                <EntitiesPicker
+                  hass={hass}
+                  value={field.state.value}
+                  onChange={value => {
+                    field.handleChange(value ?? []);
+                  }}
+                  label="Select Speakers (including main speaker)"
+                  domains={["media_player"]}
+                />
+              </FormGroup>
+            )}
+          </form.Field>
         </SubForm>
       </FormGroup>
-
       <FormGroup>
         <SubForm title="Search (optional)">
           <FormGroup>
-            <ToggleContainer>
-              <Toggle
-                type="checkbox"
-                id="search.enabled"
-                checked={safeConfig.search.enabled}
-                onChange={e => updateField("search.enabled", e.target.checked)}
-              />
-              <ToggleLabel htmlFor="search.enabled">Enable Search</ToggleLabel>
-            </ToggleContainer>
-            {safeConfig.search.enabled && (
-              <ToggleContainer>
-                <Toggle
-                  type="checkbox"
-                  id="search.show_favorites"
-                  checked={safeConfig.search.show_favorites || false}
-                  onChange={e =>
-                    updateField("search.show_favorites", e.target.checked)
-                  }
+            <form.Field name="search.enabled">
+              {field => (
+                <ToggleContainer>
+                  <Toggle
+                    type="checkbox"
+                    id="search.enabled"
+                    checked={field.state.value}
+                    onChange={e =>
+                      field.handleChange((e.target as HTMLInputElement).checked)
+                    }
+                  />
+                  <ToggleLabel htmlFor="search.enabled">
+                    Enable Search
+                  </ToggleLabel>
+                </ToggleContainer>
+              )}
+            </form.Field>
+
+            <form.Field name="search.enabled">
+              {enabledField => (
+                <>
+                  {enabledField.state.value && (
+                    <form.Field name="search.show_favorites">
+                      {field => (
+                        <ToggleContainer>
+                          <Toggle
+                            type="checkbox"
+                            id="search.show_favorites"
+                            checked={field.state.value}
+                            onChange={e =>
+                              field.handleChange(
+                                (e.target as HTMLInputElement).checked
+                              )
+                            }
+                          />
+                          <ToggleLabel htmlFor="search.show_favorites">
+                            Show Favorites when not searching
+                          </ToggleLabel>
+                        </ToggleContainer>
+                      )}
+                    </form.Field>
+                  )}
+                </>
+              )}
+            </form.Field>
+
+            <form.Field name="search.entity_id">
+              {field => (
+                <EntityPicker
+                  hass={hass}
+                  value={field.state.value || ""}
+                  onChange={value => field.handleChange(value || undefined)}
+                  label="Search target (Optional, if not set, will use the main entity_id)"
+                  domains={["media_player"]}
                 />
-                <ToggleLabel htmlFor="search.show_favorites">
-                  Show Favorites when not searching
-                </ToggleLabel>
-              </ToggleContainer>
-            )}
-            <EntityPicker
-              hass={hass}
-              value={safeConfig.search.entity_id}
-              onChange={newValue => updateField("search.entity_id", newValue)}
-              label="Search target (Optional, if not set, will use the main entity_id)"
-              domains={["media_player"]}
-            />
+              )}
+            </form.Field>
           </FormGroup>
         </SubForm>
       </FormGroup>
-
       <FormGroup>
         <SubForm title="Music Assistant Configuration (optional)">
-          <FormGroup>
-            <EntityPicker
-              hass={hass}
-              value={safeConfig.ma_entity_id}
-              onChange={newValue => updateField("ma_entity_id", newValue)}
-              label="Music Assistant Entity ID (Optional)"
-              domains={["media_player"]}
-            />
-          </FormGroup>
+          <form.Field name="ma_entity_id">
+            {field => (
+              <FormGroup>
+                <EntityPicker
+                  hass={hass}
+                  value={field.state.value || ""}
+                  onChange={value => field.handleChange(value || undefined)}
+                  label="Music Assistant Entity ID (Optional)"
+                  domains={["media_player"]}
+                />
+              </FormGroup>
+            )}
+          </form.Field>
         </SubForm>
       </FormGroup>
-
       <FormGroup>
         <SubForm title="Custom Buttons (optional)">
           <ButtonsContainer>
-            {safeConfig.custom_buttons.map((button, index) => {
-              const { name, icon, ...interactions } = button;
-              return (
-                <SubForm title={`Button ${index} - ${button.name}`} key={index}>
-                  <FormGroup>
-                    <InputGroup>
-                      <TextInput
-                        value={name || ""}
-                        onChange={e => updateCustomButton(index, "name", e)}
-                        hass={hass}
-                        label={"Name"}
-                      />
-                    </InputGroup>
+            <form.Field name="custom_buttons">
+              {field => (
+                <>
+                  {field.state.value.map((button, index) => {
+                    // const { name, icon, ...interactions } = button;
+                    return (
+                      <SubForm
+                        title={`Button ${index} - ${button.name}`}
+                        key={index}
+                      >
+                        <FormGroup>
+                          <form.Field name={`custom_buttons[${index}].name`}>
+                            {field => (
+                              <InputGroup>
+                                <TextInput
+                                  value={field.state.value}
+                                  onChange={value =>
+                                    field.handleChange(value ?? "")
+                                  }
+                                  hass={hass}
+                                  label={"Name"}
+                                />
+                              </InputGroup>
+                            )}
+                          </form.Field>
 
-                    <InputGroup>
-                      <TextInput
-                        value={icon || ""}
-                        onChange={e => updateCustomButton(index, "icon", e)}
-                        hass={hass}
-                        isIconInput
-                        label={"Icon"}
-                      />
-                    </InputGroup>
-                    <Label>Interactions</Label>
-                    <InteractionsPicker
-                      hass={hass}
-                      value={interactions}
-                      onChange={newValue =>
-                        updateButtonInteractions(index, newValue)
-                      }
-                    />
-                  </FormGroup>
-                  <DeleteButton
-                    type="button"
-                    onClick={() => removeCustomButton(index)}
-                  >
-                    Remove Button
-                  </DeleteButton>
-                </SubForm>
-              );
-            })}
+                          <form.Field name={`custom_buttons[${index}].icon`}>
+                            {field => (
+                              <InputGroup>
+                                <TextInput
+                                  value={field.state.value}
+                                  onChange={value =>
+                                    field.handleChange(value ?? "")
+                                  }
+                                  hass={hass}
+                                  isIconInput
+                                  label={"Icon"}
+                                />
+                              </InputGroup>
+                            )}
+                          </form.Field>
+                          <Label>Interactions</Label>
+                          <form.Field name={`custom_buttons[${index}]`}>
+                            {field => {
+                              const { name, icon, ...interactions } =
+                                field.state.value;
+                              return (
+                                <InteractionsPicker
+                                  hass={hass}
+                                  value={interactions}
+                                  onChange={newValue => {
+                                    field.handleChange({
+                                      name,
+                                      icon,
+                                      ...newValue,
+                                    });
+                                  }}
+                                />
+                              );
+                            }}
+                          </form.Field>
+                        </FormGroup>
+                        <DeleteButton
+                          type="button"
+                          onClick={() => removeCustomButton(index)}
+                        >
+                          Remove Button
+                        </DeleteButton>
+                      </SubForm>
+                    );
+                  })}
+                </>
+              )}
+            </form.Field>
             <Button type="button" onClick={addCustomButton}>
               Add Custom Button
             </Button>
