@@ -141,7 +141,7 @@ export const PlayerActions = () => {
       {custom_buttons
         ?.slice(0, 1)
         .map((button, index) => <CustomButton key={index} button={button} />)}
-      {custom_buttons?.length > 2 && (
+      {custom_buttons && custom_buttons.length > 2 && (
         <Fragment>
           <IconButton
             size="small"

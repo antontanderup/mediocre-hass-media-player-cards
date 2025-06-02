@@ -61,7 +61,7 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
       .filter(id => hass.states[id])
       .map(id => ({
         entity_id: id,
-        name: hass.states[id].attributes.friendly_name,
+        name: hass.states[id].attributes.friendly_name ?? id,
         volume: hass.states[id].attributes.volume_level || 0,
         muted: hass.states[id].attributes.is_volume_muted || false,
         isGrouped: mainEntity?.attributes?.group_members?.includes(id) || false,

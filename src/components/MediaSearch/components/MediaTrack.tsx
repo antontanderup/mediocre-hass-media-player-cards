@@ -51,7 +51,7 @@ const styles = {
 export type MediaTrackProps = {
   imageUrl?: string | null;
   title: string;
-  artist: string;
+  artist?: string;
   onClick: () => Promise<void>;
 };
 
@@ -85,7 +85,7 @@ export const MediaTrack = ({
       />
       <div css={styles.trackInfo}>
         <div css={styles.trackName}>{title}</div>
-        <div css={styles.trackArtist}>{artist}</div>
+        {!!artist && <div css={styles.trackArtist}>{artist}</div>}
       </div>
     </div>
   );

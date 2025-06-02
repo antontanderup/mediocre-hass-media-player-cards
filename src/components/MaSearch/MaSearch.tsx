@@ -161,9 +161,13 @@ export const MaSearch = ({
               item => (
                 <MediaTrack
                   key={item.uri}
-                  imageUrl={item.image || item.album?.image}
+                  imageUrl={
+                    (item as MaTrack).image ?? (item as MaTrack).album?.image
+                  }
                   title={item.name}
-                  artist={item.artists.map(artist => artist.name).join(", ")}
+                  artist={(item as MaTrack).artists
+                    .map(artist => artist.name)
+                    .join(", ")}
                   onClick={() => playItem(item, maEntityId, enqueueMode)}
                 />
               )
@@ -177,7 +181,11 @@ export const MaSearch = ({
                   key={item.uri}
                   imageUrl={item.image}
                   name={item.name}
-                  artist={item.artists?.map(artist => artist.name).join(", ")}
+                  artist={
+                    "artists" in item
+                      ? item.artists.map(artist => artist.name).join(", ")
+                      : undefined
+                  }
                   onClick={() => playItem(item, maEntityId, enqueueMode)}
                 />
               )

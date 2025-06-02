@@ -8,7 +8,14 @@ declare module "preact" {
       css?:
         | import("@emotion/react").SerializedStyles
         | import("@emotion/react").CSSObject
-        | import("@emotion/react").CSSObject[]
+        | (import("@emotion/react").CSSObject | undefined | boolean)[]
+        | string;
+    }
+    interface IntrinsicAttributes {
+      css?:
+        | import("@emotion/react").SerializedStyles
+        | import("@emotion/react").CSSObject
+        | (import("@emotion/react").CSSObject | undefined | boolean)[]
         | string;
     }
   }

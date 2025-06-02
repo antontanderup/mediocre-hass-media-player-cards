@@ -42,7 +42,7 @@ export const CustomButtons = () => {
 
   return (
     <div css={styles.root}>
-      {custom_buttons.map((button, index) => (
+      {custom_buttons?.map((button, index) => (
         <CustomButton key={index} button={button} />
       ))}
     </div>

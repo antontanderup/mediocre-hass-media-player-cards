@@ -7,10 +7,7 @@ export type CardContextType<T> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CardContext = createContext<CardContextType<any>>({
-  rootElement: null,
-  config: null,
-});
+export const CardContext = createContext<CardContextType<any>>(null!);
 
 export const CardContextProvider = <T,>({
   rootElement,

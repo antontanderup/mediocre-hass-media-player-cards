@@ -15,19 +15,24 @@ export function useSupportedFeatures() {
 
   const isOff = state === "off";
   const supportPreviousTrack =
-    !isOff && (supportedFeatures | 16) === supportedFeatures;
+    !isOff &&
+    supportedFeatures !== undefined &&
+    (supportedFeatures | 16) === supportedFeatures;
   const supportNextTrack =
-    !isOff && (supportedFeatures | 32) === supportedFeatures;
+    !isOff &&
+    supportedFeatures !== undefined &&
+    (supportedFeatures | 32) === supportedFeatures;
   const supportsShuffle =
     !isOff &&
     shuffle !== undefined &&
-    !["optical", "aux"].includes(source?.toLowerCase());
+    !["optical", "aux"].includes(source?.toLowerCase() || "");
   const supportsRepeat =
     !isOff &&
     repeat !== undefined &&
-    !["optical", "aux"].includes(source?.toLowerCase());
+    !["optical", "aux"].includes(source?.toLowerCase() || "");
   const supportsTogglePlayPause =
     !isOff &&
+    supportedFeatures !== undefined &&
     ((supportedFeatures & 4096) === 4096 ||
       (supportedFeatures & 16384) === 16384);
 

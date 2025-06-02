@@ -4,14 +4,17 @@ import { useContext, useMemo } from "preact/hooks";
 import { MediaPlayerEntity } from "@types";
 
 export type PlayerContextType = {
-  player: MediaPlayerEntity & {
-    title: string;
-    subtitle?: string;
-  };
+  player: Omit<
+    MediaPlayerEntity & {
+      title: string;
+      subtitle?: string;
+    },
+    "last_changed" | "last_updated" | "context"
+  >;
 };
 
 export const PlayerContext = createContext<PlayerContextType>({
-  player: null,
+  player: {} as PlayerContextType["player"],
 });
 
 export const PlayerContextProvider = ({
@@ -23,12 +26,18 @@ export const PlayerContextProvider = ({
   hass: HomeAssistant;
   children: preact.ComponentChildren;
 }): preact.ComponentChildren => {
-  const contextValue = useMemo(() => {
+  const contextValue = useMemo((): PlayerContextType => {
     const player = hass.states[entityId] as MediaPlayerEntity;
 
     if (!player) {
       return {
-        player: null,
+        player: {
+          entity_id: entityId,
+          state: "unavailable",
+          attributes: {},
+          title: "Unavailable",
+          subtitle: `${entityId} unavailable`,
+        },
       };
     }
 
@@ -45,7 +54,11 @@ export const PlayerContextProvider = ({
 
     if (state === "off") {
       return {
-        player: { ...player, title: friendlyName, subtitle: undefined },
+        player: {
+          ...player,
+          title: friendlyName ?? entityId,
+          subtitle: undefined,
+        },
       };
     }
 
@@ -68,7 +81,7 @@ export const PlayerContextProvider = ({
       ) {
         title = source;
       } else {
-        title = friendlyName;
+        title = friendlyName ?? entityId;
       }
     }
 

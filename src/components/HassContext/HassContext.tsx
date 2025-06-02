@@ -6,9 +6,9 @@ export type HassContextType = {
   hass: HomeAssistant;
 };
 
-export const HassContext = createContext<HassContextType>({
-  hass: null,
-});
+export const HassContext = createContext<HassContextType>(
+  {} as HassContextType
+);
 
 // Make the provider component properly generic
 export const HassContextProvider = ({
@@ -24,8 +24,5 @@ export const HassContextProvider = ({
 
 export const useHass = () => {
   const context = useContext(HassContext);
-  if (!context) {
-    throw new Error("useHass must be used within a HassContextProvider");
-  }
   return context.hass;
 };

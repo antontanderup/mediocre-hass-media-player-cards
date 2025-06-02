@@ -8,7 +8,7 @@ export type AlbumArtProps = {
   size?: number | string;
   borderRadius?: number;
   iconSize: IconSize;
-  renderLongPressIndicator?: () => JSX.Element;
+  renderLongPressIndicator?: () => JSX.Element | null;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const styles = {
@@ -120,7 +120,7 @@ export const AlbumArt = ({
           <div css={styles.iconContainer}>
             <Icon
               icon={
-                state === "off"
+                state === "off" || !source
                   ? getDeviceIcon({ icon, deviceClass })
                   : getSourceIcon({ source })
               }
