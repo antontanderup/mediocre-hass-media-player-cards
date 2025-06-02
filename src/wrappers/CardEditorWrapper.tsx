@@ -9,17 +9,18 @@ export type EditorCardProps<T> = {
 };
 
 export class CardEditorWrapper<T> extends HTMLElement {
-  _config: T = null;
-  Card: FunctionComponent<EditorCardProps<T>> = null;
+  _config: T | null = null;
+  Card: FunctionComponent<EditorCardProps<T>> | null = null;
   extraProps: { [key: string]: unknown } = {};
-  _hass: HomeAssistant = null;
+  _hass: HomeAssistant | null = null;
 
-  set hass(hass) {
+  set hass(hass: HomeAssistant) {
     this._hass = hass;
   }
 
   setConfig(config: T) {
     this._config = config;
+    if (!this._hass || !this.Card) return;
     render(
       <EmotionContextProvider rootElement={this}>
         <GlanceGuard>

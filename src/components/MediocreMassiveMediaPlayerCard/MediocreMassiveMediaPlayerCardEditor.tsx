@@ -21,6 +21,7 @@ import {
   ToggleLabel,
   SubForm,
 } from "@components";
+import { FC } from "preact/compat";
 
 export type MediocreMassiveMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -28,11 +29,9 @@ export type MediocreMassiveMediaPlayerCardEditorProps = {
   config: MediocreMassiveMediaPlayerCardConfig;
 };
 
-export const MediocreMassiveMediaPlayerCardEditor = ({
-  config,
-  rootElement,
-  hass,
-}: MediocreMassiveMediaPlayerCardEditorProps) => {
+export const MediocreMassiveMediaPlayerCardEditor: FC<
+  MediocreMassiveMediaPlayerCardEditorProps
+> = ({ config, rootElement, hass }) => {
   if (!config || !hass || !rootElement) {
     console.error("No config or hass");
   }
