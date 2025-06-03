@@ -50,6 +50,11 @@ const styles = {
   toggle: css({
     cursor: "pointer",
   }),
+  errorMessage: css({
+    color: "var(--error-color, #ff5252)",
+    marginTop: "8px",
+    fontSize: "14px",
+  }),
 };
 
 export const FormGroup = (props: HTMLAttributes<HTMLDivElement>) => {
@@ -96,4 +101,8 @@ export const ToggleLabel = (
 
 export const Toggle = (props: InputHTMLAttributes<HTMLInputElement>) => {
   return <input type="checkbox" css={styles.toggle} {...props} />;
+};
+
+export const ErrorMessage = (props: HTMLAttributes<HTMLDivElement>) => {
+  return <div css={styles.errorMessage} {...props} />;
 };
