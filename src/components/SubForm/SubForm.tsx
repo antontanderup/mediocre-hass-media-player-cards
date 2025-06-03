@@ -5,29 +5,31 @@ import { css } from "@emotion/react";
 
 const styles = {
   root: css({
-    border: "1px solid var(--divider-color, #e0e0e0)",
-    borderRadius: "8px",
+    border: "1px solid var(--outline-color, #e0e0e0)",
+    borderRadius: "6px",
     position: "relative",
     marginBottom: "16px",
-    backgroundColor: "var(--card-background-color, #fff)",
+  }),
+  rootError: css({
+    borderColor: "var(--error-color, #ff5252)",
   }),
   header: css({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "12px 16px",
+    padding: "8px 16px",
     borderBottom: "none",
   }),
   headerExpanded: css({
-    borderBottom: "1px solid var(--divider-color, #e0e0e0)",
+    borderBottom: "1px solid var(--outline-color, #e0e0e0)",
   }),
   title: css({
     margin: 0,
-    fontSize: "16px",
+    fontSize: "14px",
     fontWeight: 500,
   }),
   content: css({
-    padding: 16,
+    padding: 12,
     display: "none",
   }),
   contentExpanded: css({
@@ -39,17 +41,19 @@ export const SubForm = ({
   title,
   children,
   initiallyExpanded = false,
+  error,
 }: {
   title: string;
   children: JSX.Element | JSX.Element[];
   initiallyExpanded?: boolean;
+  error?: string | boolean;
 }) => {
   const [expanded, setExpanded] = useState(initiallyExpanded);
 
   return (
-    <div css={styles.root}>
+    <div css={[styles.root, !!error && styles.rootError]}>
       <div css={[styles.header, expanded && styles.headerExpanded]}>
-        <h3 css={styles.title}>{title}</h3>
+        <div css={styles.title}>{title}</div>
         <IconButton
           onClick={() => setExpanded(!expanded)}
           icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
