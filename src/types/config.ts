@@ -11,8 +11,8 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     entities: "string[]", // entity_ids of the speakers that can be grouped with the main speaker
   },
   "custom_buttons?": type({
-    icon: "string",
-    name: "string",
+    icon: "string > 0",
+    name: "string > 0",
   })
     .and(interactionConfigSchema)
     .array(),
