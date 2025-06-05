@@ -7,7 +7,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "use_art_colors?": "boolean",
   "action?": interactionConfigSchema,
   "speaker_group?": {
-    "entity_id?": "string | undefined", // entity_id of the main speaker incase it's different from the entity_id of the media player
+    "entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
     entities: "string[]", // entity_ids of the speakers that can be grouped with the main speaker
   },
   "custom_buttons?": type({
@@ -16,11 +16,11 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   })
     .and(interactionConfigSchema)
     .array(),
-  "ma_entity_id?": "string", // MusicAssistant entity_id (adds MA specific features (currently search))
+  "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "search?": {
-    "enabled?": "boolean", // Enables regular Home Assistant search_media functionality
-    "show_favorites?": "boolean", // Shows favorites no search query has been entered
-    "entity_id?": "string | undefined", // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
+    "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
+    "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
   },
 });
 
