@@ -10,7 +10,10 @@ export const useMediaBrowserFavorites = (
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      setMediaItems([]);
+      return;
+    }
     const message = {
       type: "call_service",
       domain: "media_player",
