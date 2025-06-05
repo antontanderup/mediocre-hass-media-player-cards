@@ -33,7 +33,7 @@
     "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^9.28.0",
     "eslint-import-resolver-typescript": "^4.4.2",
-    "eslint-plugin-import": "https://github.com/import-js/eslint-plugin-import.git",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
     "jiti": "^2.4.2",
     "prettier": "^3.1.0",
