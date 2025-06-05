@@ -10,6 +10,7 @@ export const useMediaBrowserFavorites = (
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
+    if (!enabled) return;
     const message = {
       type: "call_service",
       domain: "media_player",
@@ -34,7 +35,9 @@ export const useMediaBrowserFavorites = (
           return;
         }
         setIsFetching(false);
-        setMediaItems(response.response[targetEntity].children);
+        setMediaItems(
+          response.response[targetEntity].children.filter(item => item.can_play)
+        );
       })
       .catch(err => {
         console.error("Error fetching search results:", err);
