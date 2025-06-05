@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import { HaSearch, IconButton, MaSearch } from "@components";
+import { HaSearch, IconButton, MaSearch, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -12,6 +12,7 @@ import {
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
+import { getHass } from "@utils";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -77,7 +78,19 @@ export const PlayerActions = () => {
       CardContext
     );
 
-  const { custom_buttons, speaker_group, ma_entity_id, search } = config;
+  const {
+    entity_id,
+    custom_buttons,
+    speaker_group,
+    ma_entity_id,
+    search,
+    options: { always_show_power_button: alwaysShowPowerButton } = {},
+  } = config;
+
+  const { state } = usePlayer();
+
+  // Determine if the player is on
+  const isOn = state !== "off" && state !== "unavailable";
 
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
@@ -92,6 +105,12 @@ export const PlayerActions = () => {
     },
     [selected]
   );
+
+  const togglePower = useCallback(() => {
+    getHass().callService("media_player", "toggle", {
+      entity_id,
+    });
+  }, [entity_id]);
 
   return (
     <div css={styles.root}>
@@ -138,10 +157,9 @@ export const PlayerActions = () => {
           onClick={() => toggleSelected("speaker-grouping")}
         />
       )}
-      {custom_buttons
-        ?.slice(0, 1)
-        .map((button, index) => <CustomButton key={index} button={button} />)}
-      {custom_buttons && custom_buttons.length > 2 && (
+      {custom_buttons && custom_buttons.length === 1 ? (
+        <CustomButton button={custom_buttons[0]} />
+      ) : custom_buttons && custom_buttons.length > 1 ? (
         <Fragment>
           <IconButton
             size="small"
@@ -157,13 +175,17 @@ export const PlayerActions = () => {
             <CustomButtons />
           </Modal>
         </Fragment>
-      )}
+      ) : null}
+
       {hasSearch && (
         <IconButton
           size="small"
           icon={"mdi:magnify"}
           onClick={() => setSelected("search")}
         />
+      )}
+      {(!isOn || alwaysShowPowerButton) && (
+        <IconButton size="x-small" onClick={togglePower} icon={"mdi:power"} />
       )}
       <VolumeTrigger onClick={() => toggleSelected("volume")} />
     </div>

@@ -41,7 +41,7 @@ const styles = {
   }),
   cardRowRight: css({
     display: "grid",
-    gridTemplateColumns: "repeat(2, auto)",
+    gridTemplateColumns: "repeat(3, auto)",
     gap: "4px",
     minWidth: "max-content",
   }),
@@ -81,6 +81,7 @@ export const MediocreMediaPlayerCard = () => {
     use_art_colors,
     ma_entity_id,
     search,
+    options: { always_show_power_button: alwaysShowPowerButton } = {},
   } = config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
@@ -218,7 +219,7 @@ export const MediocreMediaPlayerCard = () => {
                     icon={"mdi:speaker-multiple"}
                   />
                 )}
-                {(!isOn || hasNoPlaybackControls) && (
+                {(!isOn || hasNoPlaybackControls || alwaysShowPowerButton) && (
                   <IconButton
                     size="x-small"
                     onClick={togglePower}

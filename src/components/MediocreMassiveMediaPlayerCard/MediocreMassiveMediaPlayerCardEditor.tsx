@@ -20,7 +20,7 @@ import {
   ToggleContainer,
   ToggleLabel,
   SubForm,
-  Select,
+  FormSelect,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
@@ -170,7 +170,7 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
       <SubForm title="Display Mode" error={getSubformError("mode")}>
         <form.Field name="mode">
           {field => (
-            <Select
+            <FormSelect
               options={[
                 { name: "Panel", value: "panel" },
                 { name: "Card", value: "card" },
@@ -424,6 +424,27 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
           </Button>
         </ButtonsContainer>
       </SubForm>
+      <SubForm
+        title="Additional options (optional)"
+        error={getSubformError("options")}
+      >
+        <form.Field name="options.always_show_power_button">
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="options.always_show_power_button"
+                checked={field.state.value ?? false}
+                onChange={e =>
+                  field.handleChange((e.target as HTMLInputElement).checked)
+                }
+              />
+              <ToggleLabel htmlFor="options.always_show_power_button">
+                Always show power button
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
+      </SubForm>
     </form>
   );
 };
@@ -448,6 +469,10 @@ const getDefaultValuesFromConfig = (
   },
   ma_entity_id: config?.ma_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
+  options: {
+    always_show_power_button:
+      config?.options?.always_show_power_button ?? false,
+  },
 });
 
 // While not strictly nessary this removes unnessesary values from the config
@@ -487,6 +512,13 @@ const getSimpleConfigFromFormValues = (
     !config.search?.entity_id
   ) {
     delete config.search;
+  }
+
+  if (config.options?.always_show_power_button === false) {
+    delete config.options.always_show_power_button;
+  }
+  if (!config.options?.always_show_power_button) {
+    delete config.options;
   }
 
   return config;

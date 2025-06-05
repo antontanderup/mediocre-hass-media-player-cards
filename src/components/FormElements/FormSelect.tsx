@@ -1,12 +1,16 @@
 import { FC } from "preact/compat";
 
-export type Select = {
+export type FormSelect = {
   options: { name: string; value: string }[];
   onSelected: (value: string) => void;
   selected: string;
 };
 
-export const Select: FC<Select> = ({ options, onSelected, selected }) => {
+export const FormSelect: FC<FormSelect> = ({
+  options,
+  onSelected,
+  selected,
+}) => {
   return (
     <select
       value={selected}

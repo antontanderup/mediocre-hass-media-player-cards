@@ -12,7 +12,7 @@
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix"
   },
   "dependencies": {
-    "@base-ui-components/react": "^1.0.0-alpha.8",
+    "@base-ui-components/react": "1.0.0-alpha.8",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@tanstack/react-form": "^1.12.0",
