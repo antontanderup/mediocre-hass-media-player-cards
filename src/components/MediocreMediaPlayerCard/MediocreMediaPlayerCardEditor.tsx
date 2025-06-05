@@ -434,7 +434,7 @@ export const MediocreMediaPlayerCardEditor: FC<
 const getDefaultValuesFromConfig = (
   config: MediocreMediaPlayerCardConfig
 ): MediocreMediaPlayerCardConfig => ({
-  type: `custom:${import.meta.env.VITE_MEDIA_PLAYER_CARD}`,
+  type: config.type ?? `custom:${import.meta.env.VITE_MEDIA_PLAYER_CARD}`,
   entity_id: config?.entity_id ?? "",
   use_art_colors: config?.use_art_colors ?? false,
   tap_opens_popup: config?.tap_opens_popup ?? false,
