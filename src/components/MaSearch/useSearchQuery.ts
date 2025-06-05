@@ -15,6 +15,7 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
   useEffect(() => {
     const hass = getHass();
     hass.callApi("GET", "config/config_entries/entry").then(entries => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const maEntries = (entries as any[]).filter(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (entry: any) => entry.domain === "music_assistant"

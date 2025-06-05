@@ -497,6 +497,7 @@ const getSimpleConfigFromFormValues = (
 
 // Helper function to get field error message
 const getFieldError = (field: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   state: { meta: { isValid: boolean; errors: any[] } };
 }) =>
   !field.state.meta.isValid
