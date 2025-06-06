@@ -9,7 +9,6 @@ import {
 import {
   MaMediaType,
   MaFilterType,
-  MaFilterConfig,
   MaArtist,
   MaAlbum,
   MaTrack,
@@ -22,37 +21,7 @@ import {
 import { useSearchQuery } from "./useSearchQuery";
 import { Fragment } from "preact";
 import { useFavorites } from "./useFavorites";
-
-const filters: MaFilterConfig[] = [
-  { type: "all", label: "All", icon: "mdi:all-inclusive" },
-  { type: "artist", label: "Artists", icon: "mdi:account-music" },
-  { type: "album", label: "Albums", icon: "mdi:album" },
-  { type: "track", label: "Tracks", icon: "mdi:music-note" },
-  { type: "playlist", label: "Playlists", icon: "mdi:playlist-music" },
-  { type: "radio", label: "Radio", icon: "mdi:radio" },
-  { type: "audiobook", label: "Audiobooks", icon: "mdi:book" },
-  { type: "podcast", label: "Podcasts", icon: "mdi:podcast" },
-];
-
-const responseKeyMediaTypeMap: { [key: string]: MaMediaType } = {
-  artists: "artist",
-  albums: "album",
-  tracks: "track",
-  playlists: "playlist",
-  radio: "radio",
-  audiobooks: "audiobook",
-  podcasts: "podcast",
-};
-
-const labelMap: { [key in MaMediaType]: string } = {
-  artist: "Artists",
-  album: "Albums",
-  track: "Tracks",
-  playlist: "Playlists",
-  radio: "Radio",
-  audiobook: "Audiobooks",
-  podcast: "Podcasts",
-};
+import { filters, labelMap, responseKeyMediaTypeMap } from "./constants";
 
 export type MaSearchProps = {
   maEntityId: string;
@@ -216,7 +185,7 @@ export const MaSearch = ({
       }}
     >
       {searchBarPosition === "top" && renderSearchBar()}
-      {results && (
+      {query !== "" && results && (
         <div
           css={
             searchBarPosition === "bottom"
@@ -229,7 +198,7 @@ export const MaSearch = ({
           })}
         </div>
       )}
-      {query === "" && favorites.length > 0 && (
+      {query === "" && favorites && (
         <div
           css={
             searchBarPosition === "bottom"
@@ -237,23 +206,9 @@ export const MaSearch = ({
               : {}
           }
         >
-          <div css={searchStyles.mediaGrid}>
-            {favorites.map(item => (
-              <MediaItem
-                key={item.uri}
-                imageUrl={item.image}
-                name={item.name}
-                artist={
-                  "artists" in item
-                    ? (item as MaAlbum).artists
-                        .map(artist => artist.name)
-                        .join(", ")
-                    : undefined
-                }
-                onClick={() => playItem(item, maEntityId, enqueueMode)}
-              />
-            ))}
-          </div>
+          {Object.entries(favorites).map(([key, value]) => {
+            return renderResult(value, responseKeyMediaTypeMap[key]);
+          })}
         </div>
       )}
       {searchBarPosition === "bottom" && renderSearchBar()}
