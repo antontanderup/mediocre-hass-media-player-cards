@@ -21,6 +21,7 @@ import {
 } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 import { Fragment } from "preact";
+import { useFavorites } from "./useFavorites";
 
 const filters: MaFilterConfig[] = [
   { type: "all", label: "All", icon: "mdi:all-inclusive" },
@@ -86,6 +87,8 @@ export const MaSearch = ({
     debouncedQuery,
     activeFilter
   );
+
+  const { favorites } = useFavorites(activeFilter, query === "");
 
   const renderSearchBar = () => {
     return (
@@ -183,7 +186,9 @@ export const MaSearch = ({
                   name={item.name}
                   artist={
                     "artists" in item
-                      ? item.artists.map(artist => artist.name).join(", ")
+                      ? (item as MaAlbum).artists
+                          .map(artist => artist.name)
+                          .join(", ")
                       : undefined
                   }
                   onClick={() => playItem(item, maEntityId, enqueueMode)}
@@ -222,6 +227,33 @@ export const MaSearch = ({
           {Object.entries(results).map(([key, value]) => {
             return renderResult(value, responseKeyMediaTypeMap[key]);
           })}
+        </div>
+      )}
+      {query === "" && favorites.length > 0 && (
+        <div
+          css={
+            searchBarPosition === "bottom"
+              ? searchStyles.resultsContainerSearchBarBottom
+              : {}
+          }
+        >
+          <div css={searchStyles.mediaGrid}>
+            {favorites.map(item => (
+              <MediaItem
+                key={item.uri}
+                imageUrl={item.image}
+                name={item.name}
+                artist={
+                  "artists" in item
+                    ? (item as MaAlbum).artists
+                        .map(artist => artist.name)
+                        .join(", ")
+                    : undefined
+                }
+                onClick={() => playItem(item, maEntityId, enqueueMode)}
+              />
+            ))}
+          </div>
         </div>
       )}
       {searchBarPosition === "bottom" && renderSearchBar()}
