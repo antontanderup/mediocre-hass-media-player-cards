@@ -11,16 +11,28 @@ const fadeInOut = keyframes({
 const styles = {
   root: css({
     width: "100%",
-    aspectRatio: "1",
+    // Creates 1:1 aspect ratio
+    "&::before": {
+      content: '""',
+      display: "block",
+      paddingTop: "100%",
+    },
     borderRadius: "4px",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundImage: "var(--mmpc-media-image-background)",
     "--icon-primary-color": "var(--card-background-color)",
     position: "relative",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  }),
+  image: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    borderRadius: "4px",
   }),
   icon: css({
     position: "absolute",
@@ -51,15 +63,8 @@ export const MediaImage = ({
   className,
 }: MediaImageProps) => {
   return (
-    <div
-      css={styles.root}
-      style={{
-        "--mmpc-media-image-background": imageUrl
-          ? `url(${imageUrl})`
-          : "var(--primary-text-color)",
-      }}
-      className={className}
-    >
+    <div css={styles.root} className={className}>
+      {imageUrl && <img src={imageUrl} css={styles.image} alt="" />}
       {!imageUrl && <Icon icon="mdi:image-broken-variant" size="small" />}
       {loading && <Spinner css={styles.icon} size="x-small" />}
       {!loading && done && (
