@@ -178,7 +178,13 @@ export const HaSearch = ({
         </div>
       )}
       {query === "" && favorites.length > 0 && (
-        <Fragment>
+        <div
+          css={
+            searchBarPosition === "bottom"
+              ? searchStyles.resultsContainerSearchBarBottom
+              : {}
+          }
+        >
           <div css={searchStyles.mediaGrid}>
             {favorites.map(item => (
               <MediaItem
@@ -189,7 +195,7 @@ export const HaSearch = ({
               />
             ))}
           </div>
-        </Fragment>
+        </div>
       )}
       {error && (
         <div
