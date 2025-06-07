@@ -90,12 +90,15 @@ Both cards support these options:
 | `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
 | `custom_buttons`          | array  | -        | List of custom buttons to display                                |
 | `ma_entity_id`            | string | -        | Music Assistant entity id (adds search)                          |
+| `options`                 | object | -        | Additional display options for fine-tuning the card              |
+| `options.always_show_power_button` | boolean | `false` | Always show the power button, even if the media player is on |
 
 The Mediocre Media Player Card has additional options:
 
 | Option            | Type    | Default | Description                                                            |
 | ----------------- | ------- | ------- | ---------------------------------------------------------------------- |
 | `tap_opens_popup` | boolean | `false` | When set to true, tapping the card opens a popup with the massive card |
+| `options.always_show_custom_buttons` | boolean | `false` | Always show custom buttons panel expanded |
 
 The Mediocre Massive Media Player Card has additional options:
 
