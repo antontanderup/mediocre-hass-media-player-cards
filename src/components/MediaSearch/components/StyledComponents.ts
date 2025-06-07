@@ -45,7 +45,7 @@ export const searchStyles = {
   mediaGrid: css({
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
-    gridGap: "16px",
+    gridGap: "8px",
     padding: "0px var(--mmpc-search-padding, 0px)",
   }),
   trackListContainer: css({

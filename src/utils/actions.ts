@@ -34,7 +34,7 @@ export const handleAction = async (
     actionConfig[
       (action + "_action") as "tap_action" | "hold_action" | "double_tap_action"
     ];
-  if (actionObject.action === "perform-action") {
+  if (actionObject?.action === "perform-action") {
     // Performing it like this let's us await for the action to finish
     // which let's us display a loading spinner
     return performAction({

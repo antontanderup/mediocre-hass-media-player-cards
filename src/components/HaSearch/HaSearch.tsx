@@ -38,7 +38,7 @@ export const HaSearch = ({
   searchBarPosition = "top",
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
-  const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("play");
+  const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
   const debouncedQuery = useDebounce(query, 600);
   const [activeFilter, setActiveFilter] = useState<HaFilterType>("all");
 
@@ -178,7 +178,13 @@ export const HaSearch = ({
         </div>
       )}
       {query === "" && favorites.length > 0 && (
-        <Fragment>
+        <div
+          css={
+            searchBarPosition === "bottom"
+              ? searchStyles.resultsContainerSearchBarBottom
+              : {}
+          }
+        >
           <div css={searchStyles.mediaGrid}>
             {favorites.map(item => (
               <MediaItem
@@ -189,7 +195,7 @@ export const HaSearch = ({
               />
             ))}
           </div>
-        </Fragment>
+        </div>
       )}
       {error && (
         <div

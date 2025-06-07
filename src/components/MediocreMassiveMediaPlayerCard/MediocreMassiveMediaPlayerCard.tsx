@@ -3,8 +3,11 @@ import { PlaybackControls } from "./components/PlaybackControls";
 import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMassiveMediaPlayerCardConfig } from "@types";
-import { useArtworkColors } from "@hooks";
+import {
+  InteractionConfig,
+  MediocreMassiveMediaPlayerCardConfig,
+} from "@types";
+import { useActionProps, useArtworkColors } from "@hooks";
 import { AlbumArt } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
@@ -72,13 +75,25 @@ export const MediocreMassiveMediaPlayerCard = ({
 }: {
   className?: string;
 }) => {
-  const { config } =
+  const { config, rootElement } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode, use_art_colors } = config;
+  const { mode, use_art_colors, action } = config;
 
   const { artVars, haVars } = useArtworkColors();
+
+  const artAction: InteractionConfig = action ?? {
+    tap_action: { action: "more-info" },
+  };
+
+  const artActionProps = useActionProps({
+    rootElement,
+    actionConfig: {
+      ...artAction,
+      entity: config.entity_id,
+    },
+  });
 
   const renderRoot = () => (
     <div
@@ -101,7 +116,7 @@ export const MediocreMassiveMediaPlayerCard = ({
           mode === "popup" && styles.wrapPopupMode,
         ]}
       >
-        <AlbumArt iconSize="x-large" borderRadius={8} />
+        <AlbumArt iconSize="x-large" borderRadius={8} {...artActionProps} />
         <div css={styles.controlsWrapper}>
           <Title />
           <Track />

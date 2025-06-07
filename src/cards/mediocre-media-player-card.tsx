@@ -14,7 +14,11 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
     this.config = config;
   }
 
-  shouldUpdate = (prevHass: HomeAssistant, hass: HomeAssistant) => {
+  shouldUpdate = (
+    prevHass: HomeAssistant | null,
+    hass: HomeAssistant | null
+  ) => {
+    if (!hass || !prevHass || !this.config) return true;
     if (!prevHass && hass) return true;
 
     // Check if main entity changed

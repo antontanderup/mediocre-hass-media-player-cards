@@ -1,5 +1,6 @@
 import { HomeAssistant } from "@types";
 import { useCallback, useEffect, useRef } from "preact/hooks";
+import { ErrorMessage } from "./StyledFormElements";
 
 export type EntityPickerProps = {
   hass: HomeAssistant;
@@ -10,6 +11,7 @@ export type EntityPickerProps = {
   required?: boolean;
   disabled?: boolean;
   allowCustomEntity?: boolean;
+  error?: string;
 };
 
 export const EntityPicker = (props: EntityPickerProps) => {
@@ -22,6 +24,7 @@ export const EntityPicker = (props: EntityPickerProps) => {
     required = false,
     disabled = false,
     allowCustomEntity = false,
+    error,
   } = props;
 
   const formRef = useRef<HTMLElement | null>(null);
@@ -52,15 +55,18 @@ export const EntityPicker = (props: EntityPickerProps) => {
   }, [formRef.current, handleValueChanged]);
 
   return (
-    <ha-entity-picker
-      ref={formRef}
-      hass={hass}
-      value={value}
-      label={label}
-      includeDomains={domains}
-      disabled={disabled}
-      required={required}
-      allow-custom-entity={allowCustomEntity}
-    />
+    <div>
+      <ha-entity-picker
+        ref={formRef}
+        hass={hass}
+        value={value}
+        label={label}
+        includeDomains={domains}
+        disabled={disabled}
+        required={required}
+        allow-custom-entity={allowCustomEntity}
+      />
+      {!!error && <ErrorMessage>{error}</ErrorMessage>}
+    </div>
   );
 };

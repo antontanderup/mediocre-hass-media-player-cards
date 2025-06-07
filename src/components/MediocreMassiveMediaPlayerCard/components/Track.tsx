@@ -53,7 +53,7 @@ export const Track = () => {
     const lastUpdate = new Date(mediaPositionUpdatedAt);
     const timeSinceLastUpdate = now.getTime() - lastUpdate.getTime();
     const currentPosition = timeSinceLastUpdate / 1000 + mediaPosition;
-    const getPrettyPrinted = pos => {
+    const getPrettyPrinted = (pos: number) => {
       const minutes = Math.floor(pos / 60)
         .toString()
         .padStart(2, "0");

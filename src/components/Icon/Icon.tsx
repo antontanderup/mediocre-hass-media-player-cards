@@ -6,7 +6,8 @@ export type IconSize =
   | "small"
   | "medium"
   | "large"
-  | "x-large";
+  | "x-large"
+  | "xx-large";
 
 export type IconProps = {
   icon: string;
@@ -61,5 +62,7 @@ export const getIconSize = (size: IconSize) => {
       return 48;
     case "x-large":
       return 80;
+    case "xx-large":
+      return 120;
   }
 };

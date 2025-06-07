@@ -14,22 +14,20 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
 
   useEffect(() => {
     const hass = getHass();
-    hass
-      .callApi("GET", "config/config_entries/entry")
+    hass.callApi("GET", "config/config_entries/entry").then(entries => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .then((entries: any[]) => {
-        const maEntries = entries.filter(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (entry: any) => entry.domain === "music_assistant"
-        );
-        const entry = maEntries.find(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (entry: any) => entry.state === "loaded"
-        );
-        if (entry) {
-          setConfigEntry(entry.entry_id);
-        }
-      });
+      const maEntries = (entries as any[]).filter(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (entry: any) => entry.domain === "music_assistant"
+      );
+      const entry = maEntries.find(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (entry: any) => entry.state === "loaded"
+      );
+      if (entry) {
+        setConfigEntry(entry.entry_id);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -51,15 +49,14 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
     const hass = getHass();
     setLoading(true);
 
-    hass.connection
-      .sendMessagePromise(message)
-      .then((response: { response: MaSearchResponse }) => {
-        if (!response.response) {
-          return;
-        }
-        setLoading(false);
-        setResults(response.response);
-      });
+    hass.connection.sendMessagePromise(message).then(res => {
+      const response = res as { response: MaSearchResponse };
+      if (!response.response) {
+        return;
+      }
+      setLoading(false);
+      setResults(response.response);
+    });
   }, [debounceQuery, configEntry, filter]);
 
   const playItem = useCallback(

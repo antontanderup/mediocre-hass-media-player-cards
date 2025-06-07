@@ -10,31 +10,44 @@ export const useMediaBrowserFavorites = (
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    if (!enabled) return;
-    const fetchMediaItems = async () => {
-      setIsFetching(true);
-      try {
-        const hass = getHass();
-        const response = (await hass.callWS({
-          type: "media_player/browse_media",
-          entity_id: targetEntity,
-          media_content_id: "favorites",
-          media_content_type: "favorites",
-        })) as { children?: HaMediaItem[] };
-
-        if (response && response.children) {
-          setMediaItems(response.children);
-        } else {
-          setMediaItems([]);
-        }
-      } catch (error) {
-        console.error("Error fetching media items:", error);
-      }
-      setIsFetching(false);
+    if (!enabled) {
+      setMediaItems([]);
+      return;
+    }
+    const message = {
+      type: "call_service",
+      domain: "media_player",
+      service: "browse_media",
+      service_data: {
+        entity_id: targetEntity,
+        media_content_type: "favorites",
+      },
+      return_response: true,
     };
 
-    fetchMediaItems();
-  }, [enabled, targetEntity]);
+    const hass = getHass();
+    setIsFetching(true);
+
+    hass.connection
+      .sendMessagePromise(message)
+      .then(res => {
+        const response = res as {
+          response: { [key: string]: { children: HaMediaItem[] } };
+        };
+        if (!response.response[targetEntity]) {
+          return;
+        }
+        setIsFetching(false);
+        setMediaItems(
+          response.response[targetEntity].children.filter(item => item.can_play)
+        );
+      })
+      .catch(err => {
+        console.error("Error fetching search results:", err);
+        setIsFetching(false);
+        setMediaItems([]);
+      });
+  }, [targetEntity, enabled]);
 
   return useMemo(
     () => ({ favorites: mediaItems, isFetching }),
