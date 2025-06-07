@@ -447,6 +447,22 @@ export const MediocreMediaPlayerCardEditor: FC<
             </ToggleContainer>
           )}
         </form.Field>
+        <form.Field name="options.always_show_custom_buttons">
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="options.always_show_custom_buttons"
+                checked={field.state.value ?? false}
+                onChange={e =>
+                  field.handleChange((e.target as HTMLInputElement).checked)
+                }
+              />
+              <ToggleLabel htmlFor="options.always_show_custom_buttons">
+                Always show custom buttons panel below card
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
       </SubForm>
     </form>
   );
@@ -474,6 +490,8 @@ const getDefaultValuesFromConfig = (
   options: {
     always_show_power_button:
       config?.options?.always_show_power_button ?? false,
+    always_show_custom_buttons:
+      config?.options?.always_show_custom_buttons ?? false,
   },
 });
 
@@ -520,7 +538,10 @@ const getSimpleConfigFromFormValues = (
   if (config.options?.always_show_power_button === false) {
     delete config.options.always_show_power_button;
   }
-  if (!config.options?.always_show_power_button) {
+  if (config.options?.always_show_custom_buttons === false) {
+    delete config.options.always_show_custom_buttons;
+  }
+  if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
   }
 
@@ -534,9 +555,9 @@ const getFieldError = (field: {
 }) =>
   !field.state.meta.isValid
     ? field.state.meta.errors
-        .map(error =>
-          typeof error === "string" ? error : error?.message || String(error)
-        )
-        .filter(Boolean)
-        .join(", ")
+      .map(error =>
+        typeof error === "string" ? error : error?.message || String(error)
+      )
+      .filter(Boolean)
+      .join(", ")
     : undefined;

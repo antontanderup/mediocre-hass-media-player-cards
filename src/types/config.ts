@@ -1,6 +1,10 @@
 import { type } from "arktype";
 import { interactionConfigSchema } from "./actionTypes";
 
+const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
+  "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
+})
+
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
   entity_id: "string",
@@ -22,14 +26,17 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
     "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
   },
-  "options?": {
-    "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
-  },
+  "options?": commonMediocreMediaPlayerCardConfigOptionsSchema
 });
+
+
 
 export const MediocreMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
     "tap_opens_popup?": "boolean",
+    "options?": commonMediocreMediaPlayerCardConfigOptionsSchema.and({
+      "always_show_custom_buttons?": "boolean | null", // Always show custom buttons panel expanded
+    })
   });
 
 export const MediocreMassiveMediaPlayerCardConfigSchema =
