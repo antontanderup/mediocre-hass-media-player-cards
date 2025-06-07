@@ -81,7 +81,10 @@ export const MediocreMediaPlayerCard = () => {
     use_art_colors,
     ma_entity_id,
     search,
-    options: { always_show_power_button: alwaysShowPowerButton, always_show_custom_buttons: alwaysShowCustomButtons } = {},
+    options: {
+      always_show_power_button: alwaysShowPowerButton,
+      always_show_custom_buttons: alwaysShowCustomButtons,
+    } = {},
   } = config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
@@ -89,7 +92,9 @@ export const MediocreMediaPlayerCard = () => {
   const hasSearch = hasMaSearch || search?.enabled;
 
   const [showGrouping, setShowGrouping] = useState(false);
-  const [showCustomButtons, setShowCustomButtons] = useState(alwaysShowCustomButtons ?? false);
+  const [showCustomButtons, setShowCustomButtons] = useState(
+    alwaysShowCustomButtons ?? false
+  );
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -135,10 +140,10 @@ export const MediocreMediaPlayerCard = () => {
     },
     overrideCallback: tap_opens_popup
       ? {
-        onTap: () => {
-          setIsPopupVisible(true);
-        },
-      }
+          onTap: () => {
+            setIsPopupVisible(true);
+          },
+        }
       : {},
   });
 

@@ -555,9 +555,9 @@ const getFieldError = (field: {
 }) =>
   !field.state.meta.isValid
     ? field.state.meta.errors
-      .map(error =>
-        typeof error === "string" ? error : error?.message || String(error)
-      )
-      .filter(Boolean)
-      .join(", ")
+        .map(error =>
+          typeof error === "string" ? error : error?.message || String(error)
+        )
+        .filter(Boolean)
+        .join(", ")
     : undefined;
