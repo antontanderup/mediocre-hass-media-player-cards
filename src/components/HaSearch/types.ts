@@ -15,16 +15,17 @@ export type HaContentType =
   | "albums"
   | "artists"
   | "playlists"
-  | "music";
+  | "music"
+  | string;
 
 // Enqueue modes for media playback
 export type HaEnqueueMode = "add" | "next" | "play" | "replace";
 
 // Filter configuration type
 export interface HaFilterConfig {
-  type: HaFilterType;
-  label: string;
-  icon: string;
+  media_type: HaFilterType;
+  name?: string;
+  icon?: string;
 }
 
 export type HaFilterResult = (HaFilterConfig & {

@@ -30,6 +30,7 @@ export const Search = () => {
           entityId={search.entity_id ?? entity_id}
           showFavorites={search.show_favorites ?? false}
           horizontalPadding={12}
+          filterConfig={search.media_types}
         />
       );
     }

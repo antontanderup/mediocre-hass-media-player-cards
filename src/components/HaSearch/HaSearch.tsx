@@ -17,17 +17,18 @@ import { Fragment } from "preact";
 import { useMediaBrowserFavorites } from "./useMediaBrowserFavorites";
 
 const filters: HaFilterConfig[] = [
-  { type: "all", label: "All", icon: "mdi:all-inclusive" },
-  { type: "artists", label: "Artists", icon: "mdi:account-music" },
-  { type: "albums", label: "Albums", icon: "mdi:album" },
-  { type: "tracks", label: "Tracks", icon: "mdi:music-note" },
-  { type: "playlists", label: "Playlists", icon: "mdi:playlist-music" },
+  { media_type: "all", name: "All", icon: "mdi:all-inclusive" },
+  { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
+  { media_type: "albums", name: "Albums", icon: "mdi:album" },
+  { media_type: "tracks", name: "Tracks", icon: "mdi:music-note" },
+  { media_type: "playlists", name: "Playlists", icon: "mdi:playlist-music" },
 ];
 
 export type HaSearchProps = {
   entityId: string;
   showFavorites: boolean;
   horizontalPadding?: number;
+  filterConfig?: HaFilterConfig[];
   searchBarPosition?: "top" | "bottom";
 };
 
@@ -36,6 +37,7 @@ export const HaSearch = ({
   showFavorites,
   horizontalPadding,
   searchBarPosition = "top",
+  filterConfig = filters,
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
@@ -52,7 +54,8 @@ export const HaSearch = ({
   const { results, loading, error, playItem } = useSearchQuery(
     debouncedQuery,
     activeFilter,
-    entityId
+    entityId,
+    filterConfig
   );
 
   const { favorites } = useMediaBrowserFavorites(
@@ -89,26 +92,26 @@ export const HaSearch = ({
   };
 
   const renderFilterChips = () => {
-    return filters.map(filter => (
+    return filterConfig.map(filter => (
       <Chip
         css={searchStyles.chip}
         style={{
           "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
-          opacity: activeFilter === filter.type ? 1 : 0.6,
-          fontWeight: activeFilter === filter.type ? "bold" : "normal",
+          opacity: activeFilter === filter.media_type ? 1 : 0.6,
+          fontWeight: activeFilter === filter.media_type ? "bold" : "normal",
         }}
-        key={filter.type}
-        onClick={() => setActiveFilter(filter.type)}
+        key={filter.media_type}
+        onClick={() => setActiveFilter(filter.media_type)}
         icon={filter.icon}
       >
-        {filter.label}
+        {filter.name}
       </Chip>
     ));
   };
 
   const renderResult = (result: HaFilterResult[number], isLoading: boolean) => {
     if (!result) return null;
-    const { type: mediaType, label, results } = result;
+    const { media_type: mediaType, name, results } = result;
     if (activeFilter !== "all" && activeFilter !== mediaType) return null;
     if (results.length === 0 && activeFilter === "all") return null;
 
@@ -116,7 +119,7 @@ export const HaSearch = ({
       <Fragment key={mediaType}>
         {activeFilter === "all" && (
           <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
-            {label}
+            {name ?? mediaType}
           </MediaSectionTitle>
         )}
         {mediaType === "tracks" ? (
