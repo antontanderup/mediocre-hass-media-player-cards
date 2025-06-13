@@ -62,7 +62,7 @@ export const HaSearchMediaTypesEditor: FC<HaSearchMediaTypesEditorProps> = ({
           .map(item => {
             return {
               name: item.title,
-              media_type: item.media_class,
+              media_type: item.media_content_type,
               icon: getItemMdiIcon(item),
             };
           }) || []
