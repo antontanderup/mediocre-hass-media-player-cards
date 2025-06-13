@@ -5,6 +5,12 @@ const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
 });
 
+const searchMediaTypeSchema = type({
+  "icon?": "string",
+  "name?": "string",
+  media_type: "string",
+});
+
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
   entity_id: "string",
@@ -25,6 +31,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
     "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
     "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+    "media_types?": searchMediaTypeSchema.array(),
   },
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
 });
@@ -42,6 +49,7 @@ export const MediocreMassiveMediaPlayerCardConfigSchema =
     mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup as it only for internal use
   });
 
+export type SearchMediaType = typeof searchMediaTypeSchema.infer;
 export type CommonMediocreMediaPlayerCardConfig =
   typeof commonMediocreMediaPlayerCardConfigSchema.infer;
 export type MediocreMediaPlayerCardConfig =

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { getHass } from "@utils";
 import {
   HaEnqueueMode,
+  HaFilterConfig,
   HaFilterResult,
   HaFilterType,
   HaMediaItem,
@@ -11,7 +12,8 @@ import {
 export const useSearchQuery = (
   debounceQuery: string,
   filter: HaFilterType,
-  targetEntity: string
+  targetEntity: string,
+  filterConfig: HaFilterConfig[]
 ) => {
   const [results, setResults] = useState<HaSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -70,52 +72,41 @@ export const useSearchQuery = (
   );
 
   const resultsParsed: HaFilterResult = useMemo(() => {
-    return [
-      {
-        type: "artists",
-        label: "Artists",
-        icon: "mdi:account-music",
-        results:
-          results?.result.filter(
-            item =>
-              item.media_content_type === "artists" ||
-              item.media_class === "artist"
-          ) ?? [],
-      },
-      {
-        type: "albums",
-        label: "Albums",
-        icon: "mdi:album",
-        results:
-          results?.result.filter(
-            item =>
-              item.media_content_type === "albums" ||
-              item.media_class === "album"
-          ) ?? [],
-      },
-      {
-        type: "tracks",
-        label: "Tracks",
-        icon: "mdi:music-note",
-        results:
-          results?.result.filter(
-            item =>
-              item.media_content_type === "tracks" ||
-              item.media_class === "track"
-          ) ?? [],
-      },
-      {
-        type: "playlists",
-        label: "Playlists",
-        icon: "mdi:playlist-music",
-        results:
-          results?.result.filter(
-            item =>
-              item.media_content_type === "playlists" ||
-              item.media_class === "playlist"
-          ) ?? [],
-      },
-    ];
+    if (filter !== "all") {
+      const config = filterConfig.find(item => item.media_type === filter);
+      if (!config) {
+        return [];
+      }
+      return [
+        {
+          media_type: config?.media_type ?? filter,
+          name:
+            config.name ??
+            config.media_type.charAt(0).toUpperCase() +
+              config.media_type.slice(1),
+          icon: config.icon,
+          results: results?.result ?? [],
+        },
+      ];
+    }
+    return filterConfig.map(config => {
+      // if filter is plural remove the 's' at the end for probable media type
+      const filteredResults =
+        results?.result.filter(
+          item =>
+            item.media_content_type === config.media_type ||
+            item.media_class === config.media_type
+        ) ?? [];
+      return {
+        media_type: config.media_type,
+        name:
+          config.name ??
+          config.media_type.charAt(0).toUpperCase() +
+            config.media_type.slice(1),
+        icon: config.icon,
+        results: filteredResults,
+      };
+    });
   }, [results]);
 
   return useMemo(
