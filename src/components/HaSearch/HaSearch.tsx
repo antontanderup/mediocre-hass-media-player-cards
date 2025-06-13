@@ -17,7 +17,6 @@ import { Fragment } from "preact";
 import { useMediaBrowserFavorites } from "./useMediaBrowserFavorites";
 
 const filters: HaFilterConfig[] = [
-  { media_type: "all", name: "All", icon: "mdi:all-inclusive" },
   { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
   { media_type: "albums", name: "Albums", icon: "mdi:album" },
   { media_type: "tracks", name: "Tracks", icon: "mdi:music-note" },
@@ -92,7 +91,10 @@ export const HaSearch = ({
   };
 
   const renderFilterChips = () => {
-    return filterConfig.map(filter => (
+    return [
+      { media_type: "all", name: "All", icon: "mdi:all-inclusive" },
+      ...filterConfig,
+    ].map(filter => (
       <Chip
         css={searchStyles.chip}
         style={{
