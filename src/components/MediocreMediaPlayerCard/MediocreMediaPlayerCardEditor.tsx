@@ -20,6 +20,7 @@ import {
 } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
+import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -316,6 +317,18 @@ export const MediocreMediaPlayerCardEditor: FC<
             )}
           </form.Field>
         </FormGroup>
+        <form.Field name="search.media_types">
+          {field => (
+            <HaSearchMediaTypesEditor
+              entityId={config.search?.entity_id ?? config.entity_id ?? ""}
+              hass={hass}
+              mediaTypes={field.state.value ?? []}
+              onChange={value => {
+                field.handleChange(value ?? []);
+              }}
+            />
+          )}
+        </form.Field>
       </SubForm>
 
       <form.Field name="ma_entity_id">
@@ -484,6 +497,7 @@ const getDefaultValuesFromConfig = (
     enabled: config?.search?.enabled ?? false,
     show_favorites: config?.search?.show_favorites ?? false,
     entity_id: config?.search?.entity_id ?? null,
+    media_types: config?.search?.media_types ?? [],
   },
   ma_entity_id: config?.ma_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
@@ -526,11 +540,15 @@ const getSimpleConfigFromFormValues = (
   if (config.search?.entity_id === null) {
     delete config.search.entity_id;
   }
+  if (config.search?.media_types?.length === 0) {
+    delete config.search.media_types;
+  }
   // Handle search - remove if all search properties are falsy
   if (
     !config.search?.enabled &&
     !config.search?.show_favorites &&
-    !config.search?.entity_id
+    !config.search?.entity_id &&
+    !config.search?.media_types
   ) {
     delete config.search;
   }

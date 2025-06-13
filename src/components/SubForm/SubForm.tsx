@@ -20,6 +20,11 @@ const styles = {
     padding: "8px 16px",
     borderBottom: "none",
   }),
+  headerButtons: css({
+    display: "flex",
+    gap: "8px",
+    alignItems: "center",
+  }),
   headerExpanded: css({
     borderBottom: "1px solid var(--outline-color, #e0e0e0)",
   }),
@@ -41,10 +46,12 @@ export const SubForm = ({
   title,
   children,
   initiallyExpanded = false,
+  buttons = [],
   error,
 }: {
   title: string;
   children: JSX.Element | JSX.Element[];
+  buttons?: { icon: string; onClick: () => void }[];
   initiallyExpanded?: boolean;
   error?: string | boolean;
 }) => {
@@ -54,12 +61,23 @@ export const SubForm = ({
     <div css={[styles.root, !!error && styles.rootError]}>
       <div css={[styles.header, expanded && styles.headerExpanded]}>
         <div css={styles.title}>{title}</div>
-        <IconButton
-          onClick={() => setExpanded(!expanded)}
-          icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
-          type="button"
-          size={"small"}
-        />
+        <div css={styles.headerButtons}>
+          {buttons.map((button, index) => (
+            <IconButton
+              key={index + button.icon}
+              icon={button.icon}
+              onClick={button.onClick}
+              type="button"
+              size={"small"}
+            />
+          ))}
+          <IconButton
+            onClick={() => setExpanded(!expanded)}
+            icon={expanded ? "mdi:chevron-up" : "mdi:chevron-down"}
+            type="button"
+            size={"small"}
+          />
+        </div>
       </div>
       <div css={[styles.content, expanded && styles.contentExpanded]}>
         {children}

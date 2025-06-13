@@ -34,7 +34,7 @@ export type HaFilterResult = (HaFilterConfig & {
 // Base media item interface
 export interface HaMediaItem {
   media_class: HaMediaClass;
-  media_content_id: string;
+  media_content_id?: string;
   media_content_type: HaContentType;
   title: string;
   can_play: boolean;
