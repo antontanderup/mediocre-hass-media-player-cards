@@ -473,6 +473,7 @@ const getDefaultValuesFromConfig = (
     always_show_power_button:
       config?.options?.always_show_power_button ?? false,
   },
+  grid_options: config?.grid_options,
 });
 
 // While not strictly nessary this removes unnessesary values from the config
@@ -520,6 +521,9 @@ const getSimpleConfigFromFormValues = (
   if (!config.options?.always_show_power_button) {
     delete config.options;
   }
+
+  // Always preserve grid_options as it's a Home Assistant layout configuration
+  // that should not be removed even if empty
 
   return config;
 };

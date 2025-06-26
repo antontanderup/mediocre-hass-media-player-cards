@@ -27,6 +27,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
   },
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
+  "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
 });
 
 export const MediocreMediaPlayerCardConfigSchema =
