@@ -9,7 +9,10 @@
     "build": "vite build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix"
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@base-ui-components/react": "1.0.0-alpha.8",
@@ -26,14 +29,18 @@
     "@emotion/eslint-plugin": "^11.12.0",
     "@eslint/js": "^9.28.0",
     "@preact/preset-vite": "^2.10.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.4",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^9.28.0",
     "eslint-import-resolver-typescript": "^4.4.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
+    "jest": "^30.0.3",
     "jiti": "^2.4.2",
     "prettier": "^3.1.0",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.0",
     "vite": "^6.3.5"
