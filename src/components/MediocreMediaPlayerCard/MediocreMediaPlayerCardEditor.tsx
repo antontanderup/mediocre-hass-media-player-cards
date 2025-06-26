@@ -548,7 +548,7 @@ const getSimpleConfigFromFormValues = (
 
   // Always preserve grid_options as it's a Home Assistant layout configuration
   // that should not be removed even if empty
-  
+
   return config;
 };
 
