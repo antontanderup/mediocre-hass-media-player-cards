@@ -22,7 +22,7 @@ export default tseslint.config(
         ecmaFeatures: {
           jsx: true,
         },
-        project: "./tsconfig.json",
+        project: "./tsconfig.eslint.json",
       },
     },
     settings: {
@@ -32,7 +32,7 @@ export default tseslint.config(
       },
       "import/resolver": {
         typescript: {
-          project: "./tsconfig.json",
+          project: "./tsconfig.eslint.json",
           alwaysTryTypes: true,
           extensions: [".js", ".jsx", ".ts", ".tsx"],
         },
