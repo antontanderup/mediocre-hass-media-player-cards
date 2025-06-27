@@ -4,6 +4,7 @@ import {
   searchStyles,
   MediaItem,
   MediaSectionTitle,
+  MediaGrid,
 } from "@components/MediaSearch";
 import { VirtualList, VirtualListProps } from "@components/VirtualList";
 import { MediaTrack } from "@components";
@@ -122,7 +123,7 @@ export const HaMediaItemsList = ({
           await onItemClick(mediaItem);
         };
         return (
-          <div css={searchStyles.mediaGrid}>
+          <MediaGrid numberOfColumns={chunkSize}>
             {mediaItem.media_class === "track" &&
             mediaItem.media_content_type !== "favorite" ? (
               <MediaTrack
@@ -137,16 +138,15 @@ export const HaMediaItemsList = ({
                 imageUrl={mediaItem.thumbnail}
                 name={mediaItem.title}
                 onClick={handleClick}
-                maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
               />
             )}
-          </div>
+          </MediaGrid>
         );
       }
 
       case "itemsRow":
         return (
-          <div css={searchStyles.mediaGrid}>
+          <MediaGrid numberOfColumns={chunkSize}>
             {item.items.map(mediaItem => {
               const handleClick = async () => {
                 await onItemClick(mediaItem);
@@ -166,11 +166,10 @@ export const HaMediaItemsList = ({
                   imageUrl={mediaItem.thumbnail}
                   name={mediaItem.title}
                   onClick={handleClick}
-                  maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
                 />
               );
             })}
-          </div>
+          </MediaGrid>
         );
 
       default:

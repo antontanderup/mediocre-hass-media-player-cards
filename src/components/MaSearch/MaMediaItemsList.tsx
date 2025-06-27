@@ -15,6 +15,7 @@ import { VirtualList, VirtualListProps } from "@components/VirtualList";
 import { MediaTrack } from "@components";
 import { useMemo, useState } from "preact/hooks";
 import { labelMap, responseKeyMediaTypeMap } from "./constants";
+import { MediaGrid } from "@components/MediaSearch/components/MediaGrid";
 
 export type MaMediaItemsListProps = Omit<
   VirtualListProps<MaMediaListItem>,
@@ -112,7 +113,7 @@ export const MaMediaItemsList = ({
           await onItemClick(mediaItem);
         };
         return (
-          <div css={searchStyles.mediaGrid}>
+          <MediaGrid numberOfColumns={chunkSize}>
             {mediaItem.media_type === "track" ? (
               <MediaTrack
                 key={mediaItem.uri}
@@ -139,16 +140,15 @@ export const MaMediaItemsList = ({
                     : undefined
                 }
                 onClick={handleClick}
-                maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
               />
             )}
-          </div>
+          </MediaGrid>
         );
       }
 
       case "itemsRow":
         return (
-          <div css={searchStyles.mediaGrid}>
+          <MediaGrid numberOfColumns={chunkSize}>
             {item.items.map(mediaItem => {
               const handleClick = async () => {
                 await onItemClick(mediaItem);
@@ -180,11 +180,10 @@ export const MaMediaItemsList = ({
                       : undefined
                   }
                   onClick={handleClick}
-                  maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
                 />
               );
             })}
-          </div>
+          </MediaGrid>
         );
 
       default:

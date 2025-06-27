@@ -43,12 +43,6 @@ export const searchStyles = {
     borderRight: "1px solid var(--divider-color)",
     marginRight: "6px",
   }),
-  mediaGrid: css({
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-    padding: "0px var(--mmpc-search-padding, 0px)",
-  }),
   mediaEmptyText: css({
     padding: "0px var(--mmpc-search-padding, 0px)",
   }),
