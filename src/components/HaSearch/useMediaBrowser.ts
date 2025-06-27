@@ -9,7 +9,6 @@ export const useMediaBrowser = (
 ) => {
   const [mediaItems, setMediaItems] = useState<HaMediaItem[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-  console.log("🚀 ~ mediaItems:", mediaItems);
 
   useEffect(() => {
     if (!enabled) {
