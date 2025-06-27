@@ -324,7 +324,6 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
               hass={hass}
               mediaTypes={field.state.value ?? []}
               onChange={value => {
-                console.log("🚀 ~ value:", value);
                 field.handleChange(value ?? []);
               }}
             />
