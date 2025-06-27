@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "preact/hooks";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { css } from "@emotion/react";
 import { type ComponentChildren } from "preact";
+import { useMeasure } from "@uidotdev/usehooks";
 
 const styles = {
   container: css({
@@ -14,6 +15,7 @@ const styles = {
 };
 
 export type VirtualListProps<T> = {
+  onLayout?: ({ width, height }: { width: number; height: number }) => void;
   data: T[];
   renderItem: (item: T, index: number) => ComponentChildren;
   renderHeader?: () => ComponentChildren;
@@ -26,6 +28,7 @@ export type VirtualListProps<T> = {
 };
 
 export const VirtualList = <T,>({
+  onLayout,
   data,
   renderItem,
   renderHeader,
@@ -37,6 +40,13 @@ export const VirtualList = <T,>({
   style = {},
 }: VirtualListProps<T>) => {
   const parentRef = useRef<HTMLDivElement>(null);
+  const [sizeRef, { width, height }] = useMeasure<HTMLDivElement>();
+
+  useEffect(() => {
+    if (onLayout && width !== null) {
+      onLayout({ width: width ?? 0, height: height ?? 0 });
+    }
+  }, [onLayout, width, height]);
 
   const items = useMemo(() => {
     if (data?.length === 0) {
@@ -52,16 +62,6 @@ export const VirtualList = <T,>({
     overscan,
   });
 
-  useEffect(() => {
-    if (parentRef.current) {
-      console.log(
-        parentRef.current.offsetHeight,
-        parentRef.current.scrollHeight,
-        parentRef.current
-      );
-    }
-  }, [parentRef.current, items.length]);
-
   return (
     <div
       ref={parentRef}
@@ -70,6 +70,7 @@ export const VirtualList = <T,>({
       className={className}
     >
       <div
+        ref={sizeRef}
         style={{
           height: `${virtualizer.getTotalSize()}px`,
           width: "100%",

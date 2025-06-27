@@ -13,7 +13,7 @@ import {
 } from "@components/MediaSearch";
 import { VirtualList, VirtualListProps } from "@components/VirtualList";
 import { MediaTrack } from "@components";
-import { useMemo } from "preact/hooks";
+import { useMemo, useState } from "preact/hooks";
 import { labelMap, responseKeyMediaTypeMap } from "./constants";
 
 export type MaMediaItemsListProps = Omit<
@@ -49,13 +49,7 @@ export const MaMediaItemsList = ({
   results,
   ...listProps
 }: MaMediaItemsListProps) => {
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <p css={searchStyles.mediaEmptyText}>{error}</p>;
-  }
+  const [chunkSize, setChunkSize] = useState(4);
 
   const data: MaMediaListItem[] = useMemo(() => {
     const newItems: MaMediaListItem[] = [];
@@ -89,9 +83,9 @@ export const MaMediaItemsList = ({
           });
         });
       } else {
-        // Other media types are grouped in rows of 4
-        for (let i = 0; i < mediaItems.length; i += 4) {
-          const chunk = mediaItems.slice(i, i + 4);
+        // Other media types are grouped in rows of chunkSize
+        for (let i = 0; i < mediaItems.length; i += chunkSize) {
+          const chunk = mediaItems.slice(i, i + chunkSize);
           newItems.push({
             type: "itemsRow",
             items: chunk,
@@ -196,8 +190,23 @@ export const MaMediaItemsList = ({
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <p css={searchStyles.mediaEmptyText}>{error}</p>;
+  }
+
   return (
     <VirtualList
+      onLayout={({ width }) => {
+        if (width < 390) {
+          setChunkSize(3);
+        } else {
+          setChunkSize(4);
+        }
+      }}
       data={data}
       renderItem={renderItem}
       renderEmpty={() => (

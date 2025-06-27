@@ -7,7 +7,7 @@ import {
 } from "@components/MediaSearch";
 import { VirtualList, VirtualListProps } from "@components/VirtualList";
 import { MediaTrack } from "@components";
-import { useMemo } from "preact/hooks";
+import { useMemo, useState } from "preact/hooks";
 
 export type HaMediaItemsListProps = Omit<
   VirtualListProps<HaMediaItem>,
@@ -43,13 +43,7 @@ export const HaMediaItemsList = ({
   error = null,
   ...listProps
 }: HaMediaItemsListProps) => {
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (error) {
-    return <p css={searchStyles.mediaEmptyText}>{error}</p>;
-  }
+  const [chunkSize, setChunkSize] = useState(4);
 
   const items: HaMediaListItem[] = useMemo(() => {
     const result: HaMediaListItem[] = [];
@@ -88,8 +82,8 @@ export const HaMediaItemsList = ({
         });
       } else {
         // Other media types are grouped in rows of 4
-        for (let i = 0; i < items.length; i += 4) {
-          const chunk = items.slice(i, i + 4);
+        for (let i = 0; i < items.length; i += chunkSize) {
+          const chunk = items.slice(i, i + chunkSize);
           result.push({
             type: "itemsRow",
             items: chunk,
@@ -182,8 +176,23 @@ export const HaMediaItemsList = ({
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <p css={searchStyles.mediaEmptyText}>{error}</p>;
+  }
+
   return (
     <VirtualList
+      onLayout={({ width }) => {
+        if (width < 390) {
+          setChunkSize(3);
+        } else {
+          setChunkSize(4);
+        }
+      }}
       data={items}
       renderItem={renderItem}
       renderEmpty={() => (
