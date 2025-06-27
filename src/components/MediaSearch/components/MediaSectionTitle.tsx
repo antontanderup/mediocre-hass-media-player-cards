@@ -13,15 +13,13 @@ const styles = {
     justifyContent: "space-between",
     cursor: "pointer",
     margin: "0 4px",
-    padding: "0px var(--mmpc-search-padding, 0px)",
-    "&:first-child": {
-      marginTop: -12,
-    },
+    padding: "4px var(--mmpc-search-padding, 0px)",
   }),
   title: css({
     fontSize: "16px",
     fontWeight: 500,
     color: "var(--primary-text-color)",
+    margin: 0,
   }),
 };
 

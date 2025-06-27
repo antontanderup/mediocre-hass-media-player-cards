@@ -1,38 +1,25 @@
-import { Chip, Input, MediaTrack } from "@components";
+import { Chip, Input } from "@components";
 import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
-import {
-  MediaItem,
-  MediaSectionTitle,
-  searchStyles,
-} from "@components/MediaSearch";
-import {
-  MaMediaType,
-  MaFilterType,
-  MaArtist,
-  MaAlbum,
-  MaTrack,
-  MaPlaylist,
-  MaRadio,
-  MaPodcast,
-  MaAudiobook,
-  MaEnqueueMode,
-} from "./types";
+import { searchStyles } from "@components/MediaSearch";
+import { MaFilterType, MaEnqueueMode } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
-import { Fragment } from "preact";
 import { useFavorites } from "./useFavorites";
-import { filters, labelMap, responseKeyMediaTypeMap } from "./constants";
+import { filters } from "./constants";
+import { MaMediaItemsList } from "./MaMediaItemsList";
 
 export type MaSearchProps = {
   maEntityId: string;
   horizontalPadding?: number;
   searchBarPosition?: "top" | "bottom";
+  maxHeight?: number;
 };
 
 export const MaSearch = ({
   maEntityId,
   horizontalPadding,
   searchBarPosition = "top",
+  maxHeight = 300,
 }: MaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<MaEnqueueMode>("play");
@@ -105,104 +92,25 @@ export const MaSearch = ({
     ));
   };
 
-  const renderResult = (
-    result:
-      | MaArtist[]
-      | MaAlbum[]
-      | MaTrack[]
-      | MaPlaylist[]
-      | MaRadio[]
-      | MaAudiobook[]
-      | MaPodcast[],
-    mediaType: MaMediaType
-  ) => {
-    if (!result) return null;
-    if (activeFilter !== "all" && activeFilter !== mediaType) return null;
-    if (result.length === 0 && activeFilter === "all") return null;
-
-    return (
-      <Fragment key={mediaType}>
-        {activeFilter === "all" && (
-          <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
-            {labelMap[mediaType]}
-          </MediaSectionTitle>
-        )}
-        <div css={searchStyles.mediaGrid}>
-          {(activeFilter === "all" ? result.slice(0, 6) : result).map(item =>
-            item.media_type === "track" ? (
-              <MediaTrack
-                key={item.uri}
-                imageUrl={
-                  (item as MaTrack).image ?? (item as MaTrack).album?.image
-                }
-                title={item.name}
-                artist={(item as MaTrack).artists
-                  .map(artist => artist.name)
-                  .join(", ")}
-                onClick={() => playItem(item, maEntityId, enqueueMode)}
-              />
-            ) : (
-              <MediaItem
-                key={item.uri}
-                imageUrl={item.image}
-                name={item.name}
-                artist={
-                  "artists" in item
-                    ? (item as MaAlbum).artists
-                        .map(artist => artist.name)
-                        .join(", ")
-                    : undefined
-                }
-                onClick={() => playItem(item, maEntityId, enqueueMode)}
-              />
-            )
-          )}
-        </div>
-        {result.length === 0 && (
-          <p css={searchStyles.mediaEmptyText}>
-            {loading ? "Searching..." : "No results found."}
-          </p>
-        )}
-      </Fragment>
-    );
-  };
   return (
     <div
-      css={[
-        searchStyles.root,
-        searchBarPosition === "bottom" && searchStyles.rootSearchBarBottom,
-      ]}
+      css={searchStyles.root}
       style={{
         "--mmpc-search-padding": `${horizontalPadding}px`,
       }}
     >
-      {searchBarPosition === "top" && renderSearchBar()}
-      {query !== "" && results && (
-        <div
-          css={
-            searchBarPosition === "bottom"
-              ? searchStyles.resultsContainerSearchBarBottom
-              : {}
-          }
-        >
-          {Object.entries(results).map(([key, value]) => {
-            return renderResult(value, responseKeyMediaTypeMap[key]);
-          })}
-        </div>
-      )}
-      {query === "" && favorites && (
-        <div
-          css={
-            searchBarPosition === "bottom"
-              ? searchStyles.resultsContainerSearchBarBottom
-              : {}
-          }
-        >
-          {Object.entries(favorites).map(([key, value]) => {
-            return renderResult(value, responseKeyMediaTypeMap[key]);
-          })}
-        </div>
-      )}
+      <MaMediaItemsList
+        renderHeader={searchBarPosition === "top" ? renderSearchBar : undefined}
+        results={
+          query !== "" && results ? results : favorites ? favorites : undefined
+        }
+        onItemClick={item => playItem(item, maEntityId, enqueueMode)}
+        style={{
+          "--mmpc-search-padding": `${horizontalPadding}px`,
+        }}
+        maxHeight={maxHeight}
+        onHeaderClick={setActiveFilter}
+      />
       {searchBarPosition === "bottom" && renderSearchBar()}
     </div>
   );
