@@ -137,6 +137,7 @@ export const HaMediaItemsList = ({
                 imageUrl={mediaItem.thumbnail}
                 name={mediaItem.title}
                 onClick={handleClick}
+                maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
               />
             )}
           </div>
@@ -165,6 +166,7 @@ export const HaMediaItemsList = ({
                   imageUrl={mediaItem.thumbnail}
                   name={mediaItem.title}
                   onClick={handleClick}
+                  maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
                 />
               );
             })}

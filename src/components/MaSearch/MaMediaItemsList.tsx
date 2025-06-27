@@ -139,6 +139,7 @@ export const MaMediaItemsList = ({
                     : undefined
                 }
                 onClick={handleClick}
+                maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
               />
             )}
           </div>
@@ -179,6 +180,7 @@ export const MaMediaItemsList = ({
                       : undefined
                   }
                   onClick={handleClick}
+                  maxWidth={`calc(${Math.floor(100 / chunkSize)}% - ${(chunkSize - 0.5) * 8}px)`}
                 />
               );
             })}

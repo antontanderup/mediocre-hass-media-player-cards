@@ -7,7 +7,7 @@ const styles = {
     display: "flex",
     flex: "1 1 0",
     width: "0",
-    maxWidth: "33%",
+    maxWidth: "var(--mmpc-media-item-max-width, 33%)",
     flexDirection: "column",
     alignItems: "center",
     cursor: "pointer",
@@ -54,6 +54,7 @@ export type MediaItemProps = {
   imageUrl?: string | null;
   name: string;
   artist?: string;
+  maxWidth?: string;
   onClick: () => void;
 };
 
@@ -61,6 +62,7 @@ export const MediaItem = ({
   imageUrl,
   name,
   artist,
+  maxWidth = "33%",
   onClick,
 }: MediaItemProps) => {
   const [loading, setLoading] = useState(false);
@@ -78,7 +80,13 @@ export const MediaItem = ({
   }, [onClick]);
 
   return (
-    <div css={styles.root} onClick={handleOnClick}>
+    <div
+      css={styles.root}
+      style={{
+        "--mmpc-media-item-max-width": maxWidth,
+      }}
+      onClick={handleOnClick}
+    >
       <MediaImage
         css={styles.mediaImage}
         imageUrl={imageUrl}
