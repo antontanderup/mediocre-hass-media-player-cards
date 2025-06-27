@@ -32,6 +32,7 @@ export const getDefaultValuesFromConfig = (
       config?.options?.always_show_custom_buttons ?? false,
   },
   grid_options: config?.grid_options,
+  visibility: config?.visibility,
 });
 
 /**
@@ -61,6 +62,7 @@ export const getDefaultValuesFromMassiveConfig = (
       config?.options?.always_show_power_button ?? false,
   },
   grid_options: config?.grid_options,
+  visibility: config?.visibility,
 });
 
 /**
@@ -115,8 +117,8 @@ export const getSimpleConfigFromFormValues = (
     delete config.options;
   }
 
-  // Always preserve grid_options as it's a Home Assistant layout configuration
-  // that should not be removed even if empty
+  // Always preserve grid_options and visibility as theyr'e Home Assistant configurations
+  // that we should not mess with
 
   return config;
 };
@@ -169,8 +171,8 @@ export const getSimpleConfigFromMassiveFormValues = (
     delete config.options;
   }
 
-  // Always preserve grid_options as it's a Home Assistant layout configuration
-  // that should not be removed even if empty
+  // Always preserve grid_options and visibility as theyr'e Home Assistant configurations
+  // that we should not mess with
 
   return config;
 };

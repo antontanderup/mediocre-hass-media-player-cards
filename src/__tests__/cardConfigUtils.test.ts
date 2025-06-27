@@ -139,7 +139,7 @@ describe("cardConfigUtils", () => {
       });
     });
 
-    it("should preserve grid_options as undefined when not present", () => {
+    it("should preserve grid_options and visibility as undefined when not present", () => {
       const configWithoutGridOptions: MediocreMassiveMediaPlayerCardConfig = {
         type: "custom:mediocre-massive-media-player-card",
         entity_id: "media_player.test",
@@ -151,6 +151,22 @@ describe("cardConfigUtils", () => {
       );
 
       expect(result.grid_options).toBeUndefined();
+      expect(result.visibility).toBeUndefined();
+    });
+
+    it("should preserve visibility when present", () => {
+      const configWithVisibility: MediocreMassiveMediaPlayerCardConfig = {
+        type: "custom:mediocre-massive-media-player-card",
+        entity_id: "media_player.test",
+        mode: "card",
+        visibility: [{ condition: "user", users: ["user1", "user2"] }],
+      };
+
+      const result = getDefaultValuesFromMassiveConfig(configWithVisibility);
+
+      expect(result.visibility).toEqual([
+        { condition: "user", users: ["user1", "user2"] },
+      ]);
     });
 
     it("should set default values for all fields", () => {

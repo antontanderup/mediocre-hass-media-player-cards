@@ -28,6 +28,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   },
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
+  "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
 });
 
 export const MediocreMediaPlayerCardConfigSchema =
