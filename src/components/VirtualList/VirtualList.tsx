@@ -15,7 +15,7 @@ const styles = {
 };
 
 export type VirtualListProps<T> = {
-  onLayout?: ({ width, height }: { width: number; height: number }) => void;
+  onLayout?: ({ width }: { width: number }) => void;
   data: T[];
   renderItem: (item: T, index: number) => ComponentChildren;
   renderHeader?: () => ComponentChildren;
@@ -40,13 +40,13 @@ export const VirtualList = <T,>({
   style = {},
 }: VirtualListProps<T>) => {
   const parentRef = useRef<HTMLDivElement>(null);
-  const [sizeRef, { width, height }] = useMeasure<HTMLDivElement>();
+  const [sizeRef, { width }] = useMeasure<HTMLDivElement>();
 
   useEffect(() => {
     if (onLayout && width !== null) {
-      onLayout({ width: width ?? 0, height: height ?? 0 });
+      onLayout({ width: width ?? 0 });
     }
-  }, [onLayout, width, height]);
+  }, [onLayout, width]);
 
   const items = useMemo(() => {
     if (data?.length === 0) {

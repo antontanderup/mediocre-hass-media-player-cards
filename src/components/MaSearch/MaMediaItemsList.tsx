@@ -94,7 +94,7 @@ export const MaMediaItemsList = ({
       }
     });
     return newItems;
-  }, [results]);
+  }, [results, chunkSize]);
 
   const renderItem = (item: MaMediaListItem) => {
     switch (item.type) {

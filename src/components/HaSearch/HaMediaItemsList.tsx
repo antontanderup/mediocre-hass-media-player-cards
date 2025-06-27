@@ -93,7 +93,7 @@ export const HaMediaItemsList = ({
     });
 
     return result;
-  }, [data]);
+  }, [data, chunkSize]);
 
   const renderItem = (item: HaMediaListItem) => {
     switch (item.type) {
