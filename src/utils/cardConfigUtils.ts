@@ -22,6 +22,7 @@ export const getDefaultValuesFromConfig = (
     enabled: config?.search?.enabled ?? false,
     show_favorites: config?.search?.show_favorites ?? false,
     entity_id: config?.search?.entity_id ?? null,
+    media_types: config?.search?.media_types ?? [],
   },
   ma_entity_id: config?.ma_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
@@ -54,6 +55,7 @@ export const getDefaultValuesFromMassiveConfig = (
     enabled: config?.search?.enabled ?? false,
     show_favorites: config?.search?.show_favorites ?? false,
     entity_id: config?.search?.entity_id ?? null,
+    media_types: config?.search?.media_types ?? [],
   },
   ma_entity_id: config?.ma_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
@@ -98,11 +100,17 @@ export const getSimpleConfigFromFormValues = (
   if (config.search?.entity_id === null) {
     delete config.search.entity_id;
   }
+
+  if (config.search?.media_types?.length === 0) {
+    delete config.search.media_types;
+  }
+
   // Handle search - remove if all search properties are falsy
   if (
     !config.search?.enabled &&
     !config.search?.show_favorites &&
-    !config.search?.entity_id
+    !config.search?.entity_id &&
+    !config.search?.media_types
   ) {
     delete config.search;
   }
@@ -155,11 +163,17 @@ export const getSimpleConfigFromMassiveFormValues = (
   if (config.search?.entity_id === null) {
     delete config.search.entity_id;
   }
+
+  if (config.search?.media_types?.length === 0) {
+    delete config.search.media_types;
+  }
+
   // Handle search - remove if all search properties are falsy
   if (
     !config.search?.enabled &&
     !config.search?.show_favorites &&
-    !config.search?.entity_id
+    !config.search?.entity_id &&
+    !config.search?.media_types
   ) {
     delete config.search;
   }

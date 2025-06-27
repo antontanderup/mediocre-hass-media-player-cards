@@ -24,6 +24,11 @@ import {
 } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
+import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
+import {
+  getDefaultValuesFromMassiveConfig,
+  getSimpleConfigFromMassiveFormValues,
+} from "@utils/cardConfigUtils";
 
 export type MediocreMassiveMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -48,7 +53,7 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
   );
 
   const form = useForm({
-    defaultValues: getDefaultValuesFromConfig(config),
+    defaultValues: getDefaultValuesFromMassiveConfig(config),
     validators: {
       onChange: MediocreMassiveMediaPlayerCardConfigSchema,
     },
@@ -56,12 +61,12 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
       onChange: ({ formApi }) => {
         // autosave logic
         if (formApi.state.isValid) {
-          const simpleConfig = getSimpleConfigFromFormValues(
+          const simpleConfig = getSimpleConfigFromMassiveFormValues(
             formApi.state.values
           );
           if (
             JSON.stringify(config) !==
-            JSON.stringify(getSimpleConfigFromFormValues(simpleConfig))
+            JSON.stringify(getSimpleConfigFromMassiveFormValues(simpleConfig))
           ) {
             updateConfig(simpleConfig);
           }
@@ -108,7 +113,7 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
   // Reset form when config changes externally
   useEffect(() => {
     const currentFormValues = form.state.values;
-    const newConfigValues = getDefaultValuesFromConfig(config);
+    const newConfigValues = getDefaultValuesFromMassiveConfig(config);
 
     // Check if the external config is different from current form values
     if (JSON.stringify(currentFormValues) !== JSON.stringify(newConfigValues)) {
@@ -303,7 +308,6 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
                 hass={hass}
                 value={field.state.value ?? ""}
                 onChange={value => {
-                  console.log("Search entity_id changed:", value);
                   field.handleChange(value ?? null);
                 }}
                 label="Search target (Optional, if not set, will use the main entity_id)"
@@ -313,6 +317,19 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
             )}
           </form.Field>
         </FormGroup>
+        <form.Field name="search.media_types">
+          {field => (
+            <HaSearchMediaTypesEditor
+              entityId={config.search?.entity_id ?? config.entity_id ?? ""}
+              hass={hass}
+              mediaTypes={field.state.value ?? []}
+              onChange={value => {
+                console.log("🚀 ~ value:", value);
+                field.handleChange(value ?? []);
+              }}
+            />
+          )}
+        </form.Field>
       </SubForm>
 
       <form.Field name="ma_entity_id">
@@ -447,85 +464,6 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
       </SubForm>
     </form>
   );
-};
-
-const getDefaultValuesFromConfig = (
-  config: MediocreMassiveMediaPlayerCardConfig
-): MediocreMassiveMediaPlayerCardConfig => ({
-  type:
-    config.type ?? `custom:${import.meta.env.VITE_MASSIVE_MEDIA_PLAYER_CARD}`,
-  entity_id: config?.entity_id ?? "",
-  use_art_colors: config?.use_art_colors ?? false,
-  mode: config?.mode ?? "card",
-  action: config?.action ?? {},
-  speaker_group: {
-    entity_id: config?.speaker_group?.entity_id ?? null,
-    entities: config?.speaker_group?.entities ?? [],
-  },
-  search: {
-    enabled: config?.search?.enabled ?? false,
-    show_favorites: config?.search?.show_favorites ?? false,
-    entity_id: config?.search?.entity_id ?? null,
-  },
-  ma_entity_id: config?.ma_entity_id ?? null,
-  custom_buttons: config?.custom_buttons ?? [],
-  options: {
-    always_show_power_button:
-      config?.options?.always_show_power_button ?? false,
-  },
-  grid_options: config?.grid_options,
-});
-
-// While not strictly nessary this removes unnessesary values from the config
-const getSimpleConfigFromFormValues = (
-  formValues: MediocreMassiveMediaPlayerCardConfig
-): MediocreMassiveMediaPlayerCardConfig => {
-  const config: MediocreMassiveMediaPlayerCardConfig = { ...formValues };
-
-  // Remove falsy or empty values
-  if (!config.use_art_colors) delete config.use_art_colors;
-  if (!config.action || Object.keys(config.action).length === 0)
-    delete config.action;
-  if (!config.ma_entity_id) delete config.ma_entity_id;
-  if (!config.custom_buttons || config.custom_buttons.length === 0)
-    delete config.custom_buttons;
-
-  if (config.speaker_group?.entity_id === null) {
-    delete config.speaker_group.entity_id;
-  }
-
-  // Handle speaker_group - remove if no entity_id and no entities
-  if (
-    !config.speaker_group?.entity_id &&
-    (!config.speaker_group?.entities ||
-      config.speaker_group.entities.length === 0)
-  ) {
-    delete config.speaker_group;
-  }
-
-  if (config.search?.entity_id === null) {
-    delete config.search.entity_id;
-  }
-  // Handle search - remove if all search properties are falsy
-  if (
-    !config.search?.enabled &&
-    !config.search?.show_favorites &&
-    !config.search?.entity_id
-  ) {
-    delete config.search;
-  }
-
-  if (config.options?.always_show_power_button === false) {
-    delete config.options.always_show_power_button;
-  }
-  if (!config.options?.always_show_power_button) {
-    delete config.options;
-  }
-
-  // Always preserve grid_options as it's a Home Assistant layout configuration
-  // that should not be removed even if empty
-
-  return config;
 };
 
 // Helper function to get field error message

@@ -21,6 +21,10 @@ import {
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
+import {
+  getDefaultValuesFromConfig,
+  getSimpleConfigFromFormValues,
+} from "@utils/cardConfigUtils";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -307,7 +311,6 @@ export const MediocreMediaPlayerCardEditor: FC<
                 hass={hass}
                 value={field.state.value ?? ""}
                 onChange={value => {
-                  console.log("Search entity_id changed:", value);
                   field.handleChange(value ?? null);
                 }}
                 label="Search target (Optional, if not set, will use the main entity_id)"
@@ -479,95 +482,6 @@ export const MediocreMediaPlayerCardEditor: FC<
       </SubForm>
     </form>
   );
-};
-
-const getDefaultValuesFromConfig = (
-  config: MediocreMediaPlayerCardConfig
-): MediocreMediaPlayerCardConfig => ({
-  type: config.type ?? `custom:${import.meta.env.VITE_MEDIA_PLAYER_CARD}`,
-  entity_id: config?.entity_id ?? "",
-  use_art_colors: config?.use_art_colors ?? false,
-  tap_opens_popup: config?.tap_opens_popup ?? false,
-  action: config?.action ?? {},
-  speaker_group: {
-    entity_id: config?.speaker_group?.entity_id ?? null,
-    entities: config?.speaker_group?.entities ?? [],
-  },
-  search: {
-    enabled: config?.search?.enabled ?? false,
-    show_favorites: config?.search?.show_favorites ?? false,
-    entity_id: config?.search?.entity_id ?? null,
-    media_types: config?.search?.media_types ?? [],
-  },
-  ma_entity_id: config?.ma_entity_id ?? null,
-  custom_buttons: config?.custom_buttons ?? [],
-  options: {
-    always_show_power_button:
-      config?.options?.always_show_power_button ?? false,
-    always_show_custom_buttons:
-      config?.options?.always_show_custom_buttons ?? false,
-  },
-  grid_options: config?.grid_options,
-});
-
-// While not strictly nessary this removes unnessesary values from the config
-const getSimpleConfigFromFormValues = (
-  formValues: MediocreMediaPlayerCardConfig
-): MediocreMediaPlayerCardConfig => {
-  const config: MediocreMediaPlayerCardConfig = { ...formValues };
-
-  // Remove falsy or empty values
-  if (!config.use_art_colors) delete config.use_art_colors;
-  if (!config.tap_opens_popup) delete config.tap_opens_popup;
-  if (!config.action || Object.keys(config.action).length === 0)
-    delete config.action;
-  if (!config.ma_entity_id) delete config.ma_entity_id;
-  if (!config.custom_buttons || config.custom_buttons.length === 0)
-    delete config.custom_buttons;
-
-  if (config.speaker_group?.entity_id === null) {
-    delete config.speaker_group.entity_id;
-  }
-
-  // Handle speaker_group - remove if no entity_id and no entities
-  if (
-    !config.speaker_group?.entity_id &&
-    (!config.speaker_group?.entities ||
-      config.speaker_group.entities.length === 0)
-  ) {
-    delete config.speaker_group;
-  }
-
-  if (config.search?.entity_id === null) {
-    delete config.search.entity_id;
-  }
-  if (config.search?.media_types?.length === 0) {
-    delete config.search.media_types;
-  }
-  // Handle search - remove if all search properties are falsy
-  if (
-    !config.search?.enabled &&
-    !config.search?.show_favorites &&
-    !config.search?.entity_id &&
-    !config.search?.media_types
-  ) {
-    delete config.search;
-  }
-
-  if (config.options?.always_show_power_button === false) {
-    delete config.options.always_show_power_button;
-  }
-  if (config.options?.always_show_custom_buttons === false) {
-    delete config.options.always_show_custom_buttons;
-  }
-  if (Object.keys(config.options ?? {}).length === 0) {
-    delete config.options;
-  }
-
-  // Always preserve grid_options as it's a Home Assistant layout configuration
-  // that should not be removed even if empty
-
-  return config;
 };
 
 // Helper function to get field error message
