@@ -127,45 +127,37 @@ export const MaSearch = ({
             {labelMap[mediaType]}
           </MediaSectionTitle>
         )}
-        {mediaType === "track" ? (
-          <div css={searchStyles.trackListContainer}>
-            {(activeFilter === "all" ? result.slice(0, 5) : result).map(
-              item => (
-                <MediaTrack
-                  key={item.uri}
-                  imageUrl={
-                    (item as MaTrack).image ?? (item as MaTrack).album?.image
-                  }
-                  title={item.name}
-                  artist={(item as MaTrack).artists
-                    .map(artist => artist.name)
-                    .join(", ")}
-                  onClick={() => playItem(item, maEntityId, enqueueMode)}
-                />
-              )
-            )}
-          </div>
-        ) : (
-          <div css={searchStyles.mediaGrid}>
-            {(activeFilter === "all" ? result.slice(0, 6) : result).map(
-              item => (
-                <MediaItem
-                  key={item.uri}
-                  imageUrl={item.image}
-                  name={item.name}
-                  artist={
-                    "artists" in item
-                      ? (item as MaAlbum).artists
-                          .map(artist => artist.name)
-                          .join(", ")
-                      : undefined
-                  }
-                  onClick={() => playItem(item, maEntityId, enqueueMode)}
-                />
-              )
-            )}
-          </div>
-        )}
+        <div css={searchStyles.mediaGrid}>
+          {(activeFilter === "all" ? result.slice(0, 6) : result).map(item =>
+            item.media_type === "track" ? (
+              <MediaTrack
+                key={item.uri}
+                imageUrl={
+                  (item as MaTrack).image ?? (item as MaTrack).album?.image
+                }
+                title={item.name}
+                artist={(item as MaTrack).artists
+                  .map(artist => artist.name)
+                  .join(", ")}
+                onClick={() => playItem(item, maEntityId, enqueueMode)}
+              />
+            ) : (
+              <MediaItem
+                key={item.uri}
+                imageUrl={item.image}
+                name={item.name}
+                artist={
+                  "artists" in item
+                    ? (item as MaAlbum).artists
+                        .map(artist => artist.name)
+                        .join(", ")
+                    : undefined
+                }
+                onClick={() => playItem(item, maEntityId, enqueueMode)}
+              />
+            )
+          )}
+        </div>
         {result.length === 0 && (
           <p css={searchStyles.mediaEmptyText}>
             {loading ? "Searching..." : "No results found."}

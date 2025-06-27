@@ -21,3 +21,4 @@ export * from "./ProgressBar";
 export * from "./Slider";
 export * from "./Spinner";
 export * from "./SubForm";
+export * from "./VirtualList";

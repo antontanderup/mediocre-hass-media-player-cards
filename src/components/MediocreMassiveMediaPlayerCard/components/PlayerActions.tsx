@@ -146,6 +146,7 @@ export const PlayerActions = () => {
             entityId={search?.entity_id ?? config.entity_id}
             showFavorites={search?.show_favorites ?? false}
             horizontalPadding={16}
+            filterConfig={search?.media_types}
             searchBarPosition="bottom"
           />
         )}

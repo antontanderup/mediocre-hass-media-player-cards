@@ -10,6 +10,7 @@ const styles = {
     gap: "12px",
     padding: "8px 12px",
     borderRadius: "8px",
+    width: "100%",
     background: "rgba(255, 255, 255, 0.05)",
     cursor: "pointer",
     "&:hover": {

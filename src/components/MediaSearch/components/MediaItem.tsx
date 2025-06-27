@@ -5,6 +5,9 @@ import { css } from "@emotion/react";
 const styles = {
   root: css({
     display: "flex",
+    flex: "1 1 0",
+    width: "0",
+    maxWidth: "33%",
     flexDirection: "column",
     alignItems: "center",
     cursor: "pointer",

@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from "preact/hooks";
 import { HaMediaItem } from "./types";
 import { getHass } from "@utils";
 
-export const useMediaBrowserFavorites = (
+export const useMediaBrowser = (
   targetEntity: string,
+  contentType: string = "favorites",
   enabled = false
 ) => {
   const [mediaItems, setMediaItems] = useState<HaMediaItem[]>([]);
   const [isFetching, setIsFetching] = useState(false);
+  console.log("🚀 ~ mediaItems:", mediaItems);
 
   useEffect(() => {
     if (!enabled) {
@@ -20,7 +22,7 @@ export const useMediaBrowserFavorites = (
       service: "browse_media",
       service_data: {
         entity_id: targetEntity,
-        media_content_type: "favorites",
+        media_content_type: contentType,
       },
       return_response: true,
     };
@@ -47,10 +49,10 @@ export const useMediaBrowserFavorites = (
         setIsFetching(false);
         setMediaItems([]);
       });
-  }, [targetEntity, enabled]);
+  }, [targetEntity, enabled, contentType]);
 
   return useMemo(
-    () => ({ favorites: mediaItems, isFetching }),
+    () => ({ mediaBrowserItems: mediaItems, isFetching }),
     [mediaItems, isFetching]
   );
 };

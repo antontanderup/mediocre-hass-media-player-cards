@@ -1,20 +1,11 @@
-import { Chip, Input, MediaTrack } from "@components";
+import { Chip, Input } from "@components";
 import { useCallback, useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
-import {
-  MediaItem,
-  MediaSectionTitle,
-  searchStyles,
-} from "@components/MediaSearch";
-import {
-  HaFilterConfig,
-  HaEnqueueMode,
-  HaFilterType,
-  HaFilterResult,
-} from "./types";
+import { searchStyles } from "@components/MediaSearch";
+import { HaFilterConfig, HaEnqueueMode, HaFilterType } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
-import { Fragment } from "preact";
-import { useMediaBrowserFavorites } from "./useMediaBrowserFavorites";
+import { useMediaBrowser } from "./useMediaBrowser";
+import { HaMediaItemsList } from "./HaMediaItemsList";
 
 const filters: HaFilterConfig[] = [
   { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
@@ -29,6 +20,7 @@ export type HaSearchProps = {
   horizontalPadding?: number;
   filterConfig?: HaFilterConfig[];
   searchBarPosition?: "top" | "bottom";
+  maxHeight?: number;
 };
 
 export const HaSearch = ({
@@ -36,6 +28,7 @@ export const HaSearch = ({
   showFavorites,
   horizontalPadding,
   searchBarPosition = "top",
+  maxHeight = 300,
   filterConfig = filters,
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
@@ -53,13 +46,14 @@ export const HaSearch = ({
   const { results, loading, error, playItem } = useSearchQuery(
     debouncedQuery,
     activeFilter,
-    entityId,
-    filterConfig
+    entityId
   );
 
-  const { favorites } = useMediaBrowserFavorites(
+  const { mediaBrowserItems } = useMediaBrowser(
     entityId,
-    query === "" && showFavorites
+    activeFilter === "all" ? "favorites" : activeFilter,
+    ((activeFilter === "all" && showFavorites) || activeFilter !== "all") &&
+      query === ""
   );
 
   const renderSearchBar = () => {
@@ -111,108 +105,29 @@ export const HaSearch = ({
     ));
   };
 
-  const renderResult = (result: HaFilterResult[number], isLoading: boolean) => {
-    if (!result) return null;
-    const { media_type: mediaType, name, results } = result;
-    if (activeFilter !== "all" && activeFilter !== mediaType) return null;
-    if (results.length === 0 && activeFilter === "all") return null;
-
-    return (
-      <Fragment key={mediaType}>
-        {activeFilter === "all" && (
-          <MediaSectionTitle onClick={() => setActiveFilter(mediaType)}>
-            {name ?? mediaType}
-          </MediaSectionTitle>
-        )}
-        {mediaType === "tracks" ? (
-          <div css={searchStyles.trackListContainer}>
-            {(activeFilter === "all" ? results.slice(0, 5) : results).map(
-              item => (
-                <MediaTrack
-                  key={item.media_content_id}
-                  imageUrl={item.thumbnail}
-                  title={item.title}
-                  onClick={() => playItem(item, entityId, enqueueMode)}
-                />
-              )
-            )}
-          </div>
-        ) : (
-          <div css={searchStyles.mediaGrid}>
-            {(activeFilter === "all" ? results.slice(0, 6) : results).map(
-              item => (
-                <MediaItem
-                  key={item.media_content_id}
-                  imageUrl={item.thumbnail}
-                  name={item.title}
-                  onClick={() => playItem(item, entityId, enqueueMode)}
-                />
-              )
-            )}
-          </div>
-        )}
-        {results.length === 0 && (
-          <p css={searchStyles.mediaEmptyText}>
-            {isLoading ? "Searching..." : "No results found."}
-          </p>
-        )}
-      </Fragment>
-    );
-  };
-
   return (
     <div
-      css={[
-        searchStyles.root,
-        searchBarPosition === "bottom" && searchStyles.rootSearchBarBottom,
-      ]}
+      css={searchStyles.root}
       style={{
         "--mmpc-search-padding": `${horizontalPadding}px`,
       }}
     >
-      {searchBarPosition === "top" && renderSearchBar()}
-      {results && query !== "" && (
-        <div
-          css={
-            searchBarPosition === "bottom"
-              ? searchStyles.resultsContainerSearchBarBottom
-              : {}
-          }
-        >
-          {results.map(item => renderResult(item, loading))}
-        </div>
-      )}
-      {query === "" && favorites.length > 0 && (
-        <div
-          css={
-            searchBarPosition === "bottom"
-              ? searchStyles.resultsContainerSearchBarBottom
-              : {}
-          }
-        >
-          <div css={searchStyles.mediaGrid}>
-            {favorites.map(item => (
-              <MediaItem
-                key={item.media_content_id + item.title}
-                imageUrl={item.thumbnail}
-                name={item.title}
-                onClick={() => playItem(item, entityId, enqueueMode)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      {error && (
-        <div
-          css={
-            searchBarPosition === "bottom"
-              ? searchStyles.resultsContainerSearchBarBottom
-              : {}
-          }
-        >
-          <p css={searchStyles.mediaEmptyText}>{error}</p>
-        </div>
-      )}
+      <HaMediaItemsList
+        renderHeader={searchBarPosition === "top" ? renderSearchBar : undefined}
+        data={
+          query === "" && mediaBrowserItems.length > 0
+            ? mediaBrowserItems
+            : results
+        }
+        error={error}
+        onItemClick={item => playItem(item, entityId, enqueueMode)}
+        style={{
+          "--mmpc-search-padding": `${horizontalPadding}px`,
+        }}
+        maxHeight={maxHeight}
+        filterConfig={filterConfig}
+        onHeaderClick={setActiveFilter}
+      />
       {searchBarPosition === "bottom" && renderSearchBar()}
     </div>
   );
