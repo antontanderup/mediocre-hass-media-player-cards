@@ -76,6 +76,7 @@ describe("cardConfigUtils", () => {
         enabled: false,
         show_favorites: false,
         entity_id: null,
+        media_types: [],
       });
       expect(result.ma_entity_id).toBeNull();
       expect(result.custom_buttons).toEqual([]);
@@ -101,6 +102,7 @@ describe("cardConfigUtils", () => {
           enabled: true,
           show_favorites: true,
           entity_id: "media_player.search",
+          media_types: [],
         },
         ma_entity_id: "media_player.ma",
         custom_buttons: [
@@ -191,6 +193,7 @@ describe("cardConfigUtils", () => {
         enabled: false,
         show_favorites: false,
         entity_id: null,
+        media_types: [],
       });
       expect(result.ma_entity_id).toBeNull();
       expect(result.custom_buttons).toEqual([]);
