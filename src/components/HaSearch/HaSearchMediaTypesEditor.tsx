@@ -80,7 +80,7 @@ export const HaSearchMediaTypesEditor: FC<HaSearchMediaTypesEditorProps> = ({
       <Fragment>
         <Label>
           Use custom media types. If none added sensible defaults will be used.
-          Be aware that not all media types are nessesarily searchable.
+          Be aware that not all media types are necessarily searchable.
         </Label>
         {mediaTypes.map((type, index) => (
           <SubForm
