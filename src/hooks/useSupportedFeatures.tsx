@@ -4,10 +4,7 @@ import { useMemo } from "preact/hooks";
 import { getSupportedFeatures } from "@utils/supportedFeaturesUtils";
 
 export function useSupportedFeatures() {
-  const {
-    attributes,
-    state,
-  } = usePlayer();
+  const { attributes, state } = usePlayer();
 
   const supportedFeatures = getSupportedFeatures(state, attributes);
 

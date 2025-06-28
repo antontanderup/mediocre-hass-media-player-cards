@@ -22,7 +22,12 @@ export function getSupportedFeatures(
   state: string,
   attributes: MediaPlayerAttributes
 ): SupportedFeatures {
-  const { shuffle, repeat, source, supported_features: supportedFeatures } = attributes;
+  const {
+    shuffle,
+    repeat,
+    source,
+    supported_features: supportedFeatures,
+  } = attributes;
   const isOff = state === "off";
 
   const supportPreviousTrack =
