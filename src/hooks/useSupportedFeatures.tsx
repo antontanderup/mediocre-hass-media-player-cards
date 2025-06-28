@@ -1,6 +1,7 @@
 /* tslint:disable:no-bitwise */
 import { usePlayer } from "@components";
 import { useMemo } from "preact/hooks";
+import { checkSupportsShuffle, checkSupportsRepeat } from "@utils/supportedFeaturesUtils";
 
 export function useSupportedFeatures() {
   const {
@@ -22,18 +23,18 @@ export function useSupportedFeatures() {
     !isOff &&
     supportedFeatures !== undefined &&
     (supportedFeatures | 32) === supportedFeatures;
-  const supportsShuffle =
-    !isOff &&
-    shuffle !== undefined &&
-    !["optical", "aux"].includes(source?.toLowerCase() || "") &&
-    supportedFeatures !== undefined &&
-    (supportedFeatures & 32768) === 32768;
-  const supportsRepeat =
-    !isOff &&
-    repeat !== undefined &&
-    !["optical", "aux"].includes(source?.toLowerCase() || "") &&
-    supportedFeatures !== undefined &&
-    (supportedFeatures & 262144) === 262144;
+  const supportsShuffle = checkSupportsShuffle(
+    isOff,
+    shuffle,
+    source,
+    supportedFeatures
+  );
+  const supportsRepeat = checkSupportsRepeat(
+    isOff,
+    repeat,
+    source,
+    supportedFeatures
+  );
   const supportsTogglePlayPause =
     !isOff &&
     supportedFeatures !== undefined &&
