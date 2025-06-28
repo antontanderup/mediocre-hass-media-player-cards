@@ -25,11 +25,15 @@ export function useSupportedFeatures() {
   const supportsShuffle =
     !isOff &&
     shuffle !== undefined &&
-    !["optical", "aux"].includes(source?.toLowerCase() || "");
+    !["optical", "aux"].includes(source?.toLowerCase() || "") &&
+    supportedFeatures !== undefined &&
+    (supportedFeatures & 32768) === 32768;
   const supportsRepeat =
     !isOff &&
     repeat !== undefined &&
-    !["optical", "aux"].includes(source?.toLowerCase() || "");
+    !["optical", "aux"].includes(source?.toLowerCase() || "") &&
+    supportedFeatures !== undefined &&
+    (supportedFeatures & 262144) === 262144;
   const supportsTogglePlayPause =
     !isOff &&
     supportedFeatures !== undefined &&
