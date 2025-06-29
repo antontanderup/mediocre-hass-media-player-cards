@@ -9,6 +9,7 @@ import {
 import { VirtualList, VirtualListProps } from "@components/VirtualList";
 import { MediaTrack } from "@components";
 import { useMemo, useState } from "preact/hooks";
+import { Fragment } from "preact/jsx-runtime";
 
 export type HaMediaItemsListProps = Omit<
   VirtualListProps<HaMediaItem>,
@@ -18,6 +19,7 @@ export type HaMediaItemsListProps = Omit<
   onHeaderClick?: (mediaType: string) => void;
   filterConfig: HaFilterConfig[];
   loading?: boolean;
+  hideEmpty: boolean;
   error?: string | null;
 };
 
@@ -41,6 +43,7 @@ export const HaMediaItemsList = ({
   onHeaderClick,
   filterConfig,
   loading = false,
+  hideEmpty = false,
   error = null,
   ...listProps
 }: HaMediaItemsListProps) => {
@@ -181,10 +184,6 @@ export const HaMediaItemsList = ({
     return <Spinner />;
   }
 
-  if (error) {
-    return <p css={searchStyles.mediaEmptyText}>{error}</p>;
-  }
-
   return (
     <VirtualList
       onLayout={({ width }) => {
@@ -197,7 +196,13 @@ export const HaMediaItemsList = ({
       data={items}
       renderItem={renderItem}
       renderEmpty={() => (
-        <p css={searchStyles.mediaEmptyText}>No items found.</p>
+        <Fragment>
+          {error ? (
+            <p css={searchStyles.mediaEmptyText}>{error}</p>
+          ) : !hideEmpty ? (
+            <p css={searchStyles.mediaEmptyText}>No items found.</p>
+          ) : null}
+        </Fragment>
       )}
       {...listProps}
     />

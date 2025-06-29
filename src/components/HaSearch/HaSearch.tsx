@@ -120,6 +120,7 @@ export const HaSearch = ({
             : results
         }
         error={error}
+        hideEmpty={query === "" && activeFilter === "all" && !showFavorites}
         onItemClick={item => playItem(item, entityId, enqueueMode)}
         style={{
           "--mmpc-search-padding": `${horizontalPadding}px`,
