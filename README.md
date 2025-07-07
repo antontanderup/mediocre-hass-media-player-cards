@@ -1,5 +1,7 @@
 # Mediocre Media Player Cards
+<img alt="GitHub Release" src="https://img.shields.io/github/v/release/antontanderup/mediocre-hass-media-player-cards?color=blue">
 <a href="https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180"><img alt="Static Badge" src="https://img.shields.io/badge/Oase-Chat-lightblue?color=rgb(74%20196%20169)"></a>
+
 
 <img src="https://github.com/user-attachments/assets/2ba5d55d-6fd3-4508-ae1c-60d9f22ebe81" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
 
