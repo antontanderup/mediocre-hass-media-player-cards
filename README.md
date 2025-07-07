@@ -1,4 +1,4 @@
-# Mediocre Media Player Cards
+# 🎵 Mediocre Media Player Cards
 ---
 <img alt="GitHub Release" src="https://img.shields.io/github/v/release/antontanderup/mediocre-hass-media-player-cards?color=blue">
 <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/antontanderup/mediocre-hass-media-player-cards/total">
