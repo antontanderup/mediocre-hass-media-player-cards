@@ -1,4 +1,3 @@
-
 import { MediaPlayerEntity } from "../types/mediaPlayerEntity";
 
 /**
@@ -6,8 +5,10 @@ import { MediaPlayerEntity } from "../types/mediaPlayerEntity";
  * @param player MediaPlayerEntity
  * @returns { title: string, subtitle?: string }
  */
-export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): { title: string; subtitle?: string } {
-
+export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): {
+  title: string;
+  subtitle?: string;
+} {
   if (!player) {
     return {
       title: "Unavailable",
@@ -15,12 +16,14 @@ export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): { tit
     };
   }
 
-
   const {
     attributes: {
       media_title: mediaTitle,
       media_artist: artist,
       media_album_name: albumName,
+      media_series_title: seriesTitle,
+      media_season: season,
+      media_episode: episode,
       source,
       friendly_name: friendlyName,
     } = {},
@@ -56,7 +59,15 @@ export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): { tit
   }
 
   let subtitle: string | undefined = undefined;
-  if (!!albumName || !!artist) {
+
+  // Series logic: if seriesTitle is present, use it and S{season}E{episode} if available
+  if (seriesTitle) {
+    let seasonEpisode = "";
+    if (season || episode) {
+      seasonEpisode = `S${season ?? ""}${episode ? `E${episode}` : ""}`;
+    }
+    subtitle = `${seriesTitle}${seasonEpisode ? ` - ${seasonEpisode}` : ""}`;
+  } else if (!!albumName || !!artist) {
     subtitle = `${!!albumName && albumName !== title ? `${albumName} - ` : ""}${artist ?? ""}`;
   }
 

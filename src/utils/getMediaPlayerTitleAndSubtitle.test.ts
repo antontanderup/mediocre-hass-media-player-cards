@@ -122,4 +122,21 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
       subtitle: "Album - ",
     });
   });
+
+  it("returns series title if present", () => {
+    expect(
+      getMediaPlayerTitleAndSubtitle({
+        ...base,
+        attributes: {
+          media_title: "Episode Title",
+          media_series_title: "Series Title",
+          media_season: "3",
+          media_episode: "5",
+        },
+      })
+    ).toEqual({
+      title: "Episode Title",
+      subtitle: "Series Title - S3E5",
+    });
+  });
 });
