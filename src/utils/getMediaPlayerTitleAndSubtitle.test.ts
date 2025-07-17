@@ -1,5 +1,5 @@
-import { getMediaPlayerTitleAndSubtitle } from "./getMediaPlayerTitleAndSubtitle";
-import { MediaPlayerEntity } from "../types/mediaPlayerEntity";
+import { getMediaPlayerTitleAndSubtitle } from "@utils/getMediaPlayerTitleAndSubtitle";
+import { MediaPlayerEntity } from "@types";
 
 describe("getMediaPlayerTitleAndSubtitle", () => {
   const base: MediaPlayerEntity = {
