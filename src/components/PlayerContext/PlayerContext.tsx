@@ -2,7 +2,7 @@ import { HomeAssistant } from "@types";
 import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import { MediaPlayerEntity } from "@types";
-import { getMediaPlayerTitleAndSubtitle } from "../../utils/getMediaPlayerTitleAndSubtitle";
+import { getMediaPlayerTitleAndSubtitle } from "@utils/getMediaPlayerTitleAndSubtitle";
 
 export type PlayerContextType = {
   player: Omit<
