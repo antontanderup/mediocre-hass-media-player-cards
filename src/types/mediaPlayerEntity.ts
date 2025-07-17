@@ -36,6 +36,9 @@ export interface MediaPlayerEntityAttributes {
   media_title?: string;
   media_artist?: string;
   media_album_name?: string;
+  media_series_title?: string;
+  media_season?: string;
+  media_episode?: string;
   icon?: string;
   friendly_name?: string;
   entity_picture?: string;

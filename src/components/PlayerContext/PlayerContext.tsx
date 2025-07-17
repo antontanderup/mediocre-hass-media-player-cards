@@ -2,6 +2,7 @@ import { HomeAssistant } from "@types";
 import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import { MediaPlayerEntity } from "@types";
+import { getMediaPlayerTitleAndSubtitle } from "../../utils/getMediaPlayerTitleAndSubtitle";
 
 export type PlayerContextType = {
   player: Omit<
@@ -28,7 +29,6 @@ export const PlayerContextProvider = ({
 }): preact.ComponentChildren => {
   const contextValue = useMemo((): PlayerContextType => {
     const player = hass.states[entityId] as MediaPlayerEntity;
-
     if (!player) {
       return {
         player: {
@@ -40,56 +40,7 @@ export const PlayerContextProvider = ({
         },
       };
     }
-
-    const {
-      attributes: {
-        media_title: mediaTitle,
-        media_artist: artist,
-        media_album_name: albumName,
-        source,
-        friendly_name: friendlyName,
-      },
-      state,
-    } = player;
-
-    if (state === "off") {
-      return {
-        player: {
-          ...player,
-          title: friendlyName ?? entityId,
-          subtitle: undefined,
-        },
-      };
-    }
-
-    if (state === "unavailable") {
-      return {
-        player: {
-          ...player,
-          title: "Unavailable",
-          subtitle: `${entityId} unavailable`,
-        },
-      };
-    }
-
-    let title = mediaTitle;
-    if (!title || title === "") {
-      if (
-        source &&
-        typeof source === "string" &&
-        !source.startsWith("media_player.")
-      ) {
-        title = source;
-      } else {
-        title = friendlyName ?? entityId;
-      }
-    }
-
-    const subtitle =
-      !!albumName || !!artist
-        ? `${!!albumName && albumName !== title ? `${albumName} - ` : ""}${artist ?? ""}`
-        : undefined;
-
+    const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
     return {
       player: { ...player, title, subtitle },
     };
