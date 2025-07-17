@@ -9,10 +9,10 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
     last_changed: "",
     last_updated: "",
     context: {},
-  } as any;
+  };
 
   it("returns unavailable for missing player", () => {
-    // @ts-expect-error
+    // @ts-expect-error intentionally passing undefined
     expect(getMediaPlayerTitleAndSubtitle(undefined)).toEqual({
       title: "Unavailable",
       subtitle: "unknown unavailable",

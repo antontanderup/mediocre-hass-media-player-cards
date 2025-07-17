@@ -1,4 +1,4 @@
-import { MediaPlayerEntity } from "../types/mediaPlayerEntity";
+import { MediaPlayerEntity } from "@types";
 
 /**
  * Returns the title and subtitle for a given MediaPlayerEntity.
