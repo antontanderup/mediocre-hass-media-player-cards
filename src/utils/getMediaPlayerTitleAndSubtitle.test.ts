@@ -8,7 +8,11 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
     attributes: {},
     last_changed: "",
     last_updated: "",
-    context: {},
+    context: {
+      id: "context-id",
+      user_id: "user-id",
+      parent_id: "parent-id",
+    },
   };
 
   it("returns unavailable for missing player", () => {
