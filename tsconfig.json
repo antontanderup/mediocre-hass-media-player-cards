@@ -33,8 +33,6 @@
       "@constants/*": ["./src/constants/*"]
     }
   },
-  "exclude": [
-    "dist",
-  ],
+  "exclude": ["dist"],
   "include": ["node_modules/vite/client.d.ts", "src/types/emotion.d.ts", "**/*"]
 }
