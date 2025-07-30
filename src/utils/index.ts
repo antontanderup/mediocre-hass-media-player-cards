@@ -6,3 +6,4 @@ export * from "./getVolumeIcon";
 export * from "./setVolume";
 export * from "./transferMaQueue";
 export * from "./getIsMassPlayer";
+export * from "./getAllMassPlayers";
