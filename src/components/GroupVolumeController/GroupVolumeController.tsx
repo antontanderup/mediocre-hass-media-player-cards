@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "preact/hooks";
-import type { CommonMediocreMediaPlayerCardConfig, MediaPlayerEntity } from "@types";
+import type { CommonMediocreMediaPlayerCardConfig } from "@types";
 import { IconButton, Slider, useHass } from "@components";
-import { getHass, getIsMassPlayer, getVolumeIcon, setVolume, transferMaQueue } from "@utils";
+import { getHass, getVolumeIcon, setVolume } from "@utils";
 import { css } from "@emotion/react";
 
 const styles = {
@@ -44,7 +44,6 @@ export type GroupSpeaker = {
   volume: number;
   muted: boolean;
   isGrouped: boolean;
-  isMassSpeaker: boolean;
   isMainSpeaker: boolean;
 };
 
@@ -67,7 +66,6 @@ export const GroupVolumeController = ({
   // Use the specified entity_id for the group or fall back to the main entity_id
   const mainEntityId = speaker_group?.entity_id || entity_id;
   const mainEntity = hass.states[mainEntityId];
-  const isMainMassSpeaker = getIsMassPlayer(mainEntity as MediaPlayerEntity);
 
   // Get all available speakers that can be grouped
   const availableSpeakers: GroupSpeaker[] = useMemo(() => {
@@ -88,7 +86,6 @@ export const GroupVolumeController = ({
         volume: hass.states[id].attributes.volume_level || 0,
         muted: hass.states[id].attributes.is_volume_muted || false,
         isGrouped: mainEntity?.attributes?.group_members?.includes(id) || false,
-        isMassSpeaker: getIsMassPlayer(hass.states[id] as MediaPlayerEntity),
         isMainSpeaker:
           mainEntity?.attributes?.group_members?.[0] === id || false,
       }))
@@ -152,7 +149,7 @@ export const GroupVolumeController = ({
     _index: number,
     _groupedSpeakers: GroupSpeaker[]
   ) => {
-    const { entity_id, name, volume, muted, isGrouped, isMassSpeaker, isMainSpeaker } =
+    const { entity_id, name, volume, muted, isGrouped, isMainSpeaker } =
       speaker;
     const isLoading = playersLoading.includes(entity_id);
     const isDisabled = isLoading || (isMainSpeaker && !isGrouped);
@@ -185,16 +182,6 @@ export const GroupVolumeController = ({
             />
           </div>
         </td>
-        {isMainMassSpeaker && isMassSpeaker && (
-          <td css={styles.buttonCell}>
-            <IconButton
-              size="x-small"
-              onClick={() => transferMaQueue(mainEntityId, entity_id)}
-              icon={"mdi:transfer"}
-              disabled={isDisabled}
-            />
-          </td>
-        )}
         <td css={styles.buttonCell}>
           <IconButton
             size="x-small"
