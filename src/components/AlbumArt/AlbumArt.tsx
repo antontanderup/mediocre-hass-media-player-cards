@@ -98,8 +98,8 @@ export const AlbumArt = ({
           : "unset",
         ...(typeof size === "number"
           ? {
-              flexShrink: 0,
-            }
+            flexShrink: 0,
+          }
           : {}),
       }}
       {...buttonProps}
@@ -139,7 +139,7 @@ const getSourceIcon = ({ source }: { source: string }) => {
     case "spotify":
       return "mdi:spotify";
     case "airplay":
-      return "mdi:airplay";
+      return "mdi:cast-audio-variant";
     case "bluetooth":
       return "mdi:bluetooth";
     case "net radio":
