@@ -1,8 +1,14 @@
 import { Icon, IconSize, usePlayer } from "@components";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
-import { getDeviceIcon } from "@utils";
-import { ButtonHTMLAttributes, JSX, useEffect, useState } from "preact/compat";
+import { getDeviceIcon, getHass } from "@utils";
+import {
+  ButtonHTMLAttributes,
+  JSX,
+  useEffect,
+  useMemo,
+  useState,
+} from "preact/compat";
 
 export type AlbumArtProps = {
   size?: number | string;
@@ -69,12 +75,20 @@ export const AlbumArt = ({
   const {
     media_title: title,
     media_artist: artist,
-    entity_picture: albumArt,
     icon,
+    entity_picture,
+    entity_picture_local,
     device_class: deviceClass,
     source,
   } = player.attributes;
   const state = player.state;
+
+  const albumArt = useMemo(() => {
+    const hass = getHass();
+    return entity_picture_local
+      ? hass.hassUrl(entity_picture_local)
+      : entity_picture;
+  }, [entity_picture, entity_picture_local]);
 
   const [error, setError] = useState(false);
   useEffect(() => {

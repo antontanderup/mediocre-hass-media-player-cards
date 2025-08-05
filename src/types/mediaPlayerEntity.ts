@@ -42,6 +42,7 @@ export interface MediaPlayerEntityAttributes {
   icon?: string;
   friendly_name?: string;
   entity_picture?: string;
+  entity_picture_local?: string;
   volume_level?: number; // 0.0 to 1.0
   is_volume_muted?: boolean;
   shuffle?: boolean;
