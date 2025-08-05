@@ -98,8 +98,8 @@ export const AlbumArt = ({
           : "unset",
         ...(typeof size === "number"
           ? {
-            flexShrink: 0,
-          }
+              flexShrink: 0,
+            }
           : {}),
       }}
       {...buttonProps}
