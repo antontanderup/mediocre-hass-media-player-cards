@@ -187,6 +187,18 @@ export const MediocreMediaPlayerCard = () => {
                     )}
                   </Fragment>
                 )}
+                {config.ma_favorite_button_entity_id && (
+                  <IconButton
+                    size="x-small"
+                    onClick={() => {
+                      getHass().callService("button", "press", {
+                        entity_id: config.ma_favorite_button_entity_id,
+                      });
+                    }}
+                    icon={"mdi:heart-plus"}
+                    title="Mark current song as favorite"
+                  />
+                )}
                 {hasSearch && (
                   <IconButton
                     size="x-small"
