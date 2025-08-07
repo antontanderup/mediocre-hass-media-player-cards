@@ -105,6 +105,7 @@ describe("cardConfigUtils", () => {
           media_types: [],
         },
         ma_entity_id: "media_player.ma",
+        ma_favorite_button_entity_id: "media_player.ma_favorite",
         custom_buttons: [
           { icon: "mdi:play", name: "Play", tap_action: { action: "toggle" } },
         ],

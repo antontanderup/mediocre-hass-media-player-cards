@@ -331,12 +331,15 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
         </form.Field>
       </SubForm>
 
-      <form.Field name="ma_entity_id">
-        {field => (
-          <SubForm
-            title="Music Assistant Configuration (optional)"
-            error={getFieldError(field)}
-          >
+      <SubForm
+        title="Music Assistant Configuration (optional)"
+        error={
+          getSubformError("ma_entity_id") ??
+          getSubformError("ma_favorite_button_entity_id")
+        }
+      >
+        <form.Field name="ma_entity_id">
+          {field => (
             <FormGroup>
               <EntityPicker
                 hass={hass}
@@ -349,9 +352,25 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
                 domains={["media_player"]}
               />
             </FormGroup>
-          </SubForm>
-        )}
-      </form.Field>
+          )}
+        </form.Field>
+        <form.Field name="ma_favorite_button_entity_id">
+          {field => (
+            <FormGroup>
+              <EntityPicker
+                hass={hass}
+                value={field.state.value ?? ""}
+                onChange={value => {
+                  field.handleChange(value ?? null);
+                }}
+                label="MA Favorite Button Entity ID (Optional)"
+                error={getFieldError(field)}
+                domains={["button"]}
+              />
+            </FormGroup>
+          )}
+        </form.Field>
+      </SubForm>
 
       <SubForm
         title="Custom Buttons (optional)"
