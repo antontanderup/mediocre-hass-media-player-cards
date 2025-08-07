@@ -334,7 +334,6 @@ export const MediocreMediaPlayerCardEditor: FC<
         </form.Field>
       </SubForm>
 
-
       <SubForm
         title="Music Assistant Configuration (optional)"
         error={

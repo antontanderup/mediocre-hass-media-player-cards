@@ -152,11 +152,11 @@ export const getSimpleConfigFromMassiveFormValues = (
     delete config.action;
   if (!config.ma_entity_id) delete config.ma_entity_id;
 
-    // Only preserve ma_favorite_button_entity_id if it is a non-empty string
+  // Only preserve ma_favorite_button_entity_id if it is a non-empty string
   if (!config.ma_favorite_button_entity_id) {
     delete config.ma_favorite_button_entity_id;
   }
-  
+
   if (!config.custom_buttons || config.custom_buttons.length === 0)
     delete config.custom_buttons;
 
