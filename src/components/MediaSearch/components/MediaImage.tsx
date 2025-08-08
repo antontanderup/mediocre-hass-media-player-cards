@@ -79,7 +79,9 @@ export const MediaImage = ({
           onError={() => setError(true)}
         />
       )}
-      {(!!error || !imageUrl) && <Icon icon="mdi:image-broken-variant" size="small" />}
+      {(!!error || !imageUrl) && (
+        <Icon icon="mdi:image-broken-variant" size="small" />
+      )}
       {loading && <Spinner css={styles.icon} size="x-small" />}
       {!loading && done && (
         <Icon
