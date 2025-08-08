@@ -3,6 +3,7 @@ import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { getDeviceIcon } from "@utils";
 import { ButtonHTMLAttributes, JSX, useEffect, useState } from "preact/compat";
+import { getHass } from "@utils";
 
 export type AlbumArtProps = {
   size?: number | string;
@@ -108,7 +109,7 @@ export const AlbumArt = ({
         {albumArt && state !== "off" && !error ? (
           <img
             css={styles.image}
-            src={albumArt}
+            src={getHass().hassUrl(albumArt)}
             alt={
               !!title && !!artist
                 ? `${title} by ${artist}`
