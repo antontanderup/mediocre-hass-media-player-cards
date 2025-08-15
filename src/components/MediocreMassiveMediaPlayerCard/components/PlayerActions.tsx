@@ -84,6 +84,7 @@ export const PlayerActions = () => {
     speaker_group,
     ma_entity_id,
     search,
+    ma_favorite_button_entity_id,
     options: { always_show_power_button: alwaysShowPowerButton } = {},
   } = config;
 
@@ -111,6 +112,14 @@ export const PlayerActions = () => {
       entity_id,
     });
   }, [entity_id]);
+
+  const handleFavorite = useCallback(() => {
+    if (ma_favorite_button_entity_id) {
+      getHass().callService("button", "press", {
+        entity_id: ma_favorite_button_entity_id,
+      });
+    }
+  }, [ma_favorite_button_entity_id]);
 
   return (
     <div css={styles.root}>
@@ -177,6 +186,15 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       ) : null}
+
+      {ma_favorite_button_entity_id && (
+        <IconButton
+          size="small"
+          icon={"mdi:heart-plus"}
+          title="Mark current song as favorite"
+          onClick={handleFavorite}
+        />
+      )}
 
       {hasSearch && (
         <IconButton

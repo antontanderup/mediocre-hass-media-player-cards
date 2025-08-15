@@ -25,6 +25,7 @@ export const getDefaultValuesFromConfig = (
     media_types: config?.search?.media_types ?? [],
   },
   ma_entity_id: config?.ma_entity_id ?? null,
+  ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
   options: {
     always_show_power_button:
@@ -58,6 +59,7 @@ export const getDefaultValuesFromMassiveConfig = (
     media_types: config?.search?.media_types ?? [],
   },
   ma_entity_id: config?.ma_entity_id ?? null,
+  ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
   options: {
     always_show_power_button:
@@ -81,6 +83,11 @@ export const getSimpleConfigFromFormValues = (
   if (!config.action || Object.keys(config.action).length === 0)
     delete config.action;
   if (!config.ma_entity_id) delete config.ma_entity_id;
+
+  // Only preserve ma_favorite_button_entity_id if it is a non-empty string
+  if (!config.ma_favorite_button_entity_id) {
+    delete config.ma_favorite_button_entity_id;
+  }
   if (!config.custom_buttons || config.custom_buttons.length === 0)
     delete config.custom_buttons;
 
@@ -144,6 +151,12 @@ export const getSimpleConfigFromMassiveFormValues = (
   if (!config.action || Object.keys(config.action).length === 0)
     delete config.action;
   if (!config.ma_entity_id) delete config.ma_entity_id;
+
+  // Only preserve ma_favorite_button_entity_id if it is a non-empty string
+  if (!config.ma_favorite_button_entity_id) {
+    delete config.ma_favorite_button_entity_id;
+  }
+
   if (!config.custom_buttons || config.custom_buttons.length === 0)
     delete config.custom_buttons;
 

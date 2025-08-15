@@ -27,6 +27,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     .and(interactionConfigSchema)
     .array(),
   "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
+  "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
   "search?": {
     "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
     "show_favorites?": "boolean | null", // Shows favorites no search query has been entered

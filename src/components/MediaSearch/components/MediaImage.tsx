@@ -1,6 +1,8 @@
 import { getIconSize, Icon } from "@components/Icon";
 import { Spinner } from "@components/Spinner";
 import { css, keyframes } from "@emotion/react";
+import { getHass } from "@utils";
+import { useEffect, useState } from "preact/hooks";
 
 const fadeInOut = keyframes({
   "0%": { opacity: 1, transform: "translateY(0px)" },
@@ -62,10 +64,24 @@ export const MediaImage = ({
   done,
   className,
 }: MediaImageProps) => {
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    setError(false);
+  }, [imageUrl]);
+
   return (
     <div css={styles.root} className={className}>
-      {imageUrl && <img src={imageUrl} css={styles.image} alt="" />}
-      {!imageUrl && <Icon icon="mdi:image-broken-variant" size="small" />}
+      {imageUrl && !error && (
+        <img
+          src={getHass().hassUrl(imageUrl)}
+          css={styles.image}
+          alt=""
+          onError={() => setError(true)}
+        />
+      )}
+      {(!!error || !imageUrl) && (
+        <Icon icon="mdi:image-broken-variant" size="small" />
+      )}
       {loading && <Spinner css={styles.icon} size="x-small" />}
       {!loading && done && (
         <Icon

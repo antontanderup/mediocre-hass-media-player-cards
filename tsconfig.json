@@ -14,7 +14,7 @@
     /* Preact Config */
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": ["@emotion/react/types/css-prop"],
+    "types": ["@emotion/react/types/css-prop", "jest", "node"],
     "skipLibCheck": true,
     "paths": {
       "react": ["./node_modules/preact/compat/"],
@@ -33,11 +33,6 @@
       "@constants/*": ["./src/constants/*"]
     }
   },
-  "exclude": [
-    "dist",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "src/__tests__/**/*"
-  ],
+  "exclude": ["dist"],
   "include": ["node_modules/vite/client.d.ts", "src/types/emotion.d.ts", "**/*"]
 }

@@ -95,6 +95,7 @@ Both cards support these options:
 | `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
 | `custom_buttons`          | array  | -        | List of custom buttons to display                                |
 | `ma_entity_id`            | string | -        | Music Assistant entity id (adds search)                          |
+| `ma_favorite_button_entity_id` | string | - | Music Assistant favorite button entity (shows a heart-plus button to mark the current song as favorite) |
 | `options`                 | object | -        | Additional display options for fine-tuning the card              |
 | `options.always_show_power_button` | boolean | `false` | Always show the power button, even if the media player is on |
 
@@ -151,10 +152,12 @@ Both the Mediocre Media Player Card and the Mediocre Massive Media Player Card s
 
 ### Configuration
 
+
 ```yaml
 type: "custom:mediocre-media-player-card"
 entity_id: media_player.living_room_musiccast
 ma_entity_id: media_player.living_room_musicassistant
+ma_favorite_button_entity_id: button.living_room_favorite
 ```
 
 | Option         | Type   | Default | Description                                 |

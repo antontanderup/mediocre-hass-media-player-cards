@@ -16,21 +16,21 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@base-ui-components/react": "1.0.0-alpha.8",
+    "@base-ui-components/react": "1.0.0-beta.2",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
-    "@tanstack/react-form": "^1.12.0",
-    "@tanstack/react-virtual": "^3.13.10",
+    "@tanstack/react-form": "^1.18.0",
+    "@tanstack/react-virtual": "^3.13.12",
     "@uidotdev/usehooks": "^2.4.1",
     "arktype": "^2.1.20",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.3",
-    "preact": "^10.26.8"
+    "preact": "^10.27.0"
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",
     "@eslint/js": "^9.28.0",
-    "@preact/preset-vite": "^2.10.1",
+    "@preact/preset-vite": "^2.10.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.4",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
