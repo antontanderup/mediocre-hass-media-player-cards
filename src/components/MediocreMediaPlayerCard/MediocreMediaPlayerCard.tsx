@@ -189,8 +189,8 @@ export const MediocreMediaPlayerCard = () => {
                   </Fragment>
                 )}
                 <MaMenu
-                  renderTrigger={() => (
-                    <Icon icon="mdi:bookshelf" size="x-small" />
+                  renderTrigger={(trigger) => (
+                    <IconButton icon="mdi:bookshelf" size="x-small" onClick={trigger} />
                   )}
                 />
                 {hasSearch && (

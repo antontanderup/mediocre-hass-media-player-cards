@@ -14,8 +14,10 @@ export function getIsMassPlayer(entity: Partial<MediaPlayerEntity>): boolean {
 
   // If the entity has an active_child (UMP), check if that child is a MA player
   if (typeof entity?.attributes?.active_child !== "undefined") {
-    const hass = getHass()
-    const activeChild = hass.states[entity.attributes.active_child] as MediaPlayerEntity | undefined;
+    const hass = getHass();
+    const activeChild = hass.states[entity.attributes.active_child] as
+      | MediaPlayerEntity
+      | undefined;
     if (!activeChild) return false;
     return getIsMassPlayer(activeChild);
   }
