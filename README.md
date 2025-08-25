@@ -99,8 +99,6 @@ Both cards support these options:
 | `ma_favorite_button_entity_id`     | string  | -        | Music Assistant favorite button entity (shows a heart-plus button to mark the current song as favorite) |
 | `options`                          | object  | -        | Additional display options for fine-tuning the card                                                     |
 | `options.always_show_power_button` | boolean | `false`  | Always show the power button, even if the media player is on                                            |
-| `options.volume_control`           | string  | `slider` | Choose between slider or +/- buttons for volume control                                                 |
-|                                    |
 
 The Mediocre Media Player Card has additional options:
 
