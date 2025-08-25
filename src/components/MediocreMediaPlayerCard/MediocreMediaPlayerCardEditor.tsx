@@ -17,7 +17,6 @@ import {
   ToggleContainer,
   ToggleLabel,
   SubForm,
-  FormSelect,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
@@ -517,27 +516,6 @@ export const MediocreMediaPlayerCardEditor: FC<
                 Always show custom buttons panel below card
               </ToggleLabel>
             </ToggleContainer>
-          )}
-        </form.Field>
-        <form.Field name="options.volume_control">
-          {field => (
-            <FormGroup>
-              <Label>Volume control style</Label>
-              <FormSelect
-                options={[
-                  { name: "Slider", value: "slider" },
-                  { name: "Buttons", value: "buttons" },
-                ]}
-                selected={field.state.value ?? "slider"}
-                onSelected={value =>
-                  field.handleChange(
-                    value as NonNullable<
-                      MediocreMediaPlayerCardConfig["options"]
-                    >["volume_control"]
-                  )
-                }
-              />
-            </FormGroup>
           )}
         </form.Field>
       </SubForm>

@@ -3,7 +3,6 @@ import { interactionConfigSchema } from "./actionTypes";
 
 const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
-  "volume_control?": "'slider'|'buttons'", // Choose volume control style
 });
 
 const searchMediaTypeSchema = type({
