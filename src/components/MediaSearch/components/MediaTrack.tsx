@@ -1,4 +1,5 @@
 import { useCallback, useState } from "preact/hooks";
+import { JSX } from "preact/compat";
 import { MediaImage } from "./MediaImage";
 import { css } from "@emotion/react";
 
@@ -47,13 +48,22 @@ const styles = {
     width: 50,
     height: 50,
   }),
+  rootNotClickable: css({
+    cursor: "default",
+  }),
+  actions: css({
+    display: "flex",
+    gap: 4,
+    alignItems: "center",
+  }),
 };
 
 export type MediaTrackProps = {
   imageUrl?: string | null;
   title: string;
   artist?: string;
-  onClick: () => Promise<void>;
+  onClick?: () => Promise<void>;
+  actions?: JSX.Element;
 };
 
 export const MediaTrack = ({
@@ -61,10 +71,12 @@ export const MediaTrack = ({
   title,
   artist,
   onClick,
+  actions,
 }: MediaTrackProps) => {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const handleOnClick = useCallback(async () => {
+    if (!onClick) return;
     setDone(false);
     setLoading(true);
     try {
@@ -77,7 +89,10 @@ export const MediaTrack = ({
   }, [onClick]);
 
   return (
-    <div css={styles.root} onClick={handleOnClick}>
+    <div
+      css={[styles.root, !onClick && styles.rootNotClickable]}
+      onClick={onClick ? handleOnClick : undefined}
+    >
       <MediaImage
         css={styles.mediaImage}
         imageUrl={imageUrl}
@@ -88,6 +103,7 @@ export const MediaTrack = ({
         <div css={styles.trackName}>{title}</div>
         {!!artist && <div css={styles.trackArtist}>{artist}</div>}
       </div>
+      {actions && <div css={styles.actions}>{actions}</div>}
     </div>
   );
 };

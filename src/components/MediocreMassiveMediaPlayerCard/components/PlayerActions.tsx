@@ -1,6 +1,12 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import { HaSearch, IconButton, MaSearch, usePlayer } from "@components";
+import {
+  HaSearch,
+  IconButton,
+  MaQueue,
+  MaSearch,
+  usePlayer,
+} from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -84,6 +90,7 @@ export const PlayerActions = () => {
     speaker_group,
     ma_entity_id,
     search,
+    queue,
     ma_favorite_button_entity_id,
     options: { always_show_power_button: alwaysShowPowerButton } = {},
   } = config;
@@ -95,9 +102,10 @@ export const PlayerActions = () => {
 
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
+  const hasQueue = hasMaSearch && queue?.enabled;
 
   const [selected, setSelected] = useState<
-    "volume" | "speaker-grouping" | "custom-buttons" | "search"
+    "volume" | "speaker-grouping" | "custom-buttons" | "search" | "queue"
   >();
 
   const toggleSelected = useCallback(
@@ -160,6 +168,16 @@ export const PlayerActions = () => {
           />
         )}
       </Modal>
+      <Modal
+        title="Queue"
+        isOpen={selected === "queue"}
+        onClose={() => setSelected(undefined)}
+        padding="16px 0px 16px 0px"
+      >
+        {ma_entity_id && (
+          <MaQueue entityId={ma_entity_id} horizontalPadding={16} />
+        )}
+      </Modal>
       {!!speaker_group && (
         <IconButton
           size="small"
@@ -201,6 +219,13 @@ export const PlayerActions = () => {
           size="small"
           icon={"mdi:magnify"}
           onClick={() => setSelected("search")}
+        />
+      )}
+      {hasQueue && (
+        <IconButton
+          size="small"
+          icon={"mdi:playlist-music"}
+          onClick={() => setSelected("queue")}
         />
       )}
       {(!isOn || alwaysShowPowerButton) && (

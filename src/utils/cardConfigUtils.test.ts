@@ -78,6 +78,9 @@ describe("cardConfigUtils", () => {
         entity_id: null,
         media_types: [],
       });
+      expect(result.queue).toEqual({
+        enabled: false,
+      });
       expect(result.ma_entity_id).toBeNull();
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({
@@ -104,6 +107,7 @@ describe("cardConfigUtils", () => {
           entity_id: "media_player.search",
           media_types: [],
         },
+        queue: { enabled: true },
         ma_entity_id: "media_player.ma",
         ma_favorite_button_entity_id: "media_player.ma_favorite",
         custom_buttons: [
@@ -196,6 +200,7 @@ describe("cardConfigUtils", () => {
         entity_id: null,
         media_types: [],
       });
+      expect(result.queue).toEqual({ enabled: false });
       expect(result.ma_entity_id).toBeNull();
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({
@@ -215,6 +220,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: {
@@ -239,6 +245,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: {
@@ -269,6 +276,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: {
@@ -291,6 +299,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: {
@@ -321,6 +330,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: { always_show_power_button: false },
@@ -344,6 +354,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: { always_show_power_button: false },
@@ -373,6 +384,7 @@ describe("cardConfigUtils", () => {
         action: {},
         speaker_group: { entity_id: null, entities: [] },
         search: { enabled: false, show_favorites: false, entity_id: null },
+        queue: { enabled: false },
         ma_entity_id: null,
         custom_buttons: [],
         options: { always_show_power_button: false },
