@@ -27,6 +27,11 @@ const styles = {
     padding: 4,
     border: `1px solid ${theme.colors.onCardDivider}`,
   }),
+  submenu: css({
+    position: "absolute",
+    top: 0,
+    minWidth: 180,
+  }),
   item: css({
     display: "flex",
     alignItems: "center",
@@ -70,31 +75,55 @@ const styles = {
 }
 
 
-import { useRef, useState, useEffect } from "preact/hooks";
+import { useRef, useState, useEffect, useCallback } from "preact/hooks";
 
 export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
   const [open, setOpen] = useState(false);
+  const [alignLeft, setAlignLeft] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left?: number; right?: number }>({ top: 0, left: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Close menu on outside click
+  // Close menu on outside click (works in Shadow DOM and with portals)
   useEffect(() => {
     if (!open) return;
     function handleClick(e: MouseEvent) {
-      console.log(e)
       const path = e.composedPath ? e.composedPath() : [];
-      if (
-        menuRef.current &&
-        !path.includes(menuRef.current) &&
-        triggerRef.current &&
-        !path.includes(triggerRef.current)
-      ) {
+      const target = e.target as Node;
+      const menu = menuRef.current;
+      const trigger = triggerRef.current;
+      const clickedMenu = menu && (path.includes(menu) || menu.contains(target));
+      const clickedTrigger = trigger && (path.includes(trigger) || trigger.contains(target));
+      if (!clickedMenu && !clickedTrigger) {
         setOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
   }, [open]);
+
+  // Function to handle opening and alignment
+  const handleOpen = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const menuWidth = 200; // fallback width, adjust if needed or measure
+      const spaceRight = window.innerWidth - rect.left;
+      const spaceLeft = rect.right;
+      let pos: { top: number; left?: number; right?: number } = { top: rect.bottom };
+      if (spaceRight < menuWidth && spaceLeft > menuWidth) {
+        // align right
+        pos.right = window.innerWidth - rect.right;
+        setAlignLeft(true);
+      } else {
+        // align left
+        pos.left = rect.left;
+        setAlignLeft(false);
+      }
+      setMenuPosition(pos);
+    }
+    setOpen(o => !o);
+  }, []);
 
   // Keyboard navigation: close on Escape
   useEffect(() => {
@@ -106,10 +135,11 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
-  // Render menu items recursively, with submenu support (CSS only)
-  function renderMenuItems(items: OverlayMenuItem[], parentLevel = 0) {
+
+  const renderMenuItems = (items: OverlayMenuItem[], parentLevel = 0) => {
     return items.map((item, idx) => {
       const hasChildren = item.children && item.children.length > 0;
+
       return (
         <div
           key={item.label + idx}
@@ -123,26 +153,23 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
           aria-haspopup={hasChildren ? "menu" : undefined}
           aria-disabled={!item.onClick && !hasChildren}
           data-disabled={!item.onClick && !hasChildren ? true : undefined}
-        // No JS submenu state, all CSS
         >
           {item.icon && (
-            <Icon icon={item.icon} size="xx-small" />
+            <Icon icon={item.icon} size="x-small" />
           )}
           <span>{item.label}</span>
           {hasChildren && (
-            <span style={{ marginLeft: "auto", opacity: 0.6 }}>&#9654;</span>
+            <Icon icon={"mdi:chevron-down"} size="x-small" />
           )}
           {hasChildren && (
             <div
               className="overlaymenu-submenu"
-              css={styles.menuRoot}
+              css={[styles.menuRoot, styles.submenu]}
               role="menu"
               style={{
-                position: "absolute",
-                left: "100%",
-                top: 0,
+                left: alignLeft ? undefined : "100%",
+                right: alignLeft ? "100%" : undefined,
                 zIndex: 9 + parentLevel,
-                minWidth: 180,
               }}
             >
               {renderMenuItems(item.children!, parentLevel + 1)}
@@ -154,13 +181,14 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
   }
 
   return (
-    <div style={{ display: "inline-block", position: "relative" }}>
-      {trigger(() => setOpen(o => !o))}
+    <div ref={containerRef} style={{ display: "inline-block", position: "relative" }}>
+      {trigger(() => handleOpen())}
       {open && (
         <div
           ref={menuRef}
           css={styles.menuRoot}
           role="menu"
+          style={menuPosition}
         >
           {renderMenuItems(menuItems)}
         </div>
