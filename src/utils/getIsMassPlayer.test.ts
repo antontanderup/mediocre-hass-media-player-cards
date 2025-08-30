@@ -1,5 +1,5 @@
-import { getIsMassPlayer } from "./getIsMassPlayer";
-import type { MediaPlayerEntity } from "../types/mediaPlayerEntity";
+import { getIsMassPlayer } from "@utils";
+import type { MediaPlayerEntity } from "@types";
 
 describe("getIsMassPlayer", () => {
   it("returns true if mass_player_type is present", () => {

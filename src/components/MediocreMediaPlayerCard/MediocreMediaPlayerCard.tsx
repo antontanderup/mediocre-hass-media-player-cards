@@ -10,7 +10,7 @@ import {
   Search,
   SpeakerGrouping,
 } from "./components";
-import { AlbumArt, Icon, IconButton, MaMenu, usePlayer } from "@components";
+import { AlbumArt, IconButton, MaMenu, usePlayer } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";

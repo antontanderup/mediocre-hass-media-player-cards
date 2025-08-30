@@ -113,14 +113,6 @@ export const PlayerActions = () => {
     });
   }, [entity_id]);
 
-  const handleFavorite = useCallback(() => {
-    if (ma_favorite_button_entity_id) {
-      getHass().callService("button", "press", {
-        entity_id: ma_favorite_button_entity_id,
-      });
-    }
-  }, [ma_favorite_button_entity_id]);
-
   return (
     <div css={styles.root}>
       <Modal

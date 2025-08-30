@@ -1,6 +1,6 @@
 import { getHass } from "./getHass";
-import { getIsMassPlayer } from "./getIsMassPlayer";
-import type { MediaPlayerEntity } from "../types/mediaPlayerEntity";
+import { getIsMassPlayer } from "@utils";
+import type { MediaPlayerEntity } from "@types";
 
 /**
  * Returns all media player entities that are Music Assistant (MA) players.

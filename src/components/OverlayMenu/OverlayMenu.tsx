@@ -118,7 +118,7 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
       const spaceLeft = rect.right;
       const spaceBelow = window.innerHeight - rect.bottom;
       const spaceAbove = rect.top;
-      let pos: {
+      const pos: {
         top?: number;
         bottom?: number;
         left?: number;
