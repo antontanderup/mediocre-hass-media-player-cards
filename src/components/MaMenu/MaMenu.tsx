@@ -6,7 +6,10 @@ import {
   transferMaQueue,
 } from "@utils";
 import { JSX } from "preact";
-import { OverlayMenu, OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
+import {
+  OverlayMenu,
+  OverlayMenuItem,
+} from "@components/OverlayMenu/OverlayMenu";
 import { usePlayer } from "@components/PlayerContext";
 
 export type MaMenuProps = {
@@ -15,9 +18,16 @@ export type MaMenuProps = {
   renderTrigger: (onClick: () => void) => JSX.Element;
 };
 
-export const MaMenu = ({ renderTrigger, ma_entity_id, ma_favorite_button_entity_id }: MaMenuProps) => {
+export const MaMenu = ({
+  renderTrigger,
+  ma_entity_id,
+  ma_favorite_button_entity_id,
+}: MaMenuProps) => {
   const player = usePlayer();
-  const isMainEntityMassPlayer = useMemo(() => getIsMassPlayer(player), [player]);
+  const isMainEntityMassPlayer = useMemo(
+    () => getIsMassPlayer(player),
+    [player]
+  );
 
   const markSongAsFavorite = useCallback(() => {
     if (!ma_favorite_button_entity_id) return;
@@ -41,7 +51,8 @@ export const MaMenu = ({ renderTrigger, ma_entity_id, ma_favorite_button_entity_
     if (!ma_entity_id || !isMainEntityMassPlayer) return [];
     const massPlayers = getAllMassPlayers().filter(
       player =>
-        player.entity_id !== ma_entity_id && getIsMassPlayer(player) &&
+        player.entity_id !== ma_entity_id &&
+        getIsMassPlayer(player) &&
         player.state !== "unavailable"
     );
 
@@ -66,13 +77,8 @@ export const MaMenu = ({ renderTrigger, ma_entity_id, ma_favorite_button_entity_
     return items;
   }, [ma_favorite_button_entity_id, markSongAsFavorite, transferQueue]);
 
-  console.log(menuItems)
+  console.log(menuItems);
   if (menuItems.length === 0) return null;
 
-  return (
-    <OverlayMenu
-      trigger={renderTrigger}
-      menuItems={menuItems}
-    />
-  );
+  return <OverlayMenu trigger={renderTrigger} menuItems={menuItems} />;
 };

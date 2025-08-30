@@ -190,9 +190,15 @@ export const MediocreMediaPlayerCard = () => {
                 )}
                 <MaMenu
                   ma_entity_id={ma_entity_id ?? undefined}
-                  ma_favorite_button_entity_id={ma_favorite_button_entity_id ?? undefined}
-                  renderTrigger={(trigger) => (
-                    <IconButton icon="mdi:bookshelf" size="x-small" onClick={trigger} />
+                  ma_favorite_button_entity_id={
+                    ma_favorite_button_entity_id ?? undefined
+                  }
+                  renderTrigger={trigger => (
+                    <IconButton
+                      icon="mdi:bookshelf"
+                      size="x-small"
+                      onClick={trigger}
+                    />
                   )}
                 />
                 {hasSearch && (

@@ -71,15 +71,19 @@ const styles = {
     font: "inherit",
     cursor: "pointer",
   }),
-}
-
+};
 
 import { useRef, useState, useEffect, useCallback } from "preact/hooks";
 
 export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
   const [open, setOpen] = useState(false);
   const [alignLeft, setAlignLeft] = useState(false);
-  const [menuPosition, setMenuPosition] = useState<{ top?: number; bottom?: number; left?: number; right?: number }>({ top: 0, left: 0 });
+  const [menuPosition, setMenuPosition] = useState<{
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+  }>({ top: 0, left: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -92,8 +96,10 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
       const target = e.target as Node;
       const menu = menuRef.current;
       const trigger = triggerRef.current;
-      const clickedMenu = menu && (path.includes(menu) || menu.contains(target));
-      const clickedTrigger = trigger && (path.includes(trigger) || trigger.contains(target));
+      const clickedMenu =
+        menu && (path.includes(menu) || menu.contains(target));
+      const clickedTrigger =
+        trigger && (path.includes(trigger) || trigger.contains(target));
       if (!clickedMenu && !clickedTrigger) {
         setOpen(false);
       }
@@ -112,7 +118,12 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
       const spaceLeft = rect.right;
       const spaceBelow = window.innerHeight - rect.bottom;
       const spaceAbove = rect.top;
-      let pos: { top?: number; bottom?: number; left?: number; right?: number } = {};
+      let pos: {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+      } = {};
       // Horizontal alignment
       if (spaceRight < menuWidth && spaceLeft > menuWidth) {
         // align right
@@ -148,7 +159,6 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
-
   const renderMenuItems = (items: OverlayMenuItem[], parentLevel = 0) => {
     return items.map((item, idx) => {
       const hasChildren = item.children && item.children.length > 0;
@@ -167,13 +177,9 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
           aria-disabled={!item.onClick && !hasChildren}
           data-disabled={!item.onClick && !hasChildren ? true : undefined}
         >
-          {item.icon && (
-            <Icon icon={item.icon} size="x-small" />
-          )}
+          {item.icon && <Icon icon={item.icon} size="x-small" />}
           <span>{item.label}</span>
-          {hasChildren && (
-            <Icon icon={"mdi:chevron-down"} size="x-small" />
-          )}
+          {hasChildren && <Icon icon={"mdi:chevron-down"} size="x-small" />}
           {hasChildren && (
             <div
               className="overlaymenu-submenu"
@@ -193,11 +199,14 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
         </div>
       );
     });
-  }
+  };
 
   return (
-    <div ref={containerRef} style={{ display: "inline-block", position: "relative" }}>
-      {trigger(() => handleOpen())} 
+    <div
+      ref={containerRef}
+      style={{ display: "inline-block", position: "relative" }}
+    >
+      {trigger(() => handleOpen())}
       {open && (
         <div
           ref={menuRef}
