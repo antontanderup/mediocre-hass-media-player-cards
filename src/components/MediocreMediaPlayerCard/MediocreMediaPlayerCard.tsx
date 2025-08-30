@@ -4,14 +4,13 @@ import type { MediocreMediaPlayerCardConfig } from "@types";
 import {
   CustomButton,
   CustomButtons,
-  MaMenu,
   MetaInfo,
   PlaybackControls,
   PlayerInfo,
   Search,
   SpeakerGrouping,
 } from "./components";
-import { AlbumArt, Icon, IconButton, usePlayer } from "@components";
+import { AlbumArt, Icon, IconButton, MaMenu, usePlayer } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
@@ -81,6 +80,7 @@ export const MediocreMediaPlayerCard = () => {
     tap_opens_popup,
     use_art_colors,
     ma_entity_id,
+    ma_favorite_button_entity_id,
     search,
     options: {
       always_show_power_button: alwaysShowPowerButton,
@@ -189,6 +189,8 @@ export const MediocreMediaPlayerCard = () => {
                   </Fragment>
                 )}
                 <MaMenu
+                  ma_entity_id={ma_entity_id ?? undefined}
+                  ma_favorite_button_entity_id={ma_favorite_button_entity_id ?? undefined}
                   renderTrigger={(trigger) => (
                     <IconButton icon="mdi:bookshelf" size="x-small" onClick={trigger} />
                   )}

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import { HaSearch, IconButton, MaSearch, usePlayer } from "@components";
+import { HaSearch, IconButton, MaMenu, MaSearch, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -186,16 +186,13 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       ) : null}
-
-      {ma_favorite_button_entity_id && (
-        <IconButton
-          size="small"
-          icon={"mdi:heart-plus"}
-          title="Mark current song as favorite"
-          onClick={handleFavorite}
-        />
-      )}
-
+      <MaMenu
+        ma_entity_id={ma_entity_id ?? undefined}
+        ma_favorite_button_entity_id={ma_favorite_button_entity_id ?? undefined}
+        renderTrigger={(trigger) => (
+          <IconButton icon="mdi:bookshelf" size="small" onClick={trigger} />
+        )}
+      />
       {hasSearch && (
         <IconButton
           size="small"

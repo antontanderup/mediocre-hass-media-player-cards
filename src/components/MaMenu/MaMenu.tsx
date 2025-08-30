@@ -1,25 +1,21 @@
-import { useContext, useMemo, useCallback } from "preact/hooks";
+import { useMemo, useCallback } from "preact/hooks";
 import {
   getAllMassPlayers,
   getHass,
   getIsMassPlayer,
   transferMaQueue,
 } from "@utils";
-import { MediocreMediaPlayerCardConfig } from "@types";
 import { JSX } from "preact";
 import { OverlayMenu, OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { usePlayer } from "@components/PlayerContext";
 
 export type MaMenuProps = {
+  ma_entity_id?: string;
+  ma_favorite_button_entity_id?: string;
   renderTrigger: (onClick: () => void) => JSX.Element;
 };
 
-export const MaMenu = ({ renderTrigger }: MaMenuProps) => {
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { entity_id, ma_entity_id, ma_favorite_button_entity_id } = config;
-
+export const MaMenu = ({ renderTrigger, ma_entity_id, ma_favorite_button_entity_id }: MaMenuProps) => {
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(() => getIsMassPlayer(player), [player]);
 
