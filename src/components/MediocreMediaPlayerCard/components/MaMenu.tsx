@@ -41,14 +41,11 @@ export const MaMenu = ({ renderTrigger }: MaMenuProps) => {
     [ma_entity_id]
   );
 
-  
-  // Build OverlayMenu items (memoized)
   const menuItems: OverlayMenuItem[] = useMemo(() => {
     if (!ma_entity_id || !isMainEntityMassPlayer) return [];
     const massPlayers = getAllMassPlayers().filter(
       player =>
-        player.entity_id !== (ma_entity_id ?? entity_id) &&
-        getIsMassPlayer(player) &&
+        player.entity_id !== ma_entity_id && getIsMassPlayer(player) &&
         player.state !== "unavailable"
     );
 
