@@ -29,7 +29,6 @@ const styles = {
   }),
   submenu: css({
     position: "absolute",
-    top: 0,
     minWidth: 180,
   }),
   item: css({
@@ -80,7 +79,7 @@ import { useRef, useState, useEffect, useCallback } from "preact/hooks";
 export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
   const [open, setOpen] = useState(false);
   const [alignLeft, setAlignLeft] = useState(false);
-  const [menuPosition, setMenuPosition] = useState<{ top: number; left?: number; right?: number }>({ top: 0, left: 0 });
+  const [menuPosition, setMenuPosition] = useState<{ top?: number; bottom?: number; left?: number; right?: number }>({ top: 0, left: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -108,9 +107,13 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       const menuWidth = 200; // fallback width, adjust if needed or measure
+      const menuHeight = 250; // fallback height, adjust if needed or measure
       const spaceRight = window.innerWidth - rect.left;
       const spaceLeft = rect.right;
-      let pos: { top: number; left?: number; right?: number } = { top: rect.bottom };
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      let pos: { top?: number; bottom?: number; left?: number; right?: number } = {};
+      // Horizontal alignment
       if (spaceRight < menuWidth && spaceLeft > menuWidth) {
         // align right
         pos.right = window.innerWidth - rect.right;
@@ -119,6 +122,16 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
         // align left
         pos.left = rect.left;
         setAlignLeft(false);
+      }
+      // Vertical alignment
+      if (spaceBelow < menuHeight && spaceAbove > menuHeight) {
+        // Not enough space below, render above
+        pos.bottom = window.innerHeight - rect.top;
+        pos.top = undefined;
+      } else {
+        // Default: render below
+        pos.top = rect.bottom;
+        pos.bottom = undefined;
       }
       setMenuPosition(pos);
     }
@@ -170,6 +183,8 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
                 left: alignLeft ? undefined : "100%",
                 right: alignLeft ? "100%" : undefined,
                 zIndex: 9 + parentLevel,
+                top: menuPosition.top !== undefined ? 0 : undefined,
+                bottom: menuPosition.top === undefined ? 0 : undefined,
               }}
             >
               {renderMenuItems(item.children!, parentLevel + 1)}
@@ -182,7 +197,7 @@ export const OverlayMenu = ({ trigger, menuItems }: OverlayMenuProps) => {
 
   return (
     <div ref={containerRef} style={{ display: "inline-block", position: "relative" }}>
-      {trigger(() => handleOpen())}
+      {trigger(() => handleOpen())} 
       {open && (
         <div
           ref={menuRef}
