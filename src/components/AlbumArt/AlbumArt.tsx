@@ -70,11 +70,13 @@ export const AlbumArt = ({
   const {
     media_title: title,
     media_artist: artist,
-    entity_picture: albumArt,
+    entity_picture,
+    entity_picture_local,
     icon,
     device_class: deviceClass,
     source,
   } = player.attributes;
+  const albumArt = entity_picture_local || entity_picture;
   const state = player.state;
 
   const [error, setError] = useState(false);

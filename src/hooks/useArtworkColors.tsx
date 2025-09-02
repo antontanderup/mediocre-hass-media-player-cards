@@ -10,8 +10,9 @@ const isDarkMode = () =>
 
 export function useArtworkColors() {
   const {
-    attributes: { entity_picture: albumArt },
+    attributes: { entity_picture, entity_picture_local },
   } = usePlayer();
+  const albumArt = entity_picture_local || entity_picture;
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
   // Track dark mode state
