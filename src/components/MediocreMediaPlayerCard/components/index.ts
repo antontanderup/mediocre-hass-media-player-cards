@@ -1,5 +1,4 @@
 export * from "./CustomButtons";
-export * from "./MassTransferQueue";
 export * from "./MassivePopUp";
 export * from "./MetaInfo";
 export * from "./PlaybackControls";

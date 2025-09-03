@@ -35,7 +35,7 @@ const styles = {
     opacity: 1,
     animation: `${fadeIn} 0.3s ease`,
     maxHeight: "100vh",
-    overflowY: 'auto'
+    overflowY: "auto",
   }),
 };
 
@@ -163,7 +163,10 @@ export const OverlayPopover = ({
         case "center": {
           if (side === "right" || side === "left") {
             return {
-              top: Math.max(0, trigger.top + trigger.height / 2 - popover.height / 2),
+              top: Math.max(
+                0,
+                trigger.top + trigger.height / 2 - popover.height / 2
+              ),
             };
           }
           return {
