@@ -87,6 +87,8 @@ export const OverlayPopover = ({
         trigger && (path.includes(trigger) || trigger.contains(target));
       if (!clickedPopover && !clickedTrigger) {
         setOpen(false);
+        setAlignOverride(undefined);
+        setSideOverride(undefined);
       }
     }
     window.addEventListener("click", handleClick);
@@ -105,6 +107,8 @@ export const OverlayPopover = ({
   const handleOnClick = useCallback(() => {
     if (open) {
       setOpen(false);
+      setAlignOverride(undefined);
+      setSideOverride(undefined);
     } else {
       handleOpen();
     }
