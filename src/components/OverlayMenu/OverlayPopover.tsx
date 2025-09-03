@@ -221,6 +221,14 @@ export const OverlayPopover = ({
                       setAlignOverride("end")
                     }
                   }
+                  if (overflowingTop) {
+                    if (side === "top") {
+                      setSideOverride("bottom");
+                    }
+                    if (side === "right" || side === 'left') {
+                      setAlignOverride("start")
+                    }
+                  }
                 }
               }
               if (entry.boundingClientRect.width !== entry.intersectionRect.width) {
