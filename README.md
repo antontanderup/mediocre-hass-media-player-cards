@@ -1,8 +1,9 @@
 # 🎵 Mediocre Media Player Cards
+
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/v/release/antontanderup/mediocre-hass-media-player-cards?color=blue)](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
 [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/antontanderup/mediocre-hass-media-player-cards/total)](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
-[![Chat on Oase](https://img.shields.io/badge/Chat-Oase-lightblue?color=rgb(74%20196%20169))](https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180)
+[![Chat on Oase](<https://img.shields.io/badge/Chat-Oase-lightblue?color=rgb(74%20196%20169)>)](https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180)
 <br/>
 
 <img src="https://github.com/user-attachments/assets/2ba5d55d-6fd3-4508-ae1c-60d9f22ebe81" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
@@ -86,25 +87,25 @@ speaker_group:
 
 Both cards support these options:
 
-| Option                    | Type   | Default  | Description                                                      |
-| ------------------------- | ------ | -------- | ---------------------------------------------------------------- |
-| `entity_id`               | string | Required | The entity ID of the media player                                |
-| `action`                  | object | -        | Configuration for tap actions                                    |
-| `speaker_group`           | object | -        | Configuration for speaker grouping                               |
-| `speaker_group.entity_id` | string | -        | Entity ID of the main speaker if different from the media player |
-| `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
-| `custom_buttons`          | array  | -        | List of custom buttons to display                                |
-| `ma_entity_id`            | string | -        | Music Assistant entity id (adds search)                          |
-| `ma_favorite_button_entity_id` | string | - | Music Assistant favorite button entity (shows a heart-plus button to mark the current song as favorite) |
-| `options`                 | object | -        | Additional display options for fine-tuning the card              |
-| `options.always_show_power_button` | boolean | `false` | Always show the power button, even if the media player is on |
+| Option                             | Type    | Default  | Description                                                                                             |
+| ---------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `entity_id`                        | string  | Required | The entity ID of the media player                                                                       |
+| `action`                           | object  | -        | Configuration for tap actions                                                                           |
+| `speaker_group`                    | object  | -        | Configuration for speaker grouping                                                                      |
+| `speaker_group.entity_id`          | string  | -        | Entity ID of the main speaker if different from the media player                                        |
+| `speaker_group.entities`           | array   | -        | List of entity IDs that can be grouped with the main speaker                                            |
+| `custom_buttons`                   | array   | -        | List of custom buttons to display                                                                       |
+| `ma_entity_id`                     | string  | -        | Music Assistant entity id (adds search)                                                                 |
+| `ma_favorite_button_entity_id`     | string  | -        | Music Assistant favorite button entity (shows a heart-plus button to mark the current song as favorite) |
+| `options`                          | object  | -        | Additional display options for fine-tuning the card                                                     |
+| `options.always_show_power_button` | boolean | `false`  | Always show the power button, even if the media player is on                                            |
 
 The Mediocre Media Player Card has additional options:
 
-| Option            | Type    | Default | Description                                                            |
-| ----------------- | ------- | ------- | ---------------------------------------------------------------------- |
-| `tap_opens_popup` | boolean | `false` | When set to true, tapping the card opens a popup with the massive card |
-| `options.always_show_custom_buttons` | boolean | `false` | Always show custom buttons panel expanded |
+| Option                               | Type    | Default | Description                                                            |
+| ------------------------------------ | ------- | ------- | ---------------------------------------------------------------------- |
+| `tap_opens_popup`                    | boolean | `false` | When set to true, tapping the card opens a popup with the massive card |
+| `options.always_show_custom_buttons` | boolean | `false` | Always show custom buttons panel expanded                              |
 
 The Mediocre Massive Media Player Card has additional options:
 
@@ -151,7 +152,6 @@ custom_buttons:
 Both the Mediocre Media Player Card and the Mediocre Massive Media Player Card support Music Assistant. By specifying a `ma_entity_id`, you can enable Music Assistant-specific features (currently just search). Even if your main entity_id is the same as your music assistant entity_id you need to specify it in the `ma_entity_id`. This allows you to use the card with a different entity_id than your music assistant but trigger actions on a music assistant entity.
 
 ### Configuration
-
 
 ```yaml
 type: "custom:mediocre-media-player-card"

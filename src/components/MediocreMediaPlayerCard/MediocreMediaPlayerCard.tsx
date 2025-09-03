@@ -193,11 +193,11 @@ export const MediocreMediaPlayerCard = () => {
                   ma_favorite_button_entity_id={
                     ma_favorite_button_entity_id ?? undefined
                   }
-                  renderTrigger={trigger => (
+                  renderTrigger={triggerProps => (
                     <IconButton
                       icon="mdi:bookshelf"
                       size="x-small"
-                      onClick={trigger}
+                      {...triggerProps}
                     />
                   )}
                 />

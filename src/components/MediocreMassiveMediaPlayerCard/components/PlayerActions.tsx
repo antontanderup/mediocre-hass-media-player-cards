@@ -181,8 +181,8 @@ export const PlayerActions = () => {
       <MaMenu
         ma_entity_id={ma_entity_id ?? undefined}
         ma_favorite_button_entity_id={ma_favorite_button_entity_id ?? undefined}
-        renderTrigger={trigger => (
-          <IconButton icon="mdi:bookshelf" size="small" onClick={trigger} />
+        renderTrigger={triggerProps => (
+          <IconButton icon="mdi:bookshelf" size="small" {...triggerProps} />
         )}
       />
       {hasSearch && (

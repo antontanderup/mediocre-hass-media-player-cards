@@ -5,17 +5,17 @@ import {
   getIsMassPlayer,
   transferMaQueue,
 } from "@utils";
-import { JSX } from "preact";
 import {
   OverlayMenu,
   OverlayMenuItem,
+  OverlayMenuProps,
 } from "@components/OverlayMenu/OverlayMenu";
 import { usePlayer } from "@components/PlayerContext";
 
 export type MaMenuProps = {
   ma_entity_id?: string;
   ma_favorite_button_entity_id?: string;
-  renderTrigger: (onClick: () => void) => JSX.Element;
+  renderTrigger: OverlayMenuProps['renderTrigger']
 };
 
 export const MaMenu = ({
@@ -80,5 +80,5 @@ export const MaMenu = ({
   console.log(menuItems);
   if (menuItems.length === 0) return null;
 
-  return <OverlayMenu trigger={renderTrigger} menuItems={menuItems} />;
+  return <OverlayMenu renderTrigger={renderTrigger} menuItems={menuItems} />;
 };

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, JSX } from "preact/compat";
+import { ButtonHTMLAttributes, JSX, forwardRef } from "preact/compat";
 import { css } from "@emotion/react";
 import { Spinner } from "@components";
 import { theme } from "@constants";
@@ -12,7 +12,7 @@ export type ButtonSize =
   | "x-large"
   | "xx-large";
 
-export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'ref'> & {
   icon: string;
   size?: ButtonSize;
   disabled?: boolean;
@@ -66,7 +66,7 @@ const styles = {
   }),
 };
 
-export const IconButton = ({
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(({
   icon,
   size = "medium",
   disabled = false,
@@ -74,7 +74,7 @@ export const IconButton = ({
   className,
   renderLongPressIndicator,
   ...buttonProps
-}: IconButtonProps) => {
+}, ref) => {
   return (
     <button
       disabled={disabled}
@@ -88,12 +88,13 @@ export const IconButton = ({
       }}
       className={className}
       {...buttonProps}
+      ref={ref}
     >
       {loading ? <Spinner size={size} /> : <ha-icon icon={icon} />}
       {renderLongPressIndicator && renderLongPressIndicator()}
     </button>
   );
-};
+});
 
 const getButtonSize = (size: ButtonSize) => {
   switch (size) {
