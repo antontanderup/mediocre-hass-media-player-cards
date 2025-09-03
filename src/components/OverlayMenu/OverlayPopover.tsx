@@ -88,14 +88,9 @@ export const OverlayPopover = ({ renderTrigger, side = 'bottom', align = 'start'
     const getAlignPosition = useCallback((align: 'start' | 'center' | 'end', side: 'left' | 'right' | 'top' | 'bottom', trigger: DOMRect, popover: DOMRect) => {
         switch (align) {
             case 'start': {
-                if (side === 'right') {
+                if (side === 'right' || side === 'left') {
                     return {
-                        left: trigger.left + trigger.width + triggerPadding
-                    }
-                }
-                if (side === 'left') {
-                    return {
-                        left: trigger.left - popover.width - triggerPadding
+                        top: trigger.top
                     }
                 }
                 return {
