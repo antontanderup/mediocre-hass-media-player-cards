@@ -15,7 +15,7 @@ import { usePlayer } from "@components/PlayerContext";
 export type MaMenuProps = {
   ma_entity_id?: string;
   ma_favorite_button_entity_id?: string;
-  renderTrigger: OverlayMenuProps['renderTrigger']
+  renderTrigger: OverlayMenuProps["renderTrigger"];
 };
 
 export const MaMenu = ({
