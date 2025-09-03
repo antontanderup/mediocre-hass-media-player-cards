@@ -222,7 +222,7 @@ export const OverlayPopover = ({
                 entry.intersectionRect.bottom !==
                 entry.boundingClientRect.bottom;
               if (overflowingBottom && overflowingTop) {
-                console.log("TODO: Overflowing both vertically");
+                // Overflow handled by css
               } else {
                 if (overflowingBottom) {
                   if (sideInput === "bottom") {
@@ -250,7 +250,7 @@ export const OverlayPopover = ({
               const overflowingLeft =
                 entry.boundingClientRect.left !== entry.intersectionRect.left;
               if (overflowingLeft && overflowingRight) {
-                console.log("TODO: Overflowing both horizontally");
+                // Overflow handled by css
               } else {
                 if (overflowingRight) {
                   if (sideInput === "top" || sideInput === "bottom") {
