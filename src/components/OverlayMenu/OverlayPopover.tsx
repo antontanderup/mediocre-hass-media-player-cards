@@ -41,11 +41,17 @@ const triggerPadding = 8;
 
 export const OverlayPopover = ({
   renderTrigger,
-  side = "bottom",
-  align = "start",
+  side: sideInput = "bottom",
+  align: alignInput = "start",
   openOnHover,
   children,
 }: OverlayPopoverProps) => {
+
+  const [sideOverride, setSideOverride] = useState<OverlayPopoverProps['side'] | undefined>();
+  const [alignOverride, setAlignOverride] = useState<OverlayPopoverProps['align'] | undefined>();
+  const side = sideOverride ?? sideInput;
+  const align = alignOverride ?? alignInput;
+
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -188,6 +194,49 @@ export const OverlayPopover = ({
       ...alignPosition,
     };
   }, [triggerPosition, popoverPosition, side]);
+
+          // IntersectionObserver for popoverRef and window
+      useEffect(() => {
+        const popover = popoverRef.current;
+        if (!popover || !open) return;
+        const observer = new window.IntersectionObserver((entries, observer) => {
+          // TODO: Add your callback logic here
+           entries.forEach((entry) => {
+            if (entry.intersectionRatio < 1) {
+              // Popover is not fully visible
+              console.log("not fully visible")
+              if (entry.boundingClientRect.height !== entry.intersectionRect.height) {
+                console.log("not fully visible vertically", entry)
+                const overflowingTop = entry.boundingClientRect.top !== entry.intersectionRect.top;
+                const overflowingBottom = entry.intersectionRect.bottom !== entry.boundingClientRect.bottom;
+                console.log("overflowing", { overflowingTop, overflowingBottom });
+                if (overflowingBottom && overflowingTop) {
+                  console.log("overflowing both vertically");
+                } else {
+                  if (overflowingBottom) {
+                    if (side === "bottom") {
+                      setSideOverride("top");
+                    }
+                    if (side === "right" || side === 'left') {
+                      setAlignOverride("end")
+                    }
+                  }
+                }
+              }
+              if (entry.boundingClientRect.width !== entry.intersectionRect.width) {
+                console.log("not fully visible horizontally", entry)
+              }
+            }
+          });
+        }, {
+          root: null, // Observe with respect to viewport
+          threshold: 0, // Adjust as needed
+        });
+        observer.observe(popover);
+        return () => {
+          observer.disconnect();
+        };
+      }, [popoverRef.current, open, side, align]);
 
   return (
     <Fragment>
