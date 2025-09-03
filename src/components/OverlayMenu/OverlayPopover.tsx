@@ -15,10 +15,11 @@ export type OverlayPopoverProps = {
     ref,
   }: Pick<
     ButtonHTMLAttributes<HTMLButtonElement>,
-    "onClick" | "ref"
+    "onClick" | "onMouseEnter" | "ref"
   >) => JSX.Element;
   side?: "left" | "right" | "top" | "bottom";
   align?: "start" | "center" | "end";
+  openOnHover?: boolean;
   children: JSX.Element;
 };
 
@@ -42,6 +43,7 @@ export const OverlayPopover = ({
   renderTrigger,
   side = "bottom",
   align = "start",
+  openOnHover,
   children,
 }: OverlayPopoverProps) => {
   const [open, setOpen] = useState(false);
@@ -80,14 +82,20 @@ export const OverlayPopover = ({
     return () => window.removeEventListener("click", handleClick);
   }, [open]);
 
+  const handleOpen = () => {
+    setOpen(true);
+    setTriggerPosition(triggerRef.current?.getBoundingClientRect() || null);
+    // Timeout to allow for popover to render
+    setTimeout(() => {
+      setPopoverPosition(popoverRef.current?.getBoundingClientRect() || null);
+    }, 0);
+  };
+
   const handleOnClick = useCallback(() => {
-    setOpen(open => !open);
-    if (!open) {
-      setTriggerPosition(triggerRef.current?.getBoundingClientRect() || null);
-      // Timeout to allow for popover to render
-      setTimeout(() => {
-        setPopoverPosition(popoverRef.current?.getBoundingClientRect() || null);
-      }, 0);
+    if (open) {
+      setOpen(false);
+    } else {
+      handleOpen();
     }
   }, [open]);
 
@@ -183,7 +191,11 @@ export const OverlayPopover = ({
 
   return (
     <Fragment>
-      {renderTrigger({ onClick: handleOnClick, ref: triggerRef })}
+      {renderTrigger({
+        onClick: handleOnClick,
+        onMouseEnter: openOnHover ? handleOpen : undefined,
+        ref: triggerRef,
+      })}
       {open && (
         <div
           css={styles.popoverRoot}

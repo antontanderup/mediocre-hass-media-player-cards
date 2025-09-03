@@ -86,6 +86,7 @@ export const OverlayMenu = ({ renderTrigger, menuItems }: OverlayMenuProps) => {
           <OverlayPopover
             side="right"
             align="start"
+            openOnHover
             renderTrigger={buttonProps =>
               renderMenuItem(item, buttonProps, hasChildren, index)
             }
