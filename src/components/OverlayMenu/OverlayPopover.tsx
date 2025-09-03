@@ -193,25 +193,21 @@ export const OverlayPopover = ({
       ...sidePosition,
       ...alignPosition,
     };
-  }, [triggerPosition, popoverPosition, side]);
+  }, [triggerPosition, popoverPosition, side, align]);
 
           // IntersectionObserver for popoverRef and window
       useEffect(() => {
         const popover = popoverRef.current;
         if (!popover || !open) return;
         const observer = new window.IntersectionObserver((entries, observer) => {
-          // TODO: Add your callback logic here
            entries.forEach((entry) => {
             if (entry.intersectionRatio < 1) {
               // Popover is not fully visible
-              console.log("not fully visible")
               if (entry.boundingClientRect.height !== entry.intersectionRect.height) {
-                console.log("not fully visible vertically", entry)
                 const overflowingTop = entry.boundingClientRect.top !== entry.intersectionRect.top;
                 const overflowingBottom = entry.intersectionRect.bottom !== entry.boundingClientRect.bottom;
-                console.log("overflowing", { overflowingTop, overflowingBottom });
                 if (overflowingBottom && overflowingTop) {
-                  console.log("overflowing both vertically");
+                  console.log("TODO: Overflowing both vertically");
                 } else {
                   if (overflowingBottom) {
                     if (side === "bottom") {
@@ -232,7 +228,28 @@ export const OverlayPopover = ({
                 }
               }
               if (entry.boundingClientRect.width !== entry.intersectionRect.width) {
-                console.log("not fully visible horizontally", entry)
+                const overflowingRight = entry.boundingClientRect.right !== entry.intersectionRect.right;
+                const overflowingLeft = entry.boundingClientRect.left !== entry.intersectionRect.left;
+                if (overflowingLeft && overflowingRight) {
+                  console.log("TODO: Overflowing both horizontally");
+                } else {
+                  if (overflowingRight) {
+                    if (side === "top" || side === "bottom") {
+                      setAlignOverride("end")
+                    }
+                    if (side === "right") {
+                      setSideOverride("left")
+                    }
+                  }
+                  if (overflowingLeft) {
+                    if (side === "top" || side === "bottom") {
+                      setAlignOverride("start")
+                    }
+                    if (side === "left") {
+                      setSideOverride("right")
+                    }
+                  }
+                }
               }
             }
           });
@@ -240,11 +257,14 @@ export const OverlayPopover = ({
           root: null, // Observe with respect to viewport
           threshold: 0, // Adjust as needed
         });
+
         observer.observe(popover);
+
         return () => {
           observer.disconnect();
         };
       }, [popoverRef.current, open, side, align]);
+      console.log({align, side})
 
   return (
     <Fragment>
