@@ -27,10 +27,6 @@ const styles = {
     flexDirection: "column",
     border: `1px solid ${theme.colors.onCardDivider}`,
   }),
-  submenu: css({
-    position: "absolute",
-    minWidth: 180,
-  }),
   item: css({
     display: "flex",
     alignItems: "center",
