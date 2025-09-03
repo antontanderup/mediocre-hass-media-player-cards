@@ -22,6 +22,9 @@ const styles = {
     minWidth: 180,
     boxShadow: "0 2px 12px rgba(0,0,0,0.12)",
     padding: 4,
+    gap: 4,
+    display: 'flex',
+    flexDirection: 'column',
     border: `1px solid ${theme.colors.onCardDivider}`,
   }),
   submenu: css({
@@ -39,6 +42,7 @@ const styles = {
     color: "inherit",
     transition: "background 0.15s",
     position: "relative",
+    border: 'none',
     "&:hover, &[data-highlighted]": {
       background: theme.colors.onCardDivider,
     },
@@ -46,59 +50,41 @@ const styles = {
       color: theme.colors.onCardMuted,
       cursor: "not-allowed",
     },
-    // Show submenu on hover/focus
-    "> .overlaymenu-submenu": {
-      display: "none",
-    },
-    ":hover > .overlaymenu-submenu, :focus-within > .overlaymenu-submenu": {
-      display: "block",
-    },
   }),
 };
 
 import { OverlayPopover, OverlayPopoverProps } from "./OverlayPopover";
+import { ButtonHTMLAttributes } from "preact/compat";
 
 export const OverlayMenu = ({ renderTrigger, menuItems }: OverlayMenuProps) => {
 
-  const renderMenuItems = (items: OverlayMenuItem[], parentLevel = 0) => {
-    return items.map((item, idx) => {
-      const hasChildren = item.children && item.children.length > 0;
+  const renderMenuItem = (item: OverlayMenuItem, buttonProps: Partial<ButtonHTMLAttributes>, hasChildren: boolean, index: number) => {
+    return (
+      <button key={item.label + index} css={styles.item} onClick={item.onClick} role="menuitem" {...buttonProps}>
+        {item.icon && <Icon icon={item.icon} size="x-small" />}
+        <span>{item.label}</span>
+        {hasChildren && <Icon icon={"mdi:chevron-down"} size="x-small" />}
+      </button>
+    );
+  }
 
-      return (
-        <div
-          key={item.label + idx}
-          css={styles.item}
-          tabIndex={item.onClick || hasChildren ? 0 : -1}
-          onClick={() => {
-            if (item.onClick) item.onClick();
-            // if (!item.children) setOpen(false);
-          }}
-          role="menuitem"
-          aria-haspopup={hasChildren ? "menu" : undefined}
-          aria-disabled={!item.onClick && !hasChildren}
-          data-disabled={!item.onClick && !hasChildren ? true : undefined}
-        >
-          {item.icon && <Icon icon={item.icon} size="x-small" />}
-          <span>{item.label}</span>
-          {hasChildren && <Icon icon={"mdi:chevron-down"} size="x-small" />}
-          {hasChildren && (
-            <div
-              className="overlaymenu-submenu"
-              css={[styles.menuRoot, styles.submenu]}
-              role="menu"
-              // style={{
-              //   left: alignLeft ? undefined : "100%",
-              //   right: alignLeft ? "100%" : undefined,
-              //   zIndex: 9 + parentLevel,
-              //   top: menuPosition.top !== undefined ? 0 : undefined,
-              //   bottom: menuPosition.top === undefined ? 0 : undefined,
-              // }}
-            >
-              {renderMenuItems(item.children!, parentLevel + 1)}
-            </div>
-          )}
-        </div>
-      );
+  const renderMenuItems = (items: OverlayMenuItem[], parentLevel = 0) => {
+    return items.map((item, index) => {
+      const hasChildren = !!(item.children && item.children.length > 0);
+      if (hasChildren) {
+        return (
+        <OverlayPopover side="right" align="start" renderTrigger={(buttonProps) => renderMenuItem(item, buttonProps, hasChildren, index)}>
+          <div
+            css={styles.menuRoot}
+            role="menu"
+          >
+            {renderMenuItems(item.children!, parentLevel + 1)}
+          </div>
+        </OverlayPopover>
+        )
+      } else {
+        return renderMenuItem(item, {}, hasChildren, index)
+      }
     });
   };
 
@@ -106,13 +92,12 @@ export const OverlayMenu = ({ renderTrigger, menuItems }: OverlayMenuProps) => {
     <OverlayPopover
       renderTrigger={renderTrigger}
     >
-        <div
-          css={styles.menuRoot}
-          role="menu"
-        >
-          {renderMenuItems(menuItems)}
-        </div>
-      
+      <div
+        css={styles.menuRoot}
+        role="menu"
+      >
+        {renderMenuItems(menuItems)}
+      </div>
     </OverlayPopover>
   );
 };
