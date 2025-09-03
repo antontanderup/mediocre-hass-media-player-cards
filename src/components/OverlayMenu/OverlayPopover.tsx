@@ -34,6 +34,8 @@ const styles = {
     zIndex: 9,
     opacity: 1,
     animation: `${fadeIn} 0.3s ease`,
+    maxHeight: "100vh",
+    overflowY: 'auto'
   }),
 };
 
@@ -46,9 +48,12 @@ export const OverlayPopover = ({
   openOnHover,
   children,
 }: OverlayPopoverProps) => {
-
-  const [sideOverride, setSideOverride] = useState<OverlayPopoverProps['side'] | undefined>();
-  const [alignOverride, setAlignOverride] = useState<OverlayPopoverProps['align'] | undefined>();
+  const [sideOverride, setSideOverride] = useState<
+    OverlayPopoverProps["side"] | undefined
+  >();
+  const [alignOverride, setAlignOverride] = useState<
+    OverlayPopoverProps["align"] | undefined
+  >();
   const side = sideOverride ?? sideInput;
   const align = alignOverride ?? alignInput;
 
@@ -122,11 +127,11 @@ export const OverlayPopover = ({
           };
         case "left":
           return {
-            left: trigger.left - popover.width - triggerPadding,
+            left: Math.max(0, trigger.left - popover.width - triggerPadding),
           };
         case "right":
           return {
-            left: trigger.left + trigger.width + triggerPadding,
+            left: Math.max(0, trigger.left + trigger.width + triggerPadding),
           };
       }
     },
@@ -144,7 +149,7 @@ export const OverlayPopover = ({
         case "start": {
           if (side === "right" || side === "left") {
             return {
-              top: trigger.top,
+              top: Math.max(0, trigger.top),
             };
           }
           return {
@@ -154,7 +159,7 @@ export const OverlayPopover = ({
         case "center": {
           if (side === "right" || side === "left") {
             return {
-              top: trigger.top + trigger.height / 2 - popover.height / 2,
+              top: Math.max(0, trigger.top + trigger.height / 2 - popover.height / 2),
             };
           }
           return {
@@ -164,7 +169,7 @@ export const OverlayPopover = ({
         case "end": {
           if (side === "right" || side === "left") {
             return {
-              top: trigger.top - popover.height + trigger.height,
+              top: Math.max(0, trigger.top - popover.height + trigger.height),
             };
           }
           return {
@@ -195,76 +200,87 @@ export const OverlayPopover = ({
     };
   }, [triggerPosition, popoverPosition, side, align]);
 
-          // IntersectionObserver for popoverRef and window
-      useEffect(() => {
-        const popover = popoverRef.current;
-        if (!popover || !open) return;
-        const observer = new window.IntersectionObserver((entries, observer) => {
-           entries.forEach((entry) => {
-            if (entry.intersectionRatio < 1) {
-              // Popover is not fully visible
-              if (entry.boundingClientRect.height !== entry.intersectionRect.height) {
-                const overflowingTop = entry.boundingClientRect.top !== entry.intersectionRect.top;
-                const overflowingBottom = entry.intersectionRect.bottom !== entry.boundingClientRect.bottom;
-                if (overflowingBottom && overflowingTop) {
-                  console.log("TODO: Overflowing both vertically");
-                } else {
-                  if (overflowingBottom) {
-                    if (side === "bottom") {
-                      setSideOverride("top");
-                    }
-                    if (side === "right" || side === 'left') {
-                      setAlignOverride("end")
-                    }
+  // IntersectionObserver for popover and window
+  useEffect(() => {
+    const popover = popoverRef.current;
+    if (!popover || !open) return;
+    const observer = new window.IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio < 1) {
+            // Popover is not fully visible
+            if (
+              entry.boundingClientRect.height !== entry.intersectionRect.height
+            ) {
+              const overflowingTop =
+                entry.boundingClientRect.top !== entry.intersectionRect.top;
+              const overflowingBottom =
+                entry.intersectionRect.bottom !==
+                entry.boundingClientRect.bottom;
+              if (overflowingBottom && overflowingTop) {
+                console.log("TODO: Overflowing both vertically");
+              } else {
+                if (overflowingBottom) {
+                  if (sideInput === "bottom") {
+                    setSideOverride("top");
                   }
-                  if (overflowingTop) {
-                    if (side === "top") {
-                      setSideOverride("bottom");
-                    }
-                    if (side === "right" || side === 'left') {
-                      setAlignOverride("start")
-                    }
+                  if (sideInput === "right" || sideInput === "left") {
+                    setAlignOverride("end");
                   }
                 }
-              }
-              if (entry.boundingClientRect.width !== entry.intersectionRect.width) {
-                const overflowingRight = entry.boundingClientRect.right !== entry.intersectionRect.right;
-                const overflowingLeft = entry.boundingClientRect.left !== entry.intersectionRect.left;
-                if (overflowingLeft && overflowingRight) {
-                  console.log("TODO: Overflowing both horizontally");
-                } else {
-                  if (overflowingRight) {
-                    if (side === "top" || side === "bottom") {
-                      setAlignOverride("end")
-                    }
-                    if (side === "right") {
-                      setSideOverride("left")
-                    }
+                if (overflowingTop) {
+                  if (sideInput === "top") {
+                    setSideOverride("bottom");
                   }
-                  if (overflowingLeft) {
-                    if (side === "top" || side === "bottom") {
-                      setAlignOverride("start")
-                    }
-                    if (side === "left") {
-                      setSideOverride("right")
-                    }
+                  if (sideInput === "right" || sideInput === "left") {
+                    setAlignOverride("start");
                   }
                 }
               }
             }
-          });
-        }, {
-          root: null, // Observe with respect to viewport
-          threshold: 0, // Adjust as needed
+            if (
+              entry.boundingClientRect.width !== entry.intersectionRect.width
+            ) {
+              const overflowingRight =
+                entry.boundingClientRect.right !== entry.intersectionRect.right;
+              const overflowingLeft =
+                entry.boundingClientRect.left !== entry.intersectionRect.left;
+              if (overflowingLeft && overflowingRight) {
+                console.log("TODO: Overflowing both horizontally");
+              } else {
+                if (overflowingRight) {
+                  if (sideInput === "top" || sideInput === "bottom") {
+                    setAlignOverride("end");
+                  }
+                  if (sideInput === "right") {
+                    setSideOverride("left");
+                  }
+                }
+                if (overflowingLeft) {
+                  if (sideInput === "top" || sideInput === "bottom") {
+                    setAlignOverride("start");
+                  }
+                  if (sideInput === "left") {
+                    setSideOverride("right");
+                  }
+                }
+              }
+            }
+          }
         });
+      },
+      {
+        root: null, // Observe with respect to viewport
+        threshold: 0, // Adjust as needed
+      }
+    );
 
-        observer.observe(popover);
+    observer.observe(popover);
 
-        return () => {
-          observer.disconnect();
-        };
-      }, [popoverRef.current, open, side, align]);
-      console.log({align, side})
+    return () => {
+      observer.disconnect();
+    };
+  }, [popoverRef.current, open, sideInput, alignInput]);
 
   return (
     <Fragment>
