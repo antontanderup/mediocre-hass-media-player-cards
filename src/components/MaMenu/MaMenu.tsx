@@ -15,13 +15,12 @@ import { usePlayer } from "@components/PlayerContext";
 export type MaMenuProps = {
   ma_entity_id?: string;
   ma_favorite_button_entity_id?: string;
-  renderTrigger: OverlayMenuProps["renderTrigger"];
-};
+} & Omit<OverlayMenuProps, "menuItems" | "children">;
 
 export const MaMenu = ({
-  renderTrigger,
   ma_entity_id,
   ma_favorite_button_entity_id,
+  ...overlayMenuProps
 }: MaMenuProps) => {
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(
@@ -76,5 +75,5 @@ export const MaMenu = ({
 
   if (menuItems.length === 0) return null;
 
-  return <OverlayMenu renderTrigger={renderTrigger} menuItems={menuItems} />;
+  return <OverlayMenu menuItems={menuItems} {...overlayMenuProps} />;
 };

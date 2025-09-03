@@ -10,9 +10,8 @@ export type OverlayMenuItem = {
 };
 
 export type OverlayMenuProps = {
-  renderTrigger: OverlayPopoverProps["renderTrigger"];
   menuItems: OverlayMenuItem[];
-};
+} & Omit<OverlayPopoverProps, "children">;
 
 const styles = {
   menuRoot: css({
@@ -52,7 +51,10 @@ const styles = {
 import { OverlayPopover, OverlayPopoverProps } from "./OverlayPopover";
 import { ButtonHTMLAttributes } from "preact/compat";
 
-export const OverlayMenu = ({ renderTrigger, menuItems }: OverlayMenuProps) => {
+export const OverlayMenu = ({
+  menuItems,
+  ...overlayMenuProps
+}: OverlayMenuProps) => {
   const renderMenuItem = (
     item: OverlayMenuItem,
     buttonProps: Partial<ButtonHTMLAttributes>,
@@ -99,7 +101,7 @@ export const OverlayMenu = ({ renderTrigger, menuItems }: OverlayMenuProps) => {
   };
 
   return (
-    <OverlayPopover renderTrigger={renderTrigger}>
+    <OverlayPopover {...overlayMenuProps}>
       <div css={styles.menuRoot} role="menu">
         {renderMenuItems(menuItems)}
       </div>

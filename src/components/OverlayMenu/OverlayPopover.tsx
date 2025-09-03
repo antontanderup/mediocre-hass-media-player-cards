@@ -31,7 +31,7 @@ const fadeIn = keyframes`
 const styles = {
   popoverRoot: css({
     position: "fixed",
-    zIndex: 9,
+    zIndex: 100,
     opacity: 1,
     animation: `${fadeIn} 0.3s ease`,
     maxHeight: "100vh",
@@ -62,7 +62,7 @@ export const OverlayPopover = ({
   const popoverRef = useRef<HTMLDivElement>(null);
   const [triggerPosition, setTriggerPosition] = useState<DOMRect | null>(null);
   const [popoverPosition, setPopoverPosition] = useState<DOMRect | null>(null);
-
+  console.log({ popoverPosition, triggerPosition });
   // Keyboard navigation: close on Escape
   useEffect(() => {
     if (!open) return;

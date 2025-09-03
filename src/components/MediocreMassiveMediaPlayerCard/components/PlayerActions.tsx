@@ -178,13 +178,19 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       ) : null}
-      <MaMenu
-        ma_entity_id={ma_entity_id ?? undefined}
-        ma_favorite_button_entity_id={ma_favorite_button_entity_id ?? undefined}
-        renderTrigger={triggerProps => (
-          <IconButton icon="mdi:bookshelf" size="small" {...triggerProps} />
-        )}
-      />
+      {ma_entity_id && (
+        <MaMenu
+          ma_entity_id={ma_entity_id ?? undefined}
+          ma_favorite_button_entity_id={
+            ma_favorite_button_entity_id ?? undefined
+          }
+          side="top"
+          align="end"
+          renderTrigger={triggerProps => (
+            <IconButton icon="mdi:bookshelf" size="small" {...triggerProps} />
+          )}
+        />
+      )}
       {hasSearch && (
         <IconButton
           size="small"
