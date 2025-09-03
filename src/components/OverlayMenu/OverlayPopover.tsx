@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css,  keyframes } from "@emotion/react";
 import { Fragment, JSX } from "preact"
 import { ButtonHTMLAttributes } from "preact/compat";
 import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
@@ -10,10 +10,17 @@ export type OverlayPopoverProps = {
     children: JSX.Element
 }
 
+const fadeIn = keyframes`
+    from { opacity: 0; }
+    to { opacity: 1; }
+`;
+
 const styles = {
     popoverRoot: css({
         position: "fixed",
         zIndex: 9,
+        opacity: 1,
+        animation: `${fadeIn} 0.3s ease`,
     }),
 }
 
