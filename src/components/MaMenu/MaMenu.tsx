@@ -31,7 +31,6 @@ export const MaMenu = ({
 
   const markSongAsFavorite = useCallback(() => {
     if (!ma_favorite_button_entity_id) return;
-    console.log("Marking song as favorite");
     getHass().callService("button", "press", {
       entity_id: ma_favorite_button_entity_id,
     });
@@ -39,9 +38,7 @@ export const MaMenu = ({
 
   const transferQueue = useCallback(
     (targetEntity: string) => {
-      console.log("Transfer to:", targetEntity);
       if (!ma_entity_id) return;
-      console.log("Transferring queue to:", targetEntity);
       transferMaQueue(ma_entity_id, targetEntity);
     },
     [ma_entity_id]
@@ -77,7 +74,6 @@ export const MaMenu = ({
     return items;
   }, [ma_favorite_button_entity_id, markSongAsFavorite, transferQueue]);
 
-  console.log(menuItems);
   if (menuItems.length === 0) return null;
 
   return <OverlayMenu renderTrigger={renderTrigger} menuItems={menuItems} />;
