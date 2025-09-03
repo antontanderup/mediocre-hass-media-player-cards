@@ -334,6 +334,26 @@ export const MediocreMediaPlayerCardEditor: FC<
         </form.Field>
       </SubForm>
 
+      <SubForm title="Queue (optional)" error={getSubformError("queue")}>
+        <FormGroup>
+          <form.Field name="queue.enabled">
+            {field => (
+              <ToggleContainer>
+                <Toggle
+                  type="checkbox"
+                  id="queue.enabled"
+                  checked={field.state.value ?? false}
+                  onChange={e =>
+                    field.handleChange((e.target as HTMLInputElement).checked)
+                  }
+                />
+                <ToggleLabel htmlFor="queue.enabled">Enable Queue</ToggleLabel>
+              </ToggleContainer>
+            )}
+          </form.Field>
+        </FormGroup>
+      </SubForm>
+
       <SubForm
         title="Music Assistant Configuration (optional)"
         error={

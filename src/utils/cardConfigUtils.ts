@@ -24,6 +24,9 @@ export const getDefaultValuesFromConfig = (
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
   },
+  queue: {
+    enabled: config?.queue?.enabled ?? false,
+  },
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
@@ -57,6 +60,9 @@ export const getDefaultValuesFromMassiveConfig = (
     show_favorites: config?.search?.show_favorites ?? false,
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
+  },
+  queue: {
+    enabled: config?.queue?.enabled ?? false,
   },
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
@@ -120,6 +126,10 @@ export const getSimpleConfigFromFormValues = (
     !config.search?.media_types
   ) {
     delete config.search;
+  }
+
+  if (!config.queue?.enabled) {
+    delete config.queue;
   }
 
   if (config.options?.always_show_power_button === false) {
@@ -189,6 +199,10 @@ export const getSimpleConfigFromMassiveFormValues = (
     !config.search?.media_types
   ) {
     delete config.search;
+  }
+
+  if (!config.queue?.enabled) {
+    delete config.queue;
   }
 
   if (config.options?.always_show_power_button === false) {

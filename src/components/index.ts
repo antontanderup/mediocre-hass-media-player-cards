@@ -12,6 +12,7 @@ export * from "./Icon";
 export * from "./IconButton";
 export * from "./Input";
 export * from "./MaSearch";
+export * from "./MaQueue";
 export * from "./MediaSearch";
 export * from "./MediocreChipMediaPlayerGroupCard";
 export * from "./MediocreMassiveMediaPlayerCard";

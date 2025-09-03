@@ -8,6 +8,7 @@ import {
   PlaybackControls,
   PlayerInfo,
   Search,
+  Queue,
   SpeakerGrouping,
 } from "./components";
 import { AlbumArt, IconButton, usePlayer } from "@components";
@@ -81,6 +82,7 @@ export const MediocreMediaPlayerCard = () => {
     use_art_colors,
     ma_entity_id,
     search,
+    queue,
     options: {
       always_show_power_button: alwaysShowPowerButton,
       always_show_custom_buttons: alwaysShowCustomButtons,
@@ -90,6 +92,7 @@ export const MediocreMediaPlayerCard = () => {
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
+  const hasQueue = hasMaSearch && queue?.enabled;
 
   const [showGrouping, setShowGrouping] = useState(false);
   const [showCustomButtons, setShowCustomButtons] = useState(
@@ -97,6 +100,7 @@ export const MediocreMediaPlayerCard = () => {
   );
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showQueue, setShowQueue] = useState(false);
 
   const { artVars, haVars } = useArtworkColors();
 
@@ -206,6 +210,13 @@ export const MediocreMediaPlayerCard = () => {
                     icon={"mdi:magnify"}
                   />
                 )}
+                {hasQueue && (
+                  <IconButton
+                    size="x-small"
+                    onClick={() => setShowQueue(!showQueue)}
+                    icon={"mdi:playlist-music"}
+                  />
+                )}
               </div>
             </div>
             <div
@@ -251,6 +262,7 @@ export const MediocreMediaPlayerCard = () => {
         {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
         {showCustomButtons && <CustomButtons />}
         {showSearch && <Search />}
+        {showQueue && <Queue />}
         {isPopupVisible && (
           <MassivePopUp
             visible={isPopupVisible}
