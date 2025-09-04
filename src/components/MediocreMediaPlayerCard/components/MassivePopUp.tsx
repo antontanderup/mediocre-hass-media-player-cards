@@ -19,11 +19,11 @@ import { theme } from "@constants";
 
 const slideUp = keyframes`
   from {
-    transform: translateY(15%);
+    top: 15%;
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    top: 0%;
     opacity: 1;
   }
 `;
@@ -55,6 +55,7 @@ const styles = {
     zIndex: 0,
   }),
   popUpContainer: css({
+    position: "relative",
     animation: `${slideUp} 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards`,
     maxHeight: "98vh",
     height: "fit-content",
