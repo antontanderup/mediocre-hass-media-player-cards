@@ -62,7 +62,7 @@ export const OverlayPopover = ({
   const popoverRef = useRef<HTMLDivElement>(null);
   const [triggerPosition, setTriggerPosition] = useState<DOMRect | null>(null);
   const [popoverPosition, setPopoverPosition] = useState<DOMRect | null>(null);
-  console.log({ popoverPosition, triggerPosition });
+
   // Keyboard navigation: close on Escape
   useEffect(() => {
     if (!open) return;
@@ -293,7 +293,7 @@ export const OverlayPopover = ({
     <Fragment>
       {renderTrigger({
         onClick: handleOnClick,
-        onMouseEnter: openOnHover ? handleOpen : undefined,
+        onMouseEnter: openOnHover && !matchMedia('(hover: none)').matches ? handleOpen : undefined,
         ref: triggerRef,
       })}
       {open && (
