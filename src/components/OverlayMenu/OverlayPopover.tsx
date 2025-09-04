@@ -293,7 +293,10 @@ export const OverlayPopover = ({
     <Fragment>
       {renderTrigger({
         onClick: handleOnClick,
-        onMouseEnter: openOnHover && !matchMedia('(hover: none)').matches ? handleOpen : undefined,
+        onMouseEnter:
+          openOnHover && !matchMedia("(hover: none)").matches
+            ? handleOpen
+            : undefined,
         ref: triggerRef,
       })}
       {open && (
