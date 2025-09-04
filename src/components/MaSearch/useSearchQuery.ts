@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { getHass } from "@utils";
 import {
   MaEnqueueMode,
@@ -11,6 +11,7 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
   const [configEntry, setConfigEntry] = useState(null);
   const [results, setResults] = useState<MaSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const latestQuery = useRef<string | null>(null);
 
   useEffect(() => {
     const hass = getHass();
@@ -32,6 +33,8 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
 
   useEffect(() => {
     if (debounceQuery === "" || !configEntry) return;
+    const thisQuery = debounceQuery + (filter ?? 'all');
+    latestQuery.current = thisQuery;
 
     const message = {
       type: "call_service",
@@ -50,6 +53,10 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
     setLoading(true);
 
     hass.connection.sendMessagePromise(message).then(res => {
+      if (thisQuery !== latestQuery.current) {
+        // Outdated result
+        return;
+      }
       const response = res as { response: MaSearchResponse };
       if (!response.response) {
         return;

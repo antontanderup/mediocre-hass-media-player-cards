@@ -23,7 +23,7 @@ export const MaSearch = ({
 }: MaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<MaEnqueueMode>("play");
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, 600);
   const [activeFilter, setActiveFilter] = useState<MaFilterType>("all");
 
   const toggleEnqueueMode = useCallback(() => {

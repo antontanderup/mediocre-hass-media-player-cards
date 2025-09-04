@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { getHass } from "@utils";
 import {
   HaEnqueueMode,
@@ -15,9 +15,12 @@ export const useSearchQuery = (
   const [results, setResults] = useState<HaSearchResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const latestQuery = useRef<string | null>(null);
 
   useEffect(() => {
     if (debounceQuery === "") return;
+    const thisQuery = debounceQuery + (filter ?? 'all');
+    latestQuery.current = thisQuery;
 
     const message = {
       type: "call_service",
@@ -40,6 +43,10 @@ export const useSearchQuery = (
         const response = res as {
           response: { [key: string]: HaSearchResponse };
         };
+        if (thisQuery !== latestQuery.current) {
+          // Outdated result
+          return;
+        }
         if (!response.response[targetEntity]) {
           return;
         }
