@@ -185,7 +185,7 @@ export const PlayerActions = () => {
             ma_favorite_button_entity_id ?? undefined
           }
           side="top"
-          align="end"
+          align="start"
           renderTrigger={triggerProps => (
             <IconButton icon="mdi:bookshelf" size="small" {...triggerProps} />
           )}
