@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "preact/hooks";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "preact/hooks";
 import { getHass } from "@utils";
 import {
   MaEnqueueMode,
@@ -33,7 +39,7 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
 
   useEffect(() => {
     if (debounceQuery === "" || !configEntry) return;
-    const thisQuery = debounceQuery + (filter ?? 'all');
+    const thisQuery = debounceQuery + (filter ?? "all");
     latestQuery.current = thisQuery;
 
     const message = {
