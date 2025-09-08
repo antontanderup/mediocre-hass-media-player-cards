@@ -30,6 +30,7 @@ export const getDidMediaPlayerUpdate = (
         "attributes.repeat",
         "attributes.supported_features",
         "attributes.group_members",
+        "attributes.active_child",
       ];
 
   // Helper function to get nested property values
