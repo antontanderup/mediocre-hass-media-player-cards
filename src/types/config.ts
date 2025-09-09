@@ -11,6 +11,13 @@ const searchMediaTypeSchema = type({
   media_type: "string",
 });
 
+export const mediaPlayerConfigEntity = type({
+  entity: "string",
+  "name?": "string | null",
+}).or("string")
+
+export const mediaPlayerConfigEntityArray = mediaPlayerConfigEntity.array();
+
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
   entity_id: "string",
@@ -18,7 +25,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "action?": interactionConfigSchema,
   "speaker_group?": {
     "entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
-    entities: "string[]", // entity_ids of the speakers that can be grouped with the main speaker
+    entities: mediaPlayerConfigEntityArray, // entity_ids of the speakers that can be grouped with the main speaker
   },
   "custom_buttons?": type({
     icon: "string > 0",
@@ -59,3 +66,4 @@ export type MediocreMediaPlayerCardConfig =
   typeof MediocreMediaPlayerCardConfigSchema.infer;
 export type MediocreMassiveMediaPlayerCardConfig =
   typeof MediocreMassiveMediaPlayerCardConfigSchema.infer;
+export type MediaPlayerConfigEntity = typeof mediaPlayerConfigEntity.infer;

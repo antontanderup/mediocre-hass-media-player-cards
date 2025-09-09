@@ -42,8 +42,8 @@ class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveM
       for (const entity of this.config.speaker_group.entities) {
         if (
           getDidMediaPlayerUpdate(
-            prevHass.states[entity] as MediaPlayerEntity,
-            hass.states[entity] as MediaPlayerEntity,
+            prevHass.states[typeof entity === "string" ? entity : entity.entity] as MediaPlayerEntity,
+            hass.states[typeof entity === "string" ? entity : entity.entity] as MediaPlayerEntity,
             true
           )
         ) {

@@ -2,10 +2,11 @@ import { useContext } from "preact/hooks";
 import { GroupChipsController } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { css } from "@emotion/react";
+import { MediaPlayerConfigEntity } from "@types";
 
 export type MediocreChipMediaPlayerGroupCardConfig = {
   entity_id: string;
-  entities: string[];
+  entities: MediaPlayerConfigEntity[];
 };
 
 export type Player = {
@@ -31,6 +32,8 @@ export const MediocreChipMediaPlayerGroupCard = () => {
     useContext<CardContextType<MediocreChipMediaPlayerGroupCardConfig>>(
       CardContext
     );
+
+    console.log(config);
 
   return (
     <div css={styles.root}>
