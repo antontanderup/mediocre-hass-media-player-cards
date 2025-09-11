@@ -1,5 +1,8 @@
 import { useCallback, useMemo, useState } from "preact/hooks";
-import type { CommonMediocreMediaPlayerCardConfig, MediaPlayerConfigEntity } from "@types";
+import type {
+  CommonMediocreMediaPlayerCardConfig,
+  MediaPlayerConfigEntity,
+} from "@types";
 import { IconButton, Slider, useHass } from "@components";
 import { getHass, getVolumeIcon, setVolume } from "@utils";
 import { css } from "@emotion/react";
@@ -78,18 +81,28 @@ export const GroupVolumeController = ({
       speakerEntities.push(mainEntityId);
     }
 
-    const getEntityId = (entity: MediaPlayerConfigEntity) => (typeof entity === "string" ? entity : entity.entity);
+    const getEntityId = (entity: MediaPlayerConfigEntity) =>
+      typeof entity === "string" ? entity : entity.entity;
 
     return speakerEntities
       .filter(entity => hass.states[getEntityId(entity)])
       .map(entity => ({
         entity_id: getEntityId(entity),
-        name: typeof entity !== "string" && !!entity.name ? entity.name : hass.states[getEntityId(entity)].attributes.friendly_name ?? getEntityId(entity),
+        name:
+          typeof entity !== "string" && !!entity.name
+            ? entity.name
+            : (hass.states[getEntityId(entity)].attributes.friendly_name ??
+              getEntityId(entity)),
         volume: hass.states[getEntityId(entity)].attributes.volume_level || 0,
-        muted: hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
-        isGrouped: mainEntity?.attributes?.group_members?.includes(getEntityId(entity)) || false,
+        muted:
+          hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
+        isGrouped:
+          mainEntity?.attributes?.group_members?.includes(
+            getEntityId(entity)
+          ) || false,
         isMainSpeaker:
-          mainEntity?.attributes?.group_members?.[0] === getEntityId(entity) || false,
+          mainEntity?.attributes?.group_members?.[0] === getEntityId(entity) ||
+          false,
       }))
       .sort((a, b) => {
         if (a.entity_id === mainEntityId) return -1;

@@ -24,8 +24,10 @@ export class CardWrapper<
     }
 
     const entityId = this.config?.entity_id;
-    const shouldRender = !!entityId && ((this.config !== this._previousConfig) ||
-      (this.shouldUpdate?.(this._previousHass, hass)));
+    const shouldRender =
+      !!entityId &&
+      (this.config !== this._previousConfig ||
+        this.shouldUpdate?.(this._previousHass, hass));
 
     if (shouldRender) {
       this._previousHass = hass;

@@ -39,13 +39,13 @@ export const EntitiesPicker = ({
   // Filter out undefined/null values
   const entities = useMemo(() => {
     const values = value?.filter(Boolean) || [];
-    return values.map((value) => {
+    return values.map(value => {
       if (typeof value === "string") {
         return { entity: value, name: null };
       } else {
-        return value
+        return value;
       }
-    })
+    });
   }, [value]);
 
   // Handle individual entity change
@@ -84,16 +84,21 @@ export const EntitiesPicker = ({
     [entities, onChange]
   );
 
-  const handleOnChange = useCallback((newValue?: MediaPlayerConfigEntity[]) => {
-    onChange(newValue?.map(entity => {
-      if (typeof entity === "string") return entity;
-      if (entity.name) {
-        return { entity: entity.entity, name: entity.name };
-      } else {
-        return entity.entity;
-      }
-    }));
-  }, [onChange]);
+  const handleOnChange = useCallback(
+    (newValue?: MediaPlayerConfigEntity[]) => {
+      onChange(
+        newValue?.map(entity => {
+          if (typeof entity === "string") return entity;
+          if (entity.name) {
+            return { entity: entity.entity, name: entity.name };
+          } else {
+            return entity.entity;
+          }
+        })
+      );
+    },
+    [onChange]
+  );
 
   return (
     <div css={styles.root} className="entities-picker">
@@ -101,28 +106,23 @@ export const EntitiesPicker = ({
 
       {/* Render existing entities */}
       {entities.map((entity, index) => (
-        <div
-          key={`entity-${index}`}
-          css={styles.entityPickedWrap}
-        >
+        <div key={`entity-${index}`} css={styles.entityPickedWrap}>
           <TextInput
             value={entity.name ?? ""}
-            onChange={
-              (newValue) => handleNameChange(newValue, index)
-            }
+            onChange={newValue => handleNameChange(newValue, index)}
             disabled={disabled}
             label="Name"
           />
-        <EntityPicker
-          hass={hass}
-          value={entity.entity}
-          onChange={newValue => handleEntityChange(newValue, index)}
-          domains={domains}
-          disabled={disabled}
-          required={false}
-          allowCustomEntity={allowCustomEntity}
+          <EntityPicker
+            hass={hass}
+            value={entity.entity}
+            onChange={newValue => handleEntityChange(newValue, index)}
+            domains={domains}
+            disabled={disabled}
+            required={false}
+            allowCustomEntity={allowCustomEntity}
           />
-          </div>
+        </div>
       ))}
 
       {/* Always add one empty picker at the end */}

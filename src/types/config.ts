@@ -14,7 +14,7 @@ const searchMediaTypeSchema = type({
 export const mediaPlayerConfigEntity = type({
   entity: "string",
   "name?": "string | null",
-}).or("string")
+}).or("string");
 
 export const mediaPlayerConfigEntityArray = mediaPlayerConfigEntity.array();
 

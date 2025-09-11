@@ -1,6 +1,9 @@
 import { Chip, useHass } from "@components";
 import { css } from "@emotion/react";
-import { CommonMediocreMediaPlayerCardConfig, MediaPlayerConfigEntity } from "@types";
+import {
+  CommonMediocreMediaPlayerCardConfig,
+  MediaPlayerConfigEntity,
+} from "@types";
 import { FC, useCallback, useMemo, useState } from "preact/compat";
 
 const styles = {
@@ -55,17 +58,26 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
   // Get all available speakers that can be grouped
   const availableSpeakers = useMemo(() => {
     if (!speaker_group?.entities?.length) return [];
-    const getEntityId = (entity: MediaPlayerConfigEntity) => (typeof entity === "string" ? entity : entity.entity);
+    const getEntityId = (entity: MediaPlayerConfigEntity) =>
+      typeof entity === "string" ? entity : entity.entity;
 
     return speaker_group.entities
       .filter(entity => getEntityId(entity) !== mainEntityId)
       .filter(entity => hass.states[getEntityId(entity)])
       .map(entity => ({
         entity_id: getEntityId(entity),
-        name: typeof entity !== "string" && !!entity.name ? entity.name : hass.states[getEntityId(entity)].attributes.friendly_name ?? getEntityId(entity),
+        name:
+          typeof entity !== "string" && !!entity.name
+            ? entity.name
+            : (hass.states[getEntityId(entity)].attributes.friendly_name ??
+              getEntityId(entity)),
         volume: hass.states[getEntityId(entity)].attributes.volume_level || 0,
-        muted: hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
-        isGrouped: mainEntity?.attributes?.group_members?.includes(getEntityId(entity)) || false,
+        muted:
+          hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
+        isGrouped:
+          mainEntity?.attributes?.group_members?.includes(
+            getEntityId(entity)
+          ) || false,
       }))
       .filter(speaker => {
         if (showGrouped) return true;
