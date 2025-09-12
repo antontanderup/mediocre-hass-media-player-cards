@@ -133,7 +133,7 @@ export const getSimpleConfigFromFormValues = (
   if (config.options?.hide_when_off === false) {
     delete config.options.hide_when_off;
   }
-  if (config.options?.hide_when_group_child  === false) {
+  if (config.options?.hide_when_group_child === false) {
     delete config.options.hide_when_group_child;
   }
   if (Object.keys(config.options ?? {}).length === 0) {

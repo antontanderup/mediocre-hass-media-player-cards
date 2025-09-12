@@ -1,5 +1,5 @@
 import { CardContext, CardContextType } from "@components/CardContext";
-import { useCallback, useContext, useState } from "preact/hooks";
+import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import {
   CustomButton,
@@ -10,7 +10,7 @@ import {
   Search,
   SpeakerGrouping,
 } from "./components";
-import { AlbumArt, IconButton, MaMenu, usePlayer } from "@components";
+import { AlbumArt, IconButton, MaMenu, useHass, usePlayer } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
@@ -82,9 +82,12 @@ export const MediocreMediaPlayerCard = () => {
     ma_entity_id,
     ma_favorite_button_entity_id,
     search,
+    speaker_group,
     options: {
       always_show_power_button: alwaysShowPowerButton,
       always_show_custom_buttons: alwaysShowCustomButtons,
+      hide_when_group_child: hideWhenGroupChild,
+      hide_when_off: hideWhenOff,
     } = {},
   } = config;
 
@@ -102,6 +105,24 @@ export const MediocreMediaPlayerCard = () => {
   const { artVars, haVars } = useArtworkColors();
 
   const { state, subtitle } = usePlayer();
+
+  const hass = useHass();
+
+  const isGroupChild = useMemo(() => {
+    if (!speaker_group) return false;
+    const groupingEntityId = speaker_group?.entity_id ?? entity_id;
+    const player = hass.states[groupingEntityId];
+    if (
+      !player.attributes.group_members ||
+      player.attributes.group_members.length === 0
+    ) {
+      return false;
+    }
+    return (
+      player.attributes.group_members.length > 1 &&
+      player.attributes.group_members[0] !== groupingEntityId
+    );
+  }, [speaker_group, hass]);
 
   const supportedFeatures = useSupportedFeatures();
   const hasNoPlaybackControls =
@@ -153,6 +174,13 @@ export const MediocreMediaPlayerCard = () => {
       entity_id,
     });
   }, [entity_id]);
+
+  if (hideWhenOff && !isOn) {
+    return null;
+  }
+  if (hideWhenGroupChild && isGroupChild) {
+    return null;
+  }
 
   return (
     <ha-card>
