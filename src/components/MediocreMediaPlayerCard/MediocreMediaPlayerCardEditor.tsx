@@ -498,6 +498,38 @@ export const MediocreMediaPlayerCardEditor: FC<
             </ToggleContainer>
           )}
         </form.Field>
+        <form.Field name="options.hide_when_off">
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="options.hide_when_off"
+                checked={field.state.value ?? false}
+                onChange={e =>
+                  field.handleChange((e.target as HTMLInputElement).checked)
+                }
+              />
+              <ToggleLabel htmlFor="options.hide_when_off">
+                Hide when media player is off
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
+        <form.Field name="options.hide_when_group_child">
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="options.hide_when_group_child"
+                checked={field.state.value ?? false}
+                onChange={e =>
+                  field.handleChange((e.target as HTMLInputElement).checked)
+                }
+              />
+              <ToggleLabel htmlFor="options.hide_when_group_child">
+                Hide when media player is a group child
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
       </SubForm>
     </form>
   );

@@ -83,6 +83,8 @@ describe("cardConfigUtils", () => {
       expect(result.options).toEqual({
         always_show_power_button: false,
         always_show_custom_buttons: false,
+        hide_when_off: false,
+        hide_when_group_child: false,
       });
       expect(result.grid_options).toBeUndefined();
     });
@@ -112,6 +114,8 @@ describe("cardConfigUtils", () => {
         options: {
           always_show_power_button: true,
           always_show_custom_buttons: true,
+          hide_when_group_child: true,
+          hide_when_off: true,
         },
         grid_options: { columns: "full" },
       };

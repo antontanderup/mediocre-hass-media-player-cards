@@ -51,6 +51,8 @@ export const MediocreMediaPlayerCardConfigSchema =
     "tap_opens_popup?": "boolean",
     "options?": commonMediocreMediaPlayerCardConfigOptionsSchema.and({
       "always_show_custom_buttons?": "boolean | null", // Always show custom buttons panel expanded
+      "hide_when_off?": "boolean | null", // Hide the card when the media player is off
+      "hide_when_group_child?": "boolean | null", // Hide the card when the media player is a group child
     }),
   });
 

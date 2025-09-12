@@ -32,6 +32,8 @@ export const getDefaultValuesFromConfig = (
       config?.options?.always_show_power_button ?? false,
     always_show_custom_buttons:
       config?.options?.always_show_custom_buttons ?? false,
+    hide_when_off: config?.options?.hide_when_off ?? false,
+    hide_when_group_child: config?.options?.hide_when_group_child ?? false,
   },
   grid_options: config?.grid_options,
   visibility: config?.visibility,
@@ -127,6 +129,12 @@ export const getSimpleConfigFromFormValues = (
   }
   if (config.options?.always_show_custom_buttons === false) {
     delete config.options.always_show_custom_buttons;
+  }
+  if (config.options?.hide_when_off === false) {
+    delete config.options.hide_when_off;
+  }
+  if (config.options?.hide_when_group_child  === false) {
+    delete config.options.hide_when_group_child;
   }
   if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
