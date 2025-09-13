@@ -1,1 +1,2 @@
-export * from "./MiniPlayer";
+export * from './MiniPlayer';
+export * from './SearchView';
