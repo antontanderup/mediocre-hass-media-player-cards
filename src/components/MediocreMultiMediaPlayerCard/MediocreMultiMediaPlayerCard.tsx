@@ -1,11 +1,17 @@
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMultiMediaPlayer, MediocreMultiMediaPlayerCardConfig } from "@types";
+import {
+  MediocreMultiMediaPlayer,
+  MediocreMultiMediaPlayerCardConfig,
+} from "@types";
 import { useContext, useMemo, useState } from "preact/hooks";
 import { MiniPlayer, SearchView } from "./components";
 import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";
 
-export type NavigationRoutes = "search" | "speaker-grouping" | "speaker-overview"
+export type NavigationRoutes =
+  | "search"
+  | "speaker-grouping"
+  | "speaker-overview";
 
 const styles = {
   root: {
@@ -23,8 +29,8 @@ const styles = {
   },
   footer: {
     alignSelf: "end",
-  }
-}
+  },
+};
 
 export const MediocreMultiMediaPlayerCard = () => {
   const { config } =
@@ -39,22 +45,25 @@ export const MediocreMultiMediaPlayerCard = () => {
   const selectedPlayer: MediocreMultiMediaPlayer | undefined = useMemo(() => {
     if (selectedPlayerIndex === undefined) {
       const player = config.media_players.find(
-        (player) => player.entity_id === config.entity_id
+        player => player.entity_id === config.entity_id
       );
       return player;
     }
     return config.media_players[selectedPlayerIndex];
   }, [config, selectedPlayerIndex]);
 
-  const [navigationRoute, setNavigationRoute] = useState<NavigationRoutes | undefined>(() => {
+  const [navigationRoute, setNavigationRoute] = useState<
+    NavigationRoutes | undefined
+  >(() => {
     if (selectedPlayer?.ma_entity_id || selectedPlayer?.search?.enabled) {
       return "search";
     }
     return "speaker-overview";
   });
 
-  const [contentSizeRef, { height: contentHeight }] = useMeasure<HTMLDivElement>();
-  console.log({contentHeight});
+  const [contentSizeRef, { height: contentHeight }] =
+    useMeasure<HTMLDivElement>();
+  console.log({ contentHeight });
   return (
     <Fragment>
       {!selectedPlayer ? (
@@ -62,7 +71,9 @@ export const MediocreMultiMediaPlayerCard = () => {
       ) : (
         <div css={styles.root}>
           <div css={styles.contentArea} ref={contentSizeRef}>
-            {navigationRoute === "search" && contentHeight && <SearchView height={contentHeight} mediaPlayer={selectedPlayer} />}
+            {navigationRoute === "search" && contentHeight && (
+              <SearchView height={contentHeight} mediaPlayer={selectedPlayer} />
+            )}
           </div>
           <div css={styles.footer}>
             <MiniPlayer mediaPlayer={selectedPlayer} />

@@ -13,16 +13,24 @@ const styles = {
   }),
 };
 
-export type SearchViewProps = { mediaPlayer: MediocreMultiMediaPlayer, height: number };
+export type SearchViewProps = {
+  mediaPlayer: MediocreMultiMediaPlayer;
+  height: number;
+};
 
 export const SearchView = ({
-   mediaPlayer: { ma_entity_id, search, entity_id },
-   height
+  mediaPlayer: { ma_entity_id, search, entity_id },
+  height,
 }: SearchViewProps) => {
-
   const renderSearch = () => {
     if (ma_entity_id) {
-      return <MaSearch maEntityId={ma_entity_id} horizontalPadding={12} maxHeight={height} />;
+      return (
+        <MaSearch
+          maEntityId={ma_entity_id}
+          horizontalPadding={12}
+          maxHeight={height}
+        />
+      );
     }
     if (search?.enabled) {
       return (
@@ -38,5 +46,9 @@ export const SearchView = ({
     return null;
   };
 
-  return <div css={styles.root} style={{ maxHeight: height }}>{renderSearch()}</div>;
+  return (
+    <div css={styles.root} style={{ maxHeight: height }}>
+      {renderSearch()}
+    </div>
+  );
 };

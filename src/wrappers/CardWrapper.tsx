@@ -19,7 +19,7 @@ export class CardWrapper<
     }
 
     const entityId = this.config?.entity_id;
-    const shouldRender = !!entityId
+    const shouldRender = !!entityId;
 
     if (shouldRender) {
       render(
