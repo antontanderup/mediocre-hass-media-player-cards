@@ -12,11 +12,6 @@ export class CardWrapper<
 > extends HTMLElement {
   Card: FunctionComponent | null = null;
   config: Config | null = null;
-  shouldUpdate:
-    | ((prevHass: HomeAssistant | null, hass: HomeAssistant | null) => boolean)
-    | null = null;
-  private _previousHass: HomeAssistant | null = null;
-  private _previousConfig: Config | null = null;
 
   set hass(hass: HomeAssistant) {
     if (!this.Card) {
@@ -24,14 +19,9 @@ export class CardWrapper<
     }
 
     const entityId = this.config?.entity_id;
-    const shouldRender =
-      !!entityId &&
-      (this.config !== this._previousConfig ||
-        this.shouldUpdate?.(this._previousHass, hass));
+    const shouldRender = !!entityId
 
     if (shouldRender) {
-      this._previousHass = hass;
-      this._previousConfig = this.config;
       render(
         <EmotionContextProvider rootElement={this}>
           <CardContextProvider rootElement={this} config={this.config}>
@@ -44,8 +34,6 @@ export class CardWrapper<
         </EmotionContextProvider>,
         this
       );
-    } else {
-      this._previousHass = hass;
     }
   }
 

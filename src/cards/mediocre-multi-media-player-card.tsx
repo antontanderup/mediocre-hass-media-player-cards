@@ -1,7 +1,6 @@
-import { HomeAssistant, MediaPlayerEntity } from "@types";
+import { HomeAssistant } from "@types";
 import { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
-import { getDidMediaPlayerUpdate } from "@utils";
 import { MediocreMultiMediaPlayerCard } from "@components/MediocreMultiMediaPlayerCard";
 
 class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMediaPlayerCardConfig> {
@@ -13,44 +12,6 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
     }
     this.config = config;
   }
-
-  shouldUpdate = (
-    prevHass: HomeAssistant | null,
-    hass: HomeAssistant | null
-  ) => {
-    if (!hass || !prevHass || !this.config) return true;
-    if (!prevHass && hass) return true;
-
-    // Check if any of the media players changed
-    this.config.media_players.forEach(mediaPlayer => {
-      if (
-        getDidMediaPlayerUpdate(
-          prevHass.states[mediaPlayer.entity_id] as MediaPlayerEntity,
-          hass.states[mediaPlayer.entity_id] as MediaPlayerEntity
-        )
-      ) {
-        return true;
-      }
-    });
-
-    // Check if speaker group entity changed (if configured)
-    this.config.speaker_group?.entities.forEach(entity => {
-      if (
-        getDidMediaPlayerUpdate(
-          prevHass.states[
-            typeof entity === "string" ? entity : entity.entity
-          ] as MediaPlayerEntity,
-          hass.states[
-            typeof entity === "string" ? entity : entity.entity
-          ] as MediaPlayerEntity
-        )
-      ) {
-        return true;
-      }
-    });
-
-    return false;
-  };
 
   //   static getConfigElement() {
   //     return document.createElement(

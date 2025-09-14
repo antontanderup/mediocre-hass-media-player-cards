@@ -1,63 +1,11 @@
-import { HomeAssistant, MediaPlayerEntity } from "@types";
+import { HomeAssistant } from "@types";
 import { MediocreMassiveMediaPlayerCard } from "@components";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
 import { FC } from "preact/compat";
-import { getDidMediaPlayerUpdate } from "@utils";
 
 class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveMediaPlayerCardConfig> {
   Card: FC<{ className?: string }> = MediocreMassiveMediaPlayerCard;
-
-  shouldUpdate = (
-    prevHass: HomeAssistant | null,
-    hass: HomeAssistant | null
-  ) => {
-    if (!hass || !prevHass || !this.config) return true;
-    if (!prevHass && hass) return true;
-
-    // Check if main entity changed
-    if (
-      getDidMediaPlayerUpdate(
-        prevHass.states[this.config.entity_id] as MediaPlayerEntity,
-        hass.states[this.config.entity_id] as MediaPlayerEntity
-      )
-    ) {
-      return true;
-    }
-
-    // Check if speaker group entity changed (if configured)
-    if (
-      this.config.speaker_group?.entity_id &&
-      getDidMediaPlayerUpdate(
-        prevHass.states[
-          this.config.speaker_group.entity_id
-        ] as MediaPlayerEntity,
-        hass.states[this.config.speaker_group.entity_id] as MediaPlayerEntity
-      )
-    ) {
-      return true;
-    }
-
-    if (this.config.speaker_group?.entities) {
-      for (const entity of this.config.speaker_group.entities) {
-        if (
-          getDidMediaPlayerUpdate(
-            prevHass.states[
-              typeof entity === "string" ? entity : entity.entity
-            ] as MediaPlayerEntity,
-            hass.states[
-              typeof entity === "string" ? entity : entity.entity
-            ] as MediaPlayerEntity,
-            true
-          )
-        ) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  };
 
   setConfig(config: MediocreMassiveMediaPlayerCardConfig) {
     if (!config.entity_id) {
