@@ -7,29 +7,36 @@ import { useContext, useMemo, useState } from "preact/hooks";
 import { MiniPlayer, SearchView } from "./components";
 import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";
+import { css } from "@emotion/react";
+import { FooterActions } from "./components/FooterActions";
 
-export type NavigationRoutes =
+export type NavigationRoute =
   | "search"
   | "speaker-grouping"
   | "speaker-overview";
 
 const styles = {
-  root: {
+  root: css({
     display: "grid",
     height: "100%",
     maxHeight: "calc(100vh - var(--header-height, 16px))", // This is for panel mode
     minHeight: 0,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
-  },
-  contentArea: {
+  }),
+  contentArea: css({
     alignSelf: "stretch",
     overflow: "auto",
     minHeight: 0,
-  },
-  footer: {
+  }),
+  footer: css({
     alignSelf: "end",
-  },
+    padding: 12,
+    gap: 12,
+    display: "flex",
+    flexDirection: "column",
+    "--ha-card-border-radius": "max(var(--ha-card-border-radius, 12px), 12px)",
+  }),
 };
 
 export const MediocreMultiMediaPlayerCard = () => {
@@ -53,7 +60,7 @@ export const MediocreMultiMediaPlayerCard = () => {
   }, [config, selectedPlayerIndex]);
 
   const [navigationRoute, setNavigationRoute] = useState<
-    NavigationRoutes | undefined
+    NavigationRoute | undefined
   >(() => {
     if (selectedPlayer?.ma_entity_id || selectedPlayer?.search?.enabled) {
       return "search";
@@ -63,7 +70,7 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
-  console.log({ contentHeight });
+
   return (
     <Fragment>
       {!selectedPlayer ? (
@@ -77,6 +84,7 @@ export const MediocreMultiMediaPlayerCard = () => {
           </div>
           <div css={styles.footer}>
             <MiniPlayer mediaPlayer={selectedPlayer} />
+            <FooterActions mediaPlayer={selectedPlayer} setNavigationRoute={setNavigationRoute} />
           </div>
         </div>
       )}

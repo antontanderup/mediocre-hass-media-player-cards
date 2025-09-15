@@ -1,14 +1,12 @@
 import type { MediocreMultiMediaPlayer } from "@types";
 import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
-import { theme } from "@constants";
 
 const styles = {
   root: css({
-    maxHeight: 300,
+    height: "100%",
     paddingTop: 12,
     paddingBottom: 12,
-    borderTop: `0.5px solid ${theme.colors.onCardDivider}`,
     overflowY: "auto",
   }),
 };
