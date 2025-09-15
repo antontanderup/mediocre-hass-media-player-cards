@@ -39,7 +39,7 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
   return (
     <div css={styles.root}>
       <CardContextProvider rootElement={rootElement} config={cardConfig}>
-        <MediocreMediaPlayerCard />
+        <MediocreMediaPlayerCard isEmbeddedInMultiCard />
       </CardContextProvider>
     </div>
   );

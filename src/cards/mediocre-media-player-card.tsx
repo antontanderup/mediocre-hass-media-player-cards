@@ -1,10 +1,11 @@
 import { HomeAssistant } from "@types";
-import { MediocreMediaPlayerCard } from "@components";
+import { MediocreMediaPlayerCard, MediocreMediaPlayerCardProps } from "@components";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
+import { FC } from "preact/compat";
 
 class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCardConfig> {
-  Card = MediocreMediaPlayerCard;
+  Card: FC<MediocreMediaPlayerCardProps> = MediocreMediaPlayerCard;
 
   setConfig(config: MediocreMediaPlayerCardConfig) {
     if (!config.entity_id) {

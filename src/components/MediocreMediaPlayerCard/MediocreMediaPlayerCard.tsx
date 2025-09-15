@@ -70,7 +70,13 @@ const styles = {
   }),
 };
 
-export const MediocreMediaPlayerCard = () => {
+export type MediocreMediaPlayerCardProps = {
+  isEmbeddedInMultiCard?: boolean;
+};
+
+export const MediocreMediaPlayerCard = ({
+  isEmbeddedInMultiCard,
+}: MediocreMediaPlayerCardProps) => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const {
@@ -93,7 +99,7 @@ export const MediocreMediaPlayerCard = () => {
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
-  const hasSearch = hasMaSearch || search?.enabled;
+  const hasSearch = (hasMaSearch || search?.enabled) && !isEmbeddedInMultiCard;
 
   const [showGrouping, setShowGrouping] = useState(false);
   const [showCustomButtons, setShowCustomButtons] = useState(
