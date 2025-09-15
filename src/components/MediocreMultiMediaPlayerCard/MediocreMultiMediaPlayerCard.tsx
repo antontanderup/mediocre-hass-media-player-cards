@@ -4,7 +4,7 @@ import {
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { useContext, useMemo, useState } from "preact/hooks";
-import { MiniPlayer, SearchView } from "./components";
+import { MiniPlayer, SearchView, SpeakerGrouping } from "./components";
 import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";
 import { css } from "@emotion/react";
@@ -59,14 +59,14 @@ export const MediocreMultiMediaPlayerCard = () => {
     return config.media_players[selectedPlayerIndex];
   }, [config, selectedPlayerIndex]);
 
-  const [navigationRoute, setNavigationRoute] = useState<
-    NavigationRoute
-  >(() => {
-    if (selectedPlayer?.ma_entity_id || selectedPlayer?.search?.enabled) {
-      return "search";
+  const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>(
+    () => {
+      if (selectedPlayer?.ma_entity_id || selectedPlayer?.search?.enabled) {
+        return "search";
+      }
+      return "speaker-overview";
     }
-    return "speaker-overview";
-  });
+  );
 
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
@@ -80,6 +80,9 @@ export const MediocreMultiMediaPlayerCard = () => {
           <div css={styles.contentArea} ref={contentSizeRef}>
             {navigationRoute === "search" && contentHeight && (
               <SearchView height={contentHeight} mediaPlayer={selectedPlayer} />
+            )}
+            {navigationRoute === "speaker-grouping" && (
+              <SpeakerGrouping mediaPlayer={selectedPlayer} />
             )}
           </div>
           <div css={styles.footer}>
