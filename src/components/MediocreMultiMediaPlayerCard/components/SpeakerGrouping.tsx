@@ -72,49 +72,40 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
 
   // Use the specified entity_id for the group or fall back to the main entity_id
   const mainEntityId = speaker_group_entity_id || entity_id;
-  const mainEntity = hass.states[mainEntityId];
 
   return (
     <div css={styles.speakerGroupContainer}>
-      {mainEntity?.attributes?.group_members?.length > 1 && (
-        <Fragment>
-          <div css={styles.titleRow}>
-            <h3 css={styles.groupTitle}>Grouped Speakers</h3>
-            <div css={styles.syncContainer}>
-              <span
-                css={styles.syncText}
-                onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
-              >
-                Link Volume
-              </span>
-              <IconButton
-                icon={
-                  syncMainSpeakerVolume
-                    ? "mdi:check-circle"
-                    : "mdi:circle-outline"
-                }
-                size="x-small"
-                onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
-              />
-            </div>
-          </div>
-          <div css={styles.groupedSpeakers}>
-            <GroupVolumeController
-              config={{
-                entity_id,
-                speaker_group,
-              }}
-              syncMainSpeaker={syncMainSpeakerVolume}
-            />
-          </div>
-        </Fragment>
-      )}
-      <h3 css={styles.groupTitle}>Add speakers to group</h3>
-      <GroupChipsController
-        config={{ entity_id, speaker_group }}
-        showGrouped={false}
-        layout={{ horizontalMargin: 16 }}
-      />
+      <div css={styles.titleRow}>
+        <h3 css={styles.groupTitle}>Speaker Grouping</h3>
+        <div css={styles.syncContainer}>
+          <span
+            css={styles.syncText}
+            onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+          >
+            Link Volume
+          </span>
+          <IconButton
+            icon={
+              syncMainSpeakerVolume ? "mdi:check-circle" : "mdi:circle-outline"
+            }
+            size="x-small"
+            onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+          />
+        </div>
+      </div>
+      <div css={styles.groupedSpeakers}>
+        <GroupVolumeController
+          config={{
+            entity_id,
+            speaker_group: {
+              entities: speaker_group?.entities || [],
+              entity_id: mainEntityId,
+            },
+          }}
+          syncMainSpeaker={syncMainSpeakerVolume}
+          showUngrouped={true}
+        />
+      </div>
     </div>
   );
 };
