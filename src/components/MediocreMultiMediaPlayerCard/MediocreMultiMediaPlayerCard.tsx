@@ -9,6 +9,8 @@ import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";
 import { css } from "@emotion/react";
 import { FooterActions } from "./components/FooterActions";
+import { PlayerContextProvider } from "@components/PlayerContext";
+import { useHass } from "@components/HassContext";
 
 export type NavigationRoute =
   | "search"
@@ -45,6 +47,8 @@ export const MediocreMultiMediaPlayerCard = () => {
       CardContext
     );
 
+  const hass = useHass();
+
   const [selectedPlayerIndex, setSelectedPlayerIndex] = useState<
     number | undefined
   >(undefined);
@@ -72,29 +76,37 @@ export const MediocreMultiMediaPlayerCard = () => {
     useMeasure<HTMLDivElement>();
 
   return (
-    <Fragment>
-      {!selectedPlayer ? (
-        <div>Please select a media player in the configuration.</div>
-      ) : (
-        <div css={styles.root}>
-          <div css={styles.contentArea} ref={contentSizeRef}>
-            {navigationRoute === "search" && contentHeight && (
-              <SearchView height={contentHeight} mediaPlayer={selectedPlayer} />
-            )}
-            {navigationRoute === "speaker-grouping" && (
-              <SpeakerGrouping mediaPlayer={selectedPlayer} />
-            )}
+    <PlayerContextProvider
+      hass={hass}
+      entityId={selectedPlayer?.entity_id || config.entity_id}
+    >
+      <Fragment>
+        {!selectedPlayer ? (
+          <div>Please select a media player in the configuration.</div>
+        ) : (
+          <div css={styles.root}>
+            <div css={styles.contentArea} ref={contentSizeRef}>
+              {navigationRoute === "search" && contentHeight && (
+                <SearchView
+                  height={contentHeight}
+                  mediaPlayer={selectedPlayer}
+                />
+              )}
+              {navigationRoute === "speaker-grouping" && (
+                <SpeakerGrouping mediaPlayer={selectedPlayer} />
+              )}
+            </div>
+            <div css={styles.footer}>
+              <MiniPlayer mediaPlayer={selectedPlayer} />
+              <FooterActions
+                mediaPlayer={selectedPlayer}
+                setNavigationRoute={setNavigationRoute}
+                navigationRoute={navigationRoute}
+              />
+            </div>
           </div>
-          <div css={styles.footer}>
-            <MiniPlayer mediaPlayer={selectedPlayer} />
-            <FooterActions
-              mediaPlayer={selectedPlayer}
-              setNavigationRoute={setNavigationRoute}
-              navigationRoute={navigationRoute}
-            />
-          </div>
-        </div>
-      )}
-    </Fragment>
+        )}
+      </Fragment>
+    </PlayerContextProvider>
   );
 };

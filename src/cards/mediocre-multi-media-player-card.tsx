@@ -5,6 +5,7 @@ import { MediocreMultiMediaPlayerCard } from "@components/MediocreMultiMediaPlay
 
 class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMediaPlayerCardConfig> {
   Card = MediocreMultiMediaPlayerCard;
+  providePlayerContext = false;
 
   setConfig(config: MediocreMultiMediaPlayerCardConfig) {
     if (!config.media_players || config.media_players.length === 0) {
