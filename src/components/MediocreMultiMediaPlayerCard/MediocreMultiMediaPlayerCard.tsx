@@ -84,7 +84,10 @@ export const MediocreMultiMediaPlayerCard = () => {
           </div>
           <div css={styles.footer}>
             <MiniPlayer mediaPlayer={selectedPlayer} />
-            <FooterActions mediaPlayer={selectedPlayer} setNavigationRoute={setNavigationRoute} />
+            <FooterActions
+              mediaPlayer={selectedPlayer}
+              setNavigationRoute={setNavigationRoute}
+            />
           </div>
         </div>
       )}

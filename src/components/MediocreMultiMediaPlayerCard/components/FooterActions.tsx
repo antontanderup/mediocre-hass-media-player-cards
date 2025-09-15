@@ -32,18 +32,17 @@ export type FooterActionsProps = {
   setNavigationRoute: (route: NavigationRoute) => void;
 };
 
-export const FooterActions = ({ mediaPlayer, setNavigationRoute }: FooterActionsProps) => {
+export const FooterActions = ({
+  mediaPlayer,
+  setNavigationRoute,
+}: FooterActionsProps) => {
   const { config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
 
-  const {
-    entity_id,
-    ma_entity_id,
-    search,
-    ma_favorite_button_entity_id,
-  } = mediaPlayer;
+  const { entity_id, ma_entity_id, search, ma_favorite_button_entity_id } =
+    mediaPlayer;
 
   const { speaker_group } = config;
 

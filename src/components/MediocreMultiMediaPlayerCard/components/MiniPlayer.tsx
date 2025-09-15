@@ -19,9 +19,9 @@ export type MiniPlayerProps = {
 const styles = {
   root: css({
     borderRadius: "12px",
-    overflow: "hidden"
-  })
-}
+    overflow: "hidden",
+  }),
+};
 
 export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
   const { rootElement } =
@@ -38,10 +38,9 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
 
   return (
     <div css={styles.root}>
-
-    <CardContextProvider rootElement={rootElement} config={cardConfig}>
-      <MediocreMediaPlayerCard />
-    </CardContextProvider>
+      <CardContextProvider rootElement={rootElement} config={cardConfig}>
+        <MediocreMediaPlayerCard />
+      </CardContextProvider>
     </div>
   );
 };
