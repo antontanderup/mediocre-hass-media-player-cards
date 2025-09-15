@@ -9,10 +9,11 @@ import {
 } from "@types";
 import { getHass } from "@utils";
 import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
-    backgroundColor: "var(--mmpc-surface-higher)",
+    backgroundColor: theme.colors.card,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

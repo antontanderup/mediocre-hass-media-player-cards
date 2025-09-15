@@ -4,6 +4,7 @@ import {
   CardContextType,
 } from "@components/CardContext";
 import { MediocreMediaPlayerCard } from "@components/MediocreMediaPlayerCard";
+import { css } from "@emotion/react";
 import {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
@@ -14,6 +15,13 @@ import { useContext, useMemo } from "preact/hooks";
 export type MiniPlayerProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
 };
+
+const styles = {
+  root: css({
+    borderRadius: "12px",
+    overflow: "hidden"
+  })
+}
 
 export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
   const { rootElement } =
@@ -29,8 +37,11 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
   }, [mediaPlayer]);
 
   return (
+    <div css={styles.root}>
+
     <CardContextProvider rootElement={rootElement} config={cardConfig}>
       <MediocreMediaPlayerCard />
     </CardContextProvider>
+    </div>
   );
 };
