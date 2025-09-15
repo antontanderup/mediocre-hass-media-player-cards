@@ -60,7 +60,7 @@ export const MediocreMultiMediaPlayerCard = () => {
   }, [config, selectedPlayerIndex]);
 
   const [navigationRoute, setNavigationRoute] = useState<
-    NavigationRoute | undefined
+    NavigationRoute
   >(() => {
     if (selectedPlayer?.ma_entity_id || selectedPlayer?.search?.enabled) {
       return "search";
@@ -87,6 +87,7 @@ export const MediocreMultiMediaPlayerCard = () => {
             <FooterActions
               mediaPlayer={selectedPlayer}
               setNavigationRoute={setNavigationRoute}
+              navigationRoute={navigationRoute}
             />
           </div>
         </div>

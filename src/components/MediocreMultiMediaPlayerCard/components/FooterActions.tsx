@@ -1,13 +1,11 @@
-import { useCallback, useContext, useState } from "preact/hooks";
-import { css, keyframes } from "@emotion/react";
-import { IconButton, MaMenu, usePlayer } from "@components";
+import { useContext } from "preact/hooks";
+import { css } from "@emotion/react";
+import { IconButton, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
-  MediocreMassiveMediaPlayerCardConfig,
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { getHass } from "@utils";
 import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 
@@ -30,6 +28,7 @@ const styles = {
 export type FooterActionsProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
+  navigationRoute: NavigationRoute;
 };
 
 export const FooterActions = ({
