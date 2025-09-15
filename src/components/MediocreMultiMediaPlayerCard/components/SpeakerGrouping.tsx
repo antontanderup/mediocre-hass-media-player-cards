@@ -3,15 +3,12 @@ import type {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { Fragment } from "preact/jsx-runtime";
 import {
   CardContext,
   CardContextType,
-  useHass,
   GroupVolumeController,
   IconButton,
 } from "@components";
-import { GroupChipsController } from "@components/GroupChipsController";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 
@@ -59,7 +56,6 @@ export type SpeakerGroupingProps = {
 };
 
 export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
-  const hass = useHass();
   const { config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
