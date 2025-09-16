@@ -11,13 +11,13 @@ import {
 } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { ViewHeader } from "./ViewHeader";
 
 const styles = {
   speakerGroupContainer: css({
     display: "flex",
     flexDirection: "column",
-    paddingTop: "12px",
-    paddingBottom: "16px",
+    padding: "16px",
     gap: "12px",
   }),
   groupTitle: css({
@@ -32,7 +32,6 @@ const styles = {
     alignItems: "center",
     marginLeft: "auto",
     gap: "4px",
-    marginRight: "19px",
   }),
   syncText: css({
     fontSize: "12px",
@@ -42,8 +41,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "8px",
-    marginLeft: "16px",
-    marginRight: "16px",
   }),
   titleRow: css({
     display: "flex",
@@ -64,6 +61,7 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
   const { speaker_group } = config;
   const { entity_id, speaker_group_entity_id } = mediaPlayer;
 
+  // TODO: Volume sync should be liftet to a context so it is also active for the main mini player
   const [syncMainSpeakerVolume, setSyncMainSpeakerVolume] = useState(true);
 
   // Use the specified entity_id for the group or fall back to the main entity_id
@@ -71,8 +69,7 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
 
   return (
     <div css={styles.speakerGroupContainer}>
-      <div css={styles.titleRow}>
-        <h3 css={styles.groupTitle}>Speaker Grouping</h3>
+      <ViewHeader title="Join Media Players" subtitle="Sync media players and adjust volumes." renderAction={() => (
         <div css={styles.syncContainer}>
           <span
             css={styles.syncText}
@@ -86,9 +83,9 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
             }
             size="x-small"
             onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
-          />
-        </div>
-      </div>
+            />
+            </div>
+      )} />
       <div css={styles.groupedSpeakers}>
         <GroupVolumeController
           config={{
