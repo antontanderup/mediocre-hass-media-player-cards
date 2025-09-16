@@ -7,7 +7,8 @@ import { useMeasure } from "@uidotdev/usehooks";
 const styles = {
   container: css({
     height: "100%",
-    overflow: "auto",
+    overflowX: "hidden",
+    overflowY: "auto",
   }),
   item: css({
     padding: "4px 0",
