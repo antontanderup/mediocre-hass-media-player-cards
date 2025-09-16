@@ -11,6 +11,7 @@ import { css } from "@emotion/react";
 import { FooterActions } from "./components/FooterActions";
 import { PlayerContextProvider } from "@components/PlayerContext";
 import { useHass } from "@components/HassContext";
+import { theme } from "@constants";
 
 export type NavigationRoute =
   | "search"
@@ -21,15 +22,19 @@ const styles = {
   root: css({
     display: "grid",
     height: "100%",
-    maxHeight: "calc(100vh - var(--header-height, 16px))", // This is for panel mode
+    maxHeight: "calc(100vh - var(--header-height, 16px))", // This is for panel mode TODO: add config to make a fixed height if not on panel
     minHeight: 0,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
   }),
   contentArea: css({
     alignSelf: "stretch",
-    overflow: "auto",
+    overflow: "hidden",
     minHeight: 0,
+    backgroundColor: theme.colors.card,
+    borderRadius: 12,
+    margin: 12,
+    marginBottom: 0,
   }),
   footer: css({
     alignSelf: "end",
