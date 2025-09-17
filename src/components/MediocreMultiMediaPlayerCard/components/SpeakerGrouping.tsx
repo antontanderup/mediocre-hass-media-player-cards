@@ -76,6 +76,9 @@ const styles = {
   }),
   miniPlayerControls: css({
     display: "flex"
+  }),
+  miniPlayerSecondaryControl: css({
+    opacity: 0.7,
   })
 };
 
@@ -128,7 +131,7 @@ export const SpeakerGrouping = ({
       >
         {({ player: { state } }) => (
           <div css={styles.miniPlayer}>
-            <AlbumArt size={32} iconSize="xx-small" />
+            <AlbumArt size={32} iconSize="xx-small" onClick={player.selectPlayer} />
             <span css={styles.miniPlayerName}>{player.attributes.friendly_name}</span>
             <div css={styles.miniPlayerControls}>
             {state === "playing" || state === "paused" ? (
@@ -139,6 +142,7 @@ export const SpeakerGrouping = ({
                     entity_id: player.entity_id,
                   });
                 }}
+                css={styles.miniPlayerSecondaryControl}
                 icon={state === "playing" ? "mdi:pause-circle-outline" : "mdi:play-circle-outline"}
               />
             ) : state === "off" ? (
@@ -149,6 +153,7 @@ export const SpeakerGrouping = ({
                     entity_id: player.entity_id,
                   });
                 }}
+                css={styles.miniPlayerSecondaryControl}
                 icon="mdi:power"
               />
             ) : null}
