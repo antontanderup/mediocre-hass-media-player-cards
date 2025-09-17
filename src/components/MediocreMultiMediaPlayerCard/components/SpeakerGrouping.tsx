@@ -17,6 +17,7 @@ import {
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
+import { getHass } from "@utils";
 
 const styles = {
   speakerGroupContainer: css({
@@ -67,11 +68,15 @@ const styles = {
     boxShadow: `0 0 6px ${theme.colors.onCardDivider}`,
     display: "flex",
     alignItems: "center",
-    gap: 8,
+    gap: 4,
   }),
-  miniPlayerSelectButton: css({
-    marginLeft: "auto",
+  miniPlayerName: css({
+    marginRight: "auto",
+    marginLeft: 4,
   }),
+  miniPlayerControls: css({
+    display: "flex"
+  })
 };
 
 export type SpeakerGroupingProps = {
@@ -121,20 +126,45 @@ export const SpeakerGrouping = ({
         hass={hass}
         entityId={player.entity_id}
       >
-        <div css={styles.miniPlayer}>
-          <AlbumArt size={32} iconSize="x-small" />
-          <span>{player.attributes.friendly_name}</span>
-          <IconButton
-            icon={
-              player.isMainSpeaker
-                ? "mdi:check-circle-outline"
-                : "mdi:circle-outline"
-            }
-            css={styles.miniPlayerSelectButton}
-            onClick={player.selectPlayer}
-            size="x-small"
-          />
-        </div>
+        {({ player: { state } }) => (
+          <div css={styles.miniPlayer}>
+            <AlbumArt size={32} iconSize="xx-small" />
+            <span css={styles.miniPlayerName}>{player.attributes.friendly_name}</span>
+            <div css={styles.miniPlayerControls}>
+            {state === "playing" || state === "paused" ? (
+              <IconButton
+                size="x-small"
+                onClick={() => {
+                  getHass().callService("media_player", "media_play_pause", {
+                    entity_id: player.entity_id,
+                  });
+                }}
+                icon={state === "playing" ? "mdi:pause-circle-outline" : "mdi:play-circle-outline"}
+              />
+            ) : state === "off" ? (
+              <IconButton
+                size="x-small"
+                onClick={() => {
+                  getHass().callService("media_player", "turn_on", {
+                    entity_id: player.entity_id,
+                  });
+                }}
+                icon="mdi:power"
+              />
+            ) : null}
+            <IconButton
+              icon={
+                player.isMainSpeaker
+                  ? "mdi:check-circle-outline"
+                  : "mdi:circle-outline"
+              }
+              onClick={player.selectPlayer}
+              size="x-small"
+            />
+            </div>
+
+          </div>
+        )}
       </PlayerContextProvider>
     );
   };
@@ -177,12 +207,12 @@ export const SpeakerGrouping = ({
         css={styles.horizontalPadding}
       />
       <div>
-      <GroupChipsController
-        config={{ entity_id: mainEntityId, speaker_group }}
-        showGrouped={false}
-        layout={{ horizontalMargin: 16 }}
+        <GroupChipsController
+          config={{ entity_id: mainEntityId, speaker_group }}
+          showGrouped={false}
+          layout={{ horizontalMargin: 16 }}
         />
-        </div>
+      </div>
       <ViewHeader
         title="Player focus"
         subtitle="Change which player you are controlling."
