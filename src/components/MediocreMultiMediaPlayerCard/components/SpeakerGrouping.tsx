@@ -65,6 +65,9 @@ const styles = {
     alignItems: "center",
     gap: 8,
   }),
+  miniPlayerSelectButton: css({
+    marginLeft: "auto",
+  }),
 };
 
 export type SpeakerGroupingProps = {
@@ -92,26 +95,20 @@ export const SpeakerGrouping = ({
   const mainEntityId = speaker_group_entity_id || entity_id;
 
   const enrichedEntities = useMemo(() => {
-    const mainGroupingPlayer = hass.states[mainEntityId];
     return (
       media_players.map(player => {
         const playerState = hass.states[player.entity_id] as MediaPlayerEntity;
         return {
           ...playerState,
-          isGrouped:
-            !!player &&
-            mainGroupingPlayer.attributes.group_members.includes(
-              player.entity_id
-            ),
-          isMainSpeaker: player.entity_id === mainEntityId,
+          isMainSpeaker: player.entity_id === entity_id,
           selectPlayer: () => setSelectedPlayer(player),
         };
       }) ?? []
     );
-  }, [hass, mainEntityId, media_players, setSelectedPlayer]);
+  }, [hass, entity_id, media_players, setSelectedPlayer]);
 
   const renderPlayer = (player: (typeof enrichedEntities)[number]) => {
-    if (!player || player.isMainSpeaker) {
+    if (!player) {
       return null;
     }
     return (
@@ -120,9 +117,19 @@ export const SpeakerGrouping = ({
         hass={hass}
         entityId={player.entity_id}
       >
-        <div css={styles.miniPlayer} onClick={player.selectPlayer}>
-          <AlbumArt size={24} iconSize="x-small" />
+        <div css={styles.miniPlayer}>
+          <AlbumArt size={32} iconSize="x-small" />
           <span>{player.attributes.friendly_name}</span>
+          <IconButton
+            icon={
+              player.isMainSpeaker
+                ? "mdi:check-circle-outline"
+                : "mdi:circle-outline"
+            }
+            css={styles.miniPlayerSelectButton}
+            onClick={player.selectPlayer}
+            size="x-small"
+          />
         </div>
       </PlayerContextProvider>
     );
