@@ -23,6 +23,8 @@ const styles = {
     flexDirection: "column",
     padding: "16px",
     gap: "12px",
+    overflowY: "auto",
+    height: "100%",
   }),
   groupTitle: css({
     fontSize: "16px",
@@ -50,28 +52,37 @@ const styles = {
     display: "flex",
     alignItems: "center",
   }),
+  playerSelector: css({
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+  }),
   miniPlayer: css({
     padding: 4,
     borderRadius: 4,
-    backgroundColor: theme.colors.onCardDivider,
+    border: `1px solid ${theme.colors.onCardDivider}`,
     display: "flex",
     alignItems: "center",
     gap: 8,
-  })
+  }),
 };
 
 export type SpeakerGroupingProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
+  setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
 };
 
-export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
+export const SpeakerGrouping = ({
+  mediaPlayer,
+  setSelectedPlayer,
+}: SpeakerGroupingProps) => {
   const { config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
   const hass = useHass();
 
-  const { speaker_group } = config;
+  const { speaker_group, media_players } = config;
   const { entity_id, speaker_group_entity_id } = mediaPlayer;
 
   // TODO: Volume sync should be liftet to a context so it is also active for the main mini player
@@ -82,27 +93,34 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
 
   const enrichedEntities = useMemo(() => {
     const mainGroupingPlayer = hass.states[mainEntityId];
-    return speaker_group?.entities.map((entity) => {
-      const entityId = typeof entity === "string" ? entity : entity.entity;
-      const player = hass.states[entityId] as MediaPlayerEntity
-      return {
-        ...player,
-        attributes: {
-          ...player?.attributes,
-          friendly_name: typeof entity !== "string" && entity.name ? entity.name : player?.attributes.friendly_name || entityId,
-        },
-        isGrouped: !!player && mainGroupingPlayer.attributes.group_members.includes(entityId),
-        isMainSpeaker: player.entity_id === mainEntityId,
-      }
-    }) ?? [];
-  }, [hass, mainEntityId]);
-  console.log(enrichedEntities)
-
-  const renderPlayer = (player: typeof enrichedEntities[number]) => {
-    if (!player || player.isMainSpeaker) { return null; }
     return (
-      <PlayerContextProvider key={player.entity_id} hass={hass} entityId={player.entity_id}>
-        <div css={styles.miniPlayer}>
+      media_players.map(player => {
+        const playerState = hass.states[player.entity_id] as MediaPlayerEntity;
+        return {
+          ...playerState,
+          isGrouped:
+            !!player &&
+            mainGroupingPlayer.attributes.group_members.includes(
+              player.entity_id
+            ),
+          isMainSpeaker: player.entity_id === mainEntityId,
+          selectPlayer: () => setSelectedPlayer(player),
+        };
+      }) ?? []
+    );
+  }, [hass, mainEntityId, media_players, setSelectedPlayer]);
+
+  const renderPlayer = (player: (typeof enrichedEntities)[number]) => {
+    if (!player || player.isMainSpeaker) {
+      return null;
+    }
+    return (
+      <PlayerContextProvider
+        key={player.entity_id}
+        hass={hass}
+        entityId={player.entity_id}
+      >
+        <div css={styles.miniPlayer} onClick={player.selectPlayer}>
           <AlbumArt size={24} iconSize="x-small" />
           <span>{player.attributes.friendly_name}</span>
         </div>
@@ -112,23 +130,29 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
 
   return (
     <div css={styles.speakerGroupContainer}>
-      <ViewHeader title="Join media players" subtitle="Selected player grouping." renderAction={() => (
-        <div css={styles.syncContainer}>
-          <span
-            css={styles.syncText}
-            onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
-          >
-            Link Volume
-          </span>
-          <IconButton
-            icon={
-              syncMainSpeakerVolume ? "mdi:check-circle" : "mdi:circle-outline"
-            }
-            size="x-small"
-            onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
-          />
-        </div>
-      )} />
+      <ViewHeader
+        title="Join media players"
+        subtitle="Selected player grouping."
+        renderAction={() => (
+          <div css={styles.syncContainer}>
+            <span
+              css={styles.syncText}
+              onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+            >
+              Link Volume
+            </span>
+            <IconButton
+              icon={
+                syncMainSpeakerVolume
+                  ? "mdi:check-circle"
+                  : "mdi:circle-outline"
+              }
+              size="x-small"
+              onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+            />
+          </div>
+        )}
+      />
 
       <GroupVolumeController
         config={{
@@ -141,8 +165,13 @@ export const SpeakerGrouping = ({ mediaPlayer }: SpeakerGroupingProps) => {
         syncMainSpeaker={syncMainSpeakerVolume}
         showUngrouped={true}
       />
-      <ViewHeader title="Change player" subtitle="Change which player you are controlling." />
-      {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
+      <ViewHeader
+        title="Change player"
+        subtitle="Change which player you are controlling."
+      />
+      <div css={styles.playerSelector}>
+        {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
+      </div>
     </div>
   );
 };

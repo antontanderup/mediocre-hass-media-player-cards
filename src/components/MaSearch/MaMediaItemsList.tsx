@@ -204,7 +204,7 @@ export const MaMediaItemsList = ({
       onLayout={({ width }) => {
         if (width > 800) {
           setChunkSize(6);
-        }  else if (width > 390) {
+        } else if (width > 390) {
           setChunkSize(4);
         } else {
           setChunkSize(3);

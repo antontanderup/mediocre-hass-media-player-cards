@@ -1,5 +1,8 @@
 import { HomeAssistant } from "@types";
-import { MediocreMediaPlayerCard, MediocreMediaPlayerCardProps } from "@components";
+import {
+  MediocreMediaPlayerCard,
+  MediocreMediaPlayerCardProps,
+} from "@components";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
 import { FC } from "preact/compat";

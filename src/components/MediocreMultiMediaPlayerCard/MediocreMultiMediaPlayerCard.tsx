@@ -54,19 +54,13 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   const hass = useHass();
 
-  const [selectedPlayerIndex, setSelectedPlayerIndex] = useState<
-    number | undefined
-  >(undefined);
-
-  const selectedPlayer: MediocreMultiMediaPlayer | undefined = useMemo(() => {
-    if (selectedPlayerIndex === undefined) {
-      const player = config.media_players.find(
-        player => player.entity_id === config.entity_id
-      );
-      return player;
-    }
-    return config.media_players[selectedPlayerIndex];
-  }, [config, selectedPlayerIndex]);
+  const [selectedPlayer, setSelectedPlayer] = useState<
+    MediocreMultiMediaPlayer | undefined
+  >(() => {
+    return config.media_players.find(
+      player => player.entity_id === config.entity_id
+    );
+  });
 
   const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>(
     () => {
@@ -98,7 +92,10 @@ export const MediocreMultiMediaPlayerCard = () => {
                 />
               )}
               {navigationRoute === "speaker-grouping" && (
-                <SpeakerGrouping mediaPlayer={selectedPlayer} />
+                <SpeakerGrouping
+                  mediaPlayer={selectedPlayer}
+                  setSelectedPlayer={setSelectedPlayer}
+                />
               )}
             </div>
             <div css={styles.footer}>

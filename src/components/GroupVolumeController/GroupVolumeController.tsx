@@ -216,7 +216,7 @@ export const GroupVolumeController = ({
       <table css={styles.speakersTable}>
         <tbody>
           {availableSpeakers
-            .filter(speaker => showUngrouped ? true : speaker.isGrouped)
+            .filter(speaker => (showUngrouped ? true : speaker.isGrouped))
             .map((speaker, index, filteredSpeakers) =>
               renderSpeaker(speaker, index, filteredSpeakers)
             )}

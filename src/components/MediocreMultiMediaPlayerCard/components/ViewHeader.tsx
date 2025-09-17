@@ -5,7 +5,7 @@ import { JSX } from "preact/jsx-runtime";
 type ViewHeaderProps = {
   title: string;
   subtitle?: string;
-  renderAction?: () => JSX.Element
+  renderAction?: () => JSX.Element;
 };
 
 const styles = {
@@ -23,17 +23,21 @@ const styles = {
   subtitle: css({
     fontSize: 14,
     color: theme.colors.onCardMuted,
-  })
-}
+  }),
+};
 
-export const ViewHeader = ({ title, subtitle, renderAction }: ViewHeaderProps) => {
+export const ViewHeader = ({
+  title,
+  subtitle,
+  renderAction,
+}: ViewHeaderProps) => {
   return (
     <div css={styles.root}>
       <div css={styles.titleRow}>
         <span css={styles.title}>{title}</span>
         {!!renderAction && renderAction()}
       </div>
-      { !!subtitle && <span css={styles.subtitle}>{subtitle}</span> }
+      {!!subtitle && <span css={styles.subtitle}>{subtitle}</span>}
     </div>
-  )
-}
+  );
+};
