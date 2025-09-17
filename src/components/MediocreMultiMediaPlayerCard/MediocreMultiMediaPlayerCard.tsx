@@ -26,6 +26,9 @@ const styles = {
     minHeight: 0,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
+    "* > *": {
+      boxSizing: "border-box",
+    }
   }),
   contentArea: css({
     alignSelf: "stretch",
