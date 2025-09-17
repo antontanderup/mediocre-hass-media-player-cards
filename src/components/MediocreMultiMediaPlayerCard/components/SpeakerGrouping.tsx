@@ -60,7 +60,7 @@ const styles = {
   miniPlayer: css({
     padding: 4,
     borderRadius: 4,
-    border: `1px solid ${theme.colors.onCardDivider}`,
+    boxShadow: `0 0 6px ${theme.colors.onCardDivider}`,
     display: "flex",
     alignItems: "center",
     gap: 8,
