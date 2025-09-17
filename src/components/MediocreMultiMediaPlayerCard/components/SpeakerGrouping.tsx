@@ -8,6 +8,7 @@ import {
   AlbumArt,
   CardContext,
   CardContextType,
+  GroupChipsController,
   GroupVolumeController,
   IconButton,
   PlayerContextProvider,
@@ -21,10 +22,13 @@ const styles = {
   speakerGroupContainer: css({
     display: "flex",
     flexDirection: "column",
-    padding: "16px",
+    padding: "16px 0px",
     gap: "12px",
     overflowY: "auto",
     height: "100%",
+  }),
+  horizontalPadding: css({
+    padding: "0px 16px",
   }),
   groupTitle: css({
     fontSize: "16px",
@@ -140,6 +144,7 @@ export const SpeakerGrouping = ({
       <ViewHeader
         title="Join media players"
         subtitle="Selected player grouping."
+        css={styles.horizontalPadding}
         renderAction={() => (
           <div css={styles.syncContainer}>
             <span
@@ -160,7 +165,6 @@ export const SpeakerGrouping = ({
           </div>
         )}
       />
-
       <GroupVolumeController
         config={{
           entity_id,
@@ -170,13 +174,21 @@ export const SpeakerGrouping = ({
           },
         }}
         syncMainSpeaker={syncMainSpeakerVolume}
-        showUngrouped={true}
+        css={styles.horizontalPadding}
       />
+      <div>
+      <GroupChipsController
+        config={{ entity_id: mainEntityId, speaker_group }}
+        showGrouped={false}
+        layout={{ horizontalMargin: 16 }}
+        />
+        </div>
       <ViewHeader
-        title="Change player"
+        title="Player focus"
         subtitle="Change which player you are controlling."
+        css={styles.horizontalPadding}
       />
-      <div css={styles.playerSelector}>
+      <div css={[styles.playerSelector, styles.horizontalPadding]}>
         {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
       </div>
     </div>

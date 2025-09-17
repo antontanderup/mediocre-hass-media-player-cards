@@ -26,7 +26,7 @@ const styles = {
     minHeight: 0,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
-    "* > *": {
+    "*, *:before, *:after": {
       boxSizing: "border-box",
     },
   }),

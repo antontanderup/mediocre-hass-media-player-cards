@@ -5,6 +5,7 @@ import { JSX } from "preact/jsx-runtime";
 type ViewHeaderProps = {
   title: string;
   subtitle?: string;
+  className?: string;
   renderAction?: () => JSX.Element;
 };
 
@@ -29,10 +30,11 @@ const styles = {
 export const ViewHeader = ({
   title,
   subtitle,
+  className,
   renderAction,
 }: ViewHeaderProps) => {
   return (
-    <div css={styles.root}>
+    <div css={styles.root} className={className}>
       <div css={styles.titleRow}>
         <span css={styles.title}>{title}</span>
         {!!renderAction && renderAction()}
