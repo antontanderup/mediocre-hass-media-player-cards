@@ -5,8 +5,8 @@ import { css } from "@emotion/react";
 const styles = {
   root: css({
     height: "100%",
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingTop: 16,
+    paddingBottom: 16,
     overflowY: "auto",
   }),
 };
@@ -25,7 +25,7 @@ export const SearchView = ({
       return (
         <MaSearch
           maEntityId={ma_entity_id}
-          horizontalPadding={12}
+          horizontalPadding={16}
           maxHeight={height}
         />
       );
@@ -35,7 +35,7 @@ export const SearchView = ({
         <HaSearch
           entityId={search.entity_id ?? entity_id}
           showFavorites={search.show_favorites ?? false}
-          horizontalPadding={12}
+          horizontalPadding={16}
           filterConfig={search.media_types}
           maxHeight={height}
         />
