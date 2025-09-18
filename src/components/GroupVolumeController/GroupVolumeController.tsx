@@ -64,7 +64,7 @@ export const GroupVolumeController = ({
   config: { speaker_group, entity_id },
   syncMainSpeaker,
   showUngrouped = false,
-  className
+  className,
 }: GroupVolumeControllerProps) => {
   const hass = useHass();
 

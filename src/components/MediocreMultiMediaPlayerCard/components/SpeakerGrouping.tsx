@@ -75,11 +75,11 @@ const styles = {
     marginLeft: 4,
   }),
   miniPlayerControls: css({
-    display: "flex"
+    display: "flex",
   }),
   miniPlayerSecondaryControl: css({
     opacity: 0.7,
-  })
+  }),
 };
 
 export type SpeakerGroupingProps = {
@@ -131,43 +131,52 @@ export const SpeakerGrouping = ({
       >
         {({ player: { state } }) => (
           <div css={styles.miniPlayer}>
-            <AlbumArt size={32} iconSize="xx-small" onClick={player.selectPlayer} />
-            <span css={styles.miniPlayerName}>{player.attributes.friendly_name}</span>
-            <div css={styles.miniPlayerControls}>
-            {state === "playing" || state === "paused" ? (
-              <IconButton
-                size="x-small"
-                onClick={() => {
-                  getHass().callService("media_player", "media_play_pause", {
-                    entity_id: player.entity_id,
-                  });
-                }}
-                css={styles.miniPlayerSecondaryControl}
-                icon={state === "playing" ? "mdi:pause-circle-outline" : "mdi:play-circle-outline"}
-              />
-            ) : state === "off" ? (
-              <IconButton
-                size="x-small"
-                onClick={() => {
-                  getHass().callService("media_player", "turn_on", {
-                    entity_id: player.entity_id,
-                  });
-                }}
-                css={styles.miniPlayerSecondaryControl}
-                icon="mdi:power"
-              />
-            ) : null}
-            <IconButton
-              icon={
-                player.isMainSpeaker
-                  ? "mdi:check-circle-outline"
-                  : "mdi:circle-outline"
-              }
+            <AlbumArt
+              size={32}
+              iconSize="xx-small"
               onClick={player.selectPlayer}
-              size="x-small"
             />
+            <span css={styles.miniPlayerName}>
+              {player.attributes.friendly_name}
+            </span>
+            <div css={styles.miniPlayerControls}>
+              {state === "playing" || state === "paused" ? (
+                <IconButton
+                  size="x-small"
+                  onClick={() => {
+                    getHass().callService("media_player", "media_play_pause", {
+                      entity_id: player.entity_id,
+                    });
+                  }}
+                  css={styles.miniPlayerSecondaryControl}
+                  icon={
+                    state === "playing"
+                      ? "mdi:pause-circle-outline"
+                      : "mdi:play-circle-outline"
+                  }
+                />
+              ) : state === "off" ? (
+                <IconButton
+                  size="x-small"
+                  onClick={() => {
+                    getHass().callService("media_player", "turn_on", {
+                      entity_id: player.entity_id,
+                    });
+                  }}
+                  css={styles.miniPlayerSecondaryControl}
+                  icon="mdi:power"
+                />
+              ) : null}
+              <IconButton
+                icon={
+                  player.isMainSpeaker
+                    ? "mdi:check-circle-outline"
+                    : "mdi:circle-outline"
+                }
+                onClick={player.selectPlayer}
+                size="x-small"
+              />
             </div>
-
           </div>
         )}
       </PlayerContextProvider>

@@ -103,13 +103,13 @@ export const MediocreMultiMediaPlayerCard = () => {
                 />
               )}
               {navigationRoute === "massive" && (
-                <MassiveViewView
-                  mediaPlayer={selectedPlayer}
-                />
+                <MassiveViewView mediaPlayer={selectedPlayer} />
               )}
             </div>
             <div css={styles.footer}>
-              {navigationRoute !== "massive" && <MiniPlayer mediaPlayer={selectedPlayer} /> }
+              {navigationRoute !== "massive" && (
+                <MiniPlayer mediaPlayer={selectedPlayer} />
+              )}
               <FooterActions
                 mediaPlayer={selectedPlayer}
                 setNavigationRoute={setNavigationRoute}

@@ -132,7 +132,7 @@ export const MediocreMassiveMediaPlayerCard = ({
           <Title />
           <Track />
           <PlaybackControls />
-          { mode !== "multi" && <PlayerActions /> }
+          {mode !== "multi" && <PlayerActions />}
         </div>
       </div>
     </div>
