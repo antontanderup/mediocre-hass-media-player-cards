@@ -19,21 +19,33 @@ const styles = {
   root: css({
     padding: 16,
     display: "grid",
+    gap: 24,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
   }),
   massive: css({
     overflow: "hidden",
   }),
-  customButtons: css({
+  customButtonsRoot: css({
     display: "flex",
-    justifyContent: "center",
     flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
-    gap: "8px",
-    marginTop: "12px",
-  })
+    justifyContent: "flex-start",
+    gap: "2px",
+    overflowX: "auto",
+    scrollbarWidth: "none",
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  }),
+  customButtonChip: css({
+    "&:first-child": {
+      marginLeft: "16px",
+    },
+    "&:last-child": {
+      marginRight: "16px",
+    },
+  }),
 };
 
 export type MassiveViewViewProps = {
@@ -59,9 +71,9 @@ export const MassiveViewView = ({ mediaPlayer, height }: MassiveViewViewProps) =
       <CardContextProvider rootElement={rootElement} config={massiveConfig}>
         <MediocreMassiveMediaPlayerCard css={styles.massive} />
       </CardContextProvider>
-      <div css={styles.customButtons}>
+      <div css={styles.customButtonsRoot}>
         {mediaPlayer.custom_buttons?.map((button, index) => (
-          <CustomButton key={index} button={button} rootElement={rootElement} entityId={mediaPlayer.entity_id} />
+          <CustomButton css={styles.customButtonChip} key={index} button={button} rootElement={rootElement} entityId={mediaPlayer.entity_id} />
         ))}
       </div>
     </div>
