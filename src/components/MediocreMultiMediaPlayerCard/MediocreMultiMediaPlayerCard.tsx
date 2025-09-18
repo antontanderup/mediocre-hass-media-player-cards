@@ -12,9 +12,11 @@ import { FooterActions } from "./components/FooterActions";
 import { PlayerContextProvider } from "@components/PlayerContext";
 import { useHass } from "@components/HassContext";
 import { theme } from "@constants";
+import { MassiveViewView } from "./components/MassiveView";
 
 export type NavigationRoute =
   | "search"
+  | "massive"
   | "speaker-grouping"
   | "speaker-overview";
 
@@ -100,9 +102,14 @@ export const MediocreMultiMediaPlayerCard = () => {
                   setSelectedPlayer={setSelectedPlayer}
                 />
               )}
+              {navigationRoute === "massive" && (
+                <MassiveViewView
+                  mediaPlayer={selectedPlayer}
+                />
+              )}
             </div>
             <div css={styles.footer}>
-              <MiniPlayer mediaPlayer={selectedPlayer} />
+              {navigationRoute !== "massive" && <MiniPlayer mediaPlayer={selectedPlayer} /> }
               <FooterActions
                 mediaPlayer={selectedPlayer}
                 setNavigationRoute={setNavigationRoute}

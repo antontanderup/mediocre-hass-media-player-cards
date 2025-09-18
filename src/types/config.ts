@@ -58,7 +58,7 @@ export const MediocreMediaPlayerCardConfigSchema =
 
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
-    mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup as it only for internal use
+    mode: "'panel'|'card'|'in-card'|'popup'|'multi'", // don't document popup and multi as they are only for internal use
   });
 
 export const MediocreMultiMediaPlayer = type({

@@ -55,6 +55,11 @@ export const FooterActions = ({
 
   return (
     <div css={styles.root}>
+      <IconButton
+        size="small"
+        icon={"mdi:home"}
+        onClick={() => setNavigationRoute("massive")}
+      />
       {hasSearch && (
         <IconButton
           size="small"
