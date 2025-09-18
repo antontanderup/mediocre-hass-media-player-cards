@@ -77,6 +77,10 @@ const styles = {
     height: "100%",
     justifyContent: "space-between",
   }),
+  controlsWrapperMulti: css({
+    maxHeight: 210,
+    minHeight: 200,
+  })
 };
 
 export const MediocreMassiveMediaPlayerCard = ({
@@ -128,7 +132,7 @@ export const MediocreMassiveMediaPlayerCard = ({
         ]}
       >
         <AlbumArt iconSize="x-large" borderRadius={8} {...artActionProps} />
-        <div css={styles.controlsWrapper}>
+        <div css={[styles.controlsWrapper, mode === "multi" && styles.controlsWrapperMulti]}>
           <Title />
           <Track />
           <PlaybackControls />
