@@ -67,14 +67,7 @@ export const MediocreMultiMediaPlayerCard = () => {
     );
   });
 
-  const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>(
-    () => {
-      if (selectedPlayer?.ma_entity_id || selectedPlayer?.search?.enabled) {
-        return "search";
-      }
-      return "speaker-overview";
-    }
-  );
+  const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>("massive");
 
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
@@ -102,8 +95,8 @@ export const MediocreMultiMediaPlayerCard = () => {
                   setSelectedPlayer={setSelectedPlayer}
                 />
               )}
-              {navigationRoute === "massive" && (
-                <MassiveViewView mediaPlayer={selectedPlayer} />
+              {navigationRoute === "massive" && contentHeight && (
+                <MassiveViewView mediaPlayer={selectedPlayer} height={contentHeight} />
               )}
             </div>
             <div css={styles.footer}>
