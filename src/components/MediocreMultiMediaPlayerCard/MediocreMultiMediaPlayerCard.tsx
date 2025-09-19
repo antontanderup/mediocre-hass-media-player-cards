@@ -3,7 +3,7 @@ import {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { useContext, useMemo, useState } from "preact/hooks";
+import { useContext, useState } from "preact/hooks";
 import { MiniPlayer, SearchView, SpeakerGrouping } from "./components";
 import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";

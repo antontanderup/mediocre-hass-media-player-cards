@@ -1,6 +1,6 @@
 import { useContext } from "preact/hooks";
-import { css, keyframes } from "@emotion/react";
-import { IconButton, usePlayer } from "@components";
+import { css } from "@emotion/react";
+import { IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
   InteractionConfig,
@@ -10,17 +10,6 @@ import {
 import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps } from "@hooks";
-
-const slideUpFadeIn = keyframes`
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
 
 const styles = {
   root: css({
