@@ -24,16 +24,23 @@ const styles = {
 };
 
 export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
-  const { rootElement } =
+  const { rootElement, config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
 
   const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
-    const { custom_buttons: _custom_buttons, ...config } = mediaPlayer;
+    const { 
+      custom_buttons: _custom_buttons,
+      ...rest
+    } = mediaPlayer;
     return {
       type: "custom:mediocre-media-player-card",
-      ...config,
+      speaker_group: config.speaker_group ? {
+        ...config.speaker_group,
+        entity_id: mediaPlayer.speaker_group_entity_id,
+      } : undefined,
+      ...rest,
     };
   }, [mediaPlayer]);
 

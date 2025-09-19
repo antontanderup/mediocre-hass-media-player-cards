@@ -143,6 +143,7 @@ export const MediocreMediaPlayerCard = ({
 
   // Check if grouping is available
   const hasGroupingFeature =
+    !isEmbeddedInMultiCard &&
     config.speaker_group &&
     config.speaker_group.entities &&
     config.speaker_group.entities.length > 0;
