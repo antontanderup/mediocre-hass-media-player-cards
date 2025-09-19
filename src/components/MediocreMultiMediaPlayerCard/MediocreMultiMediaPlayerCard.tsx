@@ -4,7 +4,12 @@ import {
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { useContext, useState } from "preact/hooks";
-import { MiniPlayer, SearchView, SpeakerGrouping } from "./components";
+import {
+  ArtworkColorWrap,
+  MiniPlayer,
+  SearchView,
+  SpeakerGrouping,
+} from "./components";
 import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";
 import { css } from "@emotion/react";
@@ -84,7 +89,7 @@ export const MediocreMultiMediaPlayerCard = () => {
         {!selectedPlayer ? (
           <div>Please select a media player in the configuration.</div>
         ) : (
-          <div css={styles.root}>
+          <ArtworkColorWrap activePlayer={selectedPlayer} css={styles.root}>
             <div css={styles.contentArea} ref={contentSizeRef}>
               {navigationRoute === "search" && contentHeight && (
                 <SearchView
@@ -118,7 +123,7 @@ export const MediocreMultiMediaPlayerCard = () => {
                 navigationRoute={navigationRoute}
               />
             </div>
-          </div>
+          </ArtworkColorWrap>
         )}
       </Fragment>
     </PlayerContextProvider>

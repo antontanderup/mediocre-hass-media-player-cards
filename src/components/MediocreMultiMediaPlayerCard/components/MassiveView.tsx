@@ -4,15 +4,15 @@ import type {
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { css } from "@emotion/react";
-import { useContext, useMemo } from "preact/hooks";
+import { useCallback, useContext, useMemo } from "preact/hooks";
 import {
   CardContext,
   CardContextProvider,
   CardContextType,
 } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMediaPlayerCard";
-import { Icon, IconButton, useHass, usePlayer } from "@components";
-import { getDeviceIcon } from "@utils";
+import { Icon, IconButton, Slider, useHass, usePlayer } from "@components";
+import { getDeviceIcon, getHass, getVolumeIcon } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 
@@ -21,7 +21,7 @@ const styles = {
     padding: 16,
     display: "grid",
     gap: 24,
-    gridTemplateRows: "auto 1fr",
+    gridTemplateRows: "auto 1fr auto",
     gridTemplateColumns: "1fr",
   }),
   massive: css({
@@ -42,6 +42,20 @@ const styles = {
     whiteSpace: "nowrap",
     marginRight: "auto",
   }),
+  volumeRoot: css({
+    display: "flex",
+    alignItems: "center",
+    flex: 1,
+    maxHeight: "36px",
+    marginTop: "auto",
+    gap: "8px",
+    justifySelf: "center",
+    width: "100%",
+    maxWidth: 600,
+  }),
+  buttonMuted: css({
+    opacity: 0.8,
+  }),
 };
 
 export type MassiveViewViewProps = {
@@ -61,12 +75,40 @@ export const MassiveViewView = ({
     );
 
   const {
+    entity_id,
     attributes: {
       friendly_name: friendlyName,
       icon,
       device_class: deviceClass,
+      volume_level: volumeLevel,
+      is_volume_muted: isVolumeMuted,
     },
   } = usePlayer();
+
+  const volume = volumeLevel ?? 0;
+  const volumeMuted = isVolumeMuted ?? false;
+
+  // Handle volume change
+  const handleVolumeChange = useCallback((newVolume: number) => {
+    // Set the volume level
+    getHass().callService("media_player", "volume_set", {
+      entity_id,
+      volume_level: newVolume,
+    });
+  }, []);
+
+  // Handle mute toggle
+  const handleToggleMute = useCallback(() => {
+    getHass().callService("media_player", "volume_mute", {
+      entity_id,
+      is_volume_muted: !volumeMuted,
+    });
+  }, [volumeMuted]);
+
+  const VolumeIcon = useMemo(
+    () => getVolumeIcon(volume, volumeMuted),
+    [volume, volumeMuted]
+  );
 
   const groupMembers =
     hass.states[mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id]
@@ -108,6 +150,22 @@ export const MassiveViewView = ({
       <CardContextProvider rootElement={rootElement} config={massiveConfig}>
         <MediocreMassiveMediaPlayerCard css={styles.massive} />
       </CardContextProvider>
+      <div css={styles.volumeRoot}>
+        <IconButton
+          css={volumeMuted ? styles.buttonMuted : {}}
+          size="small"
+          onClick={handleToggleMute}
+          icon={VolumeIcon}
+        />
+        <Slider
+          min={0}
+          max={1}
+          step={0.01}
+          value={volume}
+          sliderSize={"large"}
+          onChange={handleVolumeChange}
+        />
+      </div>
     </div>
   );
 };
