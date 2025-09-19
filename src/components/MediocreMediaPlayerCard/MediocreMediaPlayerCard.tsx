@@ -223,7 +223,7 @@ export const MediocreMediaPlayerCard = ({
                     )}
                   </Fragment>
                 )}
-                {ma_entity_id && (
+                {ma_entity_id && !isEmbeddedInMultiCard && (
                   <MaMenu
                     ma_entity_id={ma_entity_id ?? undefined}
                     ma_favorite_button_entity_id={
