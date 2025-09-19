@@ -13,11 +13,13 @@ import { PlayerContextProvider } from "@components/PlayerContext";
 import { useHass } from "@components/HassContext";
 import { theme } from "@constants";
 import { MassiveViewView } from "./components/MassiveView";
+import { CustomButtonsView } from "./components/CustomButtonsView";
 
 export type NavigationRoute =
   | "search"
   | "massive"
   | "speaker-grouping"
+  | "custom-buttons"
   | "speaker-overview";
 
 const styles = {
@@ -67,7 +69,8 @@ export const MediocreMultiMediaPlayerCard = () => {
     );
   });
 
-  const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>("massive");
+  const [navigationRoute, setNavigationRoute] =
+    useState<NavigationRoute>("massive");
 
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
@@ -96,7 +99,13 @@ export const MediocreMultiMediaPlayerCard = () => {
                 />
               )}
               {navigationRoute === "massive" && contentHeight && (
-                <MassiveViewView mediaPlayer={selectedPlayer} height={contentHeight} />
+                <MassiveViewView
+                  mediaPlayer={selectedPlayer}
+                  height={contentHeight}
+                />
+              )}
+              {navigationRoute === "custom-buttons" && (
+                <CustomButtonsView mediaPlayer={selectedPlayer} />
               )}
             </div>
             <div css={styles.footer}>

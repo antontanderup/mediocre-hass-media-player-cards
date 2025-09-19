@@ -1,5 +1,4 @@
 import type {
-  InteractionConfig,
   MediocreMassiveMediaPlayerCardConfig,
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
@@ -12,8 +11,6 @@ import {
   CardContextType,
 } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMediaPlayerCard";
-import { useActionProps } from "@hooks";
-import { Chip } from "@components";
 
 const styles = {
   root: css({
@@ -26,26 +23,6 @@ const styles = {
   massive: css({
     overflow: "hidden",
   }),
-  customButtonsRoot: css({
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    gap: "2px",
-    overflowX: "auto",
-    scrollbarWidth: "none",
-    "-ms-overflow-style": "none",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
-  }),
-  customButtonChip: css({
-    "&:first-child": {
-      marginLeft: "16px",
-    },
-    "&:last-child": {
-      marginRight: "16px",
-    },
-  }),
 };
 
 export type MassiveViewViewProps = {
@@ -53,7 +30,10 @@ export type MassiveViewViewProps = {
   height: number;
 };
 
-export const MassiveViewView = ({ mediaPlayer, height }: MassiveViewViewProps) => {
+export const MassiveViewView = ({
+  mediaPlayer,
+  height,
+}: MassiveViewViewProps) => {
   const { rootElement } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -71,40 +51,6 @@ export const MassiveViewView = ({ mediaPlayer, height }: MassiveViewViewProps) =
       <CardContextProvider rootElement={rootElement} config={massiveConfig}>
         <MediocreMassiveMediaPlayerCard css={styles.massive} />
       </CardContextProvider>
-      <div css={styles.customButtonsRoot}>
-        {mediaPlayer.custom_buttons?.map((button, index) => (
-          <CustomButton css={styles.customButtonChip} key={index} button={button} rootElement={rootElement} entityId={mediaPlayer.entity_id} />
-        ))}
-      </div>
     </div>
-  );
-};
-
-const CustomButton = ({
-  button,
-  rootElement,
-  entityId,
-}: {
-  button: InteractionConfig & {
-    icon?: string;
-    name?: string;
-  };
-  entityId: string;
-  rootElement: HTMLElement;
-}) => {
-  const { icon, name, ...actionConfig } = button;
-  const actionProps = useActionProps({
-    rootElement,
-    actionConfig: {
-      ...actionConfig,
-      entity: entityId,
-    },
-  });
-
-  return (
-    <Chip icon={icon} {...actionProps}>
-      {!!name && <span>{name}</span>}
-      {actionProps.renderLongPressIndicator()}
-    </Chip>
   );
 };

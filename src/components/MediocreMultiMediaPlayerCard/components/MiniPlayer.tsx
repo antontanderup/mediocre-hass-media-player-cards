@@ -30,9 +30,10 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
     );
 
   const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
+    const { custom_buttons: _custom_buttons, ...config } = mediaPlayer;
     return {
       type: "custom:mediocre-media-player-card",
-      ...mediaPlayer,
+      ...config,
     };
   }, [mediaPlayer]);
 
