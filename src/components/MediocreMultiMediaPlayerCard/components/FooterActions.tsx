@@ -53,12 +53,7 @@ export const FooterActions = ({
       CardContext
     );
 
-  const {
-    entity_id,
-    ma_entity_id,
-    search,
-    custom_buttons,
-  } = mediaPlayer;
+  const { entity_id, ma_entity_id, search, custom_buttons } = mediaPlayer;
 
   const { speaker_group } = config;
 
