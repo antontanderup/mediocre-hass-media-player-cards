@@ -19,6 +19,7 @@ export type IconButtonProps = Omit<
   icon: string;
   size?: ButtonSize;
   disabled?: boolean;
+  selected?: boolean;
   loading?: boolean;
   renderLongPressIndicator?: () => JSX.Element | null;
 };
@@ -61,6 +62,11 @@ const styles = {
       pointerEvents: "none",
     },
   }),
+  rootSelected: css({
+    backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
+    border: `3px solid var(--divider-color, rgba(0, 0, 0, 0.1))`,
+    margin: -3,
+  }),
   rootDisabled: css({
     color: "var(--disabled-text-color, #999)",
   }),
@@ -76,6 +82,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       size = "medium",
       disabled = false,
       loading = false,
+      selected = false,
       className,
       renderLongPressIndicator,
       ...buttonProps
@@ -89,6 +96,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
           styles.root,
           disabled && styles.rootDisabled,
           size === "xx-small" && styles.rootXxsmall,
+          selected && styles.rootSelected,
         ]}
         style={{
           "--mmpc-icon-button-size": `${getButtonSize(size)}px`,

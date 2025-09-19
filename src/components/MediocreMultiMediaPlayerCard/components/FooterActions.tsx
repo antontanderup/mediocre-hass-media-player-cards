@@ -36,6 +36,7 @@ export type FooterActionsProps = {
 export const FooterActions = ({
   mediaPlayer,
   setNavigationRoute,
+  navigationRoute,
 }: FooterActionsProps) => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
@@ -55,12 +56,14 @@ export const FooterActions = ({
         size="small"
         icon={"mdi:home"}
         onClick={() => setNavigationRoute("massive")}
+        selected={navigationRoute === "massive"}
       />
       {hasSearch && (
         <IconButton
           size="small"
           icon={"mdi:magnify"}
           onClick={() => setNavigationRoute("search")}
+          selected={navigationRoute === "search"}
         />
       )}
       {custom_buttons && custom_buttons.length === 1 ? (
@@ -74,6 +77,7 @@ export const FooterActions = ({
           size="small"
           icon={"mdi:dots-horizontal"}
           onClick={() => setNavigationRoute("custom-buttons")}
+          selected={navigationRoute === "custom-buttons"}
         />
       ) : null}
       {!!speaker_group && (
@@ -81,6 +85,7 @@ export const FooterActions = ({
           size="small"
           icon={"mdi:speaker-multiple"}
           onClick={() => setNavigationRoute("speaker-grouping")}
+          selected={navigationRoute === "speaker-grouping"}
         />
       )}
     </div>
