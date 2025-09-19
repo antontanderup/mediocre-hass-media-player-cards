@@ -66,13 +66,13 @@ export const FooterActions = ({
           selected={navigationRoute === "search"}
         />
       )}
-      {custom_buttons && custom_buttons.length === 1 ? (
+      {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (
         <CustomButton
           button={custom_buttons[0]}
           rootElement={rootElement}
           entityId={entity_id}
         />
-      ) : custom_buttons && custom_buttons.length > 1 ? (
+      ) : (custom_buttons && custom_buttons.length > 1) || ma_entity_id ? (
         <IconButton
           size="small"
           icon={"mdi:dots-horizontal"}
