@@ -7,7 +7,6 @@ import {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-// @ts-expect-error i'll allow it for now
 import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps } from "@hooks";
