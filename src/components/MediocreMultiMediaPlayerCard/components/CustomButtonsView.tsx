@@ -5,12 +5,11 @@ import type {
 } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
-import { Chip, usePlayer } from "@components";
+import { Chip, useHass, usePlayer } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import {
-  getAllMassPlayers,
   getHass,
   getIsMassPlayer,
   transferMaQueue,
@@ -48,15 +47,17 @@ export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButt
   const { custom_buttons, ma_favorite_button_entity_id, ma_entity_id } =
     mediaPlayer;
 
-  const { config: { media_players} } =
+  const { config: { media_players } } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
 
+  const hass = useHass();
+
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(
     () => getIsMassPlayer(player),
-    [player]
+    [player, player?.attributes?.active_child]
   );
 
   const transferQueue = useCallback(
@@ -69,26 +70,22 @@ export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButt
 
   const maTransferMenuItems: OverlayMenuItem[] = useMemo(() => {
     if (!ma_entity_id || !isMainEntityMassPlayer) return [];
-    const massPlayers = getAllMassPlayers().filter(
-      player =>
-        player.entity_id !== ma_entity_id &&
-        getIsMassPlayer(player) &&
-        player.state !== "unavailable"
-    );
+    const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
+      if (!mp.ma_entity_id) return null;
+      const state = hass.states[mp.entity_id];
+      if (!state || state.state === "unavailable" || mp.entity_id === mediaPlayer.entity_id) return null;
+      return {
+        label: state.attributes.friendly_name || mp.entity_id,
+        onClick: () => {
+          if (!mp.ma_entity_id) return;
+          transferQueue(mp.ma_entity_id);
+          setSelectedPlayer(mp);
+        },
+      };
+    });
 
-    const items: OverlayMenuItem[] = massPlayers.map(player => ({
-      label: player.attributes.friendly_name || player.entity_id,
-      onClick: () => {
-        transferQueue(player.entity_id)
-        const newPlayer = media_players.find(p => p.ma_entity_id === player.entity_id)
-        console.log({newPlayer})
-        if (newPlayer) {
-          setSelectedPlayer(newPlayer)
-        }
-      },
-    }));
-    return items;
-  }, [ma_favorite_button_entity_id, transferQueue, media_players, setSelectedPlayer]);
+    return items.filter(item => item !== null) as OverlayMenuItem[];
+  }, [isMainEntityMassPlayer, ma_entity_id, transferQueue, media_players, setSelectedPlayer]);
 
   const markSongAsFavorite = useCallback(() => {
     if (!ma_favorite_button_entity_id) return;
