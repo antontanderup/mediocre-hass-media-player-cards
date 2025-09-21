@@ -5,7 +5,7 @@ import type {
 } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
-import { Chip, useHass, usePlayer } from "@components";
+import { Chip, Icon, useHass, usePlayer } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
@@ -132,6 +132,7 @@ export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButt
                 renderTrigger={triggerProps => (
                   <Chip icon="mdi:transfer" {...triggerProps}>
                     Transfer Queue
+                    <Icon size="x-small" icon="mdi:chevron-down" />
                   </Chip>
                 )}
               />
