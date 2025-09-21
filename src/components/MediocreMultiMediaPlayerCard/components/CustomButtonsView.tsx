@@ -41,11 +41,17 @@ const styles = {
 
 export type CustomButtonsViewProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
+  setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
 };
 
-export const CustomButtonsView = ({ mediaPlayer }: CustomButtonsViewProps) => {
+export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButtonsViewProps) => {
   const { custom_buttons, ma_favorite_button_entity_id, ma_entity_id } =
     mediaPlayer;
+
+  const { config: { media_players} } =
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+      CardContext
+    );
 
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(
@@ -72,10 +78,17 @@ export const CustomButtonsView = ({ mediaPlayer }: CustomButtonsViewProps) => {
 
     const items: OverlayMenuItem[] = massPlayers.map(player => ({
       label: player.attributes.friendly_name || player.entity_id,
-      onClick: () => transferQueue(player.entity_id),
+      onClick: () => {
+        transferQueue(player.entity_id)
+        const newPlayer = media_players.find(p => p.ma_entity_id === player.entity_id)
+        console.log({newPlayer})
+        if (newPlayer) {
+          setSelectedPlayer(newPlayer)
+        }
+      },
     }));
     return items;
-  }, [ma_favorite_button_entity_id, transferQueue]);
+  }, [ma_favorite_button_entity_id, transferQueue, media_players, setSelectedPlayer]);
 
   const markSongAsFavorite = useCallback(() => {
     if (!ma_favorite_button_entity_id) return;

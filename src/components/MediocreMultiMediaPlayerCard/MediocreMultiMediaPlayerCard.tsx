@@ -126,7 +126,7 @@ export const MediocreMultiMediaPlayerCard = () => {
                 />
               )}
               {navigationRoute === "custom-buttons" && (
-                <CustomButtonsView mediaPlayer={selectedPlayer} />
+                <CustomButtonsView mediaPlayer={selectedPlayer} setSelectedPlayer={setSelectedPlayer} />
               )}
             </div>
             <div css={styles.footer}>
