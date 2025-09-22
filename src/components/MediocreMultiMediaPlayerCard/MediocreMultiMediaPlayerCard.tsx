@@ -68,8 +68,8 @@ const styles = {
   }),
   footerCard: css({
     padding: 0,
-    "--ha-card-border-radius": "var(--ha-card-border-radius, 12px)"
-  })
+    "--ha-card-border-radius": "var(--ha-card-border-radius, 12px)",
+  }),
 };
 
 export const MediocreMultiMediaPlayerCard = () => {
@@ -91,14 +91,15 @@ export const MediocreMultiMediaPlayerCard = () => {
       return player;
     } else {
       config.media_players.forEach(p => {
-        const state = hass.states[p.entity_id] as MediaPlayerEntity
+        const state = hass.states[p.entity_id] as MediaPlayerEntity;
         if (state.state === "playing" || state.state === "paused") {
-          const groupState = hass.states[p.speaker_group_entity_id || p.entity_id]
+          const groupState =
+            hass.states[p.speaker_group_entity_id || p.entity_id];
           if (groupState.attributes.group_members[0] === groupState.entity_id) {
-            player = p
+            player = p;
           }
         }
-      })
+      });
     }
     return player;
   });
@@ -118,15 +119,22 @@ export const MediocreMultiMediaPlayerCard = () => {
         {!selectedPlayer ? (
           <div>Please select a media player in the configuration.</div>
         ) : (
-          <ArtworkColorWrap activePlayer={selectedPlayer} css={[
-            styles.root,
-            config. mode === "panel" && styles.rootPanel,
-            config.mode === "card" && styles.rootCard,
-          ]}
-            style={
-              !!config.height ? { height: config.height } : {}
-            }>
-            <div css={[styles.contentArea, config.mode === "card" && styles.contentAreaCard]} ref={contentSizeRef}>
+          <ArtworkColorWrap
+            activePlayer={selectedPlayer}
+            css={[
+              styles.root,
+              config.mode === "panel" && styles.rootPanel,
+              config.mode === "card" && styles.rootCard,
+            ]}
+            style={!!config.height ? { height: config.height } : {}}
+          >
+            <div
+              css={[
+                styles.contentArea,
+                config.mode === "card" && styles.contentAreaCard,
+              ]}
+              ref={contentSizeRef}
+            >
               {navigationRoute === "search" && contentHeight && (
                 <SearchView
                   height={contentHeight}
@@ -146,10 +154,15 @@ export const MediocreMultiMediaPlayerCard = () => {
                 />
               )}
               {navigationRoute === "custom-buttons" && (
-                <CustomButtonsView mediaPlayer={selectedPlayer} setSelectedPlayer={setSelectedPlayer} />
+                <CustomButtonsView
+                  mediaPlayer={selectedPlayer}
+                  setSelectedPlayer={setSelectedPlayer}
+                />
               )}
             </div>
-            <div css={[styles.footer, config.mode === "card" && styles.footerCard]}>
+            <div
+              css={[styles.footer, config.mode === "card" && styles.footerCard]}
+            >
               {navigationRoute !== "massive" && (
                 <MiniPlayer mediaPlayer={selectedPlayer} />
               )}

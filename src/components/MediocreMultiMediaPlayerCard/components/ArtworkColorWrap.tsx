@@ -19,7 +19,7 @@ export const ArtworkColorWrap = ({
       style={{
         ...(artVars ?? {}),
         ...(haVars && activePlayer.use_art_colors ? haVars : {}),
-        ...(typeof style === "object" ? style : {})
+        ...(typeof style === "object" ? style : {}),
       }}
     />
   );

@@ -9,11 +9,7 @@ import { Chip, Icon, useHass, usePlayer } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
-import {
-  getHass,
-  getIsMassPlayer,
-  transferMaQueue,
-} from "@utils";
+import { getHass, getIsMassPlayer, transferMaQueue } from "@utils";
 import { Fragment } from "preact/jsx-runtime";
 import {
   OverlayMenu,
@@ -43,11 +39,16 @@ export type CustomButtonsViewProps = {
   setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
 };
 
-export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButtonsViewProps) => {
+export const CustomButtonsView = ({
+  mediaPlayer,
+  setSelectedPlayer,
+}: CustomButtonsViewProps) => {
   const { custom_buttons, ma_favorite_button_entity_id, ma_entity_id } =
     mediaPlayer;
 
-  const { config: { media_players } } =
+  const {
+    config: { media_players },
+  } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
@@ -73,7 +74,12 @@ export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButt
     const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
       if (!mp.ma_entity_id) return null;
       const state = hass.states[mp.entity_id];
-      if (!state || state.state === "unavailable" || mp.entity_id === mediaPlayer.entity_id) return null;
+      if (
+        !state ||
+        state.state === "unavailable" ||
+        mp.entity_id === mediaPlayer.entity_id
+      )
+        return null;
       return {
         label: state.attributes.friendly_name || mp.entity_id,
         onClick: () => {
@@ -85,7 +91,13 @@ export const CustomButtonsView = ({ mediaPlayer, setSelectedPlayer }: CustomButt
     });
 
     return items.filter(item => item !== null) as OverlayMenuItem[];
-  }, [isMainEntityMassPlayer, ma_entity_id, transferQueue, media_players, setSelectedPlayer]);
+  }, [
+    isMainEntityMassPlayer,
+    ma_entity_id,
+    transferQueue,
+    media_players,
+    setSelectedPlayer,
+  ]);
 
   const markSongAsFavorite = useCallback(() => {
     if (!ma_favorite_button_entity_id) return;
