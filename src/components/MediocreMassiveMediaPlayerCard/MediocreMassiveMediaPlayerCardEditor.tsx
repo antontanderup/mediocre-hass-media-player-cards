@@ -101,14 +101,17 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
   }, [form]);
 
   const removeCustomButton = useCallback(
-    (index: number) => {
-      const currentButtons = form.getFieldValue("custom_buttons") || [];
-      const newButtons = [...currentButtons];
-      newButtons.splice(index, 1);
-      form.setFieldValue("custom_buttons", newButtons);
-    },
-    [form]
-  );
+      (index: number) => {
+        const newButtons = [...(form.getFieldValue("custom_buttons") || [])];
+        newButtons.splice(index, 1);
+
+        const newConfig = {
+          ...config,
+          custom_buttons: newButtons
+        };
+        updateConfig(newConfig);
+        form.setFieldValue("custom_buttons", newButtons);
+      }, [config, form, updateConfig]);
 
   // Reset form when config changes externally
   useEffect(() => {
