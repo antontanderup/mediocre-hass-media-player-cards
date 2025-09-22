@@ -97,24 +97,26 @@ export const MediocreMediaPlayerCardEditor: FC<
 
     const newConfig = {
       ...config,
-      custom_buttons: newButtons
+      custom_buttons: newButtons,
     };
     updateConfig(newConfig);
     form.setFieldValue("custom_buttons", newButtons);
   }, [config, form, updateConfig]);
 
   const removeCustomButton = useCallback(
-      (index: number) => {
-        const newButtons = [...(form.getFieldValue("custom_buttons") || [])];
-        newButtons.splice(index, 1);
+    (index: number) => {
+      const newButtons = [...(form.getFieldValue("custom_buttons") || [])];
+      newButtons.splice(index, 1);
 
-        const newConfig = {
-          ...config,
-          custom_buttons: newButtons
-        };
-        updateConfig(newConfig);
-        form.setFieldValue("custom_buttons", newButtons);
-      }, [config, form, updateConfig]);
+      const newConfig = {
+        ...config,
+        custom_buttons: newButtons,
+      };
+      updateConfig(newConfig);
+      form.setFieldValue("custom_buttons", newButtons);
+    },
+    [config, form, updateConfig]
+  );
 
   // Reset form when config changes externally
   useEffect(() => {
