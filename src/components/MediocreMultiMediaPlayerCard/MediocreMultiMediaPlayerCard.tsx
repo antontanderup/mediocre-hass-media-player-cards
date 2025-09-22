@@ -31,14 +31,19 @@ export type NavigationRoute =
 const styles = {
   root: css({
     display: "grid",
-    height: "100%",
-    maxHeight: "calc(100vh - var(--header-height, 16px))", // This is for panel mode TODO: add config to make a fixed height if not on panel
     minHeight: 0,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
     "*, *:before, *:after": {
       boxSizing: "border-box",
     },
+  }),
+  rootPanel: css({
+    height: "100%",
+    maxHeight: "calc(100vh - var(--header-height, 16px))", // This is for panel mode TODO: add config to make a fixed height if not on panel
+  }),
+  rootCard: css({
+    height: 780,
   }),
   contentArea: css({
     alignSelf: "stretch",
@@ -49,6 +54,10 @@ const styles = {
     margin: 12,
     marginBottom: 0,
   }),
+  contentAreaCard: css({
+    margin: "12px 0",
+    borderRadius: "var(--ha-card-border-radius, 12px)",
+  }),
   footer: css({
     alignSelf: "end",
     padding: 12,
@@ -57,6 +66,10 @@ const styles = {
     flexDirection: "column",
     "--ha-card-border-radius": "max(var(--ha-card-border-radius, 12px), 12px)",
   }),
+  footerCard: css({
+    padding: 0,
+    "--ha-card-border-radius": "var(--ha-card-border-radius, 12px)"
+  })
 };
 
 export const MediocreMultiMediaPlayerCard = () => {
@@ -105,8 +118,15 @@ export const MediocreMultiMediaPlayerCard = () => {
         {!selectedPlayer ? (
           <div>Please select a media player in the configuration.</div>
         ) : (
-          <ArtworkColorWrap activePlayer={selectedPlayer} css={styles.root}>
-            <div css={styles.contentArea} ref={contentSizeRef}>
+          <ArtworkColorWrap activePlayer={selectedPlayer} css={[
+            styles.root,
+            config. mode === "panel" && styles.rootPanel,
+            config.mode === "card" && styles.rootCard,
+          ]}
+            style={
+              !!config.height ? { height: config.height } : {}
+            }>
+            <div css={[styles.contentArea, config.mode === "card" && styles.contentAreaCard]} ref={contentSizeRef}>
               {navigationRoute === "search" && contentHeight && (
                 <SearchView
                   height={contentHeight}
@@ -129,7 +149,7 @@ export const MediocreMultiMediaPlayerCard = () => {
                 <CustomButtonsView mediaPlayer={selectedPlayer} setSelectedPlayer={setSelectedPlayer} />
               )}
             </div>
-            <div css={styles.footer}>
+            <div css={[styles.footer, config.mode === "card" && styles.footerCard]}>
               {navigationRoute !== "massive" && (
                 <MiniPlayer mediaPlayer={selectedPlayer} />
               )}

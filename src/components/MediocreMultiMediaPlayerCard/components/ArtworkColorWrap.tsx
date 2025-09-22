@@ -8,6 +8,7 @@ type ArtworkColorWrapProps = {
 
 export const ArtworkColorWrap = ({
   activePlayer,
+  style,
   ...props
 }: ArtworkColorWrapProps) => {
   const { artVars, haVars } = useArtworkColors();
@@ -18,6 +19,7 @@ export const ArtworkColorWrap = ({
       style={{
         ...(artVars ?? {}),
         ...(haVars && activePlayer.use_art_colors ? haVars : {}),
+        ...(typeof style === "object" ? style : {})
       }}
     />
   );
