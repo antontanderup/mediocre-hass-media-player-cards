@@ -20,7 +20,6 @@ import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
 import { getHass } from "@utils";
-import { group } from "console";
 
 const styles = {
   speakerGroupContainer: css({
