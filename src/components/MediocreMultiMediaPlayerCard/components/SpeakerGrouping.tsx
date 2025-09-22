@@ -157,7 +157,7 @@ export const SpeakerGrouping = ({
                 css={styles.chipPlayerArtwork}
                 onClick={player.selectPlayer}
               />
-              {`${player.attributes.friendly_name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup}` : ""}`}
+              {`${player.attributes.friendly_name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup - 1}` : ""}`}
               {state === "playing" || state === "paused" ? (
                 <IconButton
                   size="x-small"
