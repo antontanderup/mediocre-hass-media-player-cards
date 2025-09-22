@@ -91,7 +91,7 @@ export const MediocreMediaPlayerCardEditor: FC<
       {
         icon: "mdi:paper-roll",
         name: "New Button",
-        tap_action: { action: "toggle" },
+        tap_action: { action: "toggle" as const },
       },
     ];
 
