@@ -8,8 +8,10 @@ import {
   AlbumArt,
   CardContext,
   CardContextType,
+  Chip,
   GroupChipsController,
   GroupVolumeController,
+  Icon,
   IconButton,
   PlayerContextProvider,
   useHass,
@@ -18,6 +20,7 @@ import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
 import { getHass } from "@utils";
+import { group } from "console";
 
 const styles = {
   speakerGroupContainer: css({
@@ -62,23 +65,21 @@ const styles = {
     flexDirection: "column",
     gap: 4,
   }),
-  miniPlayer: css({
-    padding: 4,
-    borderRadius: 4,
-    boxShadow: `0 0 6px ${theme.colors.onCardDivider}`,
+  playerChips: css({
     display: "flex",
-    alignItems: "center",
-    gap: 4,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: "6px 2px",
   }),
-  miniPlayerName: css({
-    marginRight: "auto",
-    marginLeft: 4,
+  chipPlayer: css({
+    padding: "0px 6px",
+    gap: 6,
   }),
-  miniPlayerControls: css({
-    display: "flex",
+  chipPlayerOff: css({
+    opacity: 0.8,
   }),
-  miniPlayerSecondaryControl: css({
-    opacity: 0.7,
+  chipPlayerArtwork: css({
+    borderRadius: "50%",
   }),
 };
 
@@ -110,8 +111,19 @@ export const SpeakerGrouping = ({
     return (
       media_players.map(player => {
         const playerState = hass.states[player.entity_id] as MediaPlayerEntity;
+        const groupPlayerState = hass.states[
+          player.speaker_group_entity_id || player.entity_id
+        ] as MediaPlayerEntity;
+        const isChildInGroup =
+          (groupPlayerState?.attributes?.group_members ?? [
+            groupPlayerState?.entity_id,
+          ])[0] !== groupPlayerState?.entity_id;
         return {
           ...playerState,
+          groupPlayerState,
+          isChildInGroup,
+          numPlayersInGroup: (groupPlayerState?.attributes?.group_members ?? [])
+            .length,
           isMainSpeaker: player.entity_id === entity_id,
           selectPlayer: () => setSelectedPlayer(player),
         };
@@ -120,26 +132,32 @@ export const SpeakerGrouping = ({
   }, [hass, entity_id, media_players, setSelectedPlayer]);
 
   const renderPlayer = (player: (typeof enrichedEntities)[number]) => {
-    if (!player) {
+    if (!player || player.isChildInGroup) {
       return null;
     }
+
     return (
       <PlayerContextProvider
         key={player.entity_id}
         hass={hass}
         entityId={player.entity_id}
       >
-        {({ player: { state } }) => (
-          <div css={styles.miniPlayer}>
-            <AlbumArt
-              size={32}
-              iconSize="xx-small"
-              onClick={player.selectPlayer}
-            />
-            <span css={styles.miniPlayerName}>
-              {player.attributes.friendly_name}
-            </span>
-            <div css={styles.miniPlayerControls}>
+        {({ player: { state } }) => {
+          return (
+            <Chip
+              css={[
+                styles.chipPlayer,
+                player.state === "off" && styles.chipPlayerOff,
+              ]}
+              onClick={() => player.selectPlayer()}
+            >
+              <AlbumArt
+                size={22}
+                iconSize="x-small"
+                css={styles.chipPlayerArtwork}
+                onClick={player.selectPlayer}
+              />
+              {`${player.attributes.friendly_name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup}` : ""}`}
               {state === "playing" || state === "paused" ? (
                 <IconButton
                   size="x-small"
@@ -148,37 +166,28 @@ export const SpeakerGrouping = ({
                       entity_id: player.entity_id,
                     });
                   }}
-                  css={styles.miniPlayerSecondaryControl}
                   icon={
                     state === "playing"
                       ? "mdi:pause-circle-outline"
                       : "mdi:play-circle-outline"
                   }
                 />
-              ) : state === "off" ? (
+              ) : state === "off" || state === "idle" ? (
                 <IconButton
                   size="x-small"
                   onClick={() => {
-                    getHass().callService("media_player", "turn_on", {
+                    getHass().callService("media_player", "toggle", {
                       entity_id: player.entity_id,
                     });
                   }}
-                  css={styles.miniPlayerSecondaryControl}
                   icon="mdi:power"
                 />
-              ) : null}
-              <IconButton
-                icon={
-                  player.isMainSpeaker
-                    ? "mdi:check-circle-outline"
-                    : "mdi:circle-outline"
-                }
-                onClick={player.selectPlayer}
-                size="x-small"
-              />
-            </div>
-          </div>
-        )}
+              ) : (
+                <Icon size="x-small" icon="mdi:circle-small" />
+              )}
+            </Chip>
+          );
+        }}
       </PlayerContextProvider>
     );
   };
@@ -232,7 +241,7 @@ export const SpeakerGrouping = ({
         subtitle="Change which player you are controlling."
         css={styles.horizontalPadding}
       />
-      <div css={[styles.playerSelector, styles.horizontalPadding]}>
+      <div css={[styles.playerChips, styles.horizontalPadding]}>
         {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
       </div>
     </div>

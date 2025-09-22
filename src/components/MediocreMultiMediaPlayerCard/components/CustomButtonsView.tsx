@@ -30,7 +30,7 @@ const styles = {
     flexDirection: "row",
     justifyContent: "flex-start",
     flexWrap: "wrap",
-    gap: "8px 4px",
+    gap: "6px 2px",
   }),
 };
 
