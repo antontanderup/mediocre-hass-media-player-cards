@@ -80,6 +80,7 @@ const styles = {
   controlsWrapperMulti: css({
     maxHeight: 210,
     minHeight: 200,
+    justifyContent: "space-evenly",
   }),
 };
 
