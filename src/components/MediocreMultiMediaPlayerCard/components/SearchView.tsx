@@ -1,14 +1,17 @@
 import type { MediocreMultiMediaPlayer } from "@types";
 import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
+import { ViewHeader } from "./ViewHeader";
 
 const styles = {
   root: css({
     height: "100%",
-    paddingTop: 16,
-    paddingBottom: 16,
     overflowY: "auto",
   }),
+  header: css({
+    padding: 16,
+    paddingBottom: 0,
+  })
 };
 
 export type SearchViewProps = {
@@ -20,10 +23,16 @@ export const SearchView = ({
   mediaPlayer: { ma_entity_id, search, entity_id },
   height,
 }: SearchViewProps) => {
+
+  const renderHeader = () => (
+    <ViewHeader title={ma_entity_id ? "Search in Music Assistant" : "Search"} css={styles.header} />
+  )
+
   const renderSearch = () => {
     if (ma_entity_id) {
       return (
         <MaSearch
+          renderHeader={renderHeader}
           maEntityId={ma_entity_id}
           horizontalPadding={16}
           maxHeight={height}
@@ -33,6 +42,7 @@ export const SearchView = ({
     if (search?.enabled) {
       return (
         <HaSearch
+          renderHeader={renderHeader}
           entityId={search.entity_id ?? entity_id}
           showFavorites={search.show_favorites ?? false}
           horizontalPadding={16}

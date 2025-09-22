@@ -7,12 +7,14 @@ import { useSearchQuery } from "./useSearchQuery";
 import { useFavorites } from "./useFavorites";
 import { filters } from "./constants";
 import { MaMediaItemsList } from "./MaMediaItemsList";
+import { JSX } from "preact/jsx-runtime";
 
 export type MaSearchProps = {
   maEntityId: string;
   horizontalPadding?: number;
   searchBarPosition?: "top" | "bottom";
   maxHeight?: number;
+  renderHeader?: () => JSX.Element
 };
 
 export const MaSearch = ({
@@ -20,6 +22,7 @@ export const MaSearch = ({
   horizontalPadding,
   searchBarPosition = "top",
   maxHeight = 300,
+  renderHeader,
 }: MaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<MaEnqueueMode>("play");
@@ -49,8 +52,9 @@ export const MaSearch = ({
   const renderSearchBar = () => {
     return (
       <div css={searchStyles.searchBarContainer}>
+        { !!renderHeader && renderHeader() }
         <Input
-          placeholder="Search.."
+          placeholder={Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."}
           onChange={setQuery}
           value={query}
           loading={loading}
