@@ -41,15 +41,9 @@ const styles = {
     color: theme.colors.onCard,
     touchAction: "manipulation", // iOS fixes for stuck hover states
     "-webkit-tap-highlight-color": "transparent",
-    "&:hover": {
-      backgroundColor: "var(--secondary-background-color, rgba(0, 0, 0, 0.05))",
-    },
-    "&:active": {
-      backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
-    },
-    "@media (hover: none)": {
+    "@media (hover: hover)": {
       "&:hover": {
-        backgroundColor: "transparent",
+        backgroundColor: "var(--secondary-background-color, rgba(0, 0, 0, 0.05))",
       },
       "&:active": {
         backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
