@@ -126,7 +126,7 @@ export const MediocreMultiMediaPlayerCard = () => {
               config.mode === "panel" && styles.rootPanel,
               config.mode === "card" && styles.rootCard,
             ]}
-            style={!!config.height ? { height: config.height } : {}}
+            style={config.height ? { height: config.height } : {}}
           >
             <div
               css={[

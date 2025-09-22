@@ -7,7 +7,7 @@ import {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
+import { NavigationRoute } from "@components/MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps } from "@hooks";
 
