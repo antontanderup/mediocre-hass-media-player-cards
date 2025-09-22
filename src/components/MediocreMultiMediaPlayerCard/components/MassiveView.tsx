@@ -12,7 +12,7 @@ import {
 } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMediaPlayerCard";
 import { Icon, IconButton, Slider, useHass, usePlayer } from "@components";
-import { getDeviceIcon, getHass, getVolumeIcon } from "@utils";
+import { getDeviceIcon, getHass, getVolumeIcon, setVolume } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 
@@ -88,14 +88,17 @@ export const MassiveViewView = ({
   const volume = volumeLevel ?? 0;
   const volumeMuted = isVolumeMuted ?? false;
 
-  // Handle volume change
-  const handleVolumeChange = useCallback((newVolume: number) => {
-    // Set the volume level
-    getHass().callService("media_player", "volume_set", {
-      entity_id,
-      volume_level: newVolume,
-    });
-  }, []);
+  const handleVolumeChange = useCallback(
+    (volume: number) => {
+      // Use setVolume utility, with sync if this is the main speaker
+      setVolume(
+        mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id,
+        volume,
+        true
+      );
+    },
+    [mediaPlayer]
+  );
 
   // Handle mute toggle
   const handleToggleMute = useCallback(() => {

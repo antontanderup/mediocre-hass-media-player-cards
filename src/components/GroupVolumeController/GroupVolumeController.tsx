@@ -56,14 +56,12 @@ export type GroupVolumeControllerProps = {
     "speaker_group" | "entity_id"
   >;
   syncMainSpeaker: boolean; // Wheter the main speaker will affect the volume of the group
-  showUngrouped?: boolean;
   className?: string;
 };
 
 export const GroupVolumeController = ({
   config: { speaker_group, entity_id },
   syncMainSpeaker,
-  showUngrouped = false,
   className,
 }: GroupVolumeControllerProps) => {
   const hass = useHass();
@@ -218,7 +216,7 @@ export const GroupVolumeController = ({
       <table css={styles.speakersTable}>
         <tbody>
           {availableSpeakers
-            .filter(speaker => (showUngrouped ? true : speaker.isGrouped))
+            .filter(speaker => speaker.isGrouped)
             .map((speaker, index, filteredSpeakers) =>
               renderSpeaker(speaker, index, filteredSpeakers)
             )}
