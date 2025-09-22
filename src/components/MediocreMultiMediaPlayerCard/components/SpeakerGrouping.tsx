@@ -161,7 +161,7 @@ export const SpeakerGrouping = ({
               {state === "playing" || state === "paused" ? (
                 <IconButton
                   size="x-small"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     e.preventDefault();
                     getHass().callService("media_player", "media_play_pause", {
@@ -177,7 +177,7 @@ export const SpeakerGrouping = ({
               ) : state === "off" || state === "idle" ? (
                 <IconButton
                   size="x-small"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     e.preventDefault();
                     getHass().callService("media_player", "toggle", {
