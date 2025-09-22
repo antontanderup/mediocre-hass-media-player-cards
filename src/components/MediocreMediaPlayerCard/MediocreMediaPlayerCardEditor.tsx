@@ -86,15 +86,22 @@ export const MediocreMediaPlayerCardEditor: FC<
 
   const addCustomButton = useCallback(() => {
     const currentButtons = form.getFieldValue("custom_buttons") || [];
-    form.setFieldValue("custom_buttons", [
+    const newButtons = [
       ...currentButtons,
       {
         icon: "mdi:paper-roll",
         name: "New Button",
         tap_action: { action: "toggle" },
       },
-    ]);
-  }, [form]);
+    ];
+
+    const newConfig = {
+      ...config,
+      custom_buttons: newButtons
+    };
+    updateConfig(newConfig);
+    form.setFieldValue("custom_buttons", newButtons);
+  }, [config, form, updateConfig]);
 
   const removeCustomButton = useCallback(
       (index: number) => {
