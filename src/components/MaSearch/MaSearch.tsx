@@ -14,7 +14,7 @@ export type MaSearchProps = {
   horizontalPadding?: number;
   searchBarPosition?: "top" | "bottom";
   maxHeight?: number;
-  renderHeader?: () => JSX.Element
+  renderHeader?: () => JSX.Element;
 };
 
 export const MaSearch = ({
@@ -52,9 +52,11 @@ export const MaSearch = ({
   const renderSearchBar = () => {
     return (
       <div css={searchStyles.searchBarContainer}>
-        { !!renderHeader && renderHeader() }
+        {!!renderHeader && renderHeader()}
         <Input
-          placeholder={Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."}
+          placeholder={
+            Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."
+          }
           onChange={setQuery}
           value={query}
           loading={loading}

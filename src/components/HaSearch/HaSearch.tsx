@@ -62,9 +62,11 @@ export const HaSearch = ({
   const renderSearchBar = () => {
     return (
       <div css={searchStyles.searchBarContainer}>
-        { !!renderHeader && renderHeader() }
+        {!!renderHeader && renderHeader()}
         <Input
-          placeholder={Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."}
+          placeholder={
+            Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."
+          }
           onChange={setQuery}
           value={query}
           loading={loading}

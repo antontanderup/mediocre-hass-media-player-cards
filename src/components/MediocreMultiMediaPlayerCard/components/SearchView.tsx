@@ -11,7 +11,7 @@ const styles = {
   header: css({
     padding: 16,
     paddingBottom: 0,
-  })
+  }),
 };
 
 export type SearchViewProps = {
@@ -23,10 +23,12 @@ export const SearchView = ({
   mediaPlayer: { ma_entity_id, search, entity_id },
   height,
 }: SearchViewProps) => {
-
   const renderHeader = () => (
-    <ViewHeader title={ma_entity_id ? "Search in Music Assistant" : "Search"} css={styles.header} />
-  )
+    <ViewHeader
+      title={ma_entity_id ? "Search in Music Assistant" : "Search"}
+      css={styles.header}
+    />
+  );
 
   const renderSearch = () => {
     if (ma_entity_id) {
