@@ -20,6 +20,7 @@ import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
 import { getHass } from "@utils";
+import { Fragment } from "preact/jsx-runtime";
 
 const styles = {
   speakerGroupContainer: css({
@@ -197,48 +198,56 @@ export const SpeakerGrouping = ({
 
   return (
     <div css={styles.speakerGroupContainer}>
-      <ViewHeader
-        title="Join media players"
-        subtitle="Selected player grouping."
-        css={styles.horizontalPadding}
-        renderAction={() => (
-          <div css={styles.syncContainer}>
-            <span
-              css={styles.syncText}
-              onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
-            >
-              Link Volume
-            </span>
-            <IconButton
-              icon={
-                syncMainSpeakerVolume
-                  ? "mdi:check-circle"
-                  : "mdi:circle-outline"
-              }
-              size="x-small"
-              onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
+      {!!speaker_group?.entities && (
+        <Fragment>
+          <ViewHeader
+            title="Join media players"
+            subtitle="Selected player grouping."
+            css={styles.horizontalPadding}
+            renderAction={() => (
+              <div css={styles.syncContainer}>
+                <span
+                  css={styles.syncText}
+                  onClick={() =>
+                    setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
+                  }
+                >
+                  Link Volume
+                </span>
+                <IconButton
+                  icon={
+                    syncMainSpeakerVolume
+                      ? "mdi:check-circle"
+                      : "mdi:circle-outline"
+                  }
+                  size="x-small"
+                  onClick={() =>
+                    setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
+                  }
+                />
+              </div>
+            )}
+          />
+          <GroupVolumeController
+            config={{
+              entity_id,
+              speaker_group: {
+                entities: speaker_group?.entities || [],
+                entity_id: mainEntityId,
+              },
+            }}
+            syncMainSpeaker={syncMainSpeakerVolume}
+            css={styles.horizontalPadding}
+          />
+          <div>
+            <GroupChipsController
+              config={{ entity_id: mainEntityId, speaker_group }}
+              showGrouped={false}
+              layout={{ horizontalMargin: 16 }}
             />
           </div>
-        )}
-      />
-      <GroupVolumeController
-        config={{
-          entity_id,
-          speaker_group: {
-            entities: speaker_group?.entities || [],
-            entity_id: mainEntityId,
-          },
-        }}
-        syncMainSpeaker={syncMainSpeakerVolume}
-        css={styles.horizontalPadding}
-      />
-      <div>
-        <GroupChipsController
-          config={{ entity_id: mainEntityId, speaker_group }}
-          showGrouped={false}
-          layout={{ horizontalMargin: 16 }}
-        />
-      </div>
+        </Fragment>
+      )}
       <ViewHeader
         title="Player focus"
         subtitle="Change which player you are controlling."
