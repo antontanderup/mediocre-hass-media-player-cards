@@ -121,6 +121,7 @@ export const MediocreMultiMediaPlayerCard = () => {
         ) : (
           <ArtworkColorWrap
             activePlayer={selectedPlayer}
+            useArtColors={config.use_art_colors}
             css={[
               styles.root,
               config.mode === "panel" && styles.rootPanel,

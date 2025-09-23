@@ -33,6 +33,7 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
     const { custom_buttons: _custom_buttons, ...rest } = mediaPlayer;
     return {
       type: "custom:mediocre-media-player-card",
+      use_art_colors: config.use_art_colors,
       speaker_group: config.speaker_group
         ? {
             ...config.speaker_group,

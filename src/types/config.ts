@@ -63,7 +63,6 @@ export const MediocreMassiveMediaPlayerCardConfigSchema =
 
 export const MediocreMultiMediaPlayer = type({
   entity_id: "string",
-  "use_art_colors?": "boolean",
   "custom_buttons?": type({
     icon: "string > 0",
     name: "string > 0",
@@ -86,6 +85,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   mode: "'panel'|'card'", // don't document card as it's only for internal use
   "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
   entity_id: "string", // entity id of the initially selected media player
+  "use_art_colors?": "boolean",
   media_players: MediocreMultiMediaPlayer.array(),
   "speaker_group?": {
     entities: mediaPlayerConfigEntityArray, // entity_ids of the speakers that can be grouped with the main speaker

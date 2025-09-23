@@ -4,11 +4,13 @@ import { HTMLAttributes } from "preact/compat";
 
 type ArtworkColorWrapProps = {
   activePlayer: MediocreMultiMediaPlayer;
+  useArtColors?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
 export const ArtworkColorWrap = ({
   activePlayer,
   style,
+  useArtColors,
   ...props
 }: ArtworkColorWrapProps) => {
   const { artVars, haVars } = useArtworkColors();
@@ -18,7 +20,7 @@ export const ArtworkColorWrap = ({
       {...props}
       style={{
         ...(artVars ?? {}),
-        ...(haVars && activePlayer.use_art_colors ? haVars : {}),
+        ...(haVars && useArtColors ? haVars : {}),
         ...(typeof style === "object" ? style : {}),
       }}
     />
