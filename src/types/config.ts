@@ -82,7 +82,7 @@ export const MediocreMultiMediaPlayer = type({
 
 export const MediocreMultiMediaPlayerCardConfigSchema = type({
   type: "string",
-  mode: "'panel'|'card'", // don't document card as it's only for internal use
+  mode: "'panel'|'card'",
   "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   "use_art_colors?": "boolean",
