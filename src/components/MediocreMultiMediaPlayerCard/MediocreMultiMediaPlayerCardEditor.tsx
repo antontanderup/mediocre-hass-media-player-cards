@@ -67,7 +67,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       onChange: ({ formApi }) => {
         // autosave logic
         const newConfig = Object.assign(formApi.state.values);
-        const stripNulls = (obj: any) => {
+        const stripNulls = <T,>(obj: Record<string, T>) => {
           Object.keys(obj).forEach(key => {
             if (obj[key] === undefined || obj[key] === null) {
               delete obj[key];
@@ -146,7 +146,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       >
         <form.Field name="use_art_colors">
           {field => (
-            <ToggleContainer>
+            <div>
               <Toggle
                 id="use_art_colors"
                 checked={field.state.value}
@@ -159,7 +159,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               <ToggleLabel htmlFor="use_art_colors">
                 Use album art colors
               </ToggleLabel>
-            </ToggleContainer>
+            </div>
           )}
         </form.Field>
         <form.Field name="mode">
