@@ -120,7 +120,6 @@ export const MediocreMultiMediaPlayerCard = () => {
           <div>Please select a media player in the configuration.</div>
         ) : (
           <ArtworkColorWrap
-            activePlayer={selectedPlayer}
             useArtColors={config.use_art_colors}
             css={[
               styles.root,
