@@ -15,6 +15,10 @@ import {
   SubForm,
   FormSelect,
   Label,
+  ButtonsContainer,
+  InputGroup,
+  TextInput,
+  InteractionsPicker,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
@@ -384,6 +388,145 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                             )}
                           </form.Field>
                         </FormGroup>
+                      </SubForm>
+                      <SubForm
+                        title="Custom Buttons (optional)"
+                        error={getSubformError(
+                          `media_players[${index}].custom_buttons`
+                        )}
+                      >
+                        <ButtonsContainer>
+                          <form.Field
+                            name={`media_players[${index}].custom_buttons`}
+                            mode="array"
+                          >
+                            {buttonsField => {
+                              return (
+                                <Fragment>
+                                  {buttonsField.state.value?.map(
+                                    (button, buttonIndex) => (
+                                      <SubForm
+                                        title={`Button ${index} - ${button.name}`}
+                                        error={getSubformError(
+                                          `media_players[${index}].custom_buttons[${buttonIndex}]`
+                                        )}
+                                        buttons={[
+                                          {
+                                            icon: "mdi:delete",
+                                            onClick: () =>
+                                              buttonsField.removeValue(
+                                                buttonIndex
+                                              ),
+                                          },
+                                          {
+                                            icon: "mdi:arrow-up",
+                                            onClick: () => {
+                                              buttonsField.moveValue(
+                                                buttonIndex,
+                                                buttonIndex - 1
+                                              );
+                                            },
+                                          },
+                                          {
+                                            icon: "mdi:arrow-down",
+                                            onClick: () => {
+                                              buttonsField.moveValue(
+                                                buttonIndex,
+                                                buttonIndex + 1
+                                              );
+                                            },
+                                          },
+                                        ]}
+                                        key={buttonIndex}
+                                      >
+                                        <FormGroup>
+                                          <form.Field
+                                            name={`media_players[${index}].custom_buttons[${buttonIndex}].name`}
+                                          >
+                                            {subField => (
+                                              <InputGroup>
+                                                <TextInput
+                                                  value={
+                                                    subField.state.value ?? ""
+                                                  }
+                                                  onChange={value =>
+                                                    subField.handleChange(
+                                                      value ?? ""
+                                                    )
+                                                  }
+                                                  hass={hass}
+                                                  label={"Name"}
+                                                  error={getFieldError(
+                                                    subField
+                                                  )}
+                                                />
+                                              </InputGroup>
+                                            )}
+                                          </form.Field>
+
+                                          <form.Field
+                                            name={`media_players[${index}].custom_buttons[${buttonIndex}].icon`}
+                                          >
+                                            {subField => (
+                                              <InputGroup>
+                                                <TextInput
+                                                  value={
+                                                    subField.state.value ?? ""
+                                                  }
+                                                  onChange={value =>
+                                                    subField.handleChange(
+                                                      value ?? ""
+                                                    )
+                                                  }
+                                                  hass={hass}
+                                                  isIconInput
+                                                  label={"Icon"}
+                                                  error={getFieldError(
+                                                    subField
+                                                  )}
+                                                />
+                                              </InputGroup>
+                                            )}
+                                          </form.Field>
+                                          <Label>Interactions</Label>
+                                          <form.Field
+                                            name={`media_players[${index}].custom_buttons[${buttonIndex}]`}
+                                          >
+                                            {subField => {
+                                              const value = subField.state
+                                                .value ?? {
+                                                icon: "",
+                                                name: "",
+                                              };
+                                              const {
+                                                name,
+                                                icon,
+                                                ...interactions
+                                              } = value;
+                                              return (
+                                                <InteractionsPicker
+                                                  hass={hass}
+                                                  value={interactions}
+                                                  onChange={newValue => {
+                                                    subField.handleChange({
+                                                      name,
+                                                      icon,
+                                                      ...newValue,
+                                                    });
+                                                  }}
+                                                />
+                                              );
+                                            }}
+                                          </form.Field>
+                                        </FormGroup>
+                                      </SubForm>
+                                    )
+                                  )}
+                                </Fragment>
+                              );
+                            }}
+                          </form.Field>
+                        </ButtonsContainer>
                       </SubForm>
                     </SubForm>
                   );
