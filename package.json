@@ -19,7 +19,7 @@
     "@base-ui-components/react": "1.0.0-beta.2",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
-    "@tanstack/react-form": "^1.18.0",
+    "@tanstack/react-form": "^1.23.0",
     "@tanstack/react-virtual": "^3.13.12",
     "@uidotdev/usehooks": "^2.4.1",
     "arktype": "^2.1.20",

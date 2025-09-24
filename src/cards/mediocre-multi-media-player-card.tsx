@@ -14,11 +14,11 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
     this.config = config;
   }
 
-  //   static getConfigElement() {
-  //     return document.createElement(
-  //       import.meta.env.VITE_MUlTI_MEDIA_PLAYER_CARD_EDITOR
-  //     );
-  //   }
+  static getConfigElement() {
+    return document.createElement(
+      import.meta.env.VITE_MULTI_MEDIA_PLAYER_CARD_EDITOR
+    );
+  }
 
   static getStubConfig(hass: HomeAssistant) {
     const entities = Object.keys(hass.states);
@@ -27,7 +27,14 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
     );
 
     return {
+      type: import.meta.env.VITE_MULTI_MEDIA_PLAYER_CARD,
       entity_id: mediaPlayers[0] ?? "",
+      media_players: [
+        {
+          entity_id: mediaPlayers[0] ?? "",
+          mode: "card",
+        },
+      ],
     };
   }
 

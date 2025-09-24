@@ -17,6 +17,7 @@ export * from "./MediaSearch";
 export * from "./MediocreChipMediaPlayerGroupCard";
 export * from "./MediocreMassiveMediaPlayerCard";
 export * from "./MediocreMediaPlayerCard";
+export * from "./MediocreMultiMediaPlayerCard";
 export * from "./PlayerContext";
 export * from "./ProgressBar";
 export * from "./Slider";
