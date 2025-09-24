@@ -19,6 +19,7 @@ import {
   InputGroup,
   TextInput,
   InteractionsPicker,
+  Button,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
@@ -522,6 +523,18 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                                       </SubForm>
                                     )
                                   )}
+                                  <Button
+                                    type="button"
+                                    onClick={() => {
+                                      buttonsField.pushValue({
+                                        icon: "mdi:paper-roll",
+                                        name: "New Button",
+                                        tap_action: { action: "toggle" },
+                                      });
+                                    }}
+                                  >
+                                    Add Custom Button
+                                  </Button>
                                 </Fragment>
                               );
                             }}
