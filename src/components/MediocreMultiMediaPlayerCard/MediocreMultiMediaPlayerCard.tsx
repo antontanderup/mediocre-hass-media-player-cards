@@ -95,7 +95,7 @@ export const MediocreMultiMediaPlayerCard = () => {
         if (state.state === "playing" || state.state === "paused") {
           const groupState =
             hass.states[p.speaker_group_entity_id || p.entity_id];
-          if (groupState.attributes.group_members[0] === groupState.entity_id) {
+          if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
             player = p;
           }
         }
