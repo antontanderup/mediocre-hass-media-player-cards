@@ -90,24 +90,36 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
 
   const addCustomButton = useCallback(() => {
     const currentButtons = form.getFieldValue("custom_buttons") || [];
-    form.setFieldValue("custom_buttons", [
+    const newButtons = [
       ...currentButtons,
       {
         icon: "mdi:paper-roll",
         name: "New Button",
-        tap_action: { action: "toggle" },
+        tap_action: { action: "toggle" as const },
       },
-    ]);
-  }, [form]);
+    ];
+
+    const newConfig = {
+      ...config,
+      custom_buttons: newButtons,
+    };
+    updateConfig(newConfig);
+    form.setFieldValue("custom_buttons", newButtons);
+  }, [config, form, updateConfig]);
 
   const removeCustomButton = useCallback(
     (index: number) => {
-      const currentButtons = form.getFieldValue("custom_buttons") || [];
-      const newButtons = [...currentButtons];
+      const newButtons = [...(form.getFieldValue("custom_buttons") || [])];
       newButtons.splice(index, 1);
+
+      const newConfig = {
+        ...config,
+        custom_buttons: newButtons,
+      };
+      updateConfig(newConfig);
       form.setFieldValue("custom_buttons", newButtons);
     },
-    [form]
+    [config, form, updateConfig]
   );
 
   // Reset form when config changes externally
