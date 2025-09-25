@@ -27,7 +27,6 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
     );
 
     return {
-      type: import.meta.env.VITE_MULTI_MEDIA_PLAYER_CARD,
       entity_id: mediaPlayers[0] ?? "",
       media_players: [
         {
