@@ -69,7 +69,9 @@ export const MediocreMultiMediaPlayer = type({
   })
     .and(interactionConfigSchema)
     .array(),
+  "name?": "string | null",
   "speaker_group_entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
+  "can_be_grouped?": "boolean | null",
   "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
   "search?": {
@@ -87,9 +89,6 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   "use_art_colors?": "boolean",
   media_players: MediocreMultiMediaPlayer.array(),
-  "speaker_group?": {
-    entities: mediaPlayerConfigEntityArray, // entity_ids of the speakers that can be grouped with the main speaker
-  },
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
 });

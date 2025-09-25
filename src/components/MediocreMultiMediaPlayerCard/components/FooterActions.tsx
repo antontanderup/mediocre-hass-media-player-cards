@@ -38,14 +38,12 @@ export const FooterActions = ({
   setNavigationRoute,
   navigationRoute,
 }: FooterActionsProps) => {
-  const { rootElement, config } =
+  const { rootElement } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
 
   const { entity_id, ma_entity_id, search, custom_buttons } = mediaPlayer;
-
-  const { speaker_group } = config;
 
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
@@ -80,14 +78,12 @@ export const FooterActions = ({
           selected={navigationRoute === "custom-buttons"}
         />
       ) : null}
-      {!!speaker_group && (
-        <IconButton
-          size="small"
-          icon={"mdi:speaker-multiple"}
-          onClick={() => setNavigationRoute("speaker-grouping")}
-          selected={navigationRoute === "speaker-grouping"}
-        />
-      )}
+      <IconButton
+        size="small"
+        icon={"mdi:speaker-multiple"}
+        onClick={() => setNavigationRoute("speaker-grouping")}
+        selected={navigationRoute === "speaker-grouping"}
+      />
     </div>
   );
 };

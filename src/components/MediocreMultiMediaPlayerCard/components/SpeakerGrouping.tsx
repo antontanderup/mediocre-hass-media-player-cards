@@ -98,7 +98,7 @@ export const SpeakerGrouping = ({
     );
   const hass = useHass();
 
-  const { speaker_group, media_players } = config;
+  const { media_players } = config;
   const { entity_id, speaker_group_entity_id } = mediaPlayer;
 
   // TODO: Volume sync should be liftet to a context so it is also active for the main mini player
@@ -130,6 +130,21 @@ export const SpeakerGrouping = ({
       }) ?? []
     );
   }, [hass, entity_id, media_players, setSelectedPlayer]);
+
+  const groupableEntities = useMemo(() => {
+    return media_players
+      .filter(player => player.can_be_grouped)
+      .map(player => {
+        if (player.name) {
+          return {
+            name: player.name,
+            entity: player.speaker_group_entity_id ?? player.entity_id,
+          };
+        } else {
+          return player.speaker_group_entity_id ?? player.entity_id;
+        }
+      });
+  }, [media_players]);
 
   const renderPlayer = (player: (typeof enrichedEntities)[number]) => {
     if (!player || player.isChildInGroup) {
@@ -198,7 +213,7 @@ export const SpeakerGrouping = ({
 
   return (
     <div css={styles.speakerGroupContainer}>
-      {!!speaker_group?.entities && (
+      {!!groupableEntities && groupableEntities.length > 0 && (
         <Fragment>
           <ViewHeader
             title="Join media players"
@@ -232,7 +247,7 @@ export const SpeakerGrouping = ({
             config={{
               entity_id,
               speaker_group: {
-                entities: speaker_group?.entities || [],
+                entities: groupableEntities,
                 entity_id: mainEntityId,
               },
             }}
@@ -241,7 +256,10 @@ export const SpeakerGrouping = ({
           />
           <div>
             <GroupChipsController
-              config={{ entity_id: mainEntityId, speaker_group }}
+              config={{
+                entity_id: mainEntityId,
+                speaker_group: { entities: groupableEntities },
+              }}
               showGrouped={false}
               layout={{ horizontalMargin: 16 }}
             />

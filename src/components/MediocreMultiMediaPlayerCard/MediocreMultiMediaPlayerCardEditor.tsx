@@ -6,7 +6,6 @@ import {
 import { useCallback, useEffect } from "preact/hooks";
 import { useForm, useStore } from "@tanstack/react-form";
 import {
-  EntitiesPicker,
   EntityPicker,
   FormGroup,
   Toggle,
@@ -202,10 +201,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       ]}
                     >
                       <FormGroup>
-                        <form.Field
-                          key={index}
-                          name={`media_players[${index}].entity_id`}
-                        >
+                        <form.Field name={`media_players[${index}].entity_id`}>
                           {subField => (
                             <EntityPicker
                               hass={hass}
@@ -221,7 +217,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           )}
                         </form.Field>
                         <form.Field
-                          key={index}
                           name={`media_players[${index}].speaker_group_entity_id`}
                         >
                           {subField => (
@@ -238,6 +233,30 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                             />
                           )}
                         </form.Field>
+                        <form.Field
+                          name={`media_players[${index}].can_be_grouped`}
+                        >
+                          {subField => (
+                            <div>
+                              <Toggle
+                                id={`media_players[${index}].can_be_grouped`}
+                                checked={subField.state.value ?? false}
+                                onChange={e =>
+                                  subField.handleChange(
+                                    (e.target as HTMLInputElement)?.checked ??
+                                      false
+                                  )
+                                }
+                              />
+                              <ToggleLabel
+                                htmlFor={`media_players[${index}].can_be_grouped`}
+                              >
+                                Enable speaker grouping (joining) for this
+                                player
+                              </ToggleLabel>
+                            </div>
+                          )}
+                        </form.Field>
                       </FormGroup>
                       <SubForm
                         title="Music Assistant Integration (optional)"
@@ -252,7 +271,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       >
                         <FormGroup>
                           <form.Field
-                            key={index}
                             name={`media_players[${index}].ma_entity_id`}
                           >
                             {subField => (
@@ -270,7 +288,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                             )}
                           </form.Field>
                           <form.Field
-                            key={index}
                             name={`media_players[${index}].ma_favorite_button_entity_id`}
                           >
                             {subField => (
@@ -558,27 +575,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               </Fragment>
             );
           }}
-        </form.Field>
-      </SubForm>
-
-      <SubForm
-        title="Speaker Group Configuration (optional)"
-        error={getSubformError("speaker_group")}
-      >
-        <form.Field name="speaker_group.entities">
-          {field => (
-            <FormGroup>
-              <EntitiesPicker
-                hass={hass}
-                value={field.state.value ?? []}
-                onChange={value => {
-                  field.handleChange(value ?? []);
-                }}
-                label="Select Speakers (including main speaker)"
-                domains={["media_player"]}
-              />
-            </FormGroup>
-          )}
         </form.Field>
       </SubForm>
     </form>

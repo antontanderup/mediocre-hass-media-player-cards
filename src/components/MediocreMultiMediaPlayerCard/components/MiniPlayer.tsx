@@ -31,15 +31,29 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
 
   const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
     const { custom_buttons: _custom_buttons, ...rest } = mediaPlayer;
+    const speakerGroupEntities = config.media_players
+      .filter(player => player.can_be_grouped)
+      .map(player => {
+        if (player.name) {
+          return {
+            name: player.name,
+            entity: player.speaker_group_entity_id ?? player.entity_id,
+          };
+        } else {
+          return player.speaker_group_entity_id ?? player.entity_id;
+        }
+      });
     return {
       type: "custom:mediocre-media-player-card",
       use_art_colors: config.use_art_colors,
-      speaker_group: config.speaker_group
-        ? {
-            ...config.speaker_group,
-            entity_id: mediaPlayer.speaker_group_entity_id,
-          }
-        : undefined,
+      speaker_group:
+        speakerGroupEntities.length > 0
+          ? {
+              entity_id:
+                mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
+              entities: speakerGroupEntities,
+            }
+          : undefined,
       ...rest,
     };
   }, [mediaPlayer]);
