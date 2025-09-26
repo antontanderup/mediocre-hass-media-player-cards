@@ -114,7 +114,6 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   return (
     <PlayerContextProvider
-      hass={hass}
       entityId={selectedPlayer?.entity_id || config.entity_id}
     >
       <Fragment>
