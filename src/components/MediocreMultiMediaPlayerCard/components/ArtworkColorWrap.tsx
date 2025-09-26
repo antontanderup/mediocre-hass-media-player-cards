@@ -1,11 +1,11 @@
 import { useArtworkColors } from "@hooks";
-import { HTMLAttributes } from "preact/compat";
+import { HTMLAttributes, memo } from "preact/compat";
 
 type ArtworkColorWrapProps = {
   useArtColors?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
-export const ArtworkColorWrap = ({
+export const ArtworkColorWrap = memo<ArtworkColorWrapProps>(({
   style,
   useArtColors,
   ...props
@@ -22,4 +22,4 @@ export const ArtworkColorWrap = ({
       }}
     />
   );
-};
+});

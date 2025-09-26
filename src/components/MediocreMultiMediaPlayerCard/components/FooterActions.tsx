@@ -10,6 +10,7 @@ import {
 import { NavigationRoute } from "@components/MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps } from "@hooks";
+import { memo } from "preact/compat";
 
 const styles = {
   root: css({
@@ -33,11 +34,11 @@ export type FooterActionsProps = {
   navigationRoute: NavigationRoute;
 };
 
-export const FooterActions = ({
+export const FooterActions = memo<FooterActionsProps>(({
   mediaPlayer,
   setNavigationRoute,
   navigationRoute,
-}: FooterActionsProps) => {
+}) => {
   const { rootElement } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -86,7 +87,7 @@ export const FooterActions = ({
       />
     </div>
   );
-};
+});
 
 const CustomButton = ({
   button,

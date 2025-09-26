@@ -21,6 +21,7 @@ import { theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
 import { getHass } from "@utils";
 import { Fragment } from "preact/jsx-runtime";
+import { memo } from "preact/compat";
 
 const styles = {
   speakerGroupContainer: css({
@@ -88,7 +89,7 @@ export type SpeakerGroupingProps = {
   setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
 };
 
-export const SpeakerGrouping = ({
+export const SpeakerGrouping = memo<SpeakerGroupingProps>(({
   mediaPlayer,
   setSelectedPlayer,
 }: SpeakerGroupingProps) => {
@@ -154,7 +155,6 @@ export const SpeakerGrouping = ({
     return (
       <PlayerContextProvider
         key={player.entity_id}
-        hass={hass}
         entityId={player.entity_id}
       >
         {({ player: { state } }) => {
@@ -276,4 +276,4 @@ export const SpeakerGrouping = ({
       </div>
     </div>
   );
-};
+});

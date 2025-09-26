@@ -15,6 +15,7 @@ import {
   OverlayMenu,
   OverlayMenuItem,
 } from "@components/OverlayMenu/OverlayMenu";
+import { memo } from "preact/compat";
 
 const styles = {
   root: css({
@@ -39,10 +40,10 @@ export type CustomButtonsViewProps = {
   setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
 };
 
-export const CustomButtonsView = ({
+export const CustomButtonsView = memo<CustomButtonsViewProps>(({
   mediaPlayer,
   setSelectedPlayer,
-}: CustomButtonsViewProps) => {
+}) => {
   const { custom_buttons, ma_favorite_button_entity_id, ma_entity_id } =
     mediaPlayer;
 
@@ -154,7 +155,7 @@ export const CustomButtonsView = ({
       )}
     </div>
   );
-};
+});
 
 const CustomButton = ({
   button,

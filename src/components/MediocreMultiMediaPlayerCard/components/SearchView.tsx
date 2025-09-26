@@ -2,6 +2,7 @@ import type { MediocreMultiMediaPlayer } from "@types";
 import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
+import { memo } from "preact/compat";
 
 const styles = {
   root: css({
@@ -19,10 +20,10 @@ export type SearchViewProps = {
   height: number;
 };
 
-export const SearchView = ({
+export const SearchView = memo<SearchViewProps>(({
   mediaPlayer: { ma_entity_id, search, entity_id },
   height,
-}: SearchViewProps) => {
+}) => {
   const renderHeader = () => (
     <ViewHeader
       title={ma_entity_id ? "Search in Music Assistant" : "Search"}
@@ -61,4 +62,4 @@ export const SearchView = ({
       {renderSearch()}
     </div>
   );
-};
+});

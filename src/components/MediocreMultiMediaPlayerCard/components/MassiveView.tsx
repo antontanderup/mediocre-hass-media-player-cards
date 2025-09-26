@@ -15,6 +15,7 @@ import { Icon, IconButton, Slider, useHass, usePlayer } from "@components";
 import { getDeviceIcon, getHass, getVolumeIcon, setVolume } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
+import { memo } from "preact/compat";
 
 const styles = {
   root: css({
@@ -63,7 +64,7 @@ export type MassiveViewViewProps = {
   height: number;
 };
 
-export const MassiveViewView = ({
+export const MassiveViewView = memo<MassiveViewViewProps>(({
   mediaPlayer,
   height,
 }: MassiveViewViewProps) => {
@@ -171,4 +172,4 @@ export const MassiveViewView = ({
       </div>
     </div>
   );
-};
+});

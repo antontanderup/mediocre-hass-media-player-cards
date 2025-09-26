@@ -10,6 +10,7 @@ import {
   MediocreMultiMediaPlayerCardConfig,
   MediocreMediaPlayerCardConfig,
 } from "@types";
+import { memo } from "preact/compat";
 import { useContext, useMemo } from "preact/hooks";
 
 export type MiniPlayerProps = {
@@ -23,7 +24,7 @@ const styles = {
   }),
 };
 
-export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
+export const MiniPlayer = memo<MiniPlayerProps>(({ mediaPlayer }) => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -65,4 +66,4 @@ export const MiniPlayer = ({ mediaPlayer }: MiniPlayerProps) => {
       </CardContextProvider>
     </div>
   );
-};
+});
