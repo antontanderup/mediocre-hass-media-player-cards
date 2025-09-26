@@ -34,60 +34,58 @@ export type FooterActionsProps = {
   navigationRoute: NavigationRoute;
 };
 
-export const FooterActions = memo<FooterActionsProps>(({
-  mediaPlayer,
-  setNavigationRoute,
-  navigationRoute,
-}) => {
-  const { rootElement } =
-    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
-      CardContext
+export const FooterActions = memo<FooterActionsProps>(
+  ({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
+    const { rootElement } =
+      useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+        CardContext
+      );
+
+    const { entity_id, ma_entity_id, search, custom_buttons } = mediaPlayer;
+
+    const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
+    const hasSearch = hasMaSearch || search?.enabled;
+
+    return (
+      <div css={styles.root}>
+        <IconButton
+          size="small"
+          icon={"mdi:home"}
+          onClick={() => setNavigationRoute("massive")}
+          selected={navigationRoute === "massive"}
+        />
+        {hasSearch && (
+          <IconButton
+            size="small"
+            icon={"mdi:magnify"}
+            onClick={() => setNavigationRoute("search")}
+            selected={navigationRoute === "search"}
+          />
+        )}
+        {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (
+          <CustomButton
+            button={custom_buttons[0]}
+            rootElement={rootElement}
+            entityId={entity_id}
+          />
+        ) : (custom_buttons && custom_buttons.length > 1) || ma_entity_id ? (
+          <IconButton
+            size="small"
+            icon={"mdi:dots-horizontal"}
+            onClick={() => setNavigationRoute("custom-buttons")}
+            selected={navigationRoute === "custom-buttons"}
+          />
+        ) : null}
+        <IconButton
+          size="small"
+          icon={"mdi:speaker-multiple"}
+          onClick={() => setNavigationRoute("speaker-grouping")}
+          selected={navigationRoute === "speaker-grouping"}
+        />
+      </div>
     );
-
-  const { entity_id, ma_entity_id, search, custom_buttons } = mediaPlayer;
-
-  const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
-  const hasSearch = hasMaSearch || search?.enabled;
-
-  return (
-    <div css={styles.root}>
-      <IconButton
-        size="small"
-        icon={"mdi:home"}
-        onClick={() => setNavigationRoute("massive")}
-        selected={navigationRoute === "massive"}
-      />
-      {hasSearch && (
-        <IconButton
-          size="small"
-          icon={"mdi:magnify"}
-          onClick={() => setNavigationRoute("search")}
-          selected={navigationRoute === "search"}
-        />
-      )}
-      {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (
-        <CustomButton
-          button={custom_buttons[0]}
-          rootElement={rootElement}
-          entityId={entity_id}
-        />
-      ) : (custom_buttons && custom_buttons.length > 1) || ma_entity_id ? (
-        <IconButton
-          size="small"
-          icon={"mdi:dots-horizontal"}
-          onClick={() => setNavigationRoute("custom-buttons")}
-          selected={navigationRoute === "custom-buttons"}
-        />
-      ) : null}
-      <IconButton
-        size="small"
-        icon={"mdi:speaker-multiple"}
-        onClick={() => setNavigationRoute("speaker-grouping")}
-        selected={navigationRoute === "speaker-grouping"}
-      />
-    </div>
-  );
-});
+  }
+);
 
 const CustomButton = ({
   button,

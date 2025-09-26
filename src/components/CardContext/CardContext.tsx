@@ -26,4 +26,6 @@ const CardContextProviderInner = <T,>({
   );
 };
 
-export const CardContextProvider = memo(CardContextProviderInner) as typeof CardContextProviderInner;
+export const CardContextProvider = memo(
+  CardContextProviderInner
+) as typeof CardContextProviderInner;

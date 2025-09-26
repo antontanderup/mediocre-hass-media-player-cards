@@ -64,112 +64,113 @@ export type MassiveViewViewProps = {
   height: number;
 };
 
-export const MassiveViewView = memo<MassiveViewViewProps>(({
-  mediaPlayer,
-  height,
-}: MassiveViewViewProps) => {
-  const hass = useHass();
+export const MassiveViewView = memo<MassiveViewViewProps>(
+  ({ mediaPlayer, height }: MassiveViewViewProps) => {
+    const hass = useHass();
 
-  const { rootElement } =
-    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
-      CardContext
+    const { rootElement } =
+      useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+        CardContext
+      );
+
+    const {
+      entity_id,
+      attributes: {
+        friendly_name: friendlyName,
+        icon,
+        device_class: deviceClass,
+        volume_level: volumeLevel,
+        is_volume_muted: isVolumeMuted,
+      },
+    } = usePlayer();
+
+    const volume = volumeLevel ?? 0;
+    const volumeMuted = isVolumeMuted ?? false;
+
+    const handleVolumeChange = useCallback(
+      (volume: number) => {
+        // Use setVolume utility, with sync if this is the main speaker
+        setVolume(
+          mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id,
+          volume,
+          true
+        );
+      },
+      [mediaPlayer]
     );
 
-  const {
-    entity_id,
-    attributes: {
-      friendly_name: friendlyName,
-      icon,
-      device_class: deviceClass,
-      volume_level: volumeLevel,
-      is_volume_muted: isVolumeMuted,
-    },
-  } = usePlayer();
+    // Handle mute toggle
+    const handleToggleMute = useCallback(() => {
+      getHass().callService("media_player", "volume_mute", {
+        entity_id,
+        is_volume_muted: !volumeMuted,
+      });
+    }, [volumeMuted]);
 
-  const volume = volumeLevel ?? 0;
-  const volumeMuted = isVolumeMuted ?? false;
+    const VolumeIcon = useMemo(
+      () => getVolumeIcon(volume, volumeMuted),
+      [volume, volumeMuted]
+    );
 
-  const handleVolumeChange = useCallback(
-    (volume: number) => {
-      // Use setVolume utility, with sync if this is the main speaker
-      setVolume(
-        mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id,
-        volume,
-        true
-      );
-    },
-    [mediaPlayer]
-  );
+    const groupMembers =
+      hass.states[mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id]
+        ?.attributes?.group_members;
+    const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
-  // Handle mute toggle
-  const handleToggleMute = useCallback(() => {
-    getHass().callService("media_player", "volume_mute", {
-      entity_id,
-      is_volume_muted: !volumeMuted,
-    });
-  }, [volumeMuted]);
-
-  const VolumeIcon = useMemo(
-    () => getVolumeIcon(volume, volumeMuted),
-    [volume, volumeMuted]
-  );
-
-  const groupMembers =
-    hass.states[mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id]
-      ?.attributes?.group_members;
-  const mdiIcon = getDeviceIcon({ icon, deviceClass });
-
-  const moreInfoButtonProps = useActionProps({
-    rootElement,
-    actionConfig: {
-      tap_action: {
-        action: "more-info",
+    const moreInfoButtonProps = useActionProps({
+      rootElement,
+      actionConfig: {
+        tap_action: {
+          action: "more-info",
+        },
+        entity: mediaPlayer.entity_id,
       },
-      entity: mediaPlayer.entity_id,
-    },
-  });
+    });
 
-  const massiveConfig: MediocreMassiveMediaPlayerCardConfig = useMemo(() => {
-    return {
-      ...mediaPlayer,
-      mode: "multi",
-      type: "custom:mediocre-massive-media-player-card",
-    };
-  }, [mediaPlayer]);
+    const massiveConfig: MediocreMassiveMediaPlayerCardConfig = useMemo(() => {
+      return {
+        ...mediaPlayer,
+        mode: "multi",
+        type: "custom:mediocre-massive-media-player-card",
+      };
+    }, [mediaPlayer]);
 
-  return (
-    <div css={styles.root} style={{ height }}>
-      <div css={styles.massiveHeader}>
-        <Icon size={"small"} icon={mdiIcon} />
-        <span css={styles.title}>
-          {friendlyName}
-          {groupMembers?.length > 1 && <span> +{groupMembers.length - 1}</span>}
-        </span>
-        <IconButton
-          size="small"
-          {...moreInfoButtonProps}
-          icon="mdi:dots-vertical"
-        />
+    return (
+      <div css={styles.root} style={{ height }}>
+        <div css={styles.massiveHeader}>
+          <Icon size={"small"} icon={mdiIcon} />
+          <span css={styles.title}>
+            {friendlyName}
+            {groupMembers?.length > 1 && (
+              <span> +{groupMembers.length - 1}</span>
+            )}
+          </span>
+          <IconButton
+            size="small"
+            {...moreInfoButtonProps}
+            icon="mdi:dots-vertical"
+          />
+        </div>
+        <CardContextProvider rootElement={rootElement} config={massiveConfig}>
+          <MediocreMassiveMediaPlayerCard css={styles.massive} />
+        </CardContextProvider>
+        <div css={styles.volumeRoot}>
+          <IconButton
+            css={volumeMuted ? styles.buttonMuted : {}}
+            size="small"
+            onClick={handleToggleMute}
+            icon={VolumeIcon}
+          />
+          <Slider
+            min={0}
+            max={1}
+            step={0.01}
+            value={volume}
+            sliderSize={"large"}
+            onChange={handleVolumeChange}
+          />
+        </div>
       </div>
-      <CardContextProvider rootElement={rootElement} config={massiveConfig}>
-        <MediocreMassiveMediaPlayerCard css={styles.massive} />
-      </CardContextProvider>
-      <div css={styles.volumeRoot}>
-        <IconButton
-          css={volumeMuted ? styles.buttonMuted : {}}
-          size="small"
-          onClick={handleToggleMute}
-          icon={VolumeIcon}
-        />
-        <Slider
-          min={0}
-          max={1}
-          step={0.01}
-          value={volume}
-          sliderSize={"large"}
-          onChange={handleVolumeChange}
-        />
-      </div>
-    </div>
-  );
-});
+    );
+  }
+);

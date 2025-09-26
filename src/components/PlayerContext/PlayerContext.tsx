@@ -21,44 +21,45 @@ type PlayerContextProviderProps = {
   children:
     | preact.ComponentChildren
     | ((value: PlayerContextType) => preact.ComponentChildren);
-}
+};
 
 export const PlayerContext = createContext<PlayerContextType>({
   player: {} as PlayerContextType["player"],
 });
 
-export const PlayerContextProvider = memo<PlayerContextProviderProps>(({
-  children,
-  entityId,
-}: PlayerContextProviderProps): preact.ComponentChildren => {
+export const PlayerContextProvider = memo<PlayerContextProviderProps>(
+  ({
+    children,
+    entityId,
+  }: PlayerContextProviderProps): preact.ComponentChildren => {
+    const hass = useHass();
 
-  const hass = useHass()
-
-  const contextValue = useMemo((): PlayerContextType => {
-    const player = hass.states[entityId] as MediaPlayerEntity;
-    if (!player) {
+    const contextValue = useMemo((): PlayerContextType => {
+      const player = hass.states[entityId] as MediaPlayerEntity;
+      if (!player) {
+        return {
+          player: {
+            entity_id: entityId,
+            state: "unavailable",
+            attributes: {},
+            title: "Unavailable",
+            subtitle: `${entityId} unavailable`,
+          },
+        };
+      }
+      const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
       return {
-        player: {
-          entity_id: entityId,
-          state: "unavailable",
-          attributes: {},
-          title: "Unavailable",
-          subtitle: `${entityId} unavailable`,
-        },
+        player: { ...player, title, subtitle },
       };
-    }
-    const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
-    return {
-      player: { ...player, title, subtitle },
-    };
-  }, [hass.states[entityId], entityId]);
+    }, [hass.states[entityId], entityId]);
 
-  return (
-    <PlayerContext.Provider value={contextValue}>
-      {typeof children === "function" ? children(contextValue) : children}
-    </PlayerContext.Provider>
-  );
-});
+    return (
+      <PlayerContext.Provider value={contextValue}>
+        {typeof children === "function" ? children(contextValue) : children}
+      </PlayerContext.Provider>
+    );
+  }
+);
 
 export const usePlayer = () => {
   const context = useContext(PlayerContext);

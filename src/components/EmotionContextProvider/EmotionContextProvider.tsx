@@ -11,12 +11,11 @@ export type EmotionContextProviderProps = {
   children: JSX.Element;
 };
 
-export const EmotionContextProvider = memo<EmotionContextProviderProps>(({
-  rootElement,
-  children,
-}: EmotionContextProviderProps) => {
-  const [emotionCache] = useState(() =>
-    createCache({ key: "mmpc", container: rootElement, speedy: false })
-  );
-  return <CacheProvider value={emotionCache}>{children}</CacheProvider>;
-});
+export const EmotionContextProvider = memo<EmotionContextProviderProps>(
+  ({ rootElement, children }: EmotionContextProviderProps) => {
+    const [emotionCache] = useState(() =>
+      createCache({ key: "mmpc", container: rootElement, speedy: false })
+    );
+    return <CacheProvider value={emotionCache}>{children}</CacheProvider>;
+  }
+);

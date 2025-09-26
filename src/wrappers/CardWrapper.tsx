@@ -13,7 +13,7 @@ export class CardWrapper<
   Card: FunctionComponent | null = null;
   config: Config | null = null;
   providePlayerContext = true;
-  
+
   shouldUpdate:
     | ((prevHass: HomeAssistant | null, hass: HomeAssistant | null) => boolean)
     | null = null;

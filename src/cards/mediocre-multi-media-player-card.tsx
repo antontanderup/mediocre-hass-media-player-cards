@@ -21,18 +21,23 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
   ) => {
     if (!hass || !prevHass || !this.config) return true;
     if (!prevHass && hass) return true;
-    return this.config.media_players.some((player) => {
+    return this.config.media_players.some(player => {
       const entityId = player.entity_id;
-      if (getDidMediaPlayerUpdate(
-        prevHass.states[entityId] as MediaPlayerEntity,
-        hass.states[entityId] as MediaPlayerEntity
-      )) {
+      if (
+        getDidMediaPlayerUpdate(
+          prevHass.states[entityId] as MediaPlayerEntity,
+          hass.states[entityId] as MediaPlayerEntity
+        )
+      ) {
         return true;
       }
-      if (player.speaker_group_entity_id && getDidMediaPlayerUpdate(
-        prevHass.states[player.speaker_group_entity_id] as MediaPlayerEntity,
-        hass.states[player.speaker_group_entity_id] as MediaPlayerEntity
-      )) {
+      if (
+        player.speaker_group_entity_id &&
+        getDidMediaPlayerUpdate(
+          prevHass.states[player.speaker_group_entity_id] as MediaPlayerEntity,
+          hass.states[player.speaker_group_entity_id] as MediaPlayerEntity
+        )
+      ) {
         return true;
       }
     });
