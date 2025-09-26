@@ -13,6 +13,13 @@ export class CardWrapper<
   Card: FunctionComponent | null = null;
   config: Config | null = null;
   providePlayerContext = true;
+  
+  shouldUpdate:
+    | ((prevHass: HomeAssistant | null, hass: HomeAssistant | null) => boolean)
+    | null = null;
+
+  private _previousHass: HomeAssistant | null = null;
+  private _previousConfig: Config | null = null;
 
   set hass(hass: HomeAssistant) {
     if (!this.Card) {
@@ -20,15 +27,20 @@ export class CardWrapper<
     }
 
     const entityId = this.config?.entity_id;
-    const shouldRender = !!entityId;
+    const shouldRender =
+      !!entityId &&
+      (this.config !== this._previousConfig ||
+        this.shouldUpdate?.(this._previousHass, hass));
 
     if (shouldRender) {
+      this._previousHass = hass;
+      this._previousConfig = this.config;
       render(
         <EmotionContextProvider rootElement={this}>
           <CardContextProvider rootElement={this} config={this.config}>
             <HassContextProvider hass={hass}>
               {this.providePlayerContext ? (
-                <PlayerContextProvider hass={hass} entityId={entityId}>
+                <PlayerContextProvider entityId={entityId}>
                   <this.Card />
                 </PlayerContextProvider>
               ) : (
@@ -39,6 +51,8 @@ export class CardWrapper<
         </EmotionContextProvider>,
         this
       );
+    } else {
+      this._previousHass = hass;
     }
   }
 

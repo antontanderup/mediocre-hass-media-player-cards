@@ -1,7 +1,8 @@
-import { HomeAssistant } from "@types";
+import { HomeAssistant, MediaPlayerEntity } from "@types";
 import { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
 import { MediocreMultiMediaPlayerCard } from "@components/MediocreMultiMediaPlayerCard";
+import { getDidMediaPlayerUpdate } from "@utils";
 
 class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMediaPlayerCardConfig> {
   Card = MediocreMultiMediaPlayerCard;
@@ -13,6 +14,29 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
     }
     this.config = config;
   }
+
+  shouldUpdate = (
+    prevHass: HomeAssistant | null,
+    hass: HomeAssistant | null
+  ) => {
+    if (!hass || !prevHass || !this.config) return true;
+    if (!prevHass && hass) return true;
+    return this.config.media_players.some((player) => {
+      const entityId = player.entity_id;
+      if (getDidMediaPlayerUpdate(
+        prevHass.states[entityId] as MediaPlayerEntity,
+        hass.states[entityId] as MediaPlayerEntity
+      )) {
+        return true;
+      }
+      if (player.speaker_group_entity_id && getDidMediaPlayerUpdate(
+        prevHass.states[player.speaker_group_entity_id] as MediaPlayerEntity,
+        hass.states[player.speaker_group_entity_id] as MediaPlayerEntity
+      )) {
+        return true;
+      }
+    });
+  };
 
   static getConfigElement() {
     return document.createElement(
