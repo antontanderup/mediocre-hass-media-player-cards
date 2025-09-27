@@ -58,6 +58,11 @@ const styles = {
     margin: "12px 0",
     borderRadius: "var(--ha-card-border-radius, 12px)",
   }),
+  contentAreaPanelMassive: css({
+    margin: "0px 8px 12px 8px",
+    backgroundColor: "transparent",
+    borderRadius: 0,
+  }),
   footer: css({
     alignSelf: "end",
     padding: 12,
@@ -137,6 +142,9 @@ export const MediocreMultiMediaPlayerCard = () => {
               css={[
                 styles.contentArea,
                 config.mode === "card" && styles.contentAreaCard,
+                config.mode === "panel" &&
+                  navigationRoute === "massive" &&
+                  styles.contentAreaPanelMassive,
               ]}
               ref={contentSizeRef}
             >
