@@ -32,6 +32,7 @@ const styles = {
     gap: 10,
     padding: "8px 14px",
     borderRadius: 8,
+    backgroundColor: "transparent",
     fontSize: 15,
     cursor: "pointer",
     color: "inherit",

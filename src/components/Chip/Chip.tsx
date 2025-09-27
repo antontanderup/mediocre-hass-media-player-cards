@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "preact/compat";
+import { ButtonHTMLAttributes, forwardRef } from "preact/compat";
 import { Icon, Spinner } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
@@ -38,33 +38,33 @@ const styles = {
   }),
 };
 
-export type ChipProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "ref"> & {
   loading?: boolean;
   icon?: string;
   iconPosition?: "left" | "right";
 };
 
-export const Chip = ({
-  loading,
-  icon,
-  iconPosition = "left",
-  children,
-  ...buttonProps
-}: ChipProps) => {
-  const renderIcon = () => {
-    if (loading) {
-      return <Spinner size="x-small" />;
-    }
-    if (icon) {
-      return <Icon size="x-small" icon={icon} />;
-    }
-  };
+export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
+  ({ loading, icon, iconPosition = "left", children, ...buttonProps }, ref) => {
+    const renderIcon = () => {
+      if (loading) {
+        return <Spinner size="x-small" />;
+      }
+      if (icon) {
+        return <Icon size="x-small" icon={icon} />;
+      }
+    };
 
-  return (
-    <button css={[styles.root, loading && styles.rootLoading]} {...buttonProps}>
-      {iconPosition === "left" && renderIcon()}
-      {children}
-      {iconPosition === "right" && renderIcon()}
-    </button>
-  );
-};
+    return (
+      <button
+        css={[styles.root, loading && styles.rootLoading]}
+        {...buttonProps}
+        ref={ref}
+      >
+        {iconPosition === "left" && renderIcon()}
+        {children}
+        {iconPosition === "right" && renderIcon()}
+      </button>
+    );
+  }
+);

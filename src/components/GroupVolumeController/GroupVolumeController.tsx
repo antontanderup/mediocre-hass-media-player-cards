@@ -56,11 +56,13 @@ export type GroupVolumeControllerProps = {
     "speaker_group" | "entity_id"
   >;
   syncMainSpeaker: boolean; // Wheter the main speaker will affect the volume of the group
+  className?: string;
 };
 
 export const GroupVolumeController = ({
   config: { speaker_group, entity_id },
   syncMainSpeaker,
+  className,
 }: GroupVolumeControllerProps) => {
   const hass = useHass();
 
@@ -210,7 +212,7 @@ export const GroupVolumeController = ({
   };
 
   return (
-    <div>
+    <div className={className}>
       <table css={styles.speakersTable}>
         <tbody>
           {availableSpeakers

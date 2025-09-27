@@ -12,9 +12,12 @@ export class CardWrapper<
 > extends HTMLElement {
   Card: FunctionComponent | null = null;
   config: Config | null = null;
+  providePlayerContext = true;
+
   shouldUpdate:
     | ((prevHass: HomeAssistant | null, hass: HomeAssistant | null) => boolean)
     | null = null;
+
   private _previousHass: HomeAssistant | null = null;
   private _previousConfig: Config | null = null;
 
@@ -36,9 +39,13 @@ export class CardWrapper<
         <EmotionContextProvider rootElement={this}>
           <CardContextProvider rootElement={this} config={this.config}>
             <HassContextProvider hass={hass}>
-              <PlayerContextProvider hass={hass} entityId={entityId}>
+              {this.providePlayerContext ? (
+                <PlayerContextProvider entityId={entityId}>
+                  <this.Card />
+                </PlayerContextProvider>
+              ) : (
                 <this.Card />
-              </PlayerContextProvider>
+              )}
             </HassContextProvider>
           </CardContextProvider>
         </EmotionContextProvider>,
