@@ -577,6 +577,25 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           }}
         </form.Field>
       </SubForm>
+      <SubForm title="Advanced" error={getSubformError("height")}>
+        <form.Field name={"height"}>
+          {field => (
+            <InputGroup>
+              <TextInput
+                value={
+                  typeof field.state.value === "number"
+                    ? field.state.value.toString()
+                    : (field.state.value ?? "")
+                }
+                onChange={value => field.handleChange(value ?? "")}
+                hass={hass}
+                label={"Height"}
+                error={getFieldError(field)}
+              />
+            </InputGroup>
+          )}
+        </form.Field>
+      </SubForm>
     </form>
   );
 };
