@@ -115,10 +115,8 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           const groupPlayerState = hass.states[
             player.speaker_group_entity_id || player.entity_id
           ] as MediaPlayerEntity;
-          const isChildInGroup =
-            (groupPlayerState?.attributes?.group_members ?? [
-              groupPlayerState?.entity_id,
-            ])[0] !== groupPlayerState?.entity_id;
+          const groupArray = groupPlayerState?.attributes?.group_members ?? [];
+          const isChildInGroup = groupArray.length === 0 ? false : groupArray[0] !== groupPlayerState.entity_id;
           return {
             ...playerState,
             groupPlayerState,
