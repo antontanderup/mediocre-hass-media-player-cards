@@ -23,6 +23,7 @@ import {
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
+import { getAllMassPlayers } from "@utils";
 
 export type MediocreMultiMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -99,6 +100,26 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     },
     [formErrorMap]
   );
+
+  const addMusicAssistantPlayers = useCallback(() => {
+    if (
+      window.confirm(
+        "This will clear all existing configured media players, are you sure?"
+      )
+    ) {
+      const maPlayers = getAllMassPlayers();
+      updateConfig({
+        ...config,
+        media_players: maPlayers
+          .filter(player => !player.attributes.active_child)
+          .map(player => ({
+            entity_id: player.entity_id,
+            ma_entity_id: player.entity_id,
+            can_be_grouped: true,
+          })),
+      });
+    }
+  }, [form]);
 
   // Reset form when config changes externally
   useEffect(() => {
@@ -561,17 +582,29 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                     </SubForm>
                   );
                 })}
-                <EntityPicker
-                  hass={hass}
-                  value={""}
-                  onChange={value => {
-                    if (value) {
-                      field.pushValue({ entity_id: value });
-                    }
-                  }}
-                  label="Add a new media player"
-                  domains={["media_player"]}
-                />
+                <div
+                  css={css({
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                  })}
+                >
+                  <EntityPicker
+                    hass={hass}
+                    value={""}
+                    onChange={value => {
+                      if (value) {
+                        field.pushValue({ entity_id: value });
+                      }
+                    }}
+                    label="Add a new media player"
+                    domains={["media_player"]}
+                  />
+                  <span>or</span>
+                  <Button type="button" onClick={addMusicAssistantPlayers}>
+                    Add all Music Assistant media players
+                  </Button>
+                </div>
               </Fragment>
             );
           }}
