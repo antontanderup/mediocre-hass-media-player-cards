@@ -59,7 +59,7 @@ const styles = {
     borderRadius: "var(--ha-card-border-radius, 12px)",
   }),
   contentAreaPanelMassive: css({
-    margin: "0px 8px 12px 8px",
+    margin: "12px 8px 12px 8px",
     backgroundColor: "transparent",
     borderRadius: 0,
   }),
