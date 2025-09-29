@@ -89,6 +89,9 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   "use_art_colors?": "boolean",
   media_players: MediocreMultiMediaPlayer.array(),
+  "options?": {
+    "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
+  },
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
 });

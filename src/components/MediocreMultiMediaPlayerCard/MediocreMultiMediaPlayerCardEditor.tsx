@@ -595,6 +595,24 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
             </InputGroup>
           )}
         </form.Field>
+        <form.Field name={"options.transparent_background_on_home"}>
+          {field => (
+            <div>
+              <Toggle
+                id="options.transparent_background_on_home"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="options.transparent_background_on_home">
+                Hide the card background on the home tab (massive player)
+              </ToggleLabel>
+            </div>
+          )}
+        </form.Field>
       </SubForm>
     </form>
   );

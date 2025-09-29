@@ -58,10 +58,11 @@ const styles = {
     margin: "12px 0",
     borderRadius: "var(--ha-card-border-radius, 12px)",
   }),
-  contentAreaPanelMassive: css({
-    margin: "12px 8px 12px 8px",
+  contentAreaMassiveTransparent: css({
     backgroundColor: "transparent",
-    borderRadius: 0,
+  }),
+  contentAreaPannelMassiveTransparent: css({
+    margin: "12px 8px 12px 8px",
   }),
   footer: css({
     alignSelf: "end",
@@ -142,9 +143,13 @@ export const MediocreMultiMediaPlayerCard = () => {
               css={[
                 styles.contentArea,
                 config.mode === "card" && styles.contentAreaCard,
-                config.mode === "panel" &&
-                  navigationRoute === "massive" &&
-                  styles.contentAreaPanelMassive,
+                navigationRoute === "massive" &&
+                  config.options?.transparent_background_on_home &&
+                  styles.contentAreaMassiveTransparent,
+                navigationRoute === "massive" &&
+                  config.mode === "panel" &&
+                  config.options?.transparent_background_on_home &&
+                  styles.contentAreaMassiveTransparent,
               ]}
               ref={contentSizeRef}
             >
