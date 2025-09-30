@@ -3,7 +3,7 @@ import {
   MediocreMultiMediaPlayerCardConfig,
   MediocreMultiMediaPlayerCardConfigSchema,
 } from "@types";
-import { useCallback, useEffect } from "preact/hooks";
+import { useCallback, useEffect, useRef } from "preact/hooks";
 import { useForm, useStore } from "@tanstack/react-form";
 import {
   EntityPicker,
@@ -34,15 +34,21 @@ export type MediocreMultiMediaPlayerCardEditorProps = {
 export const MediocreMultiMediaPlayerCardEditor: FC<
   MediocreMultiMediaPlayerCardEditorProps
 > = ({ config, rootElement, hass }) => {
+  const updateConfigTimeout = useRef<number | null>(null);
   const updateConfig = useCallback(
     (newConfig: MediocreMultiMediaPlayerCardConfig) => {
-      const event = new Event("config-changed", {
-        bubbles: true,
-        composed: true,
-      });
-      // @ts-expect-error its ok shh... we know what we're doing (we think)
-      event.detail = { config: newConfig };
-      rootElement.dispatchEvent(event);
+      if (updateConfigTimeout.current) {
+        clearTimeout(updateConfigTimeout.current);
+      }
+      updateConfigTimeout.current = window.setTimeout(() => {
+        const event = new Event("config-changed", {
+          bubbles: true,
+          composed: true,
+        });
+        // @ts-expect-error its ok shh... we know what we're doing (we think)
+        event.detail = { config: newConfig };
+        rootElement.dispatchEvent(event);
+      }, 500);
     },
     [rootElement]
   );
@@ -87,7 +93,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           console.log(formApi.state.errors);
         }
       },
-      onChangeDebounceMs: 500,
+      onChangeDebounceMs: 150,
     },
   });
 
@@ -101,25 +107,16 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     [formErrorMap]
   );
 
-  const addMusicAssistantPlayers = useCallback(() => {
-    if (
-      window.confirm(
-        "This will clear all existing configured media players, are you sure?"
-      )
-    ) {
-      const maPlayers = getAllMassPlayers();
-      updateConfig({
-        ...config,
-        media_players: maPlayers
-          .filter(player => !player.attributes.active_child)
-          .map(player => ({
-            entity_id: player.entity_id,
-            ma_entity_id: player.entity_id,
-            can_be_grouped: true,
-          })),
-      });
-    }
-  }, [form]);
+  const getMusicAssistantPlayers = useCallback(() => {
+    const maPlayers = getAllMassPlayers().filter(
+      player => !player.attributes.active_child
+    );
+    return maPlayers.map(player => ({
+      entity_id: player.entity_id,
+      ma_entity_id: player.entity_id,
+      can_be_grouped: true,
+    }));
+  }, []);
 
   // Reset form when config changes externally
   useEffect(() => {
@@ -601,7 +598,15 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                     domains={["media_player"]}
                   />
                   <span>or</span>
-                  <Button type="button" onClick={addMusicAssistantPlayers}>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      const newPlayers = getMusicAssistantPlayers();
+                      newPlayers.forEach(newPlayer => {
+                        field.pushValue(newPlayer);
+                      });
+                    }}
+                  >
                     Add all Music Assistant media players
                   </Button>
                 </div>
