@@ -59,8 +59,8 @@ const styles = {
   }),
   rootSelected: css({
     backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
-    border: `3px solid var(--divider-color, rgba(0, 0, 0, 0.1))`,
-    margin: -3,
+    margin: -4,
+    padding: 8,
   }),
   rootDisabled: css({
     color: "var(--disabled-text-color, #999)",
