@@ -43,8 +43,7 @@ const styles = {
     "-webkit-tap-highlight-color": "transparent",
     "@media (hover: hover)": {
       "&:hover": {
-        backgroundColor:
-          "var(--secondary-background-color, rgba(0, 0, 0, 0.05))",
+        backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.2))",
       },
       "&:active": {
         backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
