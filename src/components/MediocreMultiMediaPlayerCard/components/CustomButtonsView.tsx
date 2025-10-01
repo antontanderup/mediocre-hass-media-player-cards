@@ -16,6 +16,7 @@ import {
   OverlayMenuItem,
 } from "@components/OverlayMenu/OverlayMenu";
 import { memo } from "preact/compat";
+import { fadeIn } from "@constants";
 
 const styles = {
   root: css({
@@ -25,6 +26,8 @@ const styles = {
     overflowY: "auto",
     padding: 16,
     gap: 12,
+    opacity: 0,
+    animation: `${fadeIn} 0.3s ease-in-out forwards`,
   }),
   buttons: css({
     display: "flex",

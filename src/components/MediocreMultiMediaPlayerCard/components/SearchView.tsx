@@ -3,11 +3,14 @@ import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { memo } from "preact/compat";
+import { fadeIn } from "@constants";
 
 const styles = {
   root: css({
     height: "100%",
     overflowY: "auto",
+    opacity: 0,
+    animation: `${fadeIn} 0.3s ease-in-out forwards`,
   }),
   header: css({
     padding: 16,

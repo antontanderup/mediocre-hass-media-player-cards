@@ -17,7 +17,7 @@ import {
   useHass,
 } from "@components";
 import { css } from "@emotion/react";
-import { theme } from "@constants";
+import { fadeIn, theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
 import { getHass } from "@utils";
 import { Fragment } from "preact/jsx-runtime";
@@ -31,6 +31,8 @@ const styles = {
     gap: "12px",
     overflowY: "auto",
     height: "100%",
+    opacity: 0,
+    animation: `${fadeIn} 0.3s ease-in-out forwards`,
   }),
   horizontalPadding: css({
     padding: "0px 16px",
