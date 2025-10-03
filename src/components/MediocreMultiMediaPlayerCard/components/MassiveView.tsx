@@ -16,7 +16,6 @@ import { getDeviceIcon, getHass, getVolumeIcon, setVolume } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 import { memo } from "preact/compat";
-import { fadeIn } from "@constants";
 
 const styles = {
   root: css({
@@ -25,8 +24,6 @@ const styles = {
     gap: 24,
     gridTemplateRows: "auto 1fr auto",
     gridTemplateColumns: "1fr",
-    opacity: 0,
-    animation: `${fadeIn} 0.3s ease-in-out forwards`,
   }),
   massive: css({
     overflow: "hidden",

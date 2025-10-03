@@ -9,14 +9,18 @@ import { Chip, Icon, useHass, usePlayer } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
-import { getHass, getIsMassPlayer, transferMaQueue } from "@utils";
+import {
+  getHass,
+  getIsMassPlayer,
+  getSourceIcon,
+  transferMaQueue,
+} from "@utils";
 import { Fragment } from "preact/jsx-runtime";
 import {
   OverlayMenu,
   OverlayMenuItem,
 } from "@components/OverlayMenu/OverlayMenu";
 import { memo } from "preact/compat";
-import { fadeIn } from "@constants";
 
 const styles = {
   root: css({
@@ -26,8 +30,6 @@ const styles = {
     overflowY: "auto",
     padding: 16,
     gap: 12,
-    opacity: 0,
-    animation: `${fadeIn} 0.3s ease-in-out forwards`,
   }),
   buttons: css({
     display: "flex",
@@ -108,6 +110,22 @@ export const CustomButtonsView = memo<CustomButtonsViewProps>(
       });
     }, [ma_favorite_button_entity_id]);
 
+    const sourceSelectMenuItems: OverlayMenuItem[] = useMemo(() => {
+      return (player.attributes.source_list ?? []).map(source => ({
+        label: source,
+        onClick: () => {
+          getHass().callService("media_player", "select_source", {
+            entity_id: player.entity_id,
+            source,
+          });
+        },
+      }));
+    }, [player.attributes.source_list, player.attributes.source]);
+
+    const renderMediaPlayerActions =
+      (!!ma_entity_id && isMainEntityMassPlayer) ||
+      sourceSelectMenuItems.length > 0;
+
     return (
       <div css={styles.root}>
         {custom_buttons && custom_buttons.length > 0 && (
@@ -127,25 +145,47 @@ export const CustomButtonsView = memo<CustomButtonsViewProps>(
             </div>
           </Fragment>
         )}
-        {!!ma_entity_id && isMainEntityMassPlayer && (
+        {renderMediaPlayerActions && (
           <Fragment>
             <ViewHeader
-              title="Music Assistant"
-              subtitle="Music Assistant specific actions."
+              title="Media Player actions"
+              subtitle="Additional controls for your media player."
             />
             <div css={styles.buttons}>
-              {ma_favorite_button_entity_id && (
-                <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
-                  Mark as Favorite
-                </Chip>
+              {!!ma_entity_id && isMainEntityMassPlayer && (
+                <Fragment>
+                  {ma_favorite_button_entity_id && (
+                    <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
+                      Mark as Favorite
+                    </Chip>
+                  )}
+                  {maTransferMenuItems.length > 0 && (
+                    <OverlayMenu
+                      menuItems={maTransferMenuItems}
+                      side="bottom"
+                      renderTrigger={triggerProps => (
+                        <Chip icon="mdi:transfer" {...triggerProps}>
+                          Transfer Queue
+                          <Icon size="x-small" icon="mdi:chevron-down" />
+                        </Chip>
+                      )}
+                    />
+                  )}
+                </Fragment>
               )}
-              {maTransferMenuItems.length > 0 && (
+              {sourceSelectMenuItems.length > 0 && player.attributes.source && (
                 <OverlayMenu
-                  menuItems={maTransferMenuItems}
-                  side="bottom"
+                  align="center"
+                  menuItems={sourceSelectMenuItems}
                   renderTrigger={triggerProps => (
-                    <Chip icon="mdi:transfer" {...triggerProps}>
-                      Transfer Queue
+                    <Chip
+                      {...triggerProps}
+                      icon={getSourceIcon({
+                        source: player.attributes.source ?? "",
+                        fallbackIcon: "mdi:import",
+                      })}
+                    >
+                      {player.attributes.source}
                       <Icon size="x-small" icon="mdi:chevron-down" />
                     </Chip>
                   )}

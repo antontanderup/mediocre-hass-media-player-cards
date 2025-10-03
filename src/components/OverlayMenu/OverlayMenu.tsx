@@ -49,13 +49,19 @@ const styles = {
   }),
 };
 
-import { OverlayPopover, OverlayPopoverProps } from "./OverlayPopover";
-import { ButtonHTMLAttributes } from "preact/compat";
+import {
+  OverlayPopover,
+  OverlayPopoverHandle,
+  OverlayPopoverProps,
+} from "./OverlayPopover";
+import { ButtonHTMLAttributes, useRef } from "preact/compat";
 
 export const OverlayMenu = ({
   menuItems,
   ...overlayMenuProps
 }: OverlayMenuProps) => {
+  const overlayRef = useRef<OverlayPopoverHandle>(null);
+
   const renderMenuItem = (
     item: OverlayMenuItem,
     buttonProps: Partial<ButtonHTMLAttributes>,
@@ -66,7 +72,12 @@ export const OverlayMenu = ({
       <button
         key={item.label + index}
         css={styles.item}
-        onClick={item.onClick}
+        onClick={() => {
+          if (!hasChildren) {
+            overlayRef.current?.setOpen(false);
+          }
+          if (item.onClick) item.onClick();
+        }}
         role="menuitem"
         {...buttonProps}
       >
@@ -102,7 +113,7 @@ export const OverlayMenu = ({
   };
 
   return (
-    <OverlayPopover {...overlayMenuProps}>
+    <OverlayPopover ref={overlayRef} {...overlayMenuProps}>
       <div css={styles.menuRoot} role="menu">
         {renderMenuItems(menuItems)}
       </div>
