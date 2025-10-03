@@ -33,8 +33,6 @@ export const MediocreChipMediaPlayerGroupCard = () => {
       CardContext
     );
 
-  console.log(config);
-
   return (
     <div css={styles.root}>
       <GroupChipsController

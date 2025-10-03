@@ -1,7 +1,14 @@
-import { useCallback, useMemo } from "preact/hooks";
-import { IconButton, Slider, usePlayer } from "@components";
-import { getHass, getVolumeIcon } from "@utils";
+import { useCallback, useContext, useMemo } from "preact/hooks";
+import {
+  CardContext,
+  CardContextType,
+  IconButton,
+  Slider,
+  usePlayer,
+} from "@components";
+import { getHass, getVolumeIcon, setVolume } from "@utils";
 import { css } from "@emotion/react";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
 const styles = {
   root: css({
@@ -18,6 +25,13 @@ const styles = {
 };
 
 export const VolumeController = () => {
+  const { config } =
+    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+      CardContext
+    );
+
+  const { speaker_group } = config;
+
   const player = usePlayer();
 
   const entity_id = player.entity_id;
@@ -25,13 +39,13 @@ export const VolumeController = () => {
   const volumeMuted = player.attributes?.is_volume_muted ?? false;
 
   // Handle volume change
-  const handleVolumeChange = useCallback((newVolume: number) => {
-    // Set the volume level
-    getHass().callService("media_player", "volume_set", {
-      entity_id,
-      volume_level: newVolume,
-    });
-  }, []);
+  const handleVolumeChange = useCallback(
+    (newVolume: number) => {
+      // Set the volume level
+      setVolume(speaker_group?.entity_id ?? entity_id, newVolume, true);
+    },
+    [entity_id, speaker_group]
+  );
 
   // Handle mute toggle
   const handleToggleMute = useCallback(() => {

@@ -1,7 +1,12 @@
 import { useMemo, useEffect, useState } from "preact/hooks";
-import { ProgressBar, usePlayer } from "@components";
+import { Icon, ProgressBar, usePlayer } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import {
+  OverlayMenu,
+  OverlayMenuItem,
+} from "@components/OverlayMenu/OverlayMenu";
+import { getHass, getSourceIcon } from "@utils";
 
 const styles = {
   root: css({
@@ -15,7 +20,24 @@ const styles = {
     marginTop: "4px",
     color: theme.colors.onDialogMuted,
     height: "20px",
+    marginBottom: "-4px",
+  }),
+  timeWrapNoSource: css({
     marginBottom: "-20px",
+  }),
+  sourceSelect: css({
+    background: "none",
+    border: "none",
+    color: theme.colors.onDialogMuted,
+    fontSize: "13px",
+    fontWeight: 500,
+    cursor: "pointer",
+    padding: 0,
+    display: "flex",
+    gap: "4px",
+    alignItems: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
   }),
 };
 
@@ -71,20 +93,54 @@ export const Track = () => {
     };
   }, [player, tick]); // Added tick to the dependency array to update when tick changes
 
-  if (!position) {
-    return null;
-  }
+  const sourceSelectMenuItems: OverlayMenuItem[] = useMemo(() => {
+    return (player.attributes.source_list ?? []).map(source => ({
+      label: source,
+      onClick: () => {
+        getHass().callService("media_player", "select_source", {
+          entity_id: player.entity_id,
+          source,
+        });
+      },
+    }));
+  }, [player.attributes.source_list, player.attributes.source]);
 
   return (
     <div css={styles.root}>
-      <ProgressBar
-        value={position.currentPosition}
-        min={0}
-        max={position.mediaDuration}
-      />
-      <div css={styles.timeWrap}>
-        <span>{position.prettyNow}</span>
-        <span>{position.prettyEnd}</span>
+      {position && (
+        <ProgressBar
+          value={position.currentPosition}
+          min={0}
+          max={position.mediaDuration}
+        />
+      )}
+      <div
+        css={[
+          styles.timeWrap,
+          !player.attributes.source && styles.timeWrapNoSource,
+        ]}
+      >
+        {position && <span>{position.prettyNow}</span>}
+        {sourceSelectMenuItems.length > 0 && player.attributes.source && (
+          <OverlayMenu
+            align="center"
+            menuItems={sourceSelectMenuItems}
+            renderTrigger={triggerProps => (
+              <button {...triggerProps} css={styles.sourceSelect}>
+                <Icon
+                  size="xx-small"
+                  icon={getSourceIcon({
+                    source: player.attributes.source ?? "",
+                    fallbackIcon: "mdi:import",
+                  })}
+                />
+                {player.attributes.source}
+                <Icon size="xx-small" icon="mdi:chevron-down" />
+              </button>
+            )}
+          />
+        )}
+        {position && <span>{position.prettyEnd}</span>}
       </div>
     </div>
   );

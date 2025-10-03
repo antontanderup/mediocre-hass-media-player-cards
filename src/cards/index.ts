@@ -3,3 +3,5 @@ export * from "./mediocre-massive-media-player-card-editor";
 export * from "./mediocre-massive-media-player-card";
 export * from "./mediocre-media-player-card-editor";
 export * from "./mediocre-media-player-card";
+export * from "./mediocre-multi-media-player-card-editor";
+export * from "./mediocre-multi-media-player-card";
