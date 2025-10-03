@@ -131,6 +131,7 @@ export const Track = () => {
                   size="xx-small"
                   icon={getSourceIcon({
                     source: player.attributes.source ?? "",
+                    fallbackIcon: "mdi:import",
                   })}
                 />
                 {player.attributes.source}
