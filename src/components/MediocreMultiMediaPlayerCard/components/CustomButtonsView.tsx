@@ -175,7 +175,7 @@ export const CustomButtonsView = memo<CustomButtonsViewProps>(
               )}
               {sourceSelectMenuItems.length > 0 && player.attributes.source && (
                 <OverlayMenu
-                  align="center"
+                  side="bottom"
                   menuItems={sourceSelectMenuItems}
                   renderTrigger={triggerProps => (
                     <Chip
