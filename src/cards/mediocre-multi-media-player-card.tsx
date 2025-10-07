@@ -10,7 +10,17 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
 
   setConfig(config: MediocreMultiMediaPlayerCardConfig) {
     if (!config.media_players || config.media_players.length === 0) {
-      throw new Error("You need to define at least one media player");
+      throw new Error("You need to define at least one media player.");
+    }
+    if (
+      config.entity_id &&
+      config.media_players.find(
+        player => player.entity_id === config.entity_id
+      ) === undefined
+    ) {
+      throw new Error(
+        "The entity_id must be one of the defined media players."
+      );
     }
     this.config = config;
   }

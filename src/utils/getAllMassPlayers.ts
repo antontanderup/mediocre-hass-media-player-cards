@@ -10,6 +10,7 @@ export function getAllMassPlayers(): MediaPlayerEntity[] {
   if (!hass) return [];
   return Object.values(hass.states).filter(
     (entity): entity is MediaPlayerEntity =>
+      !!entity &&
       entity.entity_id?.startsWith("media_player.") &&
       getIsMassPlayer(entity as MediaPlayerEntity)
   );
