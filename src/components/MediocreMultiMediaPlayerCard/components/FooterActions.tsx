@@ -24,7 +24,6 @@ const styles = {
     width: "100%",
     position: "relative",
     boxSizing: "border-box",
-    boxShadow: "0 15px 100px var(--clear-background-color)",
   }),
 };
 
