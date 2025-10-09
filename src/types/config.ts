@@ -58,8 +58,43 @@ export const MediocreMediaPlayerCardConfigSchema =
 
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
-    mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup as it only for internal use
+    mode: "'panel'|'card'|'in-card'|'popup'|'multi'", // don't document popup and multi as they are only for internal use
   });
+
+export const MediocreMultiMediaPlayer = type({
+  entity_id: "string",
+  "custom_buttons?": type({
+    icon: "string > 0",
+    name: "string > 0",
+  })
+    .and(interactionConfigSchema)
+    .array(),
+  "name?": "string | null",
+  "speaker_group_entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
+  "can_be_grouped?": "boolean | null",
+  "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
+  "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
+  "search?": {
+    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
+    "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
+    "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+    "media_types?": searchMediaTypeSchema.array(),
+  },
+});
+
+export const MediocreMultiMediaPlayerCardConfigSchema = type({
+  type: "string",
+  mode: "'panel'|'card'",
+  "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
+  entity_id: "string", // entity id of the initially selected media player (used when player is active)
+  "use_art_colors?": "boolean",
+  media_players: MediocreMultiMediaPlayer.array(),
+  "options?": {
+    "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
+  },
+  "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
+  "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
+});
 
 export type SearchMediaType = typeof searchMediaTypeSchema.infer;
 export type CommonMediocreMediaPlayerCardConfig =
@@ -68,4 +103,7 @@ export type MediocreMediaPlayerCardConfig =
   typeof MediocreMediaPlayerCardConfigSchema.infer;
 export type MediocreMassiveMediaPlayerCardConfig =
   typeof MediocreMassiveMediaPlayerCardConfigSchema.infer;
+export type MediocreMultiMediaPlayerCardConfig =
+  typeof MediocreMultiMediaPlayerCardConfigSchema.infer;
+export type MediocreMultiMediaPlayer = typeof MediocreMultiMediaPlayer.infer;
 export type MediaPlayerConfigEntity = typeof mediaPlayerConfigEntity.infer;

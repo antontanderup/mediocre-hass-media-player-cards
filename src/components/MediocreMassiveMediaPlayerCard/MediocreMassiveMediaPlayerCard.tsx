@@ -34,6 +34,10 @@ const styles = {
   rootPopupMode: css({
     "--mmpc-extra-horizontal-padding": "12px",
   }),
+  rootMultiMode: css({
+    width: "100%",
+    height: "100%",
+  }),
   wrap: css({
     display: "flex",
     flex: 1,
@@ -49,6 +53,11 @@ const styles = {
     width: "90%",
     maxWidth: "400px",
     padding: "16px",
+  }),
+  wrapMultiMode: css({
+    width: "100%",
+    maxWidth: "600px",
+    padding: 0,
   }),
   wrapPopupMode: css({
     maxWidth: "100%",
@@ -67,6 +76,11 @@ const styles = {
     width: "100%",
     height: "100%",
     justifyContent: "space-between",
+  }),
+  controlsWrapperMulti: css({
+    maxHeight: 210,
+    minHeight: 200,
+    justifyContent: "space-evenly",
   }),
 };
 
@@ -102,6 +116,7 @@ export const MediocreMassiveMediaPlayerCard = ({
         styles.root,
         mode === "panel" && styles.rootPanelMode,
         mode === "popup" && styles.rootPopupMode,
+        mode === "multi" && styles.rootMultiMode,
       ]}
       style={{
         ...(artVars ?? {}),
@@ -114,14 +129,20 @@ export const MediocreMassiveMediaPlayerCard = ({
           mode === "panel" && styles.wrapPanelMode,
           mode === "card" && styles.wrapCardMode,
           mode === "popup" && styles.wrapPopupMode,
+          mode === "multi" && styles.wrapMultiMode,
         ]}
       >
         <AlbumArt iconSize="x-large" borderRadius={8} {...artActionProps} />
-        <div css={styles.controlsWrapper}>
+        <div
+          css={[
+            styles.controlsWrapper,
+            mode === "multi" && styles.controlsWrapperMulti,
+          ]}
+        >
           <Title />
           <Track />
           <PlaybackControls />
-          <PlayerActions />
+          {mode !== "multi" && <PlayerActions />}
         </div>
       </div>
     </div>

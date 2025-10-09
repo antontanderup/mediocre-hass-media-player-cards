@@ -4,6 +4,9 @@ import { HTMLAttributes, InputHTMLAttributes } from "preact/compat";
 const styles = {
   formGroup: css({
     marginBottom: "16px",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
   }),
   label: css({
     display: "block",

@@ -6,6 +6,7 @@ import { HaFilterConfig, HaEnqueueMode, HaFilterType } from "./types";
 import { useSearchQuery } from "./useSearchQuery";
 import { useMediaBrowser } from "./useMediaBrowser";
 import { HaMediaItemsList } from "./HaMediaItemsList";
+import { JSX } from "preact";
 
 const filters: HaFilterConfig[] = [
   { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
@@ -21,6 +22,7 @@ export type HaSearchProps = {
   filterConfig?: HaFilterConfig[];
   searchBarPosition?: "top" | "bottom";
   maxHeight?: number;
+  renderHeader?: () => JSX.Element;
 };
 
 export const HaSearch = ({
@@ -30,6 +32,7 @@ export const HaSearch = ({
   searchBarPosition = "top",
   maxHeight = 300,
   filterConfig = filters,
+  renderHeader,
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
@@ -59,8 +62,11 @@ export const HaSearch = ({
   const renderSearchBar = () => {
     return (
       <div css={searchStyles.searchBarContainer}>
+        {!!renderHeader && renderHeader()}
         <Input
-          placeholder="Search.."
+          placeholder={
+            Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."
+          }
           onChange={setQuery}
           value={query}
           loading={loading}

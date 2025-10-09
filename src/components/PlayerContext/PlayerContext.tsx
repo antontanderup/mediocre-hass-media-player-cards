@@ -1,8 +1,9 @@
-import { HomeAssistant } from "@types";
 import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import { MediaPlayerEntity } from "@types";
 import { getMediaPlayerTitleAndSubtitle } from "@utils/getMediaPlayerTitleAndSubtitle";
+import { memo } from "preact/compat";
+import { useHass } from "@components";
 
 export type PlayerContextType = {
   player: Omit<
@@ -14,44 +15,50 @@ export type PlayerContextType = {
   >;
 };
 
+type PlayerContextProviderProps = {
+  entityId: string;
+  children:
+    | preact.ComponentChildren
+    | ((value: PlayerContextType) => preact.ComponentChildren);
+};
+
 export const PlayerContext = createContext<PlayerContextType>({
   player: {} as PlayerContextType["player"],
 });
 
-export const PlayerContextProvider = ({
-  hass,
-  children,
-  entityId,
-}: {
-  entityId: string;
-  hass: HomeAssistant;
-  children: preact.ComponentChildren;
-}): preact.ComponentChildren => {
-  const contextValue = useMemo((): PlayerContextType => {
-    const player = hass.states[entityId] as MediaPlayerEntity;
-    if (!player) {
-      return {
-        player: {
-          entity_id: entityId,
-          state: "unavailable",
-          attributes: {},
-          title: "Unavailable",
-          subtitle: `${entityId} unavailable`,
-        },
-      };
-    }
-    const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
-    return {
-      player: { ...player, title, subtitle },
-    };
-  }, [hass.states, entityId]);
+export const PlayerContextProvider = memo<PlayerContextProviderProps>(
+  ({
+    children,
+    entityId,
+  }: PlayerContextProviderProps): preact.ComponentChildren => {
+    const hass = useHass();
 
-  return (
-    <PlayerContext.Provider value={contextValue}>
-      {children}
-    </PlayerContext.Provider>
-  );
-};
+    const contextValue = useMemo((): PlayerContextType => {
+      const player = hass.states[entityId] as MediaPlayerEntity;
+      if (!player) {
+        return {
+          player: {
+            entity_id: entityId,
+            state: "unavailable",
+            attributes: {},
+            title: "Unavailable",
+            subtitle: `${entityId} unavailable`,
+          },
+        };
+      }
+      const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
+      return {
+        player: { ...player, title, subtitle },
+      };
+    }, [hass.states[entityId], entityId]);
+
+    return (
+      <PlayerContext.Provider value={contextValue}>
+        {typeof children === "function" ? children(contextValue) : children}
+      </PlayerContext.Provider>
+    );
+  }
+);
 
 export const usePlayer = () => {
   const context = useContext(PlayerContext);

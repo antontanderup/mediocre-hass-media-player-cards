@@ -2,9 +2,9 @@ import {
   MediocreChipMediaPlayerGroupCard,
   MediocreChipMediaPlayerGroupCardConfig,
 } from "@components";
+import { HomeAssistant, MediaPlayerEntity } from "@types";
 import { getDidMediaPlayerUpdate } from "@utils";
 import { CardWrapper } from "@wrappers";
-import { HomeAssistant, MediaPlayerEntity } from "@types";
 
 class MediocreChipMediaPlayerGroupCardWrapper extends CardWrapper<MediocreChipMediaPlayerGroupCardConfig> {
   Card = MediocreChipMediaPlayerGroupCard;

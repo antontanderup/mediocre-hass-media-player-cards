@@ -47,6 +47,7 @@ export type GroupSpeaker = {
   volume: number;
   muted: boolean;
   isGrouped: boolean;
+  isOff: boolean;
   isMainSpeaker: boolean;
 };
 
@@ -56,11 +57,13 @@ export type GroupVolumeControllerProps = {
     "speaker_group" | "entity_id"
   >;
   syncMainSpeaker: boolean; // Wheter the main speaker will affect the volume of the group
+  className?: string;
 };
 
 export const GroupVolumeController = ({
   config: { speaker_group, entity_id },
   syncMainSpeaker,
+  className,
 }: GroupVolumeControllerProps) => {
   const hass = useHass();
 
@@ -96,6 +99,7 @@ export const GroupVolumeController = ({
         volume: hass.states[getEntityId(entity)].attributes.volume_level || 0,
         muted:
           hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
+        isOff: hass.states[getEntityId(entity)].state === "off",
         isGrouped:
           mainEntity?.attributes?.group_members?.includes(
             getEntityId(entity)
@@ -159,12 +163,16 @@ export const GroupVolumeController = ({
     [syncMainSpeaker]
   );
 
+  const handleToggleOn = useCallback((entityId: string) => {
+    getHass().callService("media_player", "turn_on", { entity_id: entityId });
+  }, []);
+
   const renderSpeaker = (
     speaker: GroupSpeaker,
     _index: number,
     _groupedSpeakers: GroupSpeaker[]
   ) => {
-    const { entity_id, name, volume, muted, isGrouped, isMainSpeaker } =
+    const { entity_id, name, volume, muted, isGrouped, isMainSpeaker, isOff } =
       speaker;
     const isLoading = playersLoading.includes(entity_id);
     const isDisabled = isLoading || (isMainSpeaker && !isGrouped);
@@ -176,13 +184,24 @@ export const GroupVolumeController = ({
         >
           {name}
         </td>
-        <td css={styles.buttonCell}>
-          <IconButton
-            size="x-small"
-            onClick={() => handleToggleMute(entity_id, muted)}
-            icon={getVolumeIcon(volume, muted)}
-          />
-        </td>
+        {isOff ? (
+          <td css={styles.buttonCell}>
+            <IconButton
+              size="x-small"
+              onClick={() => handleToggleOn(entity_id)}
+              icon="mdi:power"
+              disabled={isDisabled}
+            />
+          </td>
+        ) : (
+          <td css={styles.buttonCell}>
+            <IconButton
+              size="x-small"
+              onClick={() => handleToggleMute(entity_id, muted)}
+              icon={getVolumeIcon(volume, muted)}
+            />
+          </td>
+        )}
         <td css={styles.controlsCell}>
           <div css={styles.controlsContainer}>
             <Slider
@@ -210,7 +229,7 @@ export const GroupVolumeController = ({
   };
 
   return (
-    <div>
+    <div className={className}>
       <table css={styles.speakersTable}>
         <tbody>
           {availableSpeakers

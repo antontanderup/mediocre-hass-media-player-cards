@@ -6,7 +6,7 @@ import { MediaPlayerEntity } from "@types";
 export type HomeAssistant = Omit<CCHHomeAssistant, "states"> & {
   hassUrl: (path: string) => string;
   states: CCHHomeAssistant["states"] & {
-    [key: `media_player.${string}`]: MediaPlayerEntity;
+    [key: `media_player.${string}`]: MediaPlayerEntity | undefined;
   };
 };
 
