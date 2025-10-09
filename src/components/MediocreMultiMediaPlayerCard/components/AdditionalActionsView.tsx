@@ -40,12 +40,12 @@ const styles = {
   }),
 };
 
-export type CustomButtonsViewProps = {
+export type AdditionalActionsViewProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
   setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
 };
 
-export const CustomButtonsView = memo<CustomButtonsViewProps>(
+export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
   ({ mediaPlayer, setSelectedPlayer }) => {
     const { custom_buttons, ma_favorite_button_entity_id, ma_entity_id } =
       mediaPlayer;

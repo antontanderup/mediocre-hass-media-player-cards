@@ -1,5 +1,5 @@
 export * from "./ArtworkColorWrap";
-export * from "./CustomButtonsView";
+export * from "./AdditionalActionsView";
 export * from "./FooterActions";
 export * from "./MassiveView";
 export * from "./MiniPlayer";

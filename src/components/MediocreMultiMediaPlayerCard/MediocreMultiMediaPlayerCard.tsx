@@ -19,7 +19,7 @@ import { PlayerContextProvider } from "@components/PlayerContext";
 import { useHass } from "@components/HassContext";
 import { theme } from "@constants";
 import { MassiveViewView } from "./components/MassiveView";
-import { CustomButtonsView } from "./components/CustomButtonsView";
+import { AdditionalActionsView } from "./components/AdditionalActionsView";
 
 export type NavigationRoute =
   | "search"
@@ -173,7 +173,7 @@ export const MediocreMultiMediaPlayerCard = () => {
                 />
               )}
               {navigationRoute === "custom-buttons" && (
-                <CustomButtonsView
+                <AdditionalActionsView
                   mediaPlayer={selectedPlayer}
                   setSelectedPlayer={setSelectedPlayer}
                 />
