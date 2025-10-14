@@ -4,8 +4,6 @@
 [![GitHub Release](https://img.shields.io/github/v/release/antontanderup/mediocre-hass-media-player-cards?color=blue)](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
 [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/antontanderup/mediocre-hass-media-player-cards/total)](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
 [![Chat on Oase](<https://img.shields.io/badge/Chat-Oase-lightblue?color=rgb(74%20196%20169)>)](https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180)
-→ [Read full documentation](./docs/mediocre-media-player-card.md)
-
 
 
 Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more. A visual editor is available for all media player card configuration options.
@@ -45,41 +43,42 @@ resources:
 
 </details>
 
-→ [Read full documentation](./docs/mediocre-massive-media-player-card.md)
 
 ### 🎚️ Mediocre Media Player Card
 
 A standard-sized media player card for a single entity. Supports grouping, custom actions, and Music Assistant integration.
 
 <img src="https://github.com/user-attachments/assets/a4ad8f2c-aafe-424f-9626-ff3353cbd605" width="400px" alt="Mediocre Media Player Card Screenshot" />
-→ [Read full documentation](./docs/mediocre-multi-media-player-card.md)
-→ [Read full documentation](./src/cards/mediocre-media-player-card/README.md)
+
+→ [Read full documentation](./docs/mediocre-media-player-card.md)
+
 ---
 
 ### 🖼️ Mediocre Massive Media Player Card
 
 A full-sized, feature-rich card for a single media player. Includes all features of the standard card, plus multiple display modes.
 
-→ [Read full documentation](./docs/mediocre-chip-media-player-group-card.md)
-
+→ [Read full documentation](./docs/mediocre-massive-media-player-card.md)
 
 ---
+
+### 🔊 Mediocre Multi Media Player Card
 
 Control and view multiple media players at once. Great for dashboards with several speakers or grouped devices.
 
 <!-- Add screenshot here when available -->
 
-→ [Read full documentation](./src/cards/mediocre-multi-media-player-card/README.md)
+→ [Read full documentation](./docs/mediocre-multi-media-player-card.md)
 
 ---
 
 ### 🎛️ Mediocre Chip Media Player Group Card
 
-A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for dashboards where space is limited.
+A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for putting under your media player card of choice.
 
 <img src="https://github.com/user-attachments/assets/96d2691c-e636-432a-87d9-f7dc33570ea6" width="400px" alt="Mediocre Chip Media Player Group Card Screenshot" />
 
-→ [Read full documentation](./src/cards/mediocre-chip-media-player-group-card/README.md)
+→ [Read full documentation](./docs/mediocre-chip-media-player-group-card.md)
 
 ---
 
@@ -87,36 +86,8 @@ A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for 
 
 - [Universal Media Player integration](./docs/README_UMP.md)
 - [Search functionality](./docs/README_SEARCH.md)
+- [Custom Styles](./docs/README_STYLING.md)
 
-## Troubleshooting
-
-If you run into issues:
-
-1. Check that your entity supports the media player features needed
-2. Verify your configuration syntax
-3. Look for errors in your browser's developer console
-
-## Development
-
-These cards are built with Preact wrapped in web components. For local development:
-
-```bash
-# Install dependencies
-
-
-# Build for development
-- [Using Universal Media Player with Mediocre Media Player Cards](./docs/README_UMP.md)
-
-# Continually build when files change
-- [Search Functionality with Mediocre Media Player Cards](./docs/README_SEARCH.md)
-
-# Build for production
-
-```
-
-When using `yarn dev`, the output file will be named `mediocre-hass-media-player-cards-dev.js` instead of `mediocre-hass-media-player-cards.js`.
-
-You can also create a `.env.development` file (based on the `.env.development.example`) to use custom component names during development. This is useful if you want to test in a live environment without risking breaking anything for your users (family members :D).
 ## Troubleshooting
 
 If you run into issues:
