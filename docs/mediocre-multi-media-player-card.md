@@ -40,13 +40,13 @@ entities:
 |-------------------------------|---------------|-----------------------------------------------------------------------------------------------|
 | `entity_id`                   | string        | The entity ID of the media player                                                             |
 | `custom_buttons`              | array         | List of custom buttons (icon, name, and action config)                                        |
-| `name`                        | string/null   | Custom name for the player                                                                    |
-| `speaker_group_entity_id`     | string/null   | Entity ID of the main speaker if different from the media player                              |
-| `can_be_grouped`              | boolean/null  | Whether this player can be grouped                                                            |
-| `ma_entity_id`                | string/null   | Music Assistant entity id (adds search)                                                       |
-| `ma_favorite_button_entity_id`| string/null   | Music Assistant favorite button entity                                                        |
+| `name`                        | string   | Custom name for the player                                                                    |
+| `speaker_group_entity_id`     | string   | Entity ID of the main speaker if different from the media player                              |
+| `can_be_grouped`              | boolean  | Whether this player can be grouped                                                            |
+| `ma_entity_id`                | string   | Music Assistant entity id (adds search)                                                       |
+| `ma_favorite_button_entity_id`| string   | Music Assistant favorite button entity                                                        |
 | `search`                      | object        | Search configuration (see below)                                                              |
-| `search.enabled`              | boolean/null  | Enables Home Assistant search_media functionality                                             |
-| `search.show_favorites`       | boolean/null  | Shows favorites when no search query has been entered                                         |
-| `search.entity_id`            | string/null   | Entity ID to search on (optional, falls back to card entity_id)                               |
+| `search.enabled`              | boolean  | Enables Home Assistant search_media functionality                                             |
+| `search.show_favorites`       | boolean  | Shows favorites when no search query has been entered                                         |
+| `search.entity_id`            | string   | Entity ID to search on (optional, falls back to card entity_id)                               |
 | `search.media_types`          | array         | List of supported media types for search                                                      |
