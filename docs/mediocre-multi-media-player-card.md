@@ -21,11 +21,33 @@ entities:
   - media_player.bedroom_speaker
 ```
 
-## Options
-| Option      | Type   | Default  | Description                                                  |
-| ----------- | ------ | -------- | ------------------------------------------------------------ |
-| `entities`  | array  | Required | List of entity IDs to display and control                    |
-| `custom_buttons` | array | - | List of custom buttons to display for each player            |
-| `ma_entity_id` | string | - | Music Assistant entity id (adds search, if supported)         |
 
-See other card docs for more shared options and configuration patterns.
+## Options
+| Option                             | Type                | Default  | Description                                                                                             |
+|-------------------------------------|---------------------|----------|---------------------------------------------------------------------------------------------------------|
+| `type`                             | string              | Required | Lovelace card type (should be `"custom:mediocre-multi-media-player-card"`)                              |
+| `mode`                             | string              | Required | Display mode: `card` or `panel`                                                                         |
+| `height`                           | number/string       |          | Height of the card (px or any CSS unit)                                                                 |
+| `entity_id`                        | string              | Required | Entity id of the initially selected media player                                                         |
+| `use_art_colors`                   | boolean             |          | Use artwork colors for the card                                                                         |
+| `media_players`                    | array               | Required | List of media player configs (see below)                                                                |
+| `options.transparent_background_on_home` | boolean        |          | Makes the background transparent when showing the massive player                                         |
+| `grid_options`                     | any                 |          | Home Assistant grid layout options (passed through)                                                     |
+| `visibility`                       | any                 |          | Home Assistant visibility options (passed through)                                                      |
+
+### Each item in `media_players`:
+
+| Option                        | Type          | Description                                                                                   |
+|-------------------------------|---------------|-----------------------------------------------------------------------------------------------|
+| `entity_id`                   | string        | The entity ID of the media player                                                             |
+| `custom_buttons`              | array         | List of custom buttons (icon, name, and action config)                                        |
+| `name`                        | string/null   | Custom name for the player                                                                    |
+| `speaker_group_entity_id`     | string/null   | Entity ID of the main speaker if different from the media player                              |
+| `can_be_grouped`              | boolean/null  | Whether this player can be grouped                                                            |
+| `ma_entity_id`                | string/null   | Music Assistant entity id (adds search)                                                       |
+| `ma_favorite_button_entity_id`| string/null   | Music Assistant favorite button entity                                                        |
+| `search`                      | object        | Search configuration (see below)                                                              |
+| `search.enabled`              | boolean/null  | Enables Home Assistant search_media functionality                                             |
+| `search.show_favorites`       | boolean/null  | Shows favorites when no search query has been entered                                         |
+| `search.entity_id`            | string/null   | Entity ID to search on (optional, falls back to card entity_id)                               |
+| `search.media_types`          | array         | List of supported media types for search                                                      |

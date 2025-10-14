@@ -20,8 +20,9 @@ entities:
   - media_player.bathroom_speaker
 ```
 
+
 ## Options
 | Option      | Type   | Default  | Description                                                  |
-| ----------- | ------ | -------- | ------------------------------------------------------------ |
+|-------------|--------|----------|--------------------------------------------------------------|
 | `entity_id` | string | Required | The entity ID of the main media player to group others with  |
 | `entities`  | array  | Required | List of entity IDs that can be grouped with the main speaker |
