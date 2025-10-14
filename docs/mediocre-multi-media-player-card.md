@@ -12,13 +12,23 @@ A card for controlling and viewing multiple media players at once. Useful for ma
 ## Screenshot
 <!-- Add screenshot here when available -->
 
+
 ## Configuration
 ```yaml
 type: "custom:mediocre-multi-media-player-card"
-entities:
-  - media_player.living_room_speaker
-  - media_player.kitchen_speaker
-  - media_player.bedroom_speaker
+entity_id: media_player.living_room_speaker
+mode: card
+media_players:
+  - entity_id: media_player.living_room_speaker
+    name: Living Room
+    custom_buttons:
+      - icon: mdi:playlist-music
+        name: Playlists
+        # ...action config...
+  - entity_id: media_player.kitchen_speaker
+    name: Kitchen
+  - entity_id: media_player.bedroom_speaker
+    name: Bedroom
 ```
 
 
