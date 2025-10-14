@@ -50,5 +50,4 @@ speaker_group:
 | `options.hide_when_group_child`    | boolean/null        |          | Hide the card when the media player is a group child                                                    |
 | `tap_opens_popup`                  | boolean             |          | When set to true, tapping the card opens a popup with the massive card                                  |
 | `mode`                             | string              | `card`   | Display mode: `card` (regular HA card), `in-card` (no card wrapper), or `panel` (panel optimized view)  |
-| `grid_options`                     | any                 |          | Home Assistant grid layout options (passed through)                                                     |
-| `visibility`                       | any                 |          | Home Assistant visibility options (passed through)                                                      |
+

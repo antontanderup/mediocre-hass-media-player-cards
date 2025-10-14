@@ -32,8 +32,7 @@ entities:
 | `use_art_colors`                   | boolean             |          | Use artwork colors for the card                                                                         |
 | `media_players`                    | array               | Required | List of media player configs (see below)                                                                |
 | `options.transparent_background_on_home` | boolean        |          | Makes the background transparent when showing the massive player                                         |
-| `grid_options`                     | any                 |          | Home Assistant grid layout options (passed through)                                                     |
-| `visibility`                       | any                 |          | Home Assistant visibility options (passed through)                                                      |
+
 
 ### Each item in `media_players`:
 
