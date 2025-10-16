@@ -10,7 +10,14 @@ import {
   Search,
   SpeakerGrouping,
 } from "./components";
-import { AlbumArt, IconButton, MaMenu, useHass, usePlayer } from "@components";
+import {
+  AdditionalActionsMenu,
+  AlbumArt,
+  IconButton,
+  MaMenu,
+  useHass,
+  usePlayer,
+} from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
@@ -218,20 +225,20 @@ export const MediocreMediaPlayerCard = ({
                       <IconButton
                         size="x-small"
                         onClick={() => setShowCustomButtons(!showCustomButtons)}
-                        icon={"mdi:dots-vertical"}
+                        icon={"mdi:dots-horizontal"}
                       />
                     )}
                   </Fragment>
                 )}
-                {ma_entity_id && !isEmbeddedInMultiCard && (
-                  <MaMenu
+                {!isEmbeddedInMultiCard && (
+                  <AdditionalActionsMenu
                     ma_entity_id={ma_entity_id ?? undefined}
                     ma_favorite_button_entity_id={
                       ma_favorite_button_entity_id ?? undefined
                     }
                     renderTrigger={triggerProps => (
                       <IconButton
-                        icon="mdi:bookshelf"
+                        icon={"mdi:dots-vertical"}
                         size="x-small"
                         {...triggerProps}
                       />
