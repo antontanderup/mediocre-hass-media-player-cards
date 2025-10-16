@@ -257,6 +257,47 @@ export const MediocreMediaPlayerCardEditor: FC<
         </form.Field>
       </SubForm>
 
+      <SubForm
+        title="Music Assistant Configuration (optional)"
+        error={
+          getSubformError("ma_entity_id") ??
+          getSubformError("ma_favorite_button_entity_id")
+        }
+      >
+        <form.Field name="ma_entity_id">
+          {field => (
+            <FormGroup>
+              <EntityPicker
+                hass={hass}
+                value={field.state.value ?? ""}
+                onChange={value => {
+                  field.handleChange(value ?? null);
+                }}
+                label="Music Assistant Entity ID (Optional)"
+                error={getFieldError(field)}
+                domains={["media_player"]}
+              />
+            </FormGroup>
+          )}
+        </form.Field>
+        <form.Field name="ma_favorite_button_entity_id">
+          {field => (
+            <FormGroup>
+              <EntityPicker
+                hass={hass}
+                value={field.state.value ?? ""}
+                onChange={value => {
+                  field.handleChange(value ?? null);
+                }}
+                label="MA Favorite Button Entity ID (Optional)"
+                error={getFieldError(field)}
+                domains={["button"]}
+              />
+            </FormGroup>
+          )}
+        </form.Field>
+      </SubForm>
+
       <SubForm title="Search (optional)" error={getSubformError("search")}>
         <form.Field name="ma_entity_id">
           {tapField => (
@@ -345,48 +386,6 @@ export const MediocreMediaPlayerCardEditor: FC<
           )}
         </form.Field>
       </SubForm>
-
-      <SubForm
-        title="Music Assistant Configuration (optional)"
-        error={
-          getSubformError("ma_entity_id") ??
-          getSubformError("ma_favorite_button_entity_id")
-        }
-      >
-        <form.Field name="ma_entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Music Assistant Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            </FormGroup>
-          )}
-        </form.Field>
-        <form.Field name="ma_favorite_button_entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="MA Favorite Button Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["button"]}
-              />
-            </FormGroup>
-          )}
-        </form.Field>
-      </SubForm>
-
       <SubForm
         title="Custom Buttons (optional)"
         error={getSubformError("custom_buttons")}
