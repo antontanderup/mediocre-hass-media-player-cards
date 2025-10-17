@@ -17,7 +17,7 @@ export type OverlayPopoverProps = {
     ref,
   }: Pick<
     ButtonHTMLAttributes<HTMLButtonElement>,
-    "onClick" | "onMouseEnter" | "ref" | "onMouseLeave"
+    "onClick" | "onMouseEnter" | "ref"
   >) => JSX.Element;
   side?: "left" | "right" | "top" | "bottom";
   align?: "start" | "center" | "end";
