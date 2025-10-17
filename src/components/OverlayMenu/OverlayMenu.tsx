@@ -49,7 +49,7 @@ const styles = {
   }),
   itemChevron: css({
     marginLeft: "auto",
-  })
+  }),
 };
 
 import {
@@ -86,7 +86,13 @@ export const OverlayMenu = ({
       >
         {item.icon && <Icon icon={item.icon} size="x-small" />}
         <span>{item.label}</span>
-        {hasChildren && <Icon icon={"mdi:chevron-down"} size="x-small" css={styles.itemChevron} />}
+        {hasChildren && (
+          <Icon
+            icon={"mdi:chevron-down"}
+            size="x-small"
+            css={styles.itemChevron}
+          />
+        )}
       </button>
     );
   };
