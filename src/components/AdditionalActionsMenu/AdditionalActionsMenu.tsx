@@ -44,31 +44,32 @@ export const AdditionalActionsMenu = ({
   );
 
   const menuItems: OverlayMenuItem[] = useMemo(() => {
-    if (!ma_entity_id || !isMainEntityMassPlayer) return [];
-    const massPlayers = getAllMassPlayers().filter(
-      player =>
-        player.entity_id !== ma_entity_id &&
-        getIsMassPlayer(player) &&
-        player.state !== "unavailable"
-    );
-
     const items: OverlayMenuItem[] = [];
-    if (ma_favorite_button_entity_id) {
-      items.push({
-        label: "Mark as Favorite",
-        icon: "mdi:heart-plus",
-        onClick: markSongAsFavorite,
-      });
-    }
-    if (massPlayers.length > 0) {
-      items.push({
-        label: "Transfer Queue",
-        icon: "mdi:transfer",
-        children: massPlayers.map(player => ({
-          label: player.attributes.friendly_name || player.entity_id,
-          onClick: () => transferQueue(player.entity_id),
-        })),
-      });
+    if (ma_entity_id && isMainEntityMassPlayer) {
+      const massPlayers = getAllMassPlayers().filter(
+        player =>
+          player.entity_id !== ma_entity_id &&
+          getIsMassPlayer(player) &&
+          player.state !== "unavailable"
+      );
+
+      if (ma_favorite_button_entity_id) {
+        items.push({
+          label: "Mark as Favorite",
+          icon: "mdi:heart-plus",
+          onClick: markSongAsFavorite,
+        });
+      }
+      if (massPlayers.length > 0) {
+        items.push({
+          label: "Transfer Queue",
+          icon: "mdi:transfer",
+          children: massPlayers.map(player => ({
+            label: player.attributes.friendly_name || player.entity_id,
+            onClick: () => transferQueue(player.entity_id),
+          })),
+        });
+      }
     }
 
     if (
