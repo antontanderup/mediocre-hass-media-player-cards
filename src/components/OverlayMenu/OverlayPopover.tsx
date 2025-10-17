@@ -21,7 +21,6 @@ export type OverlayPopoverProps = {
   >) => JSX.Element;
   side?: "left" | "right" | "top" | "bottom";
   align?: "start" | "center" | "end";
-  openOnHover?: boolean;
   children: JSX.Element;
 };
 
@@ -56,7 +55,6 @@ export const OverlayPopover = forwardRef<
       renderTrigger,
       side: sideInput = "bottom",
       align: alignInput = "start",
-      openOnHover,
       children,
     },
     ref
@@ -315,10 +313,6 @@ export const OverlayPopover = forwardRef<
       <Fragment>
         {renderTrigger({
           onClick: handleOnClick,
-          onMouseEnter:
-            openOnHover && !matchMedia("(hover: none)").matches
-              ? handleOpen
-              : undefined,
           ref: triggerRef,
         })}
         {open && (

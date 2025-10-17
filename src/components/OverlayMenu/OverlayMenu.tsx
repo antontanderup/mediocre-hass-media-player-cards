@@ -47,6 +47,9 @@ const styles = {
       cursor: "not-allowed",
     },
   }),
+  itemChevron: css({
+    marginLeft: "auto",
+  }),
 };
 
 import {
@@ -83,7 +86,13 @@ export const OverlayMenu = ({
       >
         {item.icon && <Icon icon={item.icon} size="x-small" />}
         <span>{item.label}</span>
-        {hasChildren && <Icon icon={"mdi:chevron-down"} size="x-small" />}
+        {hasChildren && (
+          <Icon
+            icon={"mdi:chevron-down"}
+            size="x-small"
+            css={styles.itemChevron}
+          />
+        )}
       </button>
     );
   };
@@ -96,7 +105,6 @@ export const OverlayMenu = ({
           <OverlayPopover
             side="right"
             align="start"
-            openOnHover
             renderTrigger={buttonProps =>
               renderMenuItem(item, buttonProps, hasChildren, index)
             }
