@@ -2,6 +2,8 @@
 
 A standard-sized media player card for Home Assistant. Supports grouping speakers (including volume management), custom action buttons, and search (when used with Music Assistant).
 
+<img width="396" height="138" alt="image" src="https://github.com/user-attachments/assets/67f90222-8a6e-43e2-859d-980828a050a2" />
+
 ## Features
 - Group/ungroup speakers
 - Volume management for groups
@@ -9,8 +11,10 @@ A standard-sized media player card for Home Assistant. Supports grouping speaker
 - Music Assistant search integration
 - Visual editor for configuration
 
-## Screenshot
-![Mediocre Media Player Card Screenshot](https://github.com/user-attachments/assets/a4ad8f2c-aafe-424f-9626-ff3353cbd605)
+## Screenshots
+<img width="396" height="462" alt="image" src="https://github.com/user-attachments/assets/20f247d4-9fec-4e9b-8fd3-408e6854cfad" />
+<img width="396" height="350" alt="image" src="https://github.com/user-attachments/assets/d25dd409-c320-433e-a62e-1cd27a340c9f" />
+
 
 ## Configuration
 ```yaml
