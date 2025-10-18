@@ -11,7 +11,11 @@ A full-sized media player card for Home Assistant. Supports grouping speakers, c
 - Multiple display modes: card, in-card, panel
 
 ## Screenshot
-![Mediocre Massive Media Player Card Screenshot](https://github.com/user-attachments/assets/793f9b8f-032b-4309-b8ef-1f38935e448a)
+<img width="396" height="696" alt="image" src="https://github.com/user-attachments/assets/2263c11c-9666-4c97-8419-584e53b72e2a" />
+<img width="396" height="696" alt="image" src="https://github.com/user-attachments/assets/42c88548-e34b-4056-96ec-6a38fd0ca49c" />
+<img width="396" height="696" alt="image" src="https://github.com/user-attachments/assets/584d07ad-9d31-4dc1-9a25-68d7171a93d4" />
+<img width="396" height="696" alt="image" src="https://github.com/user-attachments/assets/a27759ea-e785-4598-96a4-7dc9339ff7e5" />
+
 
 ## Configuration
 ```yaml
