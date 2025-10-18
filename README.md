@@ -48,7 +48,7 @@ resources:
 
 A standard-sized media player card for a single entity. Supports grouping, custom actions, and Music Assistant integration.
 
-<img src="https://github.com/user-attachments/assets/a4ad8f2c-aafe-424f-9626-ff3353cbd605" width="400px" alt="Mediocre Media Player Card Screenshot" />
+<img width="396" height="135" alt="Mediocre Media Player Card Screenshot" src="https://github.com/user-attachments/assets/443cbfb0-7cf9-4941-b909-360693266aab" />
 
 → [Read full documentation](./docs/mediocre-media-player-card.md)
 
@@ -58,6 +58,8 @@ A standard-sized media player card for a single entity. Supports grouping, custo
 
 A full-sized, feature-rich card for a single media player. Includes all features of the standard card, plus multiple display modes.
 
+<img width="396" height="693" alt="Mediocre Massive Media Player Card Screenshot" src="https://github.com/user-attachments/assets/69afbcef-356a-460e-9779-2102f5747695" />
+
 → [Read full documentation](./docs/mediocre-massive-media-player-card.md)
 
 ---
@@ -66,7 +68,7 @@ A full-sized, feature-rich card for a single media player. Includes all features
 
 Control and view multiple media players at once. Great for dashboards with several speakers or grouped devices.
 
-<!-- Add screenshot here when available -->
+<img width="396" height="779" alt="image" src="https://github.com/user-attachments/assets/ee38fc29-8516-404e-bd72-0781bb9696b4" />
 
 → [Read full documentation](./docs/mediocre-multi-media-player-card.md)
 
