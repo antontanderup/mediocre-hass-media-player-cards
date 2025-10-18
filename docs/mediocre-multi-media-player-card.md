@@ -9,8 +9,12 @@ A card for controlling and viewing multiple media players at once. Useful for ma
 - Custom action buttons per player
 - Music Assistant integration (if configured)
 
-## Screenshot
-<!-- Add screenshot here when available -->
+## Screenshots
+<img width="396" height="781" alt="image" src="https://github.com/user-attachments/assets/f0587495-6ae9-463e-b3e5-41f328b25199" />
+<img width="396" height="781" alt="image" src="https://github.com/user-attachments/assets/81c07474-0bf6-4065-bec9-6fb598f2b028" />
+<img width="396" height="781" alt="image" src="https://github.com/user-attachments/assets/02bfd0b0-9e0e-4c29-bf3d-f90e7228dd2e" />
+<img width="396" height="781" alt="image" src="https://github.com/user-attachments/assets/3ff26200-4e37-4d28-bbeb-249e016d84df" />
+
 
 
 ## Configuration
