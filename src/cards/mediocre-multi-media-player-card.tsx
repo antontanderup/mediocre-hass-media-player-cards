@@ -96,7 +96,7 @@ customElements.define(
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: import.meta.env.VITE_MULTI_MEDIA_PLAYER_CARD,
-  name: "Mediocre Multi Media Player Card (alpha)",
+  name: "Mediocre Multi Media Player Card",
   preview: true,
   description: "A media player card with player grouping support.",
   documentationURL:
