@@ -35,15 +35,26 @@ const styles = {
     borderRadius: "4px",
   }),
   thumb: css({
-    width: "6px",
-    height: "64%",
-    backgroundColor: "var(--text-primary-color)",
-    "@media (prefers-color-scheme: light)": {
-      backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
-    },
+    width: "16px",
+    height: "100%",
     cursor: "pointer",
-    borderRadius: "2px",
-    marginLeft: "-8px",
+    background: "var(--primary-color)",
+    position: "relative",
+    borderRadius: "6px",
+    ["&:after"]: {
+      content: '""',
+      position: "absolute",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "var(--text-primary-color)",
+      "@media (prefers-color-scheme: light)": {
+        backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+      },
+      width: "6px",
+      borderRadius: "2px",
+      top: "50%",
+      left: "50%",
+      height: "68%",
+    },
   }),
 };
 
@@ -82,6 +93,7 @@ export const Slider = ({
       css={styles.root}
       value={internalValue}
       onValueChange={handleValueChange}
+      thumbAlignment="edge"
       min={min}
       max={max}
       step={step}
