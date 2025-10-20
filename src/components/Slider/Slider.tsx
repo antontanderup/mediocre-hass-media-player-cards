@@ -40,6 +40,7 @@ const styles = {
     cursor: "pointer",
     background: "var(--primary-color)",
     position: "relative",
+    borderRadius: "6px",
     ["&:after"]: {
       content: '""',
       position: "absolute",
