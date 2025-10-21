@@ -1,4 +1,5 @@
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
+import { IconButton } from "@components/IconButton";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
@@ -13,13 +14,21 @@ export type SliderProps = {
   onChange: (value: number) => void;
 };
 
-export type SliderSize = "xsmall" | "small" | "medium" | "large";
+export type SliderSize =
+  | "xx-small"
+  | "x-small"
+  | "small"
+  | "medium"
+  | "large"
+  | "x-large"
+  | "xx-large";
 
 const styles = {
   root: css({
     width: "100%",
     "--unselected-color": "var(--divider-color)",
     margin: "0",
+    position: "relative",
   }),
   control: css({
     position: "relative",
@@ -74,6 +83,18 @@ const styles = {
       display: "block",
     },
   }),
+  incrementButton: css({
+    position: "absolute",
+    top: "50%",
+    right: "0px",
+    transform: "translateY(-50%)",
+  }),
+  decrementButton: css({
+    position: "absolute",
+    top: "50%",
+    left: "0px",
+    transform: "translateY(-50%)",
+  }),
 };
 
 export const Slider = ({
@@ -96,7 +117,7 @@ export const Slider = ({
       }
       debounceTimeout.current = setTimeout(() => {
         onChange(newVolume);
-      }, 200);
+      }, 500);
     },
     [onChange]
   );
@@ -106,6 +127,8 @@ export const Slider = ({
       setInternalValue(value);
     }
   }, [value]);
+
+  const sliderSizeValue = getSliderSize(sliderSize);
 
   return (
     <BaseSlider.Root
@@ -121,7 +144,7 @@ export const Slider = ({
         <BaseSlider.Track
           css={styles.track}
           style={{
-            "--mmpc-slider-height": getSliderSize(sliderSize),
+            "--mmpc-slider-height": sliderSizeValue + "px",
           }}
         >
           <BaseSlider.Indicator css={styles.indicator} />
@@ -132,19 +155,43 @@ export const Slider = ({
           </BaseSlider.Thumb>
         </BaseSlider.Track>
       </BaseSlider.Control>
+      {(internalValue * 100) / max < 10 ? null : (
+        <IconButton
+          size="x-small"
+          onClick={() => handleValueChange(Math.max(min, internalValue - step))}
+          icon={"mdi:minus"}
+          css={styles.decrementButton}
+          style={{ left: sliderSizeValue / 6 + "px" }}
+        />
+      )}
+      {(internalValue * 100) / max > 90 ? null : (
+        <IconButton
+          size="x-small"
+          onClick={() => handleValueChange(Math.min(max, internalValue + step))}
+          icon={"mdi:plus"}
+          css={styles.incrementButton}
+          style={{ right: sliderSizeValue / 6 + "px" }}
+        />
+      )}
     </BaseSlider.Root>
   );
 };
 
 const getSliderSize = (sliderSize: SliderSize) => {
   switch (sliderSize) {
-    case "xsmall":
-      return "16px";
+    case "xx-small":
+      return 12;
+    case "x-small":
+      return 18;
     case "small":
-      return "22px";
+      return 24;
     case "medium":
-      return "28px";
+      return 32;
     case "large":
-      return "32px";
+      return 48;
+    case "x-large":
+      return 80;
+    case "xx-large":
+      return 120;
   }
 };
