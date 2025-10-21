@@ -1,4 +1,5 @@
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
+import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
@@ -60,13 +61,10 @@ const styles = {
   }),
   value: css({
     position: "absolute",
-    color: "var(--text-primary-color)",
-    "@media (prefers-color-scheme: light)": {
-      color: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
-    },
+    color: theme.colors.card,
     bottom: "calc(100% + 6px)",
     right: "-50%",
-    backgroundColor: "var(--primary-color)",
+    backgroundColor: theme.colors.onCard,
     padding: "0px 6px",
     borderRadius: "4px",
     fontSize: 12,
