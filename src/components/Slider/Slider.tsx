@@ -67,7 +67,7 @@ const styles = {
     zIndex: 1,
     backgroundColor: "var(--primary-color)",
     padding: "0px 6px",
-    borderRadius: "2px",
+    borderRadius: "4px",
     fontSize: 12,
     display: "none",
     "[data-dragging] &": {
