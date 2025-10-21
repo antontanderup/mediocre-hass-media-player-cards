@@ -36,11 +36,13 @@ const styles = {
   }),
   thumb: css({
     width: "16px",
-    height: "100%",
+    height: "var(--mmpc-slider-height)",
     cursor: "pointer",
     background: "var(--primary-color)",
     position: "relative",
     borderRadius: "6px",
+    top: "0px !important",
+    translate: "-50% 0% !important",
     ["&:after"]: {
       content: '""',
       position: "absolute",
@@ -64,7 +66,6 @@ const styles = {
     },
     bottom: "calc(100% + 6px)",
     right: "-50%",
-    zIndex: 1,
     backgroundColor: "var(--primary-color)",
     padding: "0px 6px",
     borderRadius: "4px",
