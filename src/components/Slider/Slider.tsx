@@ -8,6 +8,7 @@ export type SliderProps = {
   step: number;
   value: number;
   sliderSize?: SliderSize;
+  getThumbLabel?: (value: number) => string;
   onChange: (value: number) => void;
 };
 
@@ -27,7 +28,6 @@ const styles = {
     background: "var(--unselected-color)",
     height: "var(--mmpc-slider-height)",
     borderRadius: "6px",
-    overflow: "hidden",
   }),
   indicator: css({
     background: "var(--primary-color)",
@@ -56,6 +56,24 @@ const styles = {
       height: "68%",
     },
   }),
+  value: css({
+    position: "absolute",
+    color: "var(--text-primary-color)",
+    "@media (prefers-color-scheme: light)": {
+      color: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    },
+    bottom: "calc(100% + 6px)",
+    right: "-50%",
+    zIndex: 1,
+    backgroundColor: "var(--primary-color)",
+    padding: "0px 6px",
+    borderRadius: "2px",
+    fontSize: 12,
+    display: "none",
+    "[data-dragging] &": {
+      display: "block",
+    },
+  }),
 };
 
 export const Slider = ({
@@ -64,6 +82,7 @@ export const Slider = ({
   step,
   value,
   sliderSize = "medium",
+  getThumbLabel,
   onChange,
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
@@ -106,7 +125,11 @@ export const Slider = ({
           }}
         >
           <BaseSlider.Indicator css={styles.indicator} />
-          <BaseSlider.Thumb css={styles.thumb} />
+          <BaseSlider.Thumb css={styles.thumb}>
+            {getThumbLabel ? (
+              <div css={styles.value}>{getThumbLabel(internalValue)}</div>
+            ) : null}
+          </BaseSlider.Thumb>
         </BaseSlider.Track>
       </BaseSlider.Control>
     </BaseSlider.Root>
