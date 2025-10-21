@@ -74,6 +74,7 @@ export const VolumeController = () => {
         step={0.01}
         value={volume}
         sliderSize={"large"}
+        getThumbLabel={value => `${Math.round(value * 100)}%`}
         onChange={handleVolumeChange}
       />
     </div>

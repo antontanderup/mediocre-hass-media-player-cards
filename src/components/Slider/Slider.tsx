@@ -1,4 +1,5 @@
 import { Slider as BaseSlider } from "@base-ui-components/react/slider";
+import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
@@ -8,6 +9,7 @@ export type SliderProps = {
   step: number;
   value: number;
   sliderSize?: SliderSize;
+  getThumbLabel?: (value: number) => string;
   onChange: (value: number) => void;
 };
 
@@ -27,7 +29,6 @@ const styles = {
     background: "var(--unselected-color)",
     height: "var(--mmpc-slider-height)",
     borderRadius: "6px",
-    overflow: "hidden",
   }),
   indicator: css({
     background: "var(--primary-color)",
@@ -36,11 +37,13 @@ const styles = {
   }),
   thumb: css({
     width: "16px",
-    height: "100%",
+    height: "var(--mmpc-slider-height)",
     cursor: "pointer",
     background: "var(--primary-color)",
     position: "relative",
     borderRadius: "6px",
+    top: "0px !important",
+    translate: "-50% 0% !important",
     ["&:after"]: {
       content: '""',
       position: "absolute",
@@ -49,11 +52,26 @@ const styles = {
       "@media (prefers-color-scheme: light)": {
         backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
       },
+      boxShadow: "0px 0px 14px 2px var(--divider-color)",
       width: "6px",
       borderRadius: "2px",
       top: "50%",
       left: "50%",
       height: "68%",
+    },
+  }),
+  value: css({
+    position: "absolute",
+    color: theme.colors.card,
+    bottom: "calc(100% + 6px)",
+    right: "-50%",
+    backgroundColor: theme.colors.onCard,
+    padding: "0px 6px",
+    borderRadius: "4px",
+    fontSize: 12,
+    display: "none",
+    "[data-dragging] &": {
+      display: "block",
     },
   }),
 };
@@ -64,6 +82,7 @@ export const Slider = ({
   step,
   value,
   sliderSize = "medium",
+  getThumbLabel,
   onChange,
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
@@ -106,7 +125,11 @@ export const Slider = ({
           }}
         >
           <BaseSlider.Indicator css={styles.indicator} />
-          <BaseSlider.Thumb css={styles.thumb} />
+          <BaseSlider.Thumb css={styles.thumb}>
+            {getThumbLabel ? (
+              <div css={styles.value}>{getThumbLabel(internalValue)}</div>
+            ) : null}
+          </BaseSlider.Thumb>
         </BaseSlider.Track>
       </BaseSlider.Control>
     </BaseSlider.Root>

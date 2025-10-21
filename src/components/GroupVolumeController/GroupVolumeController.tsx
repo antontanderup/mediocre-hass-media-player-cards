@@ -210,6 +210,7 @@ export const GroupVolumeController = ({
               step={0.01}
               value={volume}
               sliderSize="small"
+              getThumbLabel={value => `${Math.round(value * 100)}%`}
               onChange={value =>
                 handleVolumeChange(entity_id, value, isMainSpeaker)
               }
