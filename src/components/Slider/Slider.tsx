@@ -52,6 +52,7 @@ const styles = {
       "@media (prefers-color-scheme: light)": {
         backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
       },
+      boxShadow: "0px 0px 14px 2px var(--divider-color)",
       width: "6px",
       borderRadius: "2px",
       top: "50%",
