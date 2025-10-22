@@ -3,6 +3,7 @@ import { IconButton } from "@components/IconButton";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { Fragment } from "preact/jsx-runtime";
 
 export type SliderProps = {
   min: number;
@@ -10,6 +11,8 @@ export type SliderProps = {
   step: number;
   value: number;
   sliderSize?: SliderSize;
+  showStepButtons?: boolean;
+  onStepButtonClick?: (stepDirection: "increment" | "decrement") => void;
   getThumbLabel?: (value: number) => string;
   onChange: (value: number) => void;
 };
@@ -58,10 +61,11 @@ const styles = {
       position: "absolute",
       transform: "translate(-50%, -50%)",
       backgroundColor: "var(--text-primary-color)",
+      boxShadow: "0px 0px 20px 0px var(--divider-color)",
       "@media (prefers-color-scheme: light)": {
         backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+        boxShadow: "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
       },
-      boxShadow: "0px 0px 14px 2px var(--divider-color)",
       width: "6px",
       borderRadius: "2px",
       top: "50%",
@@ -83,6 +87,17 @@ const styles = {
       display: "block",
     },
   }),
+  stepButton: css({
+    opacity: 0.8,
+    "@media (hover: hover)": {
+      "&:hover": {
+        backgroundColor: 'unset'
+      },
+      "&:active": {
+        backgroundColor: 'unset',
+      },
+    },
+  }),
   incrementButton: css({
     position: "absolute",
     top: "50%",
@@ -94,6 +109,10 @@ const styles = {
     top: "50%",
     left: "0px",
     transform: "translateY(-50%)",
+    '--icon-primary-color': "var(--text-primary-color)",
+    "@media (prefers-color-scheme: light)": {
+      '--icon-primary-color': "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    },
   }),
 };
 
@@ -103,6 +122,8 @@ export const Slider = ({
   step,
   value,
   sliderSize = "medium",
+  showStepButtons = false,
+  onStepButtonClick,
   getThumbLabel,
   onChange,
 }: SliderProps) => {
@@ -117,7 +138,7 @@ export const Slider = ({
       }
       debounceTimeout.current = setTimeout(() => {
         onChange(newVolume);
-      }, 500);
+      }, 250);
     },
     [onChange]
   );
@@ -155,23 +176,39 @@ export const Slider = ({
           </BaseSlider.Thumb>
         </BaseSlider.Track>
       </BaseSlider.Control>
-      {(internalValue * 100) / max < 10 ? null : (
-        <IconButton
-          size="x-small"
-          onClick={() => handleValueChange(Math.max(min, internalValue - step))}
-          icon={"mdi:minus"}
-          css={styles.decrementButton}
-          style={{ left: sliderSizeValue / 6 + "px" }}
-        />
-      )}
-      {(internalValue * 100) / max > 90 ? null : (
-        <IconButton
-          size="x-small"
-          onClick={() => handleValueChange(Math.min(max, internalValue + step))}
-          icon={"mdi:plus"}
-          css={styles.incrementButton}
-          style={{ right: sliderSizeValue / 6 + "px" }}
-        />
+      {showStepButtons && (
+        <Fragment>
+          {(internalValue * 100) / max < 10 ? null : (
+            <IconButton
+              size="x-small"
+              onClick={() => {
+                if (onStepButtonClick) {
+                  onStepButtonClick("decrement");
+                } else {
+                  handleValueChange(Math.max(min, internalValue - step))
+                }
+              }}
+              icon={"mdi:minus"}
+              css={[styles.decrementButton, styles.stepButton]}
+              style={{ left: sliderSizeValue / 10 + "px" }}
+            />
+          )}
+          {(internalValue * 100) / max > 90 ? null : (
+            <IconButton
+              size="x-small"
+              onClick={() => {
+                if (onStepButtonClick) {
+                  onStepButtonClick("increment");
+                } else {
+                  handleValueChange(Math.min(max, internalValue + step))
+                }
+              }}
+              icon={"mdi:plus"}
+              css={[styles.incrementButton, styles.stepButton]}
+              style={{ right: sliderSizeValue / 10 + "px" }}
+            />
+          )}
+        </Fragment>
       )}
     </BaseSlider.Root>
   );
