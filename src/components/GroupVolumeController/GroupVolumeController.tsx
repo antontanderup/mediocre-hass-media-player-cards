@@ -55,16 +55,19 @@ export type GroupVolumeControllerProps = {
   config: Pick<
     CommonMediocreMediaPlayerCardConfig,
     "speaker_group" | "entity_id"
-  >;
+  > & Partial<CommonMediocreMediaPlayerCardConfig>
   syncMainSpeaker: boolean; // Wheter the main speaker will affect the volume of the group
   className?: string;
 };
 
 export const GroupVolumeController = ({
-  config: { speaker_group, entity_id },
+  config,
   syncMainSpeaker,
   className,
 }: GroupVolumeControllerProps) => {
+
+  const { speaker_group, entity_id, options } = config;
+
   const hass = useHass();
 
   const [playersLoading, setPlayersLoading] = useState<string[]>([]);
@@ -163,6 +166,13 @@ export const GroupVolumeController = ({
     [syncMainSpeaker]
   );
 
+  const handleVolumeStepChange = useCallback((stepDirection: "increment" | "decrement", entityId: string) => {
+    const serviceName = stepDirection === "increment" ? "volume_up" : "volume_down";
+    getHass().callService("media_player", serviceName, {
+      entity_id: entityId,
+    });
+  }, []);
+
   const handleToggleOn = useCallback((entityId: string) => {
     getHass().callService("media_player", "turn_on", { entity_id: entityId });
   }, []);
@@ -210,6 +220,8 @@ export const GroupVolumeController = ({
               step={0.01}
               value={volume}
               sliderSize="small"
+              showStepButtons={options?.show_volume_step_buttons ?? false}
+              onStepButtonClick={options?.use_volume_up_down_for_step_buttons ? (direction) => handleVolumeStepChange(direction, entity_id) : undefined}
               getThumbLabel={value => `${Math.round(value * 100)}%`}
               onChange={value =>
                 handleVolumeChange(entity_id, value, isMainSpeaker)
