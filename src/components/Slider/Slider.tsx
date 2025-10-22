@@ -64,7 +64,8 @@ const styles = {
       boxShadow: "0px 0px 20px 0px var(--divider-color)",
       "@media (prefers-color-scheme: light)": {
         backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
-        boxShadow: "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
+        boxShadow:
+          "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
       },
       width: "6px",
       borderRadius: "2px",
@@ -91,10 +92,10 @@ const styles = {
     opacity: 0.8,
     "@media (hover: hover)": {
       "&:hover": {
-        backgroundColor: 'unset'
+        backgroundColor: "unset",
       },
       "&:active": {
-        backgroundColor: 'unset',
+        backgroundColor: "unset",
       },
     },
   }),
@@ -109,9 +110,10 @@ const styles = {
     top: "50%",
     left: "0px",
     transform: "translateY(-50%)",
-    '--icon-primary-color': "var(--text-primary-color)",
+    "--icon-primary-color": "var(--text-primary-color)",
     "@media (prefers-color-scheme: light)": {
-      '--icon-primary-color': "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+      "--icon-primary-color":
+        "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
     },
   }),
 };
@@ -185,7 +187,7 @@ export const Slider = ({
                 if (onStepButtonClick) {
                   onStepButtonClick("decrement");
                 } else {
-                  handleValueChange(Math.max(min, internalValue - step))
+                  handleValueChange(Math.max(min, internalValue - step));
                 }
               }}
               icon={"mdi:minus"}
@@ -200,7 +202,7 @@ export const Slider = ({
                 if (onStepButtonClick) {
                   onStepButtonClick("increment");
                 } else {
-                  handleValueChange(Math.min(max, internalValue + step))
+                  handleValueChange(Math.min(max, internalValue + step));
                 }
               }}
               icon={"mdi:plus"}

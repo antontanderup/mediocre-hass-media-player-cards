@@ -255,7 +255,6 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                 speaker_group: {
                   entities: groupableEntities,
                   entity_id: mainEntityId,
-
                 },
                 options: {
                   show_volume_step_buttons:
@@ -263,7 +262,7 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                   use_volume_up_down_for_step_buttons:
                     config.options?.use_volume_up_down_for_step_buttons ??
                     false,
-                }
+                },
               }}
               syncMainSpeaker={syncMainSpeakerVolume}
               css={styles.horizontalPadding}

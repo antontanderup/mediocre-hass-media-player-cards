@@ -111,7 +111,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
 
 const getButtonSize = (size: ButtonSize) => {
   switch (size) {
-    case "xxx-small": 
+    case "xxx-small":
       return 8;
     case "xx-small":
       return 12;
