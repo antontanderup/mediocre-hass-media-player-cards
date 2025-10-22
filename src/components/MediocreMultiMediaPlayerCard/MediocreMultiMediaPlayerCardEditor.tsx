@@ -57,15 +57,15 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     defaultValues: config
       ? config
       : {
-          type: "custom:mediocre-multi-media-player-card",
-          entity_id: "",
-          mode: "card",
-          use_art_colors: true,
-          media_players: [],
-          speaker_group: {
-            entities: [],
-          },
+        type: "custom:mediocre-multi-media-player-card",
+        entity_id: "",
+        mode: "card",
+        use_art_colors: true,
+        media_players: [],
+        speaker_group: {
+          entities: [],
         },
+      },
     validators: {
       onChange: MediocreMultiMediaPlayerCardConfigSchema,
     },
@@ -262,7 +262,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                                 onChange={e =>
                                   subField.handleChange(
                                     (e.target as HTMLInputElement)?.checked ??
-                                      false
+                                    false
                                   )
                                 }
                               />
@@ -651,6 +651,42 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
             </div>
           )}
         </form.Field>
+        <form.Field name={"options.show_volume_step_buttons"}>
+          {field => (
+            <div>
+              <Toggle
+                id="options.show_volume_step_buttons"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="options.show_volume_step_buttons">
+                Show volume step buttons + - on volume sliders
+              </ToggleLabel>
+            </div>
+          )}
+        </form.Field>
+        <form.Field name={"options.use_volume_up_down_for_step_buttons"}>
+          {field => (
+            <div>
+              <Toggle
+                id="options.use_volume_up_down_for_step_buttons"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="options.use_volume_up_down_for_step_buttons">
+                Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)
+              </ToggleLabel>
+            </div>
+          )}
+        </form.Field>
       </SubForm>
     </form>
   );
@@ -663,9 +699,9 @@ const getFieldError = (field: {
 }) =>
   !field.state.meta.isValid
     ? field.state.meta.errors
-        .map(error =>
-          typeof error === "string" ? error : error?.message || String(error)
-        )
-        .filter(Boolean)
-        .join(", ")
+      .map(error =>
+        typeof error === "string" ? error : error?.message || String(error)
+      )
+      .filter(Boolean)
+      .join(", ")
     : undefined;
