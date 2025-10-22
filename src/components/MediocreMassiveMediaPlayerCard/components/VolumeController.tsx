@@ -47,6 +47,17 @@ export const VolumeController = () => {
     [entity_id, speaker_group]
   );
 
+  const handleVolumeStepChange = useCallback(
+    (stepDirection: "increment" | "decrement") => {
+      const serviceName =
+        stepDirection === "increment" ? "volume_up" : "volume_down";
+      getHass().callService("media_player", serviceName, {
+        entity_id: entity_id,
+      });
+    },
+    [entity_id]
+  );
+
   // Handle mute toggle
   const handleToggleMute = useCallback(() => {
     getHass().callService("media_player", "volume_mute", {
@@ -74,6 +85,12 @@ export const VolumeController = () => {
         step={0.01}
         value={volume}
         sliderSize={"medium"}
+        showStepButtons={config.options?.show_volume_step_buttons ?? false}
+        onStepButtonClick={
+          config.options?.use_volume_up_down_for_step_buttons
+            ? handleVolumeStepChange
+            : undefined
+        }
         getThumbLabel={value => `${Math.round(value * 100)}%`}
         onChange={handleVolumeChange}
       />
