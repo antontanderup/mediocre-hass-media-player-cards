@@ -3,6 +3,8 @@ import { interactionConfigSchema } from "./actionTypes";
 
 const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
+  "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
+  "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
 });
 
 const searchMediaTypeSchema = type({
@@ -91,6 +93,8 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   media_players: MediocreMultiMediaPlayer.array(),
   "options?": {
     "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
+    "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
+    "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   },
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
