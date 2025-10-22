@@ -34,6 +34,10 @@ export const getDefaultValuesFromConfig = (
       config?.options?.always_show_custom_buttons ?? false,
     hide_when_off: config?.options?.hide_when_off ?? false,
     hide_when_group_child: config?.options?.hide_when_group_child ?? false,
+    show_volume_step_buttons:
+      config?.options?.show_volume_step_buttons ?? false,
+    use_volume_up_down_for_step_buttons:
+      config?.options?.use_volume_up_down_for_step_buttons ?? false,
   },
   grid_options: config?.grid_options,
   visibility: config?.visibility,
@@ -66,6 +70,10 @@ export const getDefaultValuesFromMassiveConfig = (
   options: {
     always_show_power_button:
       config?.options?.always_show_power_button ?? false,
+    show_volume_step_buttons:
+      config?.options?.show_volume_step_buttons ?? false,
+    use_volume_up_down_for_step_buttons:
+      config?.options?.use_volume_up_down_for_step_buttons ?? false,
   },
   grid_options: config?.grid_options,
   visibility: config?.visibility,
@@ -136,6 +144,14 @@ export const getSimpleConfigFromFormValues = (
   if (config.options?.hide_when_group_child === false) {
     delete config.options.hide_when_group_child;
   }
+
+  if (config.options?.show_volume_step_buttons === false) {
+    delete config.options.show_volume_step_buttons;
+  }
+  if (config.options?.use_volume_up_down_for_step_buttons === false) {
+    delete config.options.use_volume_up_down_for_step_buttons;
+  }
+
   if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
   }
@@ -202,7 +218,14 @@ export const getSimpleConfigFromMassiveFormValues = (
   if (config.options?.always_show_power_button === false) {
     delete config.options.always_show_power_button;
   }
-  if (!config.options?.always_show_power_button) {
+  if (config.options?.show_volume_step_buttons === false) {
+    delete config.options.show_volume_step_buttons;
+  }
+  if (config.options?.use_volume_up_down_for_step_buttons === false) {
+    delete config.options.use_volume_up_down_for_step_buttons;
+  }
+
+  if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
   }
 

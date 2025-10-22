@@ -1,15 +1,6 @@
 import { Icon, IconProps } from "@components";
 import { css, keyframes } from "@emotion/react";
 
-export type SpinnerSize =
-  | "xx-small"
-  | "x-small"
-  | "small"
-  | "medium"
-  | "large"
-  | "x-large"
-  | "xx-large";
-
 export type SpinnerProps = Omit<IconProps, "icon">;
 
 const spinAnimation = keyframes`

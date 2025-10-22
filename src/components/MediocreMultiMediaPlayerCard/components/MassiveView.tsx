@@ -68,7 +68,7 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
   ({ mediaPlayer, height }: MassiveViewViewProps) => {
     const hass = useHass();
 
-    const { rootElement } =
+    const { rootElement, config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
       );
@@ -95,6 +95,17 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
           volume,
           true
         );
+      },
+      [mediaPlayer]
+    );
+
+    const handleVolumeStepChange = useCallback(
+      (stepDirection: "increment" | "decrement") => {
+        const serviceName =
+          stepDirection === "increment" ? "volume_up" : "volume_down";
+        getHass().callService("media_player", serviceName, {
+          entity_id: mediaPlayer.entity_id,
+        });
       },
       [mediaPlayer]
     );
@@ -166,7 +177,13 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
             max={1}
             step={0.01}
             value={volume}
-            sliderSize={"large"}
+            sliderSize={"medium"}
+            showStepButtons={config.options?.show_volume_step_buttons ?? false}
+            onStepButtonClick={
+              config.options?.use_volume_up_down_for_step_buttons
+                ? handleVolumeStepChange
+                : undefined
+            }
             getThumbLabel={value => `${Math.round(value * 100)}%`}
             onChange={handleVolumeChange}
           />

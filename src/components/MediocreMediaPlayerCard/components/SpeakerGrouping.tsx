@@ -91,10 +91,7 @@ export const SpeakerGrouping = () => {
           </div>
           <div css={styles.groupedSpeakers}>
             <GroupVolumeController
-              config={{
-                entity_id,
-                speaker_group,
-              }}
+              config={config}
               syncMainSpeaker={syncMainSpeakerVolume}
             />
           </div>

@@ -4,6 +4,7 @@ import { Spinner } from "@components";
 import { theme } from "@constants";
 
 export type ButtonSize =
+  | "xxx-small"
   | "xx-small"
   | "x-small"
   | "small"
@@ -77,6 +78,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       disabled = false,
       loading = false,
       selected = false,
+      style = {},
       className,
       renderLongPressIndicator,
       ...buttonProps
@@ -94,6 +96,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         ]}
         style={{
           "--mmpc-icon-button-size": `${getButtonSize(size)}px`,
+          ...(typeof style === "object" ? style : {}),
         }}
         className={className}
         {...buttonProps}
@@ -108,6 +111,8 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
 
 const getButtonSize = (size: ButtonSize) => {
   switch (size) {
+    case "xxx-small":
+      return 8;
     case "xx-small":
       return 12;
     case "x-small":

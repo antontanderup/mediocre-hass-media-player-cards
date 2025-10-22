@@ -651,6 +651,43 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
             </div>
           )}
         </form.Field>
+        <form.Field name={"options.show_volume_step_buttons"}>
+          {field => (
+            <div>
+              <Toggle
+                id="options.show_volume_step_buttons"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="options.show_volume_step_buttons">
+                Show volume step buttons + - on volume sliders
+              </ToggleLabel>
+            </div>
+          )}
+        </form.Field>
+        <form.Field name={"options.use_volume_up_down_for_step_buttons"}>
+          {field => (
+            <div>
+              <Toggle
+                id="options.use_volume_up_down_for_step_buttons"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="options.use_volume_up_down_for_step_buttons">
+                Use volume_up and volume_down services for step buttons (breaks
+                volume sync when step buttons are used)
+              </ToggleLabel>
+            </div>
+          )}
+        </form.Field>
       </SubForm>
     </form>
   );

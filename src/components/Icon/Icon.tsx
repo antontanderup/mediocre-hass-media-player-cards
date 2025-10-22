@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 
 export type IconSize =
+  | "xxx-small"
   | "xx-small"
   | "x-small"
   | "small"
@@ -50,6 +51,8 @@ export const Icon = ({ icon, size = "medium", className }: IconProps) => {
 
 export const getIconSize = (size: IconSize) => {
   switch (size) {
+    case "xxx-small":
+      return 8;
     case "xx-small":
       return 12;
     case "x-small":
