@@ -41,7 +41,7 @@ export const handleAction = async (
       hass,
       action: actionObject.perform_action,
       target: actionObject.target,
-      data: actionObject.data,
+      data: actionObject.data ?? {},
     });
   }
 
