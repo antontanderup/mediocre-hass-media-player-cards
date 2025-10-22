@@ -10,7 +10,7 @@ export const actionConfigSchema = type({
   action: "'perform-action'",
   perform_action: "string",
   target: "object",
-  data: "object",
+  "data?": "object",
 })
   .or({
     action: "'assist'",
