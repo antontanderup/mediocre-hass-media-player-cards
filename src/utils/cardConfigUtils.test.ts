@@ -85,6 +85,8 @@ describe("cardConfigUtils", () => {
         always_show_custom_buttons: false,
         hide_when_off: false,
         hide_when_group_child: false,
+        show_volume_step_buttons: false,
+        use_volume_up_down_for_step_buttons: false,
       });
       expect(result.grid_options).toBeUndefined();
     });
@@ -116,6 +118,8 @@ describe("cardConfigUtils", () => {
           always_show_custom_buttons: true,
           hide_when_group_child: true,
           hide_when_off: true,
+          show_volume_step_buttons: true,
+          use_volume_up_down_for_step_buttons: true,
         },
         grid_options: { columns: "full" },
       };
@@ -204,6 +208,8 @@ describe("cardConfigUtils", () => {
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({
         always_show_power_button: false,
+        show_volume_step_buttons: false,
+        use_volume_up_down_for_step_buttons: false,
       });
       expect(result.grid_options).toBeUndefined();
     });

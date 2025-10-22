@@ -2,7 +2,6 @@ import {
   MediocreMediaPlayerCardConfig,
   MediocreMassiveMediaPlayerCardConfig,
 } from "@types";
-import { isIfStatement } from "typescript";
 
 /**
  * Creates default values from a regular media player card config
