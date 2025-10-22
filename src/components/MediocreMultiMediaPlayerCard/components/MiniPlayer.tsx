@@ -50,11 +50,18 @@ export const MiniPlayer = memo<MiniPlayerProps>(({ mediaPlayer }) => {
       speaker_group:
         speakerGroupEntities.length > 0
           ? {
-              entity_id:
-                mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
-              entities: speakerGroupEntities,
-            }
+            entity_id:
+              mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
+            entities: speakerGroupEntities,
+          }
           : undefined,
+      options: {
+        show_volume_step_buttons:
+          config.options?.show_volume_step_buttons ?? false,
+        use_volume_up_down_for_step_buttons:
+          config.options?.use_volume_up_down_for_step_buttons ??
+          false,
+      },
       ...rest,
     };
   }, [mediaPlayer]);
