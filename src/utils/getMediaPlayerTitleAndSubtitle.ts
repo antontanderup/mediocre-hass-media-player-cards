@@ -25,15 +25,16 @@ export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): {
       media_season: season,
       media_episode: episode,
       source,
-      friendly_name: friendlyName,
     } = {},
     state,
     entity_id: entityId,
   } = player as MediaPlayerEntity & { entity_id: string };
 
+  const prettyState = state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
+
   if (state === "off") {
     return {
-      title: friendlyName ?? entityId,
+      title: prettyState,
       subtitle: undefined,
     };
   }
@@ -54,7 +55,7 @@ export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): {
     ) {
       title = source;
     } else {
-      title = friendlyName ?? entityId;
+      title = prettyState;
     }
   }
 
