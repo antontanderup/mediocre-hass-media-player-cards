@@ -151,7 +151,7 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
         <div css={styles.massiveHeader}>
           <Icon size={"small"} icon={mdiIcon} />
           <span css={styles.title}>
-            {friendlyName}
+            {mediaPlayer.name ?? friendlyName}
             {groupMembers?.length > 1 && (
               <span> +{groupMembers.length - 1}</span>
             )}
