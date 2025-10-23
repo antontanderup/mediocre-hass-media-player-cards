@@ -83,7 +83,13 @@ export const GroupVolumeController = ({
     const speakerEntities = [...(speaker_group?.entities || [])];
 
     // Add main entity if it exists and isn't already in the list
-    if (mainEntity && !speakerEntities.includes(mainEntityId)) {
+    if (
+      mainEntity &&
+      !speakerEntities.find(
+        entity =>
+          (typeof entity === "string" ? entity : entity.entity) === mainEntityId
+      )
+    ) {
       speakerEntities.push(mainEntityId);
     }
 

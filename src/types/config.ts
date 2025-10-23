@@ -22,6 +22,7 @@ export const mediaPlayerConfigEntityArray = mediaPlayerConfigEntity.array();
 
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
+  "name?": "string | null",
   entity_id: "string",
   "use_art_colors?": "boolean",
   "action?": interactionConfigSchema,

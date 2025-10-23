@@ -234,6 +234,25 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                             />
                           )}
                         </form.Field>
+                        <form.Field name={`media_players[${index}].name`}>
+                          {subField => (
+                            <InputGroup>
+                              <TextInput
+                                value={subField.state.value ?? ""}
+                                onChange={value => {
+                                  if (value === "") {
+                                    subField.handleChange(null);
+                                  } else {
+                                    subField.handleChange(value ?? null);
+                                  }
+                                }}
+                                hass={hass}
+                                label={"Name (optional)"}
+                                error={getFieldError(subField)}
+                              />
+                            </InputGroup>
+                          )}
+                        </form.Field>
                         <form.Field
                           name={`media_players[${index}].speaker_group_entity_id`}
                         >

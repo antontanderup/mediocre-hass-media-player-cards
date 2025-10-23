@@ -40,7 +40,7 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
         attributes: { friendly_name: "My Player" },
       })
     ).toEqual({
-      title: "My Player",
+      title: "Off",
       subtitle: undefined,
     });
   });
@@ -76,7 +76,7 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
         attributes: { friendly_name: "My Player" },
       })
     ).toEqual({
-      title: "My Player",
+      title: "Playing",
       subtitle: undefined,
     });
   });

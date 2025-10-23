@@ -28,20 +28,16 @@ export const PlayerInfo = () => {
   const { entity_id, speaker_group } = config;
   const {
     attributes: { friendly_name: playerName, icon, device_class: deviceClass },
-    state,
   } = usePlayer();
   const groupMembers =
     hass.states[speaker_group?.entity_id ?? entity_id]?.attributes
       ?.group_members;
   const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
-  if (state === "off") {
-    return null;
-  }
   return (
     <div css={styles.root}>
       <Icon icon={mdiIcon} size={"xx-small"} />
-      <span css={styles.friendlyName}>{playerName}</span>
+      <span css={styles.friendlyName}>{config.name ?? playerName}</span>
       {groupMembers && groupMembers.length > 1 && (
         <span css={styles.friendlyName}>+{groupMembers.length - 1}</span>
       )}

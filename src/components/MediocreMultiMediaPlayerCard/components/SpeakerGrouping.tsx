@@ -122,6 +122,7 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
               : groupArray[0] !== groupPlayerState.entity_id;
           return {
             ...playerState,
+            name: player.name ?? playerState?.attributes?.friendly_name,
             groupPlayerState,
             isChildInGroup,
             numPlayersInGroup: (
@@ -174,7 +175,7 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                   css={styles.chipPlayerArtwork}
                   onClick={player.selectPlayer}
                 />
-                {`${player.attributes.friendly_name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup - 1}` : ""}`}
+                {`${player.name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup - 1}` : ""}`}
                 {state === "playing" || state === "paused" ? (
                   <IconButton
                     size="x-small"

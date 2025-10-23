@@ -160,8 +160,7 @@ export const MediocreMediaPlayerCard = ({
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-  const artSize =
-    state === "off" || (!subtitle && hasNoPlaybackControls) ? 68 : 100;
+  const artSize = !subtitle ? 78 : 100;
 
   const artAction: InteractionConfig = action ?? {
     tap_action: { action: "more-info" },
