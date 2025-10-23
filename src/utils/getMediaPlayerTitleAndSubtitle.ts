@@ -30,7 +30,8 @@ export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): {
     entity_id: entityId,
   } = player as MediaPlayerEntity & { entity_id: string };
 
-  const prettyState = state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
+  const prettyState =
+    state.charAt(0).toUpperCase() + state.slice(1).toLowerCase();
 
   if (state === "off") {
     return {
