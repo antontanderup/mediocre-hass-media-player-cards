@@ -239,9 +239,13 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                             <InputGroup>
                               <TextInput
                                 value={subField.state.value ?? ""}
-                                onChange={value =>
-                                  subField.handleChange(value ?? "")
-                                }
+                                onChange={value => {
+                                  if (value === "") {
+                                    subField.handleChange(null);
+                                  } else {
+                                    subField.handleChange(value ?? null);
+                                  }
+                                }}
                                 hass={hass}
                                 label={"Name (optional)"}
                                 error={getFieldError(subField)}
