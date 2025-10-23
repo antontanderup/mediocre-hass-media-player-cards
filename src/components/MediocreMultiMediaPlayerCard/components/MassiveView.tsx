@@ -138,6 +138,12 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
       },
     });
 
+    const togglePower = useCallback(() => {
+      getHass().callService("media_player", "toggle", {
+        entity_id,
+      });
+    }, [entity_id]);
+
     const massiveConfig: MediocreMassiveMediaPlayerCardConfig = useMemo(() => {
       return {
         ...mediaPlayer,
@@ -187,6 +193,7 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
             getThumbLabel={value => `${Math.round(value * 100)}%`}
             onChange={handleVolumeChange}
           />
+          <IconButton size="small" onClick={togglePower} icon={"mdi:power"} />
         </div>
       </div>
     );
