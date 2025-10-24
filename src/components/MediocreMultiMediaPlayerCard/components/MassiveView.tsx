@@ -11,7 +11,14 @@ import {
   CardContextType,
 } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMediaPlayerCard";
-import { Icon, IconButton, Slider, useHass, usePlayer } from "@components";
+import {
+  Icon,
+  IconButton,
+  Slider,
+  useHass,
+  usePlayer,
+  VolumeSlider,
+} from "@components";
 import { getDeviceIcon, getHass, getVolumeIcon, setVolume } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
@@ -87,29 +94,6 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
     const volume = volumeLevel ?? 0;
     const volumeMuted = isVolumeMuted ?? false;
 
-    const handleVolumeChange = useCallback(
-      (volume: number) => {
-        // Use setVolume utility, with sync if this is the main speaker
-        setVolume(
-          mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id,
-          volume,
-          true
-        );
-      },
-      [mediaPlayer]
-    );
-
-    const handleVolumeStepChange = useCallback(
-      (stepDirection: "increment" | "decrement") => {
-        const serviceName =
-          stepDirection === "increment" ? "volume_up" : "volume_down";
-        getHass().callService("media_player", serviceName, {
-          entity_id: mediaPlayer.entity_id,
-        });
-      },
-      [mediaPlayer]
-    );
-
     // Handle mute toggle
     const handleToggleMute = useCallback(() => {
       getHass().callService("media_player", "volume_mute", {
@@ -178,20 +162,16 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
             onClick={handleToggleMute}
             icon={VolumeIcon}
           />
-          <Slider
-            min={0}
-            max={1}
-            step={0.01}
-            value={volume}
+          <VolumeSlider
+            entityId={
+              mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id
+            }
+            syncGroupChildren={true}
             sliderSize={"medium"}
             showStepButtons={config.options?.show_volume_step_buttons ?? false}
-            onStepButtonClick={
-              config.options?.use_volume_up_down_for_step_buttons
-                ? handleVolumeStepChange
-                : undefined
+            useVolumeUpDownForSteps={
+              config.options?.use_volume_up_down_for_step_buttons ?? false
             }
-            getThumbLabel={value => `${Math.round(value * 100)}%`}
-            onChange={handleVolumeChange}
           />
           <IconButton size="small" onClick={togglePower} icon={"mdi:power"} />
         </div>

@@ -3,8 +3,8 @@ import type {
   CommonMediocreMediaPlayerCardConfig,
   MediaPlayerConfigEntity,
 } from "@types";
-import { IconButton, Slider, useHass } from "@components";
-import { getHass, getVolumeIcon, setVolume } from "@utils";
+import { IconButton, useHass, VolumeSlider } from "@components";
+import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
 
 const styles = {
@@ -163,26 +163,6 @@ export const GroupVolumeController = ({
     });
   }, []);
 
-  // Handle volume change for a speaker
-  const handleVolumeChange = useCallback(
-    (entityId: string, volume: number, isMainSpeaker: boolean) => {
-      // Use setVolume utility, with sync if this is the main speaker
-      setVolume(entityId, volume, isMainSpeaker && syncMainSpeaker);
-    },
-    [syncMainSpeaker]
-  );
-
-  const handleVolumeStepChange = useCallback(
-    (stepDirection: "increment" | "decrement", entityId: string) => {
-      const serviceName =
-        stepDirection === "increment" ? "volume_up" : "volume_down";
-      getHass().callService("media_player", serviceName, {
-        entity_id: entityId,
-      });
-    },
-    []
-  );
-
   const handleToggleOn = useCallback((entityId: string) => {
     getHass().callService("media_player", "turn_on", { entity_id: entityId });
   }, []);
@@ -224,21 +204,15 @@ export const GroupVolumeController = ({
         )}
         <td css={styles.controlsCell}>
           <div css={styles.controlsContainer}>
-            <Slider
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              sliderSize="small"
-              showStepButtons={options?.show_volume_step_buttons ?? false}
-              onStepButtonClick={
-                options?.use_volume_up_down_for_step_buttons
-                  ? direction => handleVolumeStepChange(direction, entity_id)
-                  : undefined
+            <VolumeSlider
+              entityId={entity_id}
+              syncGroupChildren={isMainSpeaker}
+              sliderSize={"small"}
+              showStepButtons={
+                config.options?.show_volume_step_buttons ?? false
               }
-              getThumbLabel={value => `${Math.round(value * 100)}%`}
-              onChange={value =>
-                handleVolumeChange(entity_id, value, isMainSpeaker)
+              useVolumeUpDownForSteps={
+                config.options?.use_volume_up_down_for_step_buttons ?? false
               }
             />
           </div>

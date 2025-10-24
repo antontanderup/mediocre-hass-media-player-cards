@@ -3,11 +3,11 @@ import {
   CardContext,
   CardContextType,
   IconButton,
-  Slider,
+  VolumeSlider as VolumeSliderComponent,
   usePlayer,
 } from "@components";
 import { Fragment } from "preact/jsx-runtime";
-import { getHass, getVolumeIcon, setVolume } from "@utils";
+import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
 import { MediocreMediaPlayerCardConfig } from "@types";
 
@@ -32,26 +32,6 @@ export const VolumeSlider = () => {
   const volume = player.attributes?.volume_level ?? 0;
   const volumeMuted = player.attributes?.is_volume_muted ?? false;
 
-  // Handle volume change
-  const handleVolumeChange = useCallback(
-    (newVolume: number) => {
-      // Set the volume level
-      setVolume(speaker_group?.entity_id ?? entity_id, newVolume, true);
-    },
-    [entity_id, speaker_group]
-  );
-
-  const handleVolumeStepChange = useCallback(
-    (stepDirection: "increment" | "decrement") => {
-      const serviceName =
-        stepDirection === "increment" ? "volume_up" : "volume_down";
-      getHass().callService("media_player", serviceName, {
-        entity_id: entity_id,
-      });
-    },
-    [entity_id]
-  );
-
   // Handle mute toggle
   const handleToggleMute = useCallback(() => {
     getHass().callService("media_player", "volume_mute", {
@@ -68,20 +48,14 @@ export const VolumeSlider = () => {
   return (
     <div css={styles.root}>
       <IconButton size="x-small" onClick={handleToggleMute} icon={VolumeIcon} />
-      <Slider
-        min={0}
-        max={1}
-        step={0.01}
-        value={volume}
+      <VolumeSliderComponent
+        entityId={speaker_group?.entity_id ?? entity_id}
+        syncGroupChildren={true}
         sliderSize={"small"}
         showStepButtons={config.options?.show_volume_step_buttons ?? false}
-        onStepButtonClick={
-          config.options?.use_volume_up_down_for_step_buttons
-            ? handleVolumeStepChange
-            : undefined
+        useVolumeUpDownForSteps={
+          config.options?.use_volume_up_down_for_step_buttons ?? false
         }
-        getThumbLabel={value => `${Math.round(value * 100)}%`}
-        onChange={handleVolumeChange}
       />
     </div>
   );
