@@ -67,7 +67,6 @@ const styles = {
     flexDirection: "column",
     gap: "12px",
     maxHeight: "400px",
-    overflowY: "auto",
     padding: "var(--mmpc-modal-padding, 16px)",
   }),
 };
