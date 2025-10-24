@@ -491,6 +491,24 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
             </ToggleContainer>
           )}
         </form.Field>
+        <form.Field name={"options.always_show_volume"}>
+          {field => (
+            <ToggleContainer>
+              <Toggle
+                id="options.always_show_volume"
+                checked={field.state.value}
+                onChange={e =>
+                  field.handleChange(
+                    (e.target as HTMLInputElement)?.checked ?? false
+                  )
+                }
+              />
+              <ToggleLabel htmlFor="options.always_show_volume">
+                Always show volume bar
+              </ToggleLabel>
+            </ToggleContainer>
+          )}
+        </form.Field>
         <form.Field name={"options.show_volume_step_buttons"}>
           {field => (
             <ToggleContainer>

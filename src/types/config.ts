@@ -62,6 +62,9 @@ export const MediocreMediaPlayerCardConfigSchema =
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
     mode: "'panel'|'card'|'in-card'|'popup'|'multi'", // don't document popup and multi as they are only for internal use
+    "options?": commonMediocreMediaPlayerCardConfigOptionsSchema.and({
+      "always_show_volume?": "boolean", // Always show the volume bar
+    }),
   });
 
 export const MediocreMultiMediaPlayer = type({

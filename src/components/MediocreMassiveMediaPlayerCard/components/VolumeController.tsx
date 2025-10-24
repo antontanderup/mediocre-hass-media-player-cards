@@ -10,6 +10,10 @@ import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 
+type VolumeControllerProps = {
+  className?: string;
+};
+
 const styles = {
   root: css({
     display: "flex",
@@ -18,13 +22,15 @@ const styles = {
     maxHeight: "36px",
     marginTop: "auto",
     gap: "8px",
+    width: 600,
+    maxWidth: "100%",
   }),
   buttonMuted: css({
     opacity: 0.8,
   }),
 };
 
-export const VolumeController = () => {
+export const VolumeController = ({ className }: VolumeControllerProps) => {
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
@@ -52,7 +58,7 @@ export const VolumeController = () => {
   );
 
   return (
-    <div css={styles.root}>
+    <div css={styles.root} className={className}>
       <IconButton
         css={volumeMuted ? styles.buttonMuted : {}}
         size="small"

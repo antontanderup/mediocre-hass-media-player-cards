@@ -85,7 +85,7 @@ export const PlayerActions = () => {
     ma_entity_id,
     search,
     ma_favorite_button_entity_id,
-    options: { always_show_power_button: alwaysShowPowerButton } = {},
+    options: { always_show_power_button: alwaysShowPowerButton, always_show_volume } = {},
   } = config;
 
   const { state } = usePlayer();
@@ -201,7 +201,7 @@ export const PlayerActions = () => {
       {(!isOn || alwaysShowPowerButton) && (
         <IconButton size="x-small" onClick={togglePower} icon={"mdi:power"} />
       )}
-      <VolumeTrigger onClick={() => toggleSelected("volume")} />
+      {!always_show_volume && <VolumeTrigger onClick={() => toggleSelected("volume")} />}
     </div>
   );
 };

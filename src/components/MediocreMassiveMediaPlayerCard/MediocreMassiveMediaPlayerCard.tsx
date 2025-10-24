@@ -1,4 +1,4 @@
-import { Title, Track } from "./components";
+import { Title, Track, VolumeController } from "./components";
 import { PlaybackControls } from "./components/PlaybackControls";
 import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
@@ -77,10 +77,17 @@ const styles = {
     height: "100%",
     justifyContent: "space-between",
   }),
+  controlsWrapperPersistentVolume: css({
+    maxHeight: 342,
+    minHeight: 322,
+  }),
   controlsWrapperMulti: css({
     maxHeight: 210,
     minHeight: 200,
     justifyContent: "space-evenly",
+  }),
+  volumeController: css({
+    marginTop: "unset",
   }),
 };
 
@@ -93,7 +100,12 @@ export const MediocreMassiveMediaPlayerCard = ({
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode, use_art_colors, action } = config;
+  const {
+    mode,
+    use_art_colors,
+    action,
+    options: { always_show_volume = false } = {},
+  } = config;
 
   const { artVars, haVars } = useArtworkColors();
 
@@ -137,11 +149,15 @@ export const MediocreMassiveMediaPlayerCard = ({
           css={[
             styles.controlsWrapper,
             mode === "multi" && styles.controlsWrapperMulti,
+            always_show_volume && styles.controlsWrapperPersistentVolume,
           ]}
         >
           <Title />
           <Track />
           <PlaybackControls />
+          {always_show_volume && (
+            <VolumeController css={styles.volumeController} />
+          )}
           {mode !== "multi" && <PlayerActions />}
         </div>
       </div>
