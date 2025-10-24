@@ -14,12 +14,11 @@ import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMedia
 import {
   Icon,
   IconButton,
-  Slider,
   useHass,
   usePlayer,
   VolumeSlider,
 } from "@components";
-import { getDeviceIcon, getHass, getVolumeIcon, setVolume } from "@utils";
+import { getDeviceIcon, getHass, getVolumeIcon } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 import { memo } from "preact/compat";

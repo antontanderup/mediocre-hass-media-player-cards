@@ -66,7 +66,7 @@ export const GroupVolumeController = ({
   syncMainSpeaker,
   className,
 }: GroupVolumeControllerProps) => {
-  const { speaker_group, entity_id, options } = config;
+  const { speaker_group, entity_id } = config;
 
   const hass = useHass();
 
@@ -206,7 +206,7 @@ export const GroupVolumeController = ({
           <div css={styles.controlsContainer}>
             <VolumeSlider
               entityId={entity_id}
-              syncGroupChildren={isMainSpeaker}
+              syncGroupChildren={isMainSpeaker && syncMainSpeaker}
               sliderSize={"small"}
               showStepButtons={
                 config.options?.show_volume_step_buttons ?? false
