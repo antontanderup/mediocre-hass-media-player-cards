@@ -25,3 +25,4 @@ export * from "./Slider";
 export * from "./Spinner";
 export * from "./SubForm";
 export * from "./VirtualList";
+export * from "./VolumeSlider";

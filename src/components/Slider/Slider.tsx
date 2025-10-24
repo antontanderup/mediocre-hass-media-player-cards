@@ -86,6 +86,7 @@ const styles = {
     display: "none",
     "[data-dragging] &": {
       display: "block",
+      zIndex: 99,
     },
   }),
   stepButton: css({
