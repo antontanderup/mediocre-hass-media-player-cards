@@ -99,6 +99,8 @@ const styles = {
         backgroundColor: "unset",
       },
     },
+    borderRadius: 0,
+    height: "100%",
   }),
   incrementButton: css({
     position: "absolute",
@@ -193,7 +195,6 @@ export const Slider = ({
               }}
               icon={"mdi:minus"}
               css={[styles.decrementButton, styles.stepButton]}
-              style={{ left: sliderSizeValue / 10 + "px" }}
             />
           )}
           {(internalValue * 100) / max > 90 ? null : (
@@ -208,7 +209,6 @@ export const Slider = ({
               }}
               icon={"mdi:plus"}
               css={[styles.incrementButton, styles.stepButton]}
-              style={{ right: sliderSizeValue / 10 + "px" }}
             />
           )}
         </Fragment>
