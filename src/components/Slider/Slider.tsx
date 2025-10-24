@@ -100,7 +100,7 @@ const styles = {
       },
     },
     borderRadius: 0,
-    height: "100%"
+    height: "100%",
   }),
   incrementButton: css({
     position: "absolute",
