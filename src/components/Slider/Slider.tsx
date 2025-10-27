@@ -190,7 +190,7 @@ export const Slider = ({
                 if (onStepButtonClick) {
                   onStepButtonClick("decrement");
                 } else {
-                  handleValueChange(Math.max(min, internalValue - step));
+                  onChange(Math.max(min, internalValue - step));
                 }
               }}
               icon={"mdi:minus"}
@@ -204,7 +204,7 @@ export const Slider = ({
                 if (onStepButtonClick) {
                   onStepButtonClick("increment");
                 } else {
-                  handleValueChange(Math.min(max, internalValue + step));
+                  onChange(Math.min(max, internalValue + step));
                 }
               }}
               icon={"mdi:plus"}
