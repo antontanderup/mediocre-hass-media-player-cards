@@ -97,8 +97,13 @@ export const PlayerActions = () => {
   const hasSearch = hasMaSearch || search?.enabled;
 
   const [selected, setSelected] = useState<
-    "volume" | "speaker-grouping" | "custom-buttons" | "search" | "media-browser"
-  >();
+    | "volume"
+    | "speaker-grouping"
+    | "custom-buttons"
+    | "search"
+    | "media-browser"
+    | undefined
+  >("media-browser");
 
   const toggleSelected = useCallback(
     (
@@ -133,12 +138,12 @@ export const PlayerActions = () => {
         <SpeakerGrouping />
       </Modal>
       <Modal
-              title="Media Browser"
+        title="Media Browser"
         isOpen={selected === "media-browser"}
         onClose={() => setSelected(undefined)}
         padding="0px"
       >
-        <MediaBrowser entity_id={entity_id} />
+        <MediaBrowser entity_id={ma_entity_id ?? entity_id} />
       </Modal>
       <Modal
         title="Search"

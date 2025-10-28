@@ -1,6 +1,6 @@
-import { Icon } from "@components";
+import { MediaItem, MediaTrack, VirtualList } from "@components";
 import { IconButton } from "@components/IconButton";
-import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 import { getHass } from "@utils";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
@@ -34,111 +34,45 @@ export enum MediaClass {
   App = "app",
 }
 
-const BrowserContainer = styled.div`
-  max-height: 50vh;
-  overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  padding: 10px;
-  padding-top: 16px;
-`;
+const styles = {
+  navigationBar: css({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: "8px 16px",
+    color: "var(--primary-text-color, #fff)",
+    borderBottom: `0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12))`,
+  }),
+  breadCrumbs: css({
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "4px",
+    alignItems: "center",
+    overflowX: "auto",
+    maxWidth: "calc(100% - 40px)",
+    scrollbarWidth: "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  }),
+  breadCrumbItem: css({
+    background: "none",
+    border: "none",
+    color: "var(--primary-text-color, #fff)",
+    cursor: "pointer",
+    padding: "2px 4px",
+    whiteSpace: "nowrap",
+    fontSize: "0.9rem",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  }),
+  breadCrumbSeparator: css({
+    color: "var(--secondary-text-color)",
+  }),
+};
 
-// Breadcrumb navigation components
-const NavigationBar = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 16px;
-  color: var(--primary-text-color, #fff);
-  border-bottom: 0.5px solid var(--divider-color, rgba(0, 0, 0, 0.12));
-`;
-
-const Breadcrumbs = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  align-items: center;
-  overflow-x: auto;
-  max-width: calc(100% - 40px);
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const BreadcrumbItem = styled.button`
-  background: none;
-  border: none;
-  color: var(--primary-text-color, #fff);
-  cursor: pointer;
-  padding: 2px 4px;
-  white-space: nowrap;
-  font-size: 0.9rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const BreadcrumbSeparator = styled.span`
-  color: var(--secondary-text-color);
-`;
-
-const MediaItem = styled.div<{ $isTrack?: boolean }>`
-  position: relative;
-  display: flex;
-  flex-direction: ${props => (props.$isTrack ? "row" : "column")};
-  max-width: 100%;
-  align-items: center;
-  background-color: var(--card-background-color);
-  ${props => props.$isTrack && "grid-column: 1 / -1; padding: 8px;"}
-  ${props => !props.$isTrack && "cursor: pointer;"}
-`;
-
-const MediaItemTitle = styled.span<{ $isTrack?: boolean }>`
-  text-align: ${props => (props.$isTrack ? "left" : "center")};
-  font-size: 0.9rem;
-  margin-top: ${props => (props.$isTrack ? "0" : "4px")};
-  margin-left: ${props => (props.$isTrack ? "12px" : "0")};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-`;
-
-const MediaItemIconWrap = styled.div<{ $isTrack?: boolean }>`
-  position: relative;
-  width: ${props => (props.$isTrack ? "40px" : "100%")};
-  aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  background-color: var(--divider-color, rgba(0, 0, 0, 0.12));
-  overflow: hidden;
-`;
-
-const Thumbnail = styled.img<{ $mediaClass?: MediaItem["media_class"] }>`
-  width: 100%;
-  ${props => props.$mediaClass === "app" && "width: 60%;"}
-`;
-
-const MediaIcon = styled(Icon)`
-  margin-bottom: 4px;
-`;
-
-const ItemButtons = styled.div`
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  left: 8px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 4px;
-`;
-
-export type MediaItem = {
+export type MediaBrowserItem = {
   title: string;
   media_class: MediaClass | string;
   media_content_type: MediaContentType | string;
@@ -150,14 +84,12 @@ export type MediaItem = {
 };
 
 export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
-  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
-  const [history, setHistory] = useState<
-    { media_content_id: string; media_content_type: string; title: string }[]
-  >([]);
+  const [MediaBrowserItems, setMediaBrowserItems] = useState<MediaBrowserItem[]>([]);
+  const [history, setHistory] = useState<MediaBrowserItem[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    const fetchMediaItems = async () => {
+    const fetchMediaBrowserItems = async () => {
       setIsFetching(true);
       try {
         const hass = getHass();
@@ -171,13 +103,13 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
                   history[history.length - 1].media_content_type,
               }
             : {}),
-        })) as { children?: MediaItem[] };
+        })) as { children?: MediaBrowserItem[] };
 
         if (response && response.children) {
-          setMediaItems(response.children);
+          setMediaBrowserItems(response.children);
           console.log("Media items:", response.children);
         } else {
-          setMediaItems([]);
+          setMediaBrowserItems([]);
         }
       } catch (error) {
         console.error("Error fetching media items:", error);
@@ -185,11 +117,11 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
       setIsFetching(false);
     };
 
-    fetchMediaItems();
+    fetchMediaBrowserItems();
   }, [entity_id, history]);
 
   const playItem = useCallback(
-    (item: MediaItem) => {
+    (item: MediaBrowserItem) => {
       try {
         getHass().callService("media_player", "play_media", {
           entity_id,
@@ -212,8 +144,8 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
     [entity_id]
   );
 
-  const onMediaItemClick = useCallback(
-    (item: MediaItem) => {
+  const onMediaBrowserItemClick = useCallback(
+    (item: MediaBrowserItem) => {
       if (isFetching) return;
       if (
         item.can_expand &&
@@ -221,11 +153,7 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
       ) {
         setHistory(prev => [
           ...prev,
-          {
-            media_content_id: item.media_content_id,
-            media_content_type: item.media_content_type,
-            title: item.title,
-          },
+          item,
         ]);
         return;
       }
@@ -248,117 +176,81 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
     [isFetching]
   );
 
-  const renderTrack = (item: MediaItem) => {
+  const renderTrack = (item: MediaBrowserItem) => {
     return (
-      <MediaItem key={item.media_content_id + history.length} $isTrack={true}>
-        {item.can_play && (
-          <IconButton
-            icon="mdi:play"
-            size="x-small"
-            onClick={e => {
-              e.stopPropagation();
-              e.preventDefault();
-              playItem(item);
-            }}
-          />
-        )}
-        <MediaItemTitle $isTrack={true}>{item.title}</MediaItemTitle>
-      </MediaItem>
+      <MediaTrack
+        key={item.media_content_id + history.length}
+        title={item.title}
+        imageUrl={item.thumbnail}
+        onClick={async () => playItem(item)}
+      />
     );
   };
 
-  const renderFolder = (item: MediaItem) => {
+  const renderFolder = (item: MediaBrowserItem) => {
     return (
       <MediaItem
-        onClick={() => onMediaItemClick(item)}
         key={item.media_content_id + history.length}
-        $isTrack={false}
-      >
-        <MediaItemIconWrap $isTrack={false}>
-          {item.thumbnail ? (
-            <Thumbnail
-              src={item.thumbnail}
-              alt={item.title}
-              $mediaClass={item.media_class}
-            />
-          ) : (
-            <MediaIcon size="medium" icon={getItemMdiIcon(item)} />
-          )}
-          <ItemButtons>
-            {item.can_expand === true &&
-              item.media_content_id !==
-                history[history.length - 1]?.media_content_id && (
-                <IconButton
-                  icon="mdi:folder"
-                  size="x-small"
-                  onClick={e => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    onMediaItemClick(item);
-                  }}
-                />
-              )}
-            {item.can_play === true && (
-              <IconButton
-                icon="mdi:play"
-                size="x-small"
-                onClick={e => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  playItem(item);
-                }}
-              />
-            )}
-          </ItemButtons>
-        </MediaItemIconWrap>
-        <MediaItemTitle $isTrack={false}>{item.title}</MediaItemTitle>
-      </MediaItem>
-    );
+        name={item.title}
+        imageUrl={item.thumbnail}
+        onClick={async () => onMediaBrowserItemClick(item)}
+      />);
   };
 
   return (
     <div>
-      {history.length > 0 && (
-        <NavigationBar>
-          <IconButton
-            icon="mdi:arrow-left"
-            size="x-small"
-            onClick={goBack}
-            disabled={history.length === 0}
-          />
-          <Breadcrumbs>
-            <BreadcrumbItem onClick={() => setHistory([])}>Home</BreadcrumbItem>
-            {history.map((item, index) => (
-              <Fragment key={`breadcrumb-${index}-${item.title}`}>
-                <BreadcrumbSeparator>/</BreadcrumbSeparator>
-                <BreadcrumbItem
-                  key={`breadcrumb-${index}`}
-                  onClick={() => goToIndex(index)}
-                >
-                  {item.title}
-                </BreadcrumbItem>
-              </Fragment>
-            ))}
-          </Breadcrumbs>
-        </NavigationBar>
-      )}
-      <BrowserContainer>
-        {isFetching && <div>Loading...</div>}
-        {!isFetching && mediaItems.length === 0 && (
-          <div>No media items available</div>
-        )}
-        {mediaItems.map(item => {
+      <VirtualList
+        key={history[history.length - 1]?.media_content_id || "root"}
+        renderItem={item => {
           const isTrack =
-            item.media_content_type === MediaContentType.Track &&
+            (item.media_content_type === MediaContentType.Track || item.media_class === MediaClass.Track) &&
             history.length > 0;
-          return isTrack ? renderTrack(item) : renderFolder(item);
-        })}
-      </BrowserContainer>
+            console.log("Rendering item:", item, "isTrack:", isTrack);
+          if (isTrack) {
+            return renderTrack(item);
+          } else {
+            return renderFolder(item);
+          }
+        }}
+        renderEmpty={() => {
+          if (isFetching) return <div>Loading...</div>;
+          if (!isFetching && MediaBrowserItems.length === 0) {
+            return <div>No media items available</div>;
+          }
+          return null;
+        }}
+        data={MediaBrowserItems}
+        renderHeader={() =>
+          history.length > 0 ? (
+            <div css={styles.navigationBar}>
+              <IconButton
+                icon="mdi:arrow-left"
+                size="x-small"
+                onClick={goBack}
+                disabled={history.length === 0}
+              />
+              <div css={styles.breadCrumbs}>
+                <button css={styles.breadCrumbItem} onClick={() => setHistory([])}>
+                  Home
+                </button>
+                {history.map((item, index) => (
+                  <Fragment key={`breadcrumb-${index}-${item.title}`}>
+                    <span css={styles.breadCrumbSeparator}>/</span>
+                    <button css={styles.breadCrumbItem} onClick={() => goToIndex(index)}>
+                      {item.title}
+                    </button>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          ) : null
+        }
+      />
     </div>
   );
 };
 
-const getItemMdiIcon = (item: MediaItem) => {
+const getItemMdiIcon = (item: MediaBrowserItem) => {
   if (item.thumbnail) return null;
 
   switch (item.media_class) {
