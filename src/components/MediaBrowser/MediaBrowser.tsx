@@ -1,4 +1,4 @@
-import { MediaGrid, MediaItem, MediaTrack, searchStyles, VirtualList } from "@components";
+import { MediaGrid, MediaItem, MediaTrack, searchStyles, Spinner, VirtualList } from "@components";
 import { IconButton } from "@components/IconButton";
 import { css } from "@emotion/react";
 import { getHass } from "@utils";
@@ -37,6 +37,9 @@ export enum MediaClass {
 }
 
 const styles = {
+  header: css({
+    marginBottom: 16,
+  }),
   navigationBar: css({
     display: "flex",
     flexDirection: "row",
@@ -72,6 +75,11 @@ const styles = {
   breadCrumbSeparator: css({
     color: "var(--secondary-text-color)",
   }),
+  noMediaText: css({
+    padding: "16px",
+    color: "var(--secondary-text-color)",
+    textAlign: "center",
+  })
 };
 
 export type MediaBrowserItem = {
@@ -278,38 +286,39 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
         }}
         renderItem={renderItem}
         renderEmpty={() => {
-          if (isFetching) return <div>Loading...</div>;
+          if (isFetching) return <Spinner />;
           if (!isFetching && mediaBrowserItems.length === 0) {
-            return <div>No media items available</div>;
+            return <div css={styles.noMediaText}>No media items available.</div>;
           }
           return null;
         }}
         data={items}
-        renderHeader={() =>
-          history.length > 0 ? (
-            <div css={styles.navigationBar}>
-              <IconButton
-                icon="mdi:arrow-left"
-                size="x-small"
-                onClick={goBack}
-                disabled={history.length === 0}
-              />
-              <div css={styles.breadCrumbs}>
-                <button css={styles.breadCrumbItem} onClick={() => setHistory([])}>
-                  Home
-                </button>
-                {history.map((item, index) => (
-                  <Fragment key={`breadcrumb-${index}-${item.title}`}>
-                    <span css={styles.breadCrumbSeparator}>/</span>
-                    <button css={styles.breadCrumbItem} onClick={() => goToIndex(index)}>
-                      {item.title}
-                    </button>
-                  </Fragment>
-                ))}
+        renderHeader={() => (
+          <div css={styles.header}>
+            {history.length > 0 && (
+              <div css={styles.navigationBar}>
+                <IconButton
+                  icon="mdi:arrow-left"
+                  size="x-small"
+                  onClick={goBack}
+                  disabled={history.length === 0}
+                />
+                <div css={styles.breadCrumbs}>
+                  <button css={styles.breadCrumbItem} onClick={() => setHistory([])}>
+                    Home
+                  </button>
+                  {history.map((item, index) => (
+                    <Fragment key={`breadcrumb-${index}-${item.title}`}>
+                      <span css={styles.breadCrumbSeparator}>/</span>
+                      <button css={styles.breadCrumbItem} onClick={() => goToIndex(index)}>
+                        {item.title}
+                      </button>
+                    </Fragment>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null
-        }
+            )}
+          </div>)}
       />
     </div>
   );
