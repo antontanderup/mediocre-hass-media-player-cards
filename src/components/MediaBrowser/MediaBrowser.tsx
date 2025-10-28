@@ -1,5 +1,16 @@
-import { MediaGrid, MediaItem, MediaTrack, searchStyles, Spinner, VirtualList } from "@components";
+import {
+  Chip,
+  Icon,
+  MediaGrid,
+  MediaItem,
+  MediaTrack,
+  searchStyles,
+  Spinner,
+  VirtualList,
+} from "@components";
+import { HaEnqueueMode } from "@components/HaSearch/types";
 import { IconButton } from "@components/IconButton";
+import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
 import { css } from "@emotion/react";
 import { getHass } from "@utils";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
@@ -79,7 +90,7 @@ const styles = {
     padding: "16px",
     color: "var(--secondary-text-color)",
     textAlign: "center",
-  })
+  }),
 };
 
 export type MediaBrowserItem = {
@@ -93,8 +104,13 @@ export type MediaBrowserItem = {
   thumbnail: string | null;
 };
 
-export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps) => {
-  const [mediaBrowserItems, setMediaBrowserItems] = useState<MediaBrowserItem[]>([]);
+export const MediaBrowser = ({
+  entity_id,
+  horizontalPadding,
+}: MediaBrowserProps) => {
+  const [mediaBrowserItems, setMediaBrowserItems] = useState<
+    MediaBrowserItem[]
+  >([]);
   const [history, setHistory] = useState<MediaBrowserItem[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [chunkSize, setChunkSize] = useState(4);
@@ -103,12 +119,14 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
     const result: MediaBrowserItem[][] = [];
     const groupedByType: Record<"track" | "expandable", MediaBrowserItem[]> = {
       track: [],
-      expandable: []
+      expandable: [],
     };
 
     // Group items by media_content_type
     mediaBrowserItems.forEach(item => {
-      const isTrack = item.media_content_type === MediaContentType.Tracks || item.media_class === MediaClass.Track;
+      const isTrack =
+        item.media_content_type === MediaContentType.Tracks ||
+        item.media_class === MediaClass.Track;
       const type = isTrack && !(history.length === 0) ? "track" : "expandable";
       if (!groupedByType[type]) {
         groupedByType[type] = [];
@@ -119,9 +137,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
     // Process each group
     Object.entries(groupedByType).forEach(([mediaType, items]) => {
       // Add items based on media_class
-      if (
-        mediaType === "track" && history.length !== 0
-      ) {
+      if (mediaType === "track" && history.length !== 0) {
         // Tracks are added individually
         items.forEach(item => {
           result.push([item]);
@@ -148,10 +164,10 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
           entity_id,
           ...(history.length > 0
             ? {
-              media_content_id: history[history.length - 1].media_content_id,
-              media_content_type:
-                history[history.length - 1].media_content_type,
-            }
+                media_content_id: history[history.length - 1].media_content_id,
+                media_content_type:
+                  history[history.length - 1].media_content_type,
+              }
             : {}),
         })) as { children?: MediaBrowserItem[] };
 
@@ -171,12 +187,13 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
   }, [entity_id, history]);
 
   const playItem = useCallback(
-    (item: MediaBrowserItem) => {
+    (item: MediaBrowserItem, enqueue?: HaEnqueueMode) => {
       try {
         getHass().callService("media_player", "play_media", {
           entity_id,
           media_content_type: item.media_content_type,
           media_content_id: item.media_content_id,
+          enqueue,
         });
         console.log("Playing media item:", item);
       } catch (error) {
@@ -201,10 +218,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
         item.can_expand &&
         item.media_content_id !== history[history.length - 1]?.media_content_id
       ) {
-        setHistory(prev => [
-          ...prev,
-          item,
-        ]);
+        setHistory(prev => [...prev, item]);
         return;
       }
     },
@@ -246,20 +260,25 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
         imageUrl={item.thumbnail}
         mdiIcon={getItemMdiIcon(item)}
         onClick={async () => onMediaBrowserItemClick(item)}
-      />);
+      />
+    );
   };
 
   const renderItem = (item: MediaBrowserItem[]) => {
     if (item.length === 1) {
-      return item[0].media_class === MediaClass.Track || item[0].media_content_type === MediaContentType.Track ?
-        renderTrack(item[0]) :
-        renderFolder(item[0]);
+      return item[0].media_class === MediaClass.Track ||
+        item[0].media_content_type === MediaContentType.Track
+        ? renderTrack(item[0])
+        : renderFolder(item[0]);
     } else {
       return (
         <MediaGrid numberOfColumns={chunkSize}>
           {item.map(mediaItem => {
-            return (item[0].media_class === MediaClass.Track || item[0].media_content_type === MediaContentType.Track) &&
-              mediaItem.media_content_type !== "favorite" ? renderTrack(mediaItem) : renderFolder(mediaItem);
+            return (item[0].media_class === MediaClass.Track ||
+              item[0].media_content_type === MediaContentType.Track) &&
+              mediaItem.media_content_type !== "favorite"
+              ? renderTrack(mediaItem)
+              : renderFolder(mediaItem);
           })}
         </MediaGrid>
       );
@@ -288,7 +307,9 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
         renderEmpty={() => {
           if (isFetching) return <Spinner />;
           if (!isFetching && mediaBrowserItems.length === 0) {
-            return <div css={styles.noMediaText}>No media items available.</div>;
+            return (
+              <div css={styles.noMediaText}>No media items available.</div>
+            );
           }
           return null;
         }}
@@ -296,29 +317,86 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
         renderHeader={() => (
           <div css={styles.header}>
             {history.length > 0 && (
-              <div css={styles.navigationBar}>
-                <IconButton
-                  icon="mdi:arrow-left"
-                  size="x-small"
-                  onClick={goBack}
-                  disabled={history.length === 0}
-                />
-                <div css={styles.breadCrumbs}>
-                  <button css={styles.breadCrumbItem} onClick={() => setHistory([])}>
-                    Home
-                  </button>
-                  {history.map((item, index) => (
-                    <Fragment key={`breadcrumb-${index}-${item.title}`}>
-                      <span css={styles.breadCrumbSeparator}>/</span>
-                      <button css={styles.breadCrumbItem} onClick={() => goToIndex(index)}>
-                        {item.title}
-                      </button>
-                    </Fragment>
-                  ))}
+              <Fragment>
+                <div css={styles.navigationBar}>
+                  <IconButton
+                    icon="mdi:arrow-left"
+                    size="x-small"
+                    onClick={goBack}
+                    disabled={history.length === 0}
+                  />
+                  <div css={styles.breadCrumbs}>
+                    <button
+                      css={styles.breadCrumbItem}
+                      onClick={() => setHistory([])}
+                    >
+                      Home
+                    </button>
+                    {history.map((item, index) => (
+                      <Fragment key={`breadcrumb-${index}-${item.title}`}>
+                        <span css={styles.breadCrumbSeparator}>/</span>
+                        <button
+                          css={styles.breadCrumbItem}
+                          onClick={() => goToIndex(index)}
+                        >
+                          {item.title}
+                        </button>
+                      </Fragment>
+                    ))}
+                  </div>
                 </div>
-              </div>
+                {history[history.length - 1].can_play && (
+                  <div css={styles.navigationBar}>
+                    <Chip
+                      onClick={() =>
+                        playItem(history[history.length - 1], "play")
+                      }
+                    >
+                      Play
+                    </Chip>
+                    <Chip
+                      onClick={() =>
+                        playItem(history[history.length - 1], "next")
+                      }
+                    >
+                      Play Next
+                    </Chip>
+                    <OverlayMenu
+                      menuItems={[
+                        {
+                          label: "Play",
+                          onClick: () =>
+                            playItem(history[history.length - 1], "play"),
+                        },
+                        {
+                          label: "Play Next",
+                          onClick: () =>
+                            playItem(history[history.length - 1], "next"),
+                        },
+                        {
+                          label: "Replace Queue",
+                          onClick: () =>
+                            playItem(history[history.length - 1], "replace"),
+                        },
+                        {
+                          label: "Add to Queue",
+                          onClick: () =>
+                            playItem(history[history.length - 1], "add"),
+                        },
+                      ]}
+                      renderTrigger={triggerProps => (
+                        <Chip {...triggerProps}>
+                          Play
+                          <Icon size="x-small" icon="mdi:chevron-down" />
+                        </Chip>
+                      )}
+                    />
+                  </div>
+                )}
+              </Fragment>
             )}
-          </div>)}
+          </div>
+        )}
       />
     </div>
   );
@@ -327,7 +405,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
 const getItemMdiIcon = (item: MediaBrowserItem) => {
   if (item.thumbnail) return null;
   // this function is a little silly because it seems like there's no real standard way to declare these
-  
+
   switch (item.media_content_type) {
     case MediaContentType.Albums:
       return "mdi:album";
@@ -342,7 +420,7 @@ const getItemMdiIcon = (item: MediaBrowserItem) => {
     case MediaContentType.App:
       return "mdi:application";
     case MediaContentType.Favorites:
-      return "mdi:star"
+      return "mdi:star";
     case MediaContentType.NewMusic:
     case MediaContentType.AlbumArtists:
     case MediaContentType.Radios:
