@@ -141,7 +141,7 @@ export const PlayerActions = () => {
         title="Media Browser"
         isOpen={selected === "media-browser"}
         onClose={() => setSelected(undefined)}
-        padding="0px"
+        padding="16px 0px 16px 0px"
       >
         <MediaBrowser entity_id={ma_entity_id ?? entity_id} horizontalPadding={16} />
       </Modal>
