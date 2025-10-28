@@ -1,12 +1,13 @@
-import { MediaItem, MediaTrack, VirtualList } from "@components";
+import { MediaGrid, MediaItem, MediaTrack, searchStyles, VirtualList } from "@components";
 import { IconButton } from "@components/IconButton";
 import { css } from "@emotion/react";
 import { getHass } from "@utils";
-import { useCallback, useEffect, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 
 export type MediaBrowserProps = {
   entity_id: string;
+  horizontalPadding?: number;
 };
 
 export enum MediaContentType {
@@ -83,10 +84,51 @@ export type MediaBrowserItem = {
   thumbnail: string | null;
 };
 
-export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
-  const [MediaBrowserItems, setMediaBrowserItems] = useState<MediaBrowserItem[]>([]);
+export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps) => {
+  const [mediaBrowserItems, setMediaBrowserItems] = useState<MediaBrowserItem[]>([]);
   const [history, setHistory] = useState<MediaBrowserItem[]>([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [chunkSize, setChunkSize] = useState(4);
+
+
+  const items: MediaBrowserItem[][] = useMemo(() => {
+    const result: MediaBrowserItem[][] = [];
+    const groupedByType: Record<"track" | "expandable", MediaBrowserItem[]> = {
+      track: [],
+      expandable: []
+    };
+
+    // Group items by media_content_type
+    mediaBrowserItems.forEach(item => {
+      const isTrack = item.media_content_type === MediaContentType.Tracks || item.media_class === MediaClass.Track;
+      const type = isTrack ? "track" : "expandable";
+      if (!groupedByType[type]) {
+        groupedByType[type] = [];
+      }
+      groupedByType[type].push(item);
+    });
+
+    // Process each group
+    Object.entries(groupedByType).forEach(([mediaType, items]) => {
+      // Add items based on media_class
+      if (
+        mediaType === "track"
+      ) {
+        // Tracks are added individually
+        items.forEach(item => {
+          result.push([item]);
+        });
+      } else {
+        // Other media types are grouped in rows of 4
+        for (let i = 0; i < items.length; i += chunkSize) {
+          const chunk = items.slice(i, i + chunkSize);
+          result.push(chunk);
+        }
+      }
+    });
+
+    return result;
+  }, [mediaBrowserItems, chunkSize]);
 
   useEffect(() => {
     const fetchMediaBrowserItems = async () => {
@@ -98,10 +140,10 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
           entity_id,
           ...(history.length > 0
             ? {
-                media_content_id: history[history.length - 1].media_content_id,
-                media_content_type:
-                  history[history.length - 1].media_content_type,
-              }
+              media_content_id: history[history.length - 1].media_content_id,
+              media_content_type:
+                history[history.length - 1].media_content_type,
+            }
             : {}),
         })) as { children?: MediaBrowserItem[] };
 
@@ -197,29 +239,68 @@ export const MediaBrowser = ({ entity_id }: MediaBrowserProps) => {
       />);
   };
 
+  const renderItem = (item: MediaBrowserItem[]) => {
+    if (item.length === 1) {
+      return item[0].media_class === MediaClass.Track || item[0].media_content_type === MediaContentType.Track ?
+        renderTrack(item[0]) :
+        renderFolder(item[0]);
+    } else {
+      return (
+        <MediaGrid numberOfColumns={chunkSize}>
+          {item.map(mediaItem => {
+            const handleClick = async () => {
+              await onMediaBrowserItemClick(mediaItem);
+            };
+
+            return (item[0].media_class === MediaClass.Track || item[0].media_content_type === MediaContentType.Track) &&
+              mediaItem.media_content_type !== "favorite" ? (
+              <MediaTrack
+                key={mediaItem.media_content_id}
+                imageUrl={mediaItem.thumbnail}
+                title={mediaItem.title}
+                onClick={handleClick}
+              />
+            ) : (
+              <MediaItem
+                key={mediaItem.media_content_id}
+                imageUrl={mediaItem.thumbnail}
+                name={mediaItem.title}
+                onClick={handleClick}
+              />
+            );
+          })}
+        </MediaGrid>
+      );
+    }
+  };
+
   return (
-    <div>
+        <div
+          css={searchStyles.root}
+          style={{
+            "--mmpc-search-padding": `${horizontalPadding}px`,
+          }}
+        >
       <VirtualList
         key={history[history.length - 1]?.media_content_id || "root"}
-        renderItem={item => {
-          const isTrack =
-            (item.media_content_type === MediaContentType.Track || item.media_class === MediaClass.Track) &&
-            history.length > 0;
-            console.log("Rendering item:", item, "isTrack:", isTrack);
-          if (isTrack) {
-            return renderTrack(item);
+        onLayout={({ width }) => {
+          if (width > 800) {
+            setChunkSize(6);
+          } else if (width > 390) {
+            setChunkSize(4);
           } else {
-            return renderFolder(item);
+            setChunkSize(3);
           }
         }}
+        renderItem={renderItem}
         renderEmpty={() => {
           if (isFetching) return <div>Loading...</div>;
-          if (!isFetching && MediaBrowserItems.length === 0) {
+          if (!isFetching && mediaBrowserItems.length === 0) {
             return <div>No media items available</div>;
           }
           return null;
         }}
-        data={MediaBrowserItems}
+        data={items}
         renderHeader={() =>
           history.length > 0 ? (
             <div css={styles.navigationBar}>

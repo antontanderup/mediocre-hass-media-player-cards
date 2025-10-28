@@ -143,7 +143,7 @@ export const PlayerActions = () => {
         onClose={() => setSelected(undefined)}
         padding="0px"
       >
-        <MediaBrowser entity_id={ma_entity_id ?? entity_id} />
+        <MediaBrowser entity_id={ma_entity_id ?? entity_id} horizontalPadding={16} />
       </Modal>
       <Modal
         title="Search"
