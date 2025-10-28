@@ -1,5 +1,6 @@
 import { createContext } from "preact";
 import { useMemo } from "preact/hooks";
+import { memo } from "preact/compat";
 
 export type CardContextType<T> = {
   rootElement: HTMLElement;
@@ -7,18 +8,15 @@ export type CardContextType<T> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CardContext = createContext<CardContextType<any>>({
-  rootElement: null,
-  config: null,
-});
+export const CardContext = createContext<CardContextType<any>>(null!);
 
-export const CardContextProvider = <T,>({
+const CardContextProviderInner = <T,>({
   rootElement,
   config,
   children,
 }: CardContextType<T> & {
-  children: React.ReactElement;
-}): React.ReactElement => {
+  children: preact.ComponentChildren;
+}): preact.ComponentChildren => {
   const contextValue = useMemo(() => {
     return { rootElement, config };
   }, [rootElement, config]);
@@ -27,3 +25,7 @@ export const CardContextProvider = <T,>({
     <CardContext.Provider value={contextValue}>{children}</CardContext.Provider>
   );
 };
+
+export const CardContextProvider = memo(
+  CardContextProviderInner
+) as typeof CardContextProviderInner;

@@ -1,60 +1,111 @@
-import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { HTMLAttributes, InputHTMLAttributes } from "preact/compat";
 
-export const FormGroup = styled.div`
-  margin-bottom: 16px;
-`;
+const styles = {
+  formGroup: css({
+    marginBottom: "16px",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  }),
+  label: css({
+    display: "block",
+    marginBottom: "16px",
+    fontWeight: 500,
+  }),
+  buttonsContainer: css({
+    display: "flex",
+    flexDirection: "column",
+  }),
+  button: css({
+    padding: "8px 16px",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    backgroundColor: "var(--primary-color, #03a9f4)",
+    color: "white",
+    fontWeight: 500,
+    "&:hover": {
+      backgroundColor: "var(--primary-color-dark, #007ac1)",
+    },
+    alignSelf: "flex-start",
+  }),
+  deleteButton: css({
+    backgroundColor: "var(--error-color, #ff5252)",
+    "&:hover": {
+      backgroundColor: "var(--error-color-dark, #c50b0b)",
+    },
+  }),
+  inputGroup: css({
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "16px",
+  }),
+  toggleContainer: css({
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "16px",
+  }),
+  toggleLabel: css({
+    marginLeft: "8px",
+    fontWeight: "normal",
+  }),
+  toggle: css({
+    cursor: "pointer",
+  }),
+  errorMessage: css({
+    color: "var(--error-color, #ff5252)",
+    marginTop: "8px",
+    fontSize: "14px",
+  }),
+};
 
-export const Label = styled.label`
-  display: block;
-  margin-bottom: 16px;
-  font-weight: 500;
-`;
+export const FormGroup = (props: HTMLAttributes<HTMLDivElement>) => {
+  return <div css={styles.formGroup} {...props} />;
+};
 
-export const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+export const Label = (props: HTMLAttributes<HTMLLabelElement>) => {
+  return <label css={styles.label} {...props} />;
+};
 
-export const Button = styled.button`
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: var(--primary-color, #03a9f4);
-  color: white;
-  font-weight: 500;
+export const ButtonsContainer = (props: HTMLAttributes<HTMLDivElement>) => {
+  return <div css={styles.buttonsContainer} {...props} />;
+};
 
-  &:hover {
-    background-color: var(--primary-color-dark, #007ac1);
+export const Button = (
+  props: HTMLAttributes<HTMLButtonElement> & {
+    type: "button" | "reset" | "submit" | undefined;
   }
-  align-self: flex-start;
-`;
+) => {
+  return <button css={styles.button} {...props} />;
+};
 
-export const DeleteButton = styled(Button)`
-  background-color: var(--error-color, #ff5252);
-
-  &:hover {
-    background-color: var(--error-color-dark, #c50b0b);
+export const DeleteButton = (
+  props: HTMLAttributes<HTMLButtonElement> & {
+    type: "button" | "reset" | "submit" | undefined;
   }
-`;
+) => {
+  return <button css={[styles.button, styles.deleteButton]} {...props} />;
+};
 
-export const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-`;
+export const InputGroup = (props: HTMLAttributes<HTMLDivElement>) => {
+  return <div css={styles.inputGroup} {...props} />;
+};
 
-export const ToggleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-`;
+export const ToggleContainer = (props: HTMLAttributes<HTMLDivElement>) => {
+  return <div css={styles.toggleContainer} {...props} />;
+};
 
-export const ToggleLabel = styled.label`
-  margin-left: 8px;
-  font-weight: normal;
-`;
+export const ToggleLabel = (
+  props: HTMLAttributes<HTMLLabelElement> & { htmlFor?: string }
+) => {
+  return <label css={styles.toggleLabel} {...props} />;
+};
 
-export const Toggle = styled.input`
-  cursor: pointer;
-`;
+export const Toggle = (props: InputHTMLAttributes<HTMLInputElement>) => {
+  return <input type="checkbox" css={styles.toggle} {...props} />;
+};
+
+export const ErrorMessage = (props: HTMLAttributes<HTMLDivElement>) => {
+  return <div css={styles.errorMessage} {...props} />;
+};

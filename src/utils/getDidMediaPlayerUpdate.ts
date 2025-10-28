@@ -22,6 +22,7 @@ export const getDidMediaPlayerUpdate = (
         "attributes.icon",
         "attributes.friendly_name",
         "attributes.entity_picture",
+        "attributes.entity_picture_local",
         "attributes.volume_level",
         "attributes.is_volume_muted",
         "attributes.source",
@@ -29,6 +30,7 @@ export const getDidMediaPlayerUpdate = (
         "attributes.repeat",
         "attributes.supported_features",
         "attributes.group_members",
+        "attributes.active_child",
       ];
 
   // Helper function to get nested property values

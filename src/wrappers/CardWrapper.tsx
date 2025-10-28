@@ -10,29 +10,42 @@ import { HomeAssistant } from "@types";
 export class CardWrapper<
   Config extends { entity_id: string },
 > extends HTMLElement {
-  Card: FunctionComponent = null;
-  config: Config = null;
-  shouldUpdate: (prevHass: HomeAssistant, hass: HomeAssistant) => boolean =
-    null;
-  private _previousHass = null;
+  Card: FunctionComponent | null = null;
+  config: Config | null = null;
+  providePlayerContext = true;
 
-  set hass(hass) {
+  shouldUpdate:
+    | ((prevHass: HomeAssistant | null, hass: HomeAssistant | null) => boolean)
+    | null = null;
+
+  private _previousHass: HomeAssistant | null = null;
+  private _previousConfig: Config | null = null;
+
+  set hass(hass: HomeAssistant) {
     if (!this.Card) {
       throw new Error("Preact Card is not defined");
     }
 
-    const entityId = this.config.entity_id;
-    const shouldRender = this.shouldUpdate(this._previousHass, hass);
+    const entityId = this.config?.entity_id;
+    const shouldRender =
+      !!entityId &&
+      (this.config !== this._previousConfig ||
+        this.shouldUpdate?.(this._previousHass, hass));
 
     if (shouldRender) {
       this._previousHass = hass;
+      this._previousConfig = this.config;
       render(
         <EmotionContextProvider rootElement={this}>
           <CardContextProvider rootElement={this} config={this.config}>
             <HassContextProvider hass={hass}>
-              <PlayerContextProvider hass={hass} entityId={entityId}>
+              {this.providePlayerContext ? (
+                <PlayerContextProvider entityId={entityId}>
+                  <this.Card />
+                </PlayerContextProvider>
+              ) : (
                 <this.Card />
-              </PlayerContextProvider>
+              )}
             </HassContextProvider>
           </CardContextProvider>
         </EmotionContextProvider>,

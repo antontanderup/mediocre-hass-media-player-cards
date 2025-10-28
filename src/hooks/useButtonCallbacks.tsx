@@ -1,37 +1,38 @@
 import { useCallback, useMemo, useRef, useState } from "preact/hooks";
-import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 const supportsTouchEvents = "ontouchstart" in window;
 
-const LongPressIndicator = styled.div`
-  position: fixed;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: var(--primary-color, rgba(7, 114, 244));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 9;
-  animation: pulse 1s infinite;
-  transform: translate(-50%, -50%);
-
-  @keyframes pulse {
-    0% {
-      transform: translate(-50%, -50%) scale(0.95);
-      opacity: 0.6;
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(0.95);
-      opacity: 0.6;
-    }
-  }
-`;
+const styles = {
+  longPressIndicator: css({
+    position: "fixed",
+    width: "48px",
+    height: "48px",
+    borderRadius: "50%",
+    backgroundColor: "var(--primary-color, rgba(7, 114, 244))",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    pointerEvents: "none",
+    zIndex: 9,
+    animation: "pulse 1s infinite",
+    transform: "translate(-50%, -50%)",
+    "@keyframes pulse": {
+      "0%": {
+        transform: "translate(-50%, -50%) scale(0.95)",
+        opacity: 0.6,
+      },
+      "50%": {
+        transform: "translate(-50%, -50%) scale(1)",
+        opacity: 0.8,
+      },
+      "100%": {
+        transform: "translate(-50%, -50%) scale(0.95)",
+        opacity: 0.6,
+      },
+    },
+  }),
+};
 
 export function useButtonCallbacks({
   onTap,
@@ -68,7 +69,8 @@ export function useButtonCallbacks({
   const renderLongPressIndicator = () => {
     if (!isLongPressing) return null;
     return (
-      <LongPressIndicator
+      <div
+        css={styles.longPressIndicator}
         style={{ left: `${position.x}px`, top: `${position.y}px` }}
       />
     );

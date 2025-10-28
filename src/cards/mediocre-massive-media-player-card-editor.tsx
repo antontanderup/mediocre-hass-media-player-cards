@@ -1,8 +1,8 @@
 import { MediocreMassiveMediaPlayerCardEditor } from "@components";
-import { MediocreMediaPlayerCardConfig } from "@types";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { CardEditorWrapper } from "@wrappers";
 
-class MediocreMassiveMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
+class MediocreMassiveMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMassiveMediaPlayerCardConfig> {
   Card = MediocreMassiveMediaPlayerCardEditor;
   extraProps = { isMassive: true, className: undefined };
 }

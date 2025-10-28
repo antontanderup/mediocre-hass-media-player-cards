@@ -1,144 +1,151 @@
 import { Title, Track } from "./components";
 import { PlaybackControls } from "./components/PlaybackControls";
-import styled from "@emotion/styled";
 import { PlayerActions } from "./components/PlayerActions";
 import { useContext } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MediocreMassiveMediaPlayerCardConfig } from "@types";
-import { useArtworkColors } from "@hooks";
+import {
+  InteractionConfig,
+  MediocreMassiveMediaPlayerCardConfig,
+} from "@types";
+import { useActionProps, useArtworkColors } from "@hooks";
 import { AlbumArt } from "@components";
+import { css } from "@emotion/react";
+import { theme } from "@constants";
 
-const Root = styled.div<{
-  mode: MediocreMassiveMediaPlayerCardConfig["mode"];
-  $artColorVars?: string;
-  $haColorVars?: string;
-  $useArtColors?: boolean;
-}>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  --mmpc-extra-horizontal-padding: 0px;
-
-  ${props => props.$artColorVars ?? ""}
-  ${props => {
-    if (props.$useArtColors && !!props.$haColorVars) {
-      return props.$haColorVars;
-    } else return "";
-  }}
-
-  ${props => {
-    switch (props?.mode) {
-      case "panel": {
-        return `
-          width: 100%;
-          height: 100%;
-          // Below gradient transitions from panel header color to transparent
-          background: linear-gradient(
-            var(--app-header-background-color),
-            rgba(255, 255, 255, 0)
-          );
-          max-height: calc(100vh - var(--header-height, 16px));
-        `;
-      }
-      case "popup": {
-        return `
-          --mmpc-extra-horizontal-padding: 12px;`;
-      }
-      default: {
-        return ``;
-      }
-    }
-  }}
-
-  box-sizing: border-box;
-  * {
-    box-sizing: border-box;
-  }
-  --mmpc-surface-higher: var(--card-background-color);
-`;
-
-const Wrap = styled.div<{
-  mode: MediocreMassiveMediaPlayerCardConfig["mode"];
-}>`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: space-around;
-  align-items: center;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  ${props => {
-    switch (props?.mode) {
-      case "panel": {
-        return `
-          width: 90%;
-          max-width: 400px;
-          padding: 16px;
-        `;
-      }
-      case "popup": {
-        return `
-          max-width: 100%;
-          padding: 16px;
-          padding-bottom: max(calc(env(safe-area-inset-bottom) + 8px), 16px);
-        `;
-      }
-      case "card": {
-        return `
-          width: 100%;
-          padding: 16px;
-        `;
-      }
-      default: {
-        return "";
-      }
-    }
-  }}
-  height: 100%;
-`;
-
-const ControlsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-height: 300px;
-  min-height: 280px;
-  width: 100%;
-  height: 100%;
-  justify-content: space-between;
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    "--mmpc-extra-horizontal-padding": "0px",
+    boxSizing: "border-box",
+    "*": {
+      boxSizing: "border-box",
+    },
+    "--mmpc-surface-higher": theme.colors.card,
+  }),
+  rootPanelMode: css({
+    width: "100%",
+    height: "100%",
+    background:
+      "linear-gradient(var(--app-header-background-color), rgba(255, 255, 255, 0))", // Gradient transitions from panel header color to transparent
+    maxHeight: "calc(100vh - var(--header-height, 16px))",
+  }),
+  rootPopupMode: css({
+    "--mmpc-extra-horizontal-padding": "12px",
+  }),
+  rootMultiMode: css({
+    width: "100%",
+    height: "100%",
+  }),
+  wrap: css({
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    gap: "16px",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingTop: "16px",
+    paddingBottom: "16px",
+    height: "100%",
+  }),
+  wrapPanelMode: css({
+    width: "90%",
+    maxWidth: "400px",
+    padding: "16px",
+  }),
+  wrapMultiMode: css({
+    width: "100%",
+    maxWidth: "600px",
+    padding: 0,
+  }),
+  wrapPopupMode: css({
+    maxWidth: "100%",
+    padding: "16px",
+    paddingBottom: "max(calc(env(safe-area-inset-bottom) + 8px), 16px)",
+  }),
+  wrapCardMode: css({
+    width: "100%",
+    padding: "16px",
+  }),
+  controlsWrapper: css({
+    display: "flex",
+    flexDirection: "column",
+    maxHeight: "300px",
+    minHeight: "280px",
+    width: "100%",
+    height: "100%",
+    justifyContent: "space-between",
+  }),
+  controlsWrapperMulti: css({
+    maxHeight: 210,
+    minHeight: 200,
+    justifyContent: "space-evenly",
+  }),
+};
 
 export const MediocreMassiveMediaPlayerCard = ({
   className,
 }: {
   className?: string;
 }) => {
-  const { config } =
+  const { config, rootElement } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode, use_art_colors } = config;
+  const { mode, use_art_colors, action } = config;
 
   const { artVars, haVars } = useArtworkColors();
 
+  const artAction: InteractionConfig = action ?? {
+    tap_action: { action: "more-info" },
+  };
+
+  const artActionProps = useActionProps({
+    rootElement,
+    actionConfig: {
+      ...artAction,
+      entity: config.entity_id,
+    },
+  });
+
   const renderRoot = () => (
-    <Root
+    <div
       className={className}
-      mode={mode}
-      $artColorVars={artVars}
-      $haColorVars={haVars}
-      $useArtColors={use_art_colors}
+      css={[
+        styles.root,
+        mode === "panel" && styles.rootPanelMode,
+        mode === "popup" && styles.rootPopupMode,
+        mode === "multi" && styles.rootMultiMode,
+      ]}
+      style={{
+        ...(artVars ?? {}),
+        ...(haVars && use_art_colors ? haVars : {}),
+      }}
     >
-      <Wrap mode={mode}>
-        <AlbumArt iconSize="x-large" borderRadius={8} />
-        <ControlsWrapper>
+      <div
+        css={[
+          styles.wrap,
+          mode === "panel" && styles.wrapPanelMode,
+          mode === "card" && styles.wrapCardMode,
+          mode === "popup" && styles.wrapPopupMode,
+          mode === "multi" && styles.wrapMultiMode,
+        ]}
+      >
+        <AlbumArt iconSize="x-large" borderRadius={8} {...artActionProps} />
+        <div
+          css={[
+            styles.controlsWrapper,
+            mode === "multi" && styles.controlsWrapperMulti,
+          ]}
+        >
           <Title />
           <Track />
           <PlaybackControls />
-          <PlayerActions />
-        </ControlsWrapper>
-      </Wrap>
-    </Root>
+          {mode !== "multi" && <PlayerActions />}
+        </div>
+      </div>
+    </div>
   );
 
   if (mode === "card") {

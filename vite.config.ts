@@ -10,7 +10,11 @@ export default defineConfig(({}) => {
     process.argv.includes("--mode") && process.argv.includes("development");
 
   return {
-    plugins: [preact()],
+    plugins: [
+      preact({
+        jsxImportSource: "@emotion/react",
+      }),
+    ],
     resolve: {
       alias: {
         "@components": path.resolve(__dirname, "./src/components"),
@@ -18,6 +22,7 @@ export default defineConfig(({}) => {
         "@types": path.resolve(__dirname, "./src/types"),
         "@utils": path.resolve(__dirname, "./src/utils"),
         "@wrappers": path.resolve(__dirname, "./src/wrappers"),
+        "@constants": path.resolve(__dirname, "./src/constants"),
       },
     },
     build: {

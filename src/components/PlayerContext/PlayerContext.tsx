@@ -1,74 +1,64 @@
-import { HomeAssistant } from "@types";
 import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import { MediaPlayerEntity } from "@types";
+import { getMediaPlayerTitleAndSubtitle } from "@utils/getMediaPlayerTitleAndSubtitle";
+import { memo } from "preact/compat";
+import { useHass } from "@components";
 
 export type PlayerContextType = {
-  player: MediaPlayerEntity & {
-    title: string;
-    subtitle?: string;
-  };
+  player: Omit<
+    MediaPlayerEntity & {
+      title: string;
+      subtitle?: string;
+    },
+    "last_changed" | "last_updated" | "context"
+  >;
+};
+
+type PlayerContextProviderProps = {
+  entityId: string;
+  children:
+    | preact.ComponentChildren
+    | ((value: PlayerContextType) => preact.ComponentChildren);
 };
 
 export const PlayerContext = createContext<PlayerContextType>({
-  player: null,
+  player: {} as PlayerContextType["player"],
 });
 
-export const PlayerContextProvider = ({
-  hass,
-  children,
-  entityId,
-}: {
-  entityId: string;
-  hass: HomeAssistant;
-  children: React.ReactElement;
-}): React.ReactElement => {
-  const contextValue = useMemo(() => {
-    const player = hass.states[entityId] as MediaPlayerEntity;
+export const PlayerContextProvider = memo<PlayerContextProviderProps>(
+  ({
+    children,
+    entityId,
+  }: PlayerContextProviderProps): preact.ComponentChildren => {
+    const hass = useHass();
 
-    if (!player) {
+    const contextValue = useMemo((): PlayerContextType => {
+      const player = hass.states[entityId] as MediaPlayerEntity;
+      if (!player) {
+        return {
+          player: {
+            entity_id: entityId,
+            state: "unavailable",
+            attributes: {},
+            title: "Unavailable",
+            subtitle: `${entityId} unavailable`,
+          },
+        };
+      }
+      const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
       return {
-        player: null,
+        player: { ...player, title, subtitle },
       };
-    }
+    }, [hass.states[entityId], entityId]);
 
-    const {
-      attributes: {
-        media_title: mediaTitle,
-        media_artist: artist,
-        media_album_name: albumName,
-        source,
-        friendly_name: friendlyName,
-      },
-      state,
-    } = player;
-
-    if (state === "off") {
-      return {
-        player: { ...player, title: friendlyName, subtitle: undefined },
-      };
-    }
-
-    const title =
-      (mediaTitle !== "" ? mediaTitle : undefined) ??
-      (!source.startsWith("media_player.") ? source : undefined) ??
-      friendlyName;
-    const subtitle =
-      !!albumName || !!artist
-        ? `${albumName !== title ? `${albumName} - ` : ""}${artist}`
-        : undefined;
-
-    return {
-      player: { ...player, title, subtitle },
-    };
-  }, [hass.states, entityId]);
-
-  return (
-    <PlayerContext.Provider value={contextValue}>
-      {children}
-    </PlayerContext.Provider>
-  );
-};
+    return (
+      <PlayerContext.Provider value={contextValue}>
+        {typeof children === "function" ? children(contextValue) : children}
+      </PlayerContext.Provider>
+    );
+  }
+);
 
 export const usePlayer = () => {
   const context = useContext(PlayerContext);

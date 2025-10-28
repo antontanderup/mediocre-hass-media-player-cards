@@ -8,11 +8,13 @@
     "checkJs": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "strict": true,
     "baseUrl": ".", // This is important for path resolution
 
     /* Preact Config */
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
+    "types": ["@emotion/react/types/css-prop", "jest", "node"],
     "skipLibCheck": true,
     "paths": {
       "react": ["./node_modules/preact/compat/"],
@@ -26,9 +28,11 @@
       "@utils": ["./src/utils/index"],
       "@utils/*": ["./src/utils/*"],
       "@wrappers": ["./src/wrappers/index"],
-      "@wrappers/*": ["./src/wrappers/*"]
+      "@wrappers/*": ["./src/wrappers/*"],
+      "@constants": ["./src/constants/index"],
+      "@constants/*": ["./src/constants/*"]
     }
   },
   "exclude": ["dist"],
-  "include": ["node_modules/vite/client.d.ts", "**/*"]
+  "include": ["node_modules/vite/client.d.ts", "src/types/emotion.d.ts", "**/*"]
 }

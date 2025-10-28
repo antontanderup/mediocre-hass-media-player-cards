@@ -1,14 +1,31 @@
 import { HomeAssistant } from "@types";
 import { useCallback } from "preact/hooks";
+import { ErrorMessage } from "./StyledFormElements";
+import { css } from "@emotion/react";
 
 export type TextInputProps = {
-  hass: HomeAssistant;
   value: string; // entity_id
   onChange: (value?: string) => void; // returns new entity id or undefined
   label?: string;
   required?: boolean;
   disabled?: boolean;
-  isIconInput?: boolean;
+  error?: string;
+} & (
+  | {
+      hass: HomeAssistant;
+      isIconInput: true;
+    }
+  | {
+      hass?: HomeAssistant;
+      isIconInput?: false;
+    }
+);
+
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "column",
+  }),
 };
 
 export const TextInput = ({
@@ -16,6 +33,7 @@ export const TextInput = ({
   value,
   onChange,
   label,
+  error,
   required = false,
   disabled = false,
   isIconInput = false,
@@ -27,26 +45,35 @@ export const TextInput = ({
     [onChange]
   );
 
-  if (isIconInput) {
+  const renderField = () => {
+    if (isIconInput) {
+      return (
+        <ha-icon-picker
+          label={label || "Icon"}
+          hass={hass}
+          value={value}
+          disabled={disabled}
+          required={required}
+          onvalue-changed={handleValueChanged}
+        />
+      );
+    }
+
     return (
-      <ha-icon-picker
-        label={label || "Icon"}
-        hass={hass}
+      <ha-textfield
+        label={label || "Text"}
         value={value}
         disabled={disabled}
         required={required}
-        onvalue-changed={handleValueChanged}
+        onchange={(e: Event) => onChange((e.target as HTMLInputElement).value)}
       />
     );
-  }
+  };
 
   return (
-    <ha-textfield
-      label={label || "Text"}
-      value={value}
-      disabled={disabled}
-      required={required}
-      onchange={(e: Event) => onChange((e.target as HTMLInputElement).value)}
-    />
+    <div css={styles.root}>
+      {renderField()}
+      {!!error && <ErrorMessage>{error}</ErrorMessage>}
+    </div>
   );
 };

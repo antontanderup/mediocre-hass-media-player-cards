@@ -8,7 +8,11 @@ import { getDidMediaPlayerUpdate } from "@utils";
 class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveMediaPlayerCardConfig> {
   Card: FC<{ className?: string }> = MediocreMassiveMediaPlayerCard;
 
-  shouldUpdate = (prevHass: HomeAssistant, hass: HomeAssistant) => {
+  shouldUpdate = (
+    prevHass: HomeAssistant | null,
+    hass: HomeAssistant | null
+  ) => {
+    if (!hass || !prevHass || !this.config) return true;
     if (!prevHass && hass) return true;
 
     // Check if main entity changed
@@ -38,8 +42,12 @@ class MediocreMassiveMediaPlayerCardWrapper extends CardWrapper<MediocreMassiveM
       for (const entity of this.config.speaker_group.entities) {
         if (
           getDidMediaPlayerUpdate(
-            prevHass.states[entity] as MediaPlayerEntity,
-            hass.states[entity] as MediaPlayerEntity,
+            prevHass.states[
+              typeof entity === "string" ? entity : entity.entity
+            ] as MediaPlayerEntity,
+            hass.states[
+              typeof entity === "string" ? entity : entity.entity
+            ] as MediaPlayerEntity,
             true
           )
         ) {

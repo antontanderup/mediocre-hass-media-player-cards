@@ -1,11 +1,15 @@
 import { HomeAssistant, MediaPlayerEntity } from "@types";
-import { MediocreMediaPlayerCard } from "@components";
+import {
+  MediocreMediaPlayerCard,
+  MediocreMediaPlayerCardProps,
+} from "@components";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { CardWrapper } from "@wrappers";
+import { FC } from "preact/compat";
 import { getDidMediaPlayerUpdate } from "@utils";
 
 class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCardConfig> {
-  Card = MediocreMediaPlayerCard;
+  Card: FC<MediocreMediaPlayerCardProps> = MediocreMediaPlayerCard;
 
   setConfig(config: MediocreMediaPlayerCardConfig) {
     if (!config.entity_id) {
@@ -14,7 +18,11 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
     this.config = config;
   }
 
-  shouldUpdate = (prevHass: HomeAssistant, hass: HomeAssistant) => {
+  shouldUpdate = (
+    prevHass: HomeAssistant | null,
+    hass: HomeAssistant | null
+  ) => {
+    if (!hass || !prevHass || !this.config) return true;
     if (!prevHass && hass) return true;
 
     // Check if main entity changed
@@ -44,8 +52,12 @@ class MediocreMediaPlayerCardWrapper extends CardWrapper<MediocreMediaPlayerCard
       for (const entity of this.config.speaker_group.entities) {
         if (
           getDidMediaPlayerUpdate(
-            prevHass.states[entity] as MediaPlayerEntity,
-            hass.states[entity] as MediaPlayerEntity,
+            prevHass.states[
+              typeof entity === "string" ? entity : entity.entity
+            ] as MediaPlayerEntity,
+            hass.states[
+              typeof entity === "string" ? entity : entity.entity
+            ] as MediaPlayerEntity,
             true
           )
         ) {

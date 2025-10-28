@@ -8,13 +8,11 @@ const isDarkMode = () =>
   window.matchMedia &&
   window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-export function useArtworkColors(): {
-  artVars: string | null;
-  haVars: string | null;
-} {
+export function useArtworkColors() {
   const {
-    attributes: { entity_picture: albumArt },
+    attributes: { entity_picture, entity_picture_local },
   } = usePlayer();
+  const albumArt = entity_picture_local || entity_picture;
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
   // Track dark mode state
@@ -75,29 +73,29 @@ export function useArtworkColors(): {
     const onSurfaceLower = getContrastingHsl(surfaceLower);
 
     return {
-      artVars: `
-        --art-color: ${hslToCss(vibrantHslToHsl(variant.hsl))};
-        --art-on-art-color: ${variant.titleTextColor};
-        --art-primary-color: ${hslToCss(primaryColor)};
-        --art-on-primary-color: ${hslToCss(onPrimaryColor)};
-        --art-surface-color: ${hslToCss(surfaceColor)};
-        --art-on-surface-color: ${hslToCss(onSurfaceColor)};
-        --art-surface-higher-color: ${hslToCss(surfaceHigher)};
-        --art-on-surface-higher-color: ${hslToCss(onSurfaceHigher)};
-        --art-surface-lower-color: ${hslToCss(surfaceLower)};
-        --art-on-surface-lower-color: ${hslToCss(onSurfaceLower)};
-      `,
-      haVars: `
-        --primary-color: ${hslToCss(primaryColor)};
-        --ha-card-background: ${hslToCss(surfaceColor)};
-        --card-background-color: ${hslToCss(surfaceHigher)};
-        --primary-text-color: ${hslToCss(onSurfaceColor)};
-        --secondary-text-color: ${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 1.1 })};
-        --icon-primary-color: ${hslToCss(onSurfaceColor)};
-        --divider-color: ${hslToCss({ ...surfaceColor, l: 88 })};
-        --clear-background-color: ${hslToCss({ ...surfaceColor, l: 100 })};
-        --secondary-background-color: ${hslToCss({ ...onSurfaceColor, l: 95 })};
-      `,
+      artVars: {
+        "--art-color": `${hslToCss(vibrantHslToHsl(variant.hsl))}`,
+        "--art-on-art-color": `${variant.titleTextColor}`,
+        "--art-primary-color": `${hslToCss(primaryColor)}`,
+        "--art-on-primary-color": `${hslToCss(onPrimaryColor)}`,
+        "--art-surface-color": `${hslToCss(surfaceColor)}`,
+        "--art-on-surface-color": `${hslToCss(onSurfaceColor)}`,
+        "--art-surface-higher-color": `${hslToCss(surfaceHigher)}`,
+        "--art-on-surface-higher-color": `${hslToCss(onSurfaceHigher)}`,
+        "--art-surface-lower-color": `${hslToCss(surfaceLower)}`,
+        "--art-on-surface-lower-color": `${hslToCss(onSurfaceLower)}`,
+      },
+      haVars: {
+        "--primary-color": `${hslToCss(primaryColor)}`,
+        "--ha-card-background": `${hslToCss(surfaceColor)}`,
+        "--card-background-color": `${hslToCss(surfaceHigher)}`,
+        "--primary-text-color": `${hslToCss(onSurfaceColor)}`,
+        "--secondary-text-color": `${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 1.1 })}`,
+        "--icon-primary-color": `${hslToCss(onSurfaceColor)}`,
+        "--divider-color": `${hslToCss({ ...surfaceColor, l: 88 })}`,
+        "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 100 })}`,
+        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, l: 95 })}`,
+      },
     };
   }, [palette, darkMode]);
 
@@ -121,29 +119,29 @@ export function useArtworkColors(): {
     const onSurfaceLower = getContrastingHsl(surfaceLower);
 
     return {
-      artVars: `
-        --art-color: ${hslToCss(vibrantHslToHsl(variant.hsl))};
-        --art-on-art-color: ${variant.titleTextColor};
-        --art-primary-color: ${hslToCss(primaryColor)};
-        --art-on-primary-color: ${hslToCss(onPrimaryColor)};
-        --art-surface-color: ${hslToCss(surfaceColor)};
-        --art-on-surface-color: ${hslToCss(onSurfaceColor)};
-        --art-surface-higher-color: ${hslToCss(surfaceHigher)};
-        --art-on-surface-higher-color: ${hslToCss(onSurfaceHigher)};
-        --art-surface-lower-color: ${hslToCss(surfaceLower)};
-        --art-on-surface-lower-color: ${hslToCss(onSurfaceLower)};
-      `,
-      haVars: `
-        --primary-color: ${hslToCss(primaryColor)};
-        --ha-card-background: ${hslToCss(surfaceColor)};
-        --card-background-color: ${hslToCss(surfaceHigher)};
-        --primary-text-color: ${hslToCss(onSurfaceColor)};
-        --secondary-text-color: ${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 0.9 })};
-        --icon-primary-color: ${hslToCss(onSurfaceColor)};
-        --divider-color: ${hslToCss({ ...surfaceColor, l: 25 })};
-        --clear-background-color: ${hslToCss({ ...surfaceColor, l: 0 })};
-        --secondary-background-color: ${hslToCss({ ...onSurfaceColor, l: 19 })};
-      `,
+      artVars: {
+        "--art-color": `${hslToCss(vibrantHslToHsl(variant.hsl))}`,
+        "--art-on-art-color": `${variant.titleTextColor}`,
+        "--art-primary-color": `${hslToCss(primaryColor)}`,
+        "--art-on-primary-color": `${hslToCss(onPrimaryColor)}`,
+        "--art-surface-color": `${hslToCss(surfaceColor)}`,
+        "--art-on-surface-color": `${hslToCss(onSurfaceColor)}`,
+        "--art-surface-higher-color": `${hslToCss(surfaceHigher)}`,
+        "--art-on-surface-higher-color": `${hslToCss(onSurfaceHigher)}`,
+        "--art-surface-lower-color": `${hslToCss(surfaceLower)}`,
+        "--art-on-surface-lower-color": `${hslToCss(onSurfaceLower)}`,
+      },
+      haVars: {
+        "--primary-color": `${hslToCss(primaryColor)}`,
+        "--ha-card-background": `${hslToCss(surfaceColor)}`,
+        "--card-background-color": `${hslToCss(surfaceHigher)}`,
+        "--primary-text-color": `${hslToCss(onSurfaceColor)}`,
+        "--secondary-text-color": `${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 0.9 })}`,
+        "--icon-primary-color": `${hslToCss(onSurfaceColor)}`,
+        "--divider-color": `${hslToCss({ ...surfaceColor, l: 25 })}`,
+        "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 0 })}`,
+        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, l: 19 })}`,
+      },
     };
   }, [palette, darkMode]);
 

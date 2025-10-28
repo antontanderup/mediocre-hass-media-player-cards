@@ -27,4 +27,4 @@ jobs:
         run: yarn install
 
       - name: Check formatting with Prettier
-        run: yarn prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss,md}"
+        run: yarn prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss}"

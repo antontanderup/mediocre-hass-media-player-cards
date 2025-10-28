@@ -1,29 +1,33 @@
 import { Chip, useHass } from "@components";
-import styled from "@emotion/styled";
-import { CommonMediocreMediaPlayerCardConfig } from "@types";
+import { css } from "@emotion/react";
+import {
+  CommonMediocreMediaPlayerCardConfig,
+  MediaPlayerConfigEntity,
+} from "@types";
 import { FC, useCallback, useMemo, useState } from "preact/compat";
 
-const Chips = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  justify-content: flex-start;
-  overflow-x: auto !important;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const SpeakerChip = styled(Chip)<{ $horizontalMargin?: number }>`
-  &:first-child {
-    margin-left: ${props => props.$horizontalMargin ?? 0}px;
-  }
-  &:last-child {
-    margin-right: ${props => props.$horizontalMargin ?? 0}px;
-  }
-`;
+const styles = {
+  root: css({
+    display: "flex",
+    flexDirection: "row",
+    gap: "2px",
+    justifyContent: "flex-start",
+    overflowX: "auto",
+    scrollbarWidth: "none",
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  }),
+  speakerChip: css({
+    "&:first-child": {
+      marginLeft: "var(--mmpc-chip-horizontal-margin, 0px)",
+    },
+    "&:last-child": {
+      marginRight: "var(--mmpc-chip-horizontal-margin, 0px)",
+    },
+  }),
+};
 
 export type GroupChipsControllerProps = {
   config: Pick<
@@ -54,17 +58,26 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
   // Get all available speakers that can be grouped
   const availableSpeakers = useMemo(() => {
     if (!speaker_group?.entities?.length) return [];
+    const getEntityId = (entity: MediaPlayerConfigEntity) =>
+      typeof entity === "string" ? entity : entity.entity;
 
     return speaker_group.entities
-      .filter(id => hass.states[id])
-      .map(id => ({
-        entity_id: id,
-        name: hass.states[id].attributes.friendly_name,
-        volume: hass.states[id].attributes.volume_level || 0,
-        muted: hass.states[id].attributes.is_volume_muted || false,
-        isGrouped: mainEntity?.attributes?.group_members?.includes(id) || false,
-        isMainSpeaker:
-          mainEntity?.attributes?.group_members?.[0] === id || false,
+      .filter(entity => getEntityId(entity) !== mainEntityId)
+      .filter(entity => hass.states[getEntityId(entity)])
+      .map(entity => ({
+        entity_id: getEntityId(entity),
+        name:
+          typeof entity !== "string" && !!entity.name
+            ? entity.name
+            : (hass.states[getEntityId(entity)].attributes.friendly_name ??
+              getEntityId(entity)),
+        volume: hass.states[getEntityId(entity)].attributes.volume_level || 0,
+        muted:
+          hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
+        isGrouped:
+          mainEntity?.attributes?.group_members?.includes(
+            getEntityId(entity)
+          ) || false,
       }))
       .filter(speaker => {
         if (showGrouped) return true;
@@ -115,9 +128,10 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
   );
 
   return (
-    <Chips>
+    <div css={styles.root}>
       {availableSpeakers.map(speaker => (
-        <SpeakerChip
+        <Chip
+          css={styles.speakerChip}
           key={speaker.entity_id}
           loading={playersLoading.includes(speaker.entity_id)}
           onClick={() =>
@@ -125,11 +139,13 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
           }
           icon={speaker.isGrouped ? "mdi:close" : "mdi:plus"}
           iconPosition="right"
-          $horizontalMargin={layout?.horizontalMargin}
+          style={{
+            "--mmpc-chip-horizontal-margin": `${layout?.horizontalMargin ?? 0}px`,
+          }}
         >
           {speaker.name}
-        </SpeakerChip>
+        </Chip>
       ))}
-    </Chips>
+    </div>
   );
 };

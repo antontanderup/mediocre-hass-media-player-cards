@@ -1,45 +1,45 @@
 import { useCallback, useMemo, useState } from "preact/hooks";
-import type { CommonMediocreMediaPlayerCardConfig } from "@types";
-import { IconButton, Slider, useHass } from "@components";
-import { getHass, getVolumeIcon, setVolume } from "@utils";
-import styled from "@emotion/styled";
+import type {
+  CommonMediocreMediaPlayerCardConfig,
+  MediaPlayerConfigEntity,
+} from "@types";
+import { IconButton, useHass, VolumeSlider } from "@components";
+import { getHass, getVolumeIcon } from "@utils";
+import { css } from "@emotion/react";
 
-const SpeakersTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-`;
-
-const SpeakerRow = styled.tr`
-  width: 100%;
-  height: 32px;
-`;
-
-const NameCell = styled.td<{ $isMainSpeaker: boolean }>`
-  padding-right: 8px;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  ${props => (props.$isMainSpeaker ? "font-weight: 500;" : "")}
-`;
-
-const ControlsCell = styled.td`
-  padding: 0px 4px;
-`;
-
-const ButtonCell = styled.td`
-  width: 28px;
-  white-space: nowrap;
-`;
-
-const ControlsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const SpeakersList = styled.div``;
+const styles = {
+  speakersTable: css({
+    width: "100%",
+    borderCollapse: "collapse",
+    tableLayout: "fixed",
+  }),
+  speakerRow: css({
+    width: "100%",
+    height: "32px",
+  }),
+  nameCell: css({
+    paddingRight: "8px",
+    fontSize: "14px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }),
+  nameCellMainSpeaker: css({
+    fontWeight: 500,
+  }),
+  controlsCell: css({
+    padding: "0px 4px",
+  }),
+  buttonCell: css({
+    width: "28px",
+    whiteSpace: "nowrap",
+  }),
+  controlsContainer: css({
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+  }),
+};
 
 export type GroupSpeaker = {
   entity_id: string;
@@ -47,6 +47,7 @@ export type GroupSpeaker = {
   volume: number;
   muted: boolean;
   isGrouped: boolean;
+  isOff: boolean;
   isMainSpeaker: boolean;
 };
 
@@ -54,14 +55,19 @@ export type GroupVolumeControllerProps = {
   config: Pick<
     CommonMediocreMediaPlayerCardConfig,
     "speaker_group" | "entity_id"
-  >;
+  > &
+    Partial<CommonMediocreMediaPlayerCardConfig>;
   syncMainSpeaker: boolean; // Wheter the main speaker will affect the volume of the group
+  className?: string;
 };
 
 export const GroupVolumeController = ({
-  config: { speaker_group, entity_id },
+  config,
   syncMainSpeaker,
+  className,
 }: GroupVolumeControllerProps) => {
+  const { speaker_group, entity_id } = config;
+
   const hass = useHass();
 
   const [playersLoading, setPlayersLoading] = useState<string[]>([]);
@@ -72,25 +78,51 @@ export const GroupVolumeController = ({
 
   // Get all available speakers that can be grouped
   const availableSpeakers: GroupSpeaker[] = useMemo(() => {
-    if (!speaker_group?.entities?.length) return [];
+    if (!speaker_group?.entities?.length && !mainEntity) return [];
 
-    return speaker_group.entities
-      .filter(id => hass.states[id])
-      .map(id => ({
-        entity_id: id,
-        name: hass.states[id].attributes.friendly_name,
-        volume: hass.states[id].attributes.volume_level || 0,
-        muted: hass.states[id].attributes.is_volume_muted || false,
-        isGrouped: mainEntity?.attributes?.group_members?.includes(id) || false,
+    const speakerEntities = [...(speaker_group?.entities || [])];
+
+    // Add main entity if it exists and isn't already in the list
+    if (
+      mainEntity &&
+      !speakerEntities.find(
+        entity =>
+          (typeof entity === "string" ? entity : entity.entity) === mainEntityId
+      )
+    ) {
+      speakerEntities.push(mainEntityId);
+    }
+
+    const getEntityId = (entity: MediaPlayerConfigEntity) =>
+      typeof entity === "string" ? entity : entity.entity;
+
+    return speakerEntities
+      .filter(entity => hass.states[getEntityId(entity)])
+      .map(entity => ({
+        entity_id: getEntityId(entity),
+        name:
+          typeof entity !== "string" && !!entity.name
+            ? entity.name
+            : (hass.states[getEntityId(entity)].attributes.friendly_name ??
+              getEntityId(entity)),
+        volume: hass.states[getEntityId(entity)].attributes.volume_level || 0,
+        muted:
+          hass.states[getEntityId(entity)].attributes.is_volume_muted || false,
+        isOff: hass.states[getEntityId(entity)].state === "off",
+        isGrouped:
+          mainEntity?.attributes?.group_members?.includes(
+            getEntityId(entity)
+          ) || false,
         isMainSpeaker:
-          mainEntity?.attributes?.group_members?.[0] === id || false,
+          mainEntity?.attributes?.group_members?.[0] === getEntityId(entity) ||
+          false,
       }))
       .sort((a, b) => {
         if (a.entity_id === mainEntityId) return -1;
         if (b.entity_id === mainEntityId) return 1;
         return a.name.localeCompare(b.name);
       });
-  }, [hass.states, speaker_group]);
+  }, [hass.states, speaker_group, mainEntityId, mainEntity]);
 
   // Handle joining/unjoining a speaker to/from the group
   const handleToggleGroup = useCallback(
@@ -131,64 +163,75 @@ export const GroupVolumeController = ({
     });
   }, []);
 
-  // Handle volume change for a speaker
-  const handleVolumeChange = useCallback(
-    (entityId: string, volume: number, isMainSpeaker: boolean) => {
-      // Use setVolume utility, with sync if this is the main speaker
-      setVolume(entityId, volume, isMainSpeaker && syncMainSpeaker);
-    },
-    [syncMainSpeaker]
-  );
+  const handleToggleOn = useCallback((entityId: string) => {
+    getHass().callService("media_player", "turn_on", { entity_id: entityId });
+  }, []);
 
   const renderSpeaker = (
     speaker: GroupSpeaker,
     _index: number,
     _groupedSpeakers: GroupSpeaker[]
   ) => {
-    const { entity_id, name, volume, muted, isGrouped, isMainSpeaker } =
+    const { entity_id, name, volume, muted, isGrouped, isMainSpeaker, isOff } =
       speaker;
     const isLoading = playersLoading.includes(entity_id);
     const isDisabled = isLoading || (isMainSpeaker && !isGrouped);
 
     return (
-      <SpeakerRow key={entity_id}>
-        <NameCell $isMainSpeaker={isMainSpeaker}>{name}</NameCell>
-        <ButtonCell>
-          <IconButton
-            size="x-small"
-            onClick={() => handleToggleMute(entity_id, muted)}
-            icon={getVolumeIcon(volume, muted)}
-          />
-        </ButtonCell>
-        <ControlsCell>
-          <ControlsContainer>
-            <Slider
-              min={0}
-              max={1}
-              step={0.01}
-              value={volume}
-              sliderSize="small"
-              onChange={value =>
-                handleVolumeChange(entity_id, value, isMainSpeaker)
+      <tr css={styles.speakerRow} key={entity_id}>
+        <td
+          css={[styles.nameCell, isMainSpeaker && styles.nameCellMainSpeaker]}
+        >
+          {name}
+        </td>
+        {isOff ? (
+          <td css={styles.buttonCell}>
+            <IconButton
+              size="x-small"
+              onClick={() => handleToggleOn(entity_id)}
+              icon="mdi:power"
+              disabled={isDisabled}
+            />
+          </td>
+        ) : (
+          <td css={styles.buttonCell}>
+            <IconButton
+              size="x-small"
+              onClick={() => handleToggleMute(entity_id, muted)}
+              icon={getVolumeIcon(volume, muted)}
+            />
+          </td>
+        )}
+        <td css={styles.controlsCell}>
+          <div css={styles.controlsContainer}>
+            <VolumeSlider
+              entityId={entity_id}
+              syncGroupChildren={isMainSpeaker && syncMainSpeaker}
+              sliderSize={"small"}
+              showStepButtons={
+                config.options?.show_volume_step_buttons ?? false
+              }
+              useVolumeUpDownForSteps={
+                config.options?.use_volume_up_down_for_step_buttons ?? false
               }
             />
-          </ControlsContainer>
-        </ControlsCell>
-        <ButtonCell>
+          </div>
+        </td>
+        <td css={styles.buttonCell}>
           <IconButton
             size="x-small"
             onClick={() => handleToggleGroup(entity_id, isGrouped)}
             icon={isGrouped ? "mdi:close" : "mdi:plus"}
             disabled={isDisabled}
           />
-        </ButtonCell>
-      </SpeakerRow>
+        </td>
+      </tr>
     );
   };
 
   return (
-    <SpeakersList>
-      <SpeakersTable>
+    <div className={className}>
+      <table css={styles.speakersTable}>
         <tbody>
           {availableSpeakers
             .filter(speaker => speaker.isGrouped)
@@ -196,7 +239,7 @@ export const GroupVolumeController = ({
               renderSpeaker(speaker, index, filteredSpeakers)
             )}
         </tbody>
-      </SpeakersTable>
-    </SpeakersList>
+      </table>
+    </div>
   );
 };

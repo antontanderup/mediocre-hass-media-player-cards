@@ -1,4 +1,3 @@
-import { FC } from "preact/compat";
 import { InteractionConfig } from "@types";
 // import { ActionConfigurator } from "./ActionConfigurator";
 import { HomeAssistant } from "@types";
@@ -10,10 +9,10 @@ export type InteractionsPickerProps = {
   onChange: (value?: InteractionConfig) => void;
 };
 
-export const InteractionsPicker: FC<InteractionsPickerProps> = ({
+export const InteractionsPicker = ({
   hass,
   value = {},
   onChange,
-}) => {
+}: InteractionsPickerProps) => {
   return <ActionsConfigurator hass={hass} value={value} onChange={onChange} />;
 };

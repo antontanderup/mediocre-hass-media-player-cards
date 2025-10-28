@@ -1,14 +1,19 @@
-# Mediocre Media Player Cards
+# 🎵 Mediocre Media Player Cards
 
-<img src="https://github.com/user-attachments/assets/ac81afa5-205f-430b-ba3a-d488e329f112" width="500px" alt="Mediocre Media Player Card Screenshot 1" />
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+[![GitHub Release](https://img.shields.io/github/v/release/antontanderup/mediocre-hass-media-player-cards?color=blue)](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/antontanderup/mediocre-hass-media-player-cards/total)](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
+[![Chat on Oase](<https://img.shields.io/badge/Chat-Oase-lightblue?color=rgb(74%20196%20169)>)](https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180)
 
-A bunch of custom media player cards for Home Assistant that let you group speakers and do some custom actions.
 
-> **Note:** This is a prerelease version, so you might encounter some bugs.
+Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more. A visual editor is available for all media player card configuration options.
+
+> **Note:** This is a pretty new project, so you might encounter some bugs. If you do, please do report them.
 
 ## Installation
 
-### HACS
+<details>
+<summary>HACS</summary>
 
 1. Open HACS in your Home Assistant instance
 2. Click the three dots in the top right corner
@@ -19,7 +24,10 @@ A bunch of custom media player cards for Home Assistant that let you group speak
 7. Search for "Mediocre Hass Media Player Cards"
 8. Install it and reload your browser
 
-### Manual Installation
+</details>
+
+<details>
+<summary>Manual Installation</summary>
 
 1. Grab the latest release from the [releases page](https://github.com/antontanderup/mediocre-hass-media-player-cards/releases)
 2. Copy the JavaScript file to your `www/` directory in your Home Assistant setup
@@ -27,131 +35,60 @@ A bunch of custom media player cards for Home Assistant that let you group speak
 
 ```yaml
 resources:
-  - url: /local/mediocre-media-player-card.js
-    type: module
+	- url: /local/mediocre-media-player-card.js
+		type: module
 ```
 
 4. Refresh your browser
 
-## Available Cards
+</details>
 
-### Mediocre Media Player Card
 
-A standard-sized media player card with speaker grouping support that fits nicely in dashboards.
+### 🎚️ Mediocre Media Player Card
 
-<img src="https://github.com/user-attachments/assets/2178b5d4-ea8f-46cf-9737-149e1da935c5" width="500px" alt="Mediocre Media Player Card Screenshot 3" />
-<img src="https://github.com/user-attachments/assets/dd94d59e-258e-4195-9b9c-4e5b2b9ae9a1" width="500px" alt="Mediocre Media Player Card Screenshot 2" />
+A standard-sized media player card for a single entity. Supports grouping, custom actions, and Music Assistant integration.
 
-#### Configuration
+<img width="396" height="135" alt="Mediocre Media Player Card Screenshot" src="https://github.com/user-attachments/assets/443cbfb0-7cf9-4941-b909-360693266aab" />
 
-```yaml
-type: "custom:mediocre-media-player-card"
-entity_id: media_player.living_room_speaker
-tap_opens_popup: true
-speaker_group:
-  entities:
-    - media_player.kitchen_speaker
-    - media_player.bedroom_speaker
-```
+→ [Read full documentation](./docs/mediocre-media-player-card.md)
 
-### Mediocre Massive Media Player Card
+---
 
-A full-sized media player card that can be used in various modes. It provides an immersive media control experience with all features at a glance and can be displayed as a regular card (mode: card), embedded in other cards (mode: in-card), or used in panel view (mode: panel).
+### 🖼️ Mediocre Massive Media Player Card
 
-<img src="https://github.com/user-attachments/assets/8340e509-c7af-4a10-bbb1-8b8086a87e57" width="500px" alt="Mediocre Massive Media Player Card Screenshot" />
+A full-sized, feature-rich card for a single media player. Includes all features of the standard card, plus multiple display modes.
 
-#### Configuration
+<img width="396" height="693" alt="Mediocre Massive Media Player Card Screenshot" src="https://github.com/user-attachments/assets/69afbcef-356a-460e-9779-2102f5747695" />
 
-```yaml
-type: "custom:mediocre-massive-media-player-card"
-entity_id: media_player.living_room_speaker
-mode: card # Options: card, in-card, panel
-speaker_group:
-  entities:
-    - media_player.kitchen_speaker
-    - media_player.bedroom_speaker
-```
+→ [Read full documentation](./docs/mediocre-massive-media-player-card.md)
 
-## Configuration Options
+---
 
-Both cards support these options:
+### 🔊 Mediocre Multi Media Player Card
 
-| Option                    | Type   | Default  | Description                                                      |
-| ------------------------- | ------ | -------- | ---------------------------------------------------------------- |
-| `entity_id`               | string | Required | The entity ID of the media player                                |
-| `action`                  | object | -        | Configuration for tap actions                                    |
-| `speaker_group`           | object | -        | Configuration for speaker grouping                               |
-| `speaker_group.entity_id` | string | -        | Entity ID of the main speaker if different from the media player |
-| `speaker_group.entities`  | array  | -        | List of entity IDs that can be grouped with the main speaker     |
-| `custom_buttons`          | array  | -        | List of custom buttons to display                                |
+Control and view multiple media players at once. Great for dashboards with several speakers or grouped devices.
 
-The Mediocre Media Player Card has additional options:
+<img width="396" height="779" alt="image" src="https://github.com/user-attachments/assets/ee38fc29-8516-404e-bd72-0781bb9696b4" />
 
-| Option            | Type    | Default | Description                                                            |
-| ----------------- | ------- | ------- | ---------------------------------------------------------------------- |
-| `tap_opens_popup` | boolean | `false` | When set to true, tapping the card opens a popup with the massive card |
+→ [Read full documentation](./docs/mediocre-multi-media-player-card.md)
 
-The Mediocre Massive Media Player Card has additional options:
+---
 
-| Option | Type   | Default | Description                                                                                            |
-| ------ | ------ | ------- | ------------------------------------------------------------------------------------------------------ |
-| `mode` | string | `card`  | Display mode: `card` (regular HA card), `in-card` (no card wrapper), or `panel` (panel optimized view) |
+### 🎛️ Mediocre Chip Media Player Group Card
 
-> **Note:** When `tap_opens_popup` is set to true on the regular Media Player Card, it will display the Massive Media Player Card in a popup.
+A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for putting under your media player card of choice.
 
-### Action Configuration
+<img src="https://github.com/user-attachments/assets/96d2691c-e636-432a-87d9-f7dc33570ea6" width="400px" alt="Mediocre Chip Media Player Group Card Screenshot" />
 
-```yaml
-action:
-  tap_action:
-    action: navigate
-    navigation_path: /media-player/living-room
-```
+→ [Read full documentation](./docs/mediocre-chip-media-player-group-card.md)
 
-### Custom Buttons
+---
 
-You can add custom buttons with specific actions:
+## More Features & Documentation
 
-```yaml
-custom_buttons:
-  - icon: mdi:playlist-music
-    name: Playlists
-    tap_action:
-      action: navigate
-      navigation_path: /media-player/playlists
-  - icon: mdi:equalizer
-    name: Equalizer
-    tap_action:
-      action: perform-action
-      perform_action: media_player.open_equalizer
-      target:
-        entity_id: media_player.living_room_speaker
-      data: {}
-```
-
-### Mediocre Chip Media Player Group Card
-
-A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for dashboards where space is limited but you need quick access to speaker controls.
-
-<img src="https://github.com/user-attachments/assets/96d2691c-e636-432a-87d9-f7dc33570ea6" width="500px" alt="Mediocre Chip Media Player Group Card Screenshot" />
-
-#### Configuration
-
-```yaml
-type: "custom:mediocre-chip-media-player-group-card"
-entity_id: media_player.living_room_speaker
-entities:
-  - media_player.kitchen_speaker
-  - media_player.bedroom_speaker
-  - media_player.bathroom_speaker
-```
-
-#### Configuration Options
-
-| Option      | Type   | Default  | Description                                                  |
-| ----------- | ------ | -------- | ------------------------------------------------------------ |
-| `entity_id` | string | Required | The entity ID of the main media player to group others with  |
-| `entities`  | array  | Required | List of entity IDs that can be grouped with the main speaker |
+- [Universal Media Player integration](./docs/README_UMP.md)
+- [Search functionality](./docs/README_SEARCH.md)
+- [Custom Styles](./docs/README_STYLING.md)
 
 ## Troubleshooting
 

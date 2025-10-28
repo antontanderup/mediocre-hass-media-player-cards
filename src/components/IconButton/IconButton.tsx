@@ -1,8 +1,10 @@
-import { ButtonHTMLAttributes, JSX } from "preact/compat";
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { ButtonHTMLAttributes, JSX, forwardRef } from "preact/compat";
+import { css } from "@emotion/react";
+import { Spinner } from "@components";
+import { theme } from "@constants";
 
 export type ButtonSize =
+  | "xxx-small"
   | "xx-small"
   | "x-small"
   | "small"
@@ -11,88 +13,106 @@ export type ButtonSize =
   | "x-large"
   | "xx-large";
 
-export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type IconButtonProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "ref"
+> & {
   icon: string;
   size?: ButtonSize;
   disabled?: boolean;
+  selected?: boolean;
   loading?: boolean;
   renderLongPressIndicator?: () => JSX.Element | null;
 };
 
-const spinAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const Button = styled.button<{
-  $disabled: boolean;
-  $size: ButtonSize;
-  $loading: boolean;
-}>`
-  position: relative;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-  padding: ${props => (props.$size === "xx-small" ? 0 : 4)}px;
-  min-width: ${props => getButtonSize(props.$size)}px;
-  aspect-ratio: 1;
-  color: ${props =>
-    props.disabled
-      ? "var(--disabled-text-color, #999)"
-      : "var(--primary-text-color, #333)"};
-
-  &:hover {
-    background-color: var(--secondary-background-color, rgba(0, 0, 0, 0.05));
-  }
-
-  &:active {
-    background-color: var(--divider-color, rgba(0, 0, 0, 0.1));
-  }
-  > ha-icon {
-    --mdc-icon-size: ${props => getButtonSize(props.$size)}px;
-    width: ${props => getButtonSize(props.$size)}px;
-    display: flex;
-    pointer-events: none;
-    animation: ${spinAnimation} 1s linear infinite;
-    ${props => (!props.$loading ? "animation: none;" : "")};
-  }
-`;
-
-export const IconButton = ({
-  icon,
-  size = "medium",
-  disabled = false,
-  loading = false,
-  className,
-  renderLongPressIndicator,
-  ...buttonProps
-}: IconButtonProps) => {
-  return (
-    <Button
-      disabled={disabled}
-      $disabled={disabled}
-      $size={size}
-      $loading={loading}
-      className={className}
-      {...buttonProps}
-    >
-      {loading ? <ha-icon icon="mdi:loading" /> : <ha-icon icon={icon} />}
-      {renderLongPressIndicator && renderLongPressIndicator()}
-    </Button>
-  );
+const styles = {
+  root: css({
+    position: "relative",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%",
+    transition: "background-color 0.2s",
+    padding: 4,
+    minWidth: "var(--mmpc-icon-button-size)",
+    aspectRatio: "1",
+    color: theme.colors.onCard,
+    touchAction: "manipulation", // iOS fixes for stuck hover states
+    "-webkit-tap-highlight-color": "transparent",
+    "@media (hover: hover)": {
+      "&:hover": {
+        backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.2))",
+      },
+      "&:active": {
+        backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
+      },
+    },
+    "> ha-icon": {
+      "--mdc-icon-size": "var(--mmpc-icon-button-size)",
+      width: "var(--mmpc-icon-button-size)",
+      display: "flex",
+      pointerEvents: "none",
+    },
+  }),
+  rootSelected: css({
+    backgroundColor: "var(--divider-color, rgba(0, 0, 0, 0.1))",
+    margin: -4,
+    padding: 8,
+  }),
+  rootDisabled: css({
+    color: "var(--disabled-text-color, #999)",
+  }),
+  rootXxsmall: css({
+    padding: 0,
+  }),
 };
+
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+  (
+    {
+      icon,
+      size = "medium",
+      disabled = false,
+      loading = false,
+      selected = false,
+      style = {},
+      className,
+      renderLongPressIndicator,
+      ...buttonProps
+    },
+    ref
+  ) => {
+    return (
+      <button
+        disabled={disabled}
+        css={[
+          styles.root,
+          disabled && styles.rootDisabled,
+          size === "xx-small" && styles.rootXxsmall,
+          selected && styles.rootSelected,
+        ]}
+        style={{
+          "--mmpc-icon-button-size": `${getButtonSize(size)}px`,
+          ...(typeof style === "object" ? style : {}),
+        }}
+        className={className}
+        {...buttonProps}
+        ref={ref}
+      >
+        {loading ? <Spinner size={size} /> : <ha-icon icon={icon} />}
+        {renderLongPressIndicator && renderLongPressIndicator()}
+      </button>
+    );
+  }
+);
 
 const getButtonSize = (size: ButtonSize) => {
   switch (size) {
+    case "xxx-small":
+      return 8;
     case "xx-small":
       return 12;
     case "x-small":
