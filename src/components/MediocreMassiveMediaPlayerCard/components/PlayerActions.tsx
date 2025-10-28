@@ -13,6 +13,7 @@ import {
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
 import { getHass } from "@utils";
+import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -96,11 +97,18 @@ export const PlayerActions = () => {
   const hasSearch = hasMaSearch || search?.enabled;
 
   const [selected, setSelected] = useState<
-    "volume" | "speaker-grouping" | "custom-buttons" | "search"
-  >();
+    | "volume"
+    | "speaker-grouping"
+    | "custom-buttons"
+    | "search"
+    | "media-browser"
+    | undefined
+  >("media-browser");
 
   const toggleSelected = useCallback(
-    (key: "volume" | "speaker-grouping" | "custom-buttons") => {
+    (
+      key: "volume" | "speaker-grouping" | "custom-buttons" | "media-browser"
+    ) => {
       setSelected(selected === key ? undefined : key);
     },
     [selected]
@@ -128,6 +136,17 @@ export const PlayerActions = () => {
         padding="16px 0px 16px 0px"
       >
         <SpeakerGrouping />
+      </Modal>
+      <Modal
+        title="Media Browser"
+        isOpen={selected === "media-browser"}
+        onClose={() => setSelected(undefined)}
+        padding="0px"
+      >
+        <MediaBrowser
+          entity_id={ma_entity_id ?? entity_id}
+          horizontalPadding={16}
+        />
       </Modal>
       <Modal
         title="Search"
