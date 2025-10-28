@@ -11,16 +11,16 @@ export type MediaBrowserProps = {
 };
 
 export enum MediaContentType {
-  Favorites = "Favorites",
-  Artists = "Artists",
-  Albums = "Albums",
-  Tracks = "Tracks",
-  Playlists = "Playlists",
-  Genres = "Genres",
-  NewMusic = "New Music",
-  AlbumArtists = "Album Artists",
-  Apps = "Apps",
-  Radios = "Radios",
+  Favorites = "favorites",
+  Artists = "artists",
+  Albums = "albums",
+  Tracks = "tracks",
+  Playlists = "playlists",
+  Genres = "genres",
+  NewMusic = "new music",
+  AlbumArtists = "album artists",
+  Apps = "apps",
+  Radios = "radios",
   App = "app",
   Track = "track",
 }
@@ -99,7 +99,6 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
   const [isFetching, setIsFetching] = useState(false);
   const [chunkSize, setChunkSize] = useState(4);
 
-
   const items: MediaBrowserItem[][] = useMemo(() => {
     const result: MediaBrowserItem[][] = [];
     const groupedByType: Record<"track" | "expandable", MediaBrowserItem[]> = {
@@ -110,7 +109,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
     // Group items by media_content_type
     mediaBrowserItems.forEach(item => {
       const isTrack = item.media_content_type === MediaContentType.Tracks || item.media_class === MediaClass.Track;
-      const type = isTrack ? "track" : "expandable";
+      const type = isTrack && !(history.length === 0) ? "track" : "expandable";
       if (!groupedByType[type]) {
         groupedByType[type] = [];
       }
@@ -121,7 +120,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
     Object.entries(groupedByType).forEach(([mediaType, items]) => {
       // Add items based on media_class
       if (
-        mediaType === "track"
+        mediaType === "track" && history.length !== 0
       ) {
         // Tracks are added individually
         items.forEach(item => {
@@ -228,6 +227,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
   );
 
   const renderTrack = (item: MediaBrowserItem) => {
+    if (history.length === 0) return renderFolder(item);
     return (
       <MediaTrack
         key={item.media_content_id + history.length}
@@ -326,6 +326,30 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
 
 const getItemMdiIcon = (item: MediaBrowserItem) => {
   if (item.thumbnail) return null;
+  // this function is a little silly because it seems like there's no real standard way to declare these
+  
+  switch (item.media_content_type) {
+    case MediaContentType.Albums:
+      return "mdi:album";
+    case MediaContentType.Artists:
+      return "mdi:account-music";
+    case MediaContentType.Tracks:
+      return "mdi:music-note";
+    case MediaContentType.Playlists:
+      return "mdi:playlist-music";
+    case MediaContentType.Genres:
+      return "mdi:music-box-multiple";
+    case MediaContentType.App:
+      return "mdi:application";
+    case MediaContentType.Favorites:
+      return "mdi:star"
+    case MediaContentType.NewMusic:
+    case MediaContentType.AlbumArtists:
+    case MediaContentType.Radios:
+    default:
+      break;
+  }
+
   switch (item.media_class) {
     case MediaClass.Album:
       return "mdi:album";
