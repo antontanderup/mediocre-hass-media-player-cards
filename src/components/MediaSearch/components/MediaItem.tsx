@@ -49,6 +49,7 @@ const styles = {
 
 export type MediaItemProps = {
   imageUrl?: string | null;
+  mdiIcon?: string | null;
   name: string;
   artist?: string;
   onClick: () => void;
@@ -56,6 +57,7 @@ export type MediaItemProps = {
 
 export const MediaItem = ({
   imageUrl,
+  mdiIcon,
   name,
   artist,
   onClick,
@@ -79,6 +81,7 @@ export const MediaItem = ({
       <MediaImage
         css={styles.mediaImage}
         imageUrl={imageUrl}
+        mdiIcon={mdiIcon}
         loading={loading}
         done={done}
       />

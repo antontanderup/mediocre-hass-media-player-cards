@@ -33,6 +33,7 @@ export enum MediaClass {
   Playlist = "playlist",
   Genre = "genre",
   App = "app",
+  Directory = "directory",
 }
 
 const styles = {
@@ -235,6 +236,7 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
         key={item.media_content_id + history.length}
         name={item.title}
         imageUrl={item.thumbnail}
+        mdiIcon={getItemMdiIcon(item)}
         onClick={async () => onMediaBrowserItemClick(item)}
       />);
   };
@@ -248,26 +250,8 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
       return (
         <MediaGrid numberOfColumns={chunkSize}>
           {item.map(mediaItem => {
-            const handleClick = async () => {
-              await onMediaBrowserItemClick(mediaItem);
-            };
-
             return (item[0].media_class === MediaClass.Track || item[0].media_content_type === MediaContentType.Track) &&
-              mediaItem.media_content_type !== "favorite" ? (
-              <MediaTrack
-                key={mediaItem.media_content_id}
-                imageUrl={mediaItem.thumbnail}
-                title={mediaItem.title}
-                onClick={handleClick}
-              />
-            ) : (
-              <MediaItem
-                key={mediaItem.media_content_id}
-                imageUrl={mediaItem.thumbnail}
-                name={mediaItem.title}
-                onClick={handleClick}
-              />
-            );
+              mediaItem.media_content_type !== "favorite" ? renderTrack(mediaItem) : renderFolder(mediaItem);
           })}
         </MediaGrid>
       );
@@ -275,12 +259,12 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
   };
 
   return (
-        <div
-          css={searchStyles.root}
-          style={{
-            "--mmpc-search-padding": `${horizontalPadding}px`,
-          }}
-        >
+    <div
+      css={searchStyles.root}
+      style={{
+        "--mmpc-search-padding": `${horizontalPadding}px`,
+      }}
+    >
       <VirtualList
         key={history[history.length - 1]?.media_content_id || "root"}
         onLayout={({ width }) => {
@@ -333,7 +317,6 @@ export const MediaBrowser = ({ entity_id, horizontalPadding }: MediaBrowserProps
 
 const getItemMdiIcon = (item: MediaBrowserItem) => {
   if (item.thumbnail) return null;
-
   switch (item.media_class) {
     case MediaClass.Album:
       return "mdi:album";
@@ -347,7 +330,9 @@ const getItemMdiIcon = (item: MediaBrowserItem) => {
       return "mdi:music-box-multiple";
     case MediaClass.App:
       return "mdi:application";
+    case MediaClass.Directory:
+      return "mdi:folder";
     default:
-      return "mdi:folder-music";
+      return "mdi:folder";
   }
 };
