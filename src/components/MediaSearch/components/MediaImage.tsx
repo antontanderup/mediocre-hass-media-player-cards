@@ -46,6 +46,9 @@ const styles = {
     width: getIconSize("x-small") + 4,
     height: getIconSize("x-small") + 4,
   }),
+  iconNoBackground: css({
+    backgroundColor: "transparent",
+  }),
   done: css({
     animation: `${fadeInOut} 3s forwards`,
   }),
@@ -82,7 +85,7 @@ export const MediaImage = ({
         />
       )}
       {!imageUrl && mdiIcon && !error && (
-        <Icon icon={mdiIcon} size="medium" css={styles.icon} />
+        <Icon icon={mdiIcon} size="medium" css={[styles.icon, styles.iconNoBackground]} />
       )}
       {(!!error && !imageUrl && !mdiIcon) && (
         <Icon icon="mdi:image-broken-variant" size="small" />
