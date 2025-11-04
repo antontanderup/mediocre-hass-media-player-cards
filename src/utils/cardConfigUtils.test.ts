@@ -34,6 +34,10 @@ describe("cardConfigUtils", () => {
           columns: "full",
           rows: 2,
         },
+        media_browser: {
+          enabled: true,
+          entity_id: "media_player.browser",
+        },
       };
 
       const result = getDefaultValuesFromConfig(configWithGridOptions);
@@ -42,12 +46,19 @@ describe("cardConfigUtils", () => {
         columns: "full",
         rows: 2,
       });
+      expect(result.media_browser).toEqual({
+        enabled: true,
+        entity_id: "media_player.browser",
+      });
     });
 
     it("should preserve grid_options as undefined when not present", () => {
       const configWithoutGridOptions: MediocreMediaPlayerCardConfig = {
         type: "custom:mediocre-media-player-card",
         entity_id: "media_player.test",
+        media_browser: {
+          enabled: false,
+        },
       };
 
       const result = getDefaultValuesFromConfig(configWithoutGridOptions);
@@ -59,6 +70,7 @@ describe("cardConfigUtils", () => {
       const minimalConfig: MediocreMediaPlayerCardConfig = {
         type: "custom:mediocre-media-player-card",
         entity_id: "media_player.test",
+        // media_browser omitted
       };
 
       const result = getDefaultValuesFromConfig(minimalConfig);
@@ -89,6 +101,7 @@ describe("cardConfigUtils", () => {
         use_volume_up_down_for_step_buttons: false,
       });
       expect(result.grid_options).toBeUndefined();
+      expect(result.media_browser).toEqual({ enabled: false, entity_id: null });
     });
 
     it("should preserve existing values when present", () => {
@@ -122,6 +135,10 @@ describe("cardConfigUtils", () => {
           use_volume_up_down_for_step_buttons: true,
         },
         grid_options: { columns: "full" },
+        media_browser: {
+          enabled: true,
+          entity_id: "media_player.browser",
+        },
       };
 
       const result = getDefaultValuesFromConfig(fullConfig);
@@ -140,6 +157,10 @@ describe("cardConfigUtils", () => {
           columns: "full",
           rows: 2,
         },
+        media_browser: {
+          enabled: true,
+          entity_id: "media_player.browser",
+        },
       };
 
       const result = getDefaultValuesFromMassiveConfig(configWithGridOptions);
@@ -155,6 +176,9 @@ describe("cardConfigUtils", () => {
         type: "custom:mediocre-massive-media-player-card",
         entity_id: "media_player.test",
         mode: "card",
+        media_browser: {
+          enabled: false,
+        },
       };
 
       const result = getDefaultValuesFromMassiveConfig(
@@ -171,6 +195,9 @@ describe("cardConfigUtils", () => {
         entity_id: "media_player.test",
         mode: "card",
         visibility: [{ condition: "user", users: ["user1", "user2"] }],
+        media_browser: {
+          enabled: true,
+        },
       };
 
       const result = getDefaultValuesFromMassiveConfig(configWithVisibility);
@@ -178,6 +205,7 @@ describe("cardConfigUtils", () => {
       expect(result.visibility).toEqual([
         { condition: "user", users: ["user1", "user2"] },
       ]);
+      expect(result.media_browser).toEqual({ enabled: true, entity_id: null });
     });
 
     it("should set default values for all fields", () => {
@@ -185,6 +213,7 @@ describe("cardConfigUtils", () => {
         type: "custom:mediocre-massive-media-player-card",
         entity_id: "media_player.test",
         mode: "panel",
+        // media_browser omitted
       };
 
       const result = getDefaultValuesFromMassiveConfig(minimalConfig);
@@ -211,6 +240,7 @@ describe("cardConfigUtils", () => {
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
       });
+      expect(result.media_browser).toEqual({ enabled: false, entity_id: null });
       expect(result.grid_options).toBeUndefined();
     });
   });
@@ -232,12 +262,14 @@ describe("cardConfigUtils", () => {
           always_show_custom_buttons: false,
         },
         grid_options: {},
+        media_browser: { enabled: true },
       };
 
       const result = getSimpleConfigFromFormValues(configWithEmptyGridOptions);
 
       expect(result).toHaveProperty("grid_options");
       expect(result.grid_options).toEqual({});
+      expect(result.media_browser).toEqual({ enabled: true });
     });
 
     it("should preserve grid_options with values", () => {
@@ -259,6 +291,7 @@ describe("cardConfigUtils", () => {
           columns: "full",
           rows: 2,
         },
+        media_browser: { enabled: false },
       };
 
       const result = getSimpleConfigFromFormValues(configWithGridOptions);
@@ -285,6 +318,7 @@ describe("cardConfigUtils", () => {
           always_show_power_button: false,
           always_show_custom_buttons: false,
         },
+        media_browser: { enabled: false },
       };
 
       const result = getSimpleConfigFromFormValues(configWithoutGridOptions);
@@ -308,6 +342,7 @@ describe("cardConfigUtils", () => {
           always_show_custom_buttons: false,
         },
         grid_options: { columns: "full" },
+        media_browser: { enabled: true },
       };
 
       const result = getSimpleConfigFromFormValues(configWithFalsyValues);
@@ -317,6 +352,7 @@ describe("cardConfigUtils", () => {
         type: "custom:mediocre-media-player-card",
         entity_id: "media_player.test",
         grid_options: { columns: "full" },
+        media_browser: { enabled: true },
       });
     });
   });
@@ -335,6 +371,7 @@ describe("cardConfigUtils", () => {
         custom_buttons: [],
         options: { always_show_power_button: false },
         grid_options: {},
+        media_browser: { enabled: true },
       };
 
       const result = getSimpleConfigFromMassiveFormValues(
@@ -343,6 +380,7 @@ describe("cardConfigUtils", () => {
 
       expect(result).toHaveProperty("grid_options");
       expect(result.grid_options).toEqual({});
+      expect(result.media_browser).toEqual({ enabled: true });
     });
 
     it("should preserve grid_options with values", () => {
@@ -361,6 +399,7 @@ describe("cardConfigUtils", () => {
           columns: "full",
           rows: 2,
         },
+        media_browser: { enabled: false },
       };
 
       const result = getSimpleConfigFromMassiveFormValues(
@@ -372,6 +411,7 @@ describe("cardConfigUtils", () => {
         columns: "full",
         rows: 2,
       });
+  
     });
 
     it("should remove falsy values but preserve grid_options", () => {
@@ -387,6 +427,7 @@ describe("cardConfigUtils", () => {
         custom_buttons: [],
         options: { always_show_power_button: false },
         grid_options: { columns: "full" },
+        media_browser: { enabled: true },
       };
 
       const result = getSimpleConfigFromMassiveFormValues(
@@ -399,6 +440,7 @@ describe("cardConfigUtils", () => {
         entity_id: "media_player.test",
         mode: "card",
         grid_options: { columns: "full" },
+        media_browser: { enabled: true },
       });
     });
   });

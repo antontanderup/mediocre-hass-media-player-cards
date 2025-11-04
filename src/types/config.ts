@@ -44,6 +44,10 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
     "media_types?": searchMediaTypeSchema.array(),
   },
+  "media_browser?": {
+    "enabled?": "boolean | null", // Enables media browser functionality
+    "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
+  },
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
@@ -82,6 +86,10 @@ export const MediocreMultiMediaPlayer = type({
     "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
     "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
     "media_types?": searchMediaTypeSchema.array(),
+  },
+  "media_browser?": {
+    "enabled?": "boolean | null", // Enables media browser functionality
+    "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
   },
 });
 
