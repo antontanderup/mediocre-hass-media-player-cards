@@ -13,6 +13,7 @@ import {
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
 import { getHass } from "@utils";
+import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -83,6 +84,7 @@ export const PlayerActions = () => {
     speaker_group,
     ma_entity_id,
     search,
+    media_browser,
     ma_favorite_button_entity_id,
     options: { always_show_power_button: alwaysShowPowerButton } = {},
   } = config;
@@ -95,12 +97,21 @@ export const PlayerActions = () => {
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
 
+  const hasMediaBrowser = !!media_browser?.enabled;
+
   const [selected, setSelected] = useState<
-    "volume" | "speaker-grouping" | "custom-buttons" | "search"
+    | "volume"
+    | "speaker-grouping"
+    | "custom-buttons"
+    | "search"
+    | "media-browser"
+    | undefined
   >();
 
   const toggleSelected = useCallback(
-    (key: "volume" | "speaker-grouping" | "custom-buttons") => {
+    (
+      key: "volume" | "speaker-grouping" | "custom-buttons" | "media-browser"
+    ) => {
       setSelected(selected === key ? undefined : key);
     },
     [selected]
@@ -128,6 +139,17 @@ export const PlayerActions = () => {
         padding="16px 0px 16px 0px"
       >
         <SpeakerGrouping />
+      </Modal>
+      <Modal
+        title="Media Browser"
+        isOpen={selected === "media-browser"}
+        onClose={() => setSelected(undefined)}
+        padding="0px"
+      >
+        <MediaBrowser
+          entity_id={config.media_browser?.entity_id ?? config.entity_id}
+          horizontalPadding={16}
+        />
       </Modal>
       <Modal
         title="Search"
@@ -195,6 +217,13 @@ export const PlayerActions = () => {
           size="small"
           icon={"mdi:magnify"}
           onClick={() => setSelected("search")}
+        />
+      )}
+      {hasMediaBrowser && (
+        <IconButton
+          size="small"
+          icon={"mdi:folder-music"}
+          onClick={() => toggleSelected("media-browser")}
         />
       )}
       {(!isOn || alwaysShowPowerButton) && (

@@ -46,6 +46,9 @@ const styles = {
     width: getIconSize("x-small") + 4,
     height: getIconSize("x-small") + 4,
   }),
+  iconNoBackground: css({
+    backgroundColor: "transparent",
+  }),
   done: css({
     animation: `${fadeInOut} 3s forwards`,
   }),
@@ -53,6 +56,7 @@ const styles = {
 
 export type MediaImageProps = {
   imageUrl?: string | null;
+  mdiIcon?: string | null;
   loading?: boolean;
   done?: boolean;
   className?: string;
@@ -60,6 +64,7 @@ export type MediaImageProps = {
 
 export const MediaImage = ({
   imageUrl,
+  mdiIcon,
   loading,
   done,
   className,
@@ -79,7 +84,14 @@ export const MediaImage = ({
           onError={() => setError(true)}
         />
       )}
-      {(!!error || !imageUrl) && (
+      {!imageUrl && mdiIcon && !error && (
+        <Icon
+          icon={mdiIcon}
+          size="medium"
+          css={[styles.icon, styles.iconNoBackground]}
+        />
+      )}
+      {!!error && !imageUrl && !mdiIcon && (
         <Icon icon="mdi:image-broken-variant" size="small" />
       )}
       {loading && <Spinner css={styles.icon} size="x-small" />}

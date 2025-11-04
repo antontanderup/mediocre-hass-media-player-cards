@@ -445,6 +445,55 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         </FormGroup>
                       </SubForm>
                       <SubForm
+                        title="Media Browser (optional)"
+                        error={getSubformError(
+                          `media_players[${index}].media_browser`
+                        )}
+                      >
+                        <FormGroup>
+                          <form.Field
+                            name={`media_players[${index}].media_browser.enabled`}
+                          >
+                            {field => (
+                              <ToggleContainer>
+                                <Toggle
+                                  type="checkbox"
+                                  id={`media_players[${index}].media_browser.enabled`}
+                                  checked={field.state.value ?? false}
+                                  onChange={e =>
+                                    field.handleChange(
+                                      (e.target as HTMLInputElement).checked
+                                    )
+                                  }
+                                />
+                                <ToggleLabel
+                                  htmlFor={`media_players[${index}].media_browser.enabled`}
+                                >
+                                  Enable Media Browser
+                                </ToggleLabel>
+                              </ToggleContainer>
+                            )}
+                          </form.Field>
+
+                          <form.Field
+                            name={`media_players[${index}].media_browser.entity_id`}
+                          >
+                            {field => (
+                              <EntityPicker
+                                hass={hass}
+                                value={field.state.value ?? ""}
+                                onChange={value => {
+                                  field.handleChange(value ?? null);
+                                }}
+                                label="Media Browser target (Optional, if not set, will use the main entity_id)"
+                                error={getFieldError(field)}
+                                domains={["media_player"]}
+                              />
+                            )}
+                          </form.Field>
+                        </FormGroup>
+                      </SubForm>
+                      <SubForm
                         title="Custom Buttons (optional)"
                         error={getSubformError(
                           `media_players[${index}].custom_buttons`

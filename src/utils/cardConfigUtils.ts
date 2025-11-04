@@ -24,6 +24,10 @@ export const getDefaultValuesFromConfig = (
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
   },
+  media_browser: {
+    enabled: config?.media_browser?.enabled ?? false,
+    entity_id: config?.media_browser?.entity_id ?? null,
+  },
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
@@ -63,6 +67,10 @@ export const getDefaultValuesFromMassiveConfig = (
     show_favorites: config?.search?.show_favorites ?? false,
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
+  },
+  media_browser: {
+    enabled: config?.media_browser?.enabled ?? false,
+    entity_id: config?.media_browser?.entity_id ?? null,
   },
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
@@ -156,6 +164,14 @@ export const getSimpleConfigFromFormValues = (
     delete config.options;
   }
 
+  if (config.media_browser?.entity_id === null) {
+    delete config.media_browser.entity_id;
+  }
+
+  if (config.media_browser?.enabled === false) {
+    delete config.media_browser;
+  }
+
   // Always preserve grid_options and visibility as theyr'e Home Assistant configurations
   // that we should not mess with
 
@@ -227,6 +243,14 @@ export const getSimpleConfigFromMassiveFormValues = (
 
   if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
+  }
+
+  if (config.media_browser?.entity_id === null) {
+    delete config.media_browser.entity_id;
+  }
+
+  if (config.media_browser?.enabled === false) {
+    delete config.media_browser;
   }
 
   // Always preserve grid_options and visibility as theyr'e Home Assistant configurations

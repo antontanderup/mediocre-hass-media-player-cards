@@ -1,8 +1,7 @@
 import { css, keyframes } from "@emotion/react";
 import { Fragment } from "preact";
 import { forwardRef, useImperativeHandle } from "preact/compat";
-import type { JSX } from "preact";
-import type { ButtonHTMLAttributes } from "preact/compat";
+import type { JSX, ButtonHTMLAttributes } from "preact";
 import {
   useCallback,
   useEffect,
@@ -10,6 +9,7 @@ import {
   useRef,
   useState,
 } from "preact/hooks";
+import { useWindowScroll } from "@uidotdev/usehooks";
 
 export type OverlayPopoverProps = {
   renderTrigger: ({
@@ -34,13 +34,29 @@ const fadeIn = keyframes`
 `;
 
 const styles = {
+  popoverWrap: css({
+    position: "relative",
+    width: "100vw",
+    height: "100vh",
+    margin: 0,
+    padding: 0,
+    backgroundColor: "transparent",
+    border: "none",
+    pointerEvents: "none",
+  }),
   popoverRoot: css({
-    position: "fixed",
+    pointerEvents: "auto",
+    position: "absolute",
     zIndex: 100,
     opacity: 1,
+    backgroundColor: "transparent",
+    padding: 0,
     animation: `${fadeIn} 0.3s ease`,
     maxHeight: "100vh",
     overflowY: "auto",
+    ":popover-open": {
+      border: 0,
+    },
   }),
 };
 
@@ -132,6 +148,7 @@ export const OverlayPopover = forwardRef<
       }
     }, [open]);
 
+    const [scroll] = useWindowScroll();
     const getSidePosition = useCallback(
       (
         side: "left" | "right" | "top" | "bottom",
@@ -141,11 +158,11 @@ export const OverlayPopover = forwardRef<
         switch (side) {
           case "top":
             return {
-              top: trigger.top - triggerPadding - popover.height,
+              top: Math.max(0, trigger.top - triggerPadding - popover.height),
             };
           case "bottom":
             return {
-              top: trigger.top + trigger.height + triggerPadding,
+              top: Math.max(0, trigger.top + trigger.height + triggerPadding),
             };
           case "left":
             return {
@@ -309,20 +326,36 @@ export const OverlayPopover = forwardRef<
       };
     }, [popoverRef.current, open, sideInput, alignInput]);
 
+    const popoverId = useState(
+      () => `overlay-popover-${Math.random().toString(36).substr(2, 9)}`
+    )[0];
+
     return (
       <Fragment>
         {renderTrigger({
           onClick: handleOnClick,
+          // @ts-expect-error this works, it's just TS being weird
+          popoverTarget: popoverId,
           ref: triggerRef,
         })}
         {open && (
           <div
-            css={styles.popoverRoot}
-            role="menu"
-            style={popoverStyles}
-            ref={popoverRef}
+            style={{
+              top: scroll?.y || 0,
+              left: scroll?.x || 0,
+            }}
+            css={styles.popoverWrap}
+            id={popoverId}
+            popover="manual"
           >
-            {children}
+            <div
+              css={styles.popoverRoot}
+              role="menu"
+              style={popoverStyles}
+              ref={popoverRef}
+            >
+              {children}
+            </div>
           </div>
         )}
       </Fragment>
