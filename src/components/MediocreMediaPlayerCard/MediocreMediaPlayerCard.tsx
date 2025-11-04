@@ -24,6 +24,7 @@ import { InteractionConfig } from "@types";
 import { MassivePopUp } from "./components/MassivePopUp";
 import { getHass } from "@utils";
 import { css } from "@emotion/react";
+import { MediaBrowserBar } from "./components/MediaBrowserBar";
 
 const styles = {
   card: css({
@@ -47,7 +48,7 @@ const styles = {
   }),
   cardRowRight: css({
     display: "grid",
-    gridTemplateColumns: "repeat(3, auto)",
+    gridTemplateColumns: "repeat(4, auto)",
     gap: "4px",
     minWidth: "max-content",
   }),
@@ -94,6 +95,7 @@ export const MediocreMediaPlayerCard = ({
     ma_entity_id,
     ma_favorite_button_entity_id,
     search,
+    media_browser,
     speaker_group,
     options: {
       always_show_power_button: alwaysShowPowerButton,
@@ -106,6 +108,7 @@ export const MediocreMediaPlayerCard = ({
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = (hasMaSearch || search?.enabled) && !isEmbeddedInMultiCard;
+  const hasMediaBrowser = !!media_browser?.enabled && !isEmbeddedInMultiCard;
 
   const [showGrouping, setShowGrouping] = useState(false);
   const [showCustomButtons, setShowCustomButtons] = useState(
@@ -113,6 +116,7 @@ export const MediocreMediaPlayerCard = ({
   );
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showMediaBrowser, setShowMediaBrowser] = useState(false);
 
   const { artVars, haVars } = useArtworkColors();
 
@@ -243,6 +247,13 @@ export const MediocreMediaPlayerCard = ({
                     )}
                   />
                 )}
+                {hasMediaBrowser && (
+                  <IconButton
+                    size="x-small"
+                    onClick={() => setShowMediaBrowser(!showMediaBrowser)}
+                    icon={"mdi:folder-music"}
+                  />
+                )}
                 {hasSearch && (
                   <IconButton
                     size="x-small"
@@ -295,6 +306,7 @@ export const MediocreMediaPlayerCard = ({
         {showGrouping && hasGroupingFeature && <SpeakerGrouping />}
         {showCustomButtons && <CustomButtons />}
         {showSearch && <Search />}
+        {showMediaBrowser && <MediaBrowserBar />}
         {isPopupVisible && (
           <MassivePopUp
             visible={isPopupVisible}

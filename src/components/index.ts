@@ -14,6 +14,7 @@ export * from "./IconButton";
 export * from "./Input";
 export * from "./MaMenu";
 export * from "./MaSearch";
+export * from "./MediaBrowser";
 export * from "./MediaSearch";
 export * from "./MediocreChipMediaPlayerGroupCard";
 export * from "./MediocreMassiveMediaPlayerCard";
