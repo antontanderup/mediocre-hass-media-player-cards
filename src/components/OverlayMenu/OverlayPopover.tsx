@@ -348,7 +348,6 @@ export const OverlayPopover = forwardRef<
             id={popoverId}
             popover="manual"
           >
-            <button popoverTarget={popoverId}> </button>
             <div
               css={styles.popoverRoot}
               role="menu"
