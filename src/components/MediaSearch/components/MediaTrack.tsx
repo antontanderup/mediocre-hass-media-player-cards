@@ -36,7 +36,7 @@ const styles = {
     flexDirection: "column",
     height: "100%",
     overflow: "hidden",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
   }),
   trackName: css({
     fontSize: "14px",
