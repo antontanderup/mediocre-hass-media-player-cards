@@ -196,7 +196,6 @@ export const MediaBrowser = ({
           media_content_id: item.media_content_id,
           enqueue,
         });
-        console.log("Playing media item:", item);
       } catch (error) {
         console.error(
           "Error playing media item:",
@@ -278,11 +277,16 @@ export const MediaBrowser = ({
   const renderTrack = (item: MediaBrowserItem) => {
     if (history.length === 0) return renderFolder(item);
     return (
-      <MediaTrack
-        key={item.media_content_id + history.length}
-        title={item.title}
-        imageUrl={item.thumbnail}
-        onClick={async () => playItem(item)}
+      <OverlayMenu
+        menuItems={getItemOverlayMenuItems(item)}
+        renderTrigger={triggerProps => (
+          <MediaTrack
+            key={item.media_content_id + history.length}
+            title={item.title}
+            imageUrl={item.thumbnail}
+            {...triggerProps}
+          />
+        )}
       />
     );
   };

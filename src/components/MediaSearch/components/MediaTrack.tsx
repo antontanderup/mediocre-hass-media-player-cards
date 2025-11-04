@@ -1,10 +1,19 @@
 import { useCallback, useState } from "preact/hooks";
 import { MediaImage } from "./MediaImage";
 import { css } from "@emotion/react";
+import {
+  ButtonHTMLAttributes,
+  DOMAttributes,
+  TargetedMouseEvent,
+} from "preact";
+import { forwardRef } from "preact/compat";
 
 const styles = {
   root: css({
+    border: "none",
+    cursor: "pointer",
     display: "grid",
+    textAlign: "left",
     gridTemplateColumns: "50px 1fr auto",
     alignItems: "center",
     gap: "12px",
@@ -12,7 +21,6 @@ const styles = {
     borderRadius: "8px",
     gridColumn: "1/-1",
     background: "rgba(255, 255, 255, 0.05)",
-    cursor: "pointer",
     "&:hover": {
       background: "rgba(255, 255, 255, 0.1)",
     },
@@ -26,7 +34,9 @@ const styles = {
   trackInfo: css({
     display: "flex",
     flexDirection: "column",
+    height: "100%",
     overflow: "hidden",
+    justifyContent: "space-evenly"
   }),
   trackName: css({
     fontSize: "14px",
@@ -49,45 +59,61 @@ const styles = {
   }),
 };
 
-export type MediaTrackProps = {
+export type MediaTrackProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "ref"
+> & {
   imageUrl?: string | null;
   title: string;
   artist?: string;
-  onClick: () => Promise<void>;
 };
 
-export const MediaTrack = ({
-  imageUrl,
-  title,
-  artist,
-  onClick,
-}: MediaTrackProps) => {
-  const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
-  const handleOnClick = useCallback(async () => {
-    setDone(false);
-    setLoading(true);
-    try {
-      await onClick();
-      setDone(true);
-    } catch (error) {
-      console.error("Error in MediaItem onClick:", error);
-    }
-    setLoading(false);
-  }, [onClick]);
+export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
+  ({ imageUrl, title, artist, onClick, ...buttonProps }, ref) => {
+    const [loading, setLoading] = useState(false);
+    const [done, setDone] = useState(false);
+    const handleOnClick: DOMAttributes<HTMLButtonElement>["onClick"] =
+      useCallback(
+        async (e: TargetedMouseEvent<HTMLButtonElement>) => {
+          if (!onClick) return;
+          if (
+            typeof onClick === "function" &&
+            onClick.constructor.name === "AsyncFunction"
+          ) {
+            setDone(false);
+            setLoading(true);
+            try {
+              await onClick(e);
+              setDone(true);
+            } catch (error) {
+              console.error("Error in MediaItem onClick:", error);
+            }
+            setLoading(false);
+          } else {
+            onClick(e);
+          }
+        },
+        [onClick]
+      );
 
-  return (
-    <div css={styles.root} onClick={handleOnClick}>
-      <MediaImage
-        css={styles.mediaImage}
-        imageUrl={imageUrl}
-        loading={loading}
-        done={done}
-      />
-      <div css={styles.trackInfo}>
-        <div css={styles.trackName}>{title}</div>
-        {!!artist && <div css={styles.trackArtist}>{artist}</div>}
-      </div>
-    </div>
-  );
-};
+    return (
+      <button
+        css={styles.root}
+        onClick={handleOnClick}
+        {...buttonProps}
+        ref={ref}
+      >
+        <MediaImage
+          css={styles.mediaImage}
+          imageUrl={imageUrl}
+          loading={loading}
+          done={done}
+        />
+        <div css={styles.trackInfo}>
+          <div css={styles.trackName}>{title}</div>
+          {!!artist && <div css={styles.trackArtist}>{artist}</div>}
+        </div>
+      </button>
+    );
+  }
+);
