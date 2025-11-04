@@ -1,6 +1,4 @@
 import {
-  Chip,
-  Icon,
   MediaGrid,
   MediaItem,
   MediaTrack,
@@ -10,7 +8,10 @@ import {
 } from "@components";
 import { HaEnqueueMode } from "@components/HaSearch/types";
 import { IconButton } from "@components/IconButton";
-import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
+import {
+  OverlayMenu,
+  OverlayMenuItem,
+} from "@components/OverlayMenu/OverlayMenu";
 import { css } from "@emotion/react";
 import { getHass } from "@utils";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
@@ -240,6 +241,40 @@ export const MediaBrowser = ({
     [isFetching]
   );
 
+  const getItemOverlayMenuItems = useCallback((item: MediaBrowserItem) => {
+    const menuItems: OverlayMenuItem[] = [];
+    if (item.can_play) {
+      menuItems.push({
+        label: "Play",
+        children: [
+          {
+            label: "Play",
+            onClick: () => playItem(item, "play"),
+          },
+          {
+            label: "Play Next",
+            onClick: () => playItem(item, "next"),
+          },
+          {
+            label: "Replace Queue",
+            onClick: () => playItem(item, "replace"),
+          },
+          {
+            label: "Add to Queue",
+            onClick: () => playItem(item, "add"),
+          },
+        ],
+      });
+    }
+    if (item.can_expand) {
+      menuItems.push({
+        label: "Browse",
+        onClick: () => onMediaBrowserItemClick(item),
+      });
+    }
+    return menuItems;
+  }, []);
+
   const renderTrack = (item: MediaBrowserItem) => {
     if (history.length === 0) return renderFolder(item);
     return (
@@ -253,13 +288,29 @@ export const MediaBrowser = ({
   };
 
   const renderFolder = (item: MediaBrowserItem) => {
+    if (!item.can_play) {
+      return (
+        <MediaItem
+          key={item.media_content_id + history.length}
+          name={item.title}
+          imageUrl={item.thumbnail}
+          mdiIcon={getItemMdiIcon(item)}
+          onClick={() => onMediaBrowserItemClick(item)}
+        />
+      );
+    }
     return (
-      <MediaItem
-        key={item.media_content_id + history.length}
-        name={item.title}
-        imageUrl={item.thumbnail}
-        mdiIcon={getItemMdiIcon(item)}
-        onClick={async () => onMediaBrowserItemClick(item)}
+      <OverlayMenu
+        menuItems={getItemOverlayMenuItems(item)}
+        renderTrigger={triggerProps => (
+          <MediaItem
+            key={item.media_content_id + history.length}
+            name={item.title}
+            imageUrl={item.thumbnail}
+            mdiIcon={getItemMdiIcon(item)}
+            {...triggerProps}
+          />
+        )}
       />
     );
   };
@@ -292,6 +343,39 @@ export const MediaBrowser = ({
         "--mmpc-search-padding": `${horizontalPadding}px`,
       }}
     >
+      <div css={styles.header}>
+        {history.length > 0 && (
+          <Fragment>
+            <div css={styles.navigationBar}>
+              <IconButton
+                icon="mdi:arrow-left"
+                size="x-small"
+                onClick={goBack}
+                disabled={history.length === 0}
+              />
+              <div css={styles.breadCrumbs}>
+                <button
+                  css={styles.breadCrumbItem}
+                  onClick={() => setHistory([])}
+                >
+                  Home
+                </button>
+                {history.map((item, index) => (
+                  <Fragment key={`breadcrumb-${index}-${item.title}`}>
+                    <span css={styles.breadCrumbSeparator}>/</span>
+                    <button
+                      css={styles.breadCrumbItem}
+                      onClick={() => goToIndex(index)}
+                    >
+                      {item.title}
+                    </button>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </Fragment>
+        )}
+      </div>
       <VirtualList
         key={history[history.length - 1]?.media_content_id || "root"}
         onLayout={({ width }) => {
@@ -314,89 +398,6 @@ export const MediaBrowser = ({
           return null;
         }}
         data={items}
-        renderHeader={() => (
-          <div css={styles.header}>
-            {history.length > 0 && (
-              <Fragment>
-                <div css={styles.navigationBar}>
-                  <IconButton
-                    icon="mdi:arrow-left"
-                    size="x-small"
-                    onClick={goBack}
-                    disabled={history.length === 0}
-                  />
-                  <div css={styles.breadCrumbs}>
-                    <button
-                      css={styles.breadCrumbItem}
-                      onClick={() => setHistory([])}
-                    >
-                      Home
-                    </button>
-                    {history.map((item, index) => (
-                      <Fragment key={`breadcrumb-${index}-${item.title}`}>
-                        <span css={styles.breadCrumbSeparator}>/</span>
-                        <button
-                          css={styles.breadCrumbItem}
-                          onClick={() => goToIndex(index)}
-                        >
-                          {item.title}
-                        </button>
-                      </Fragment>
-                    ))}
-                  </div>
-                </div>
-                {history[history.length - 1].can_play && (
-                  <div css={styles.navigationBar}>
-                    <Chip
-                      onClick={() =>
-                        playItem(history[history.length - 1], "play")
-                      }
-                    >
-                      Play
-                    </Chip>
-                    <Chip
-                      onClick={() =>
-                        playItem(history[history.length - 1], "next")
-                      }
-                    >
-                      Play Next
-                    </Chip>
-                    <OverlayMenu
-                      menuItems={[
-                        {
-                          label: "Play",
-                          onClick: () =>
-                            playItem(history[history.length - 1], "play"),
-                        },
-                        {
-                          label: "Play Next",
-                          onClick: () =>
-                            playItem(history[history.length - 1], "next"),
-                        },
-                        {
-                          label: "Replace Queue",
-                          onClick: () =>
-                            playItem(history[history.length - 1], "replace"),
-                        },
-                        {
-                          label: "Add to Queue",
-                          onClick: () =>
-                            playItem(history[history.length - 1], "add"),
-                        },
-                      ]}
-                      renderTrigger={triggerProps => (
-                        <Chip {...triggerProps}>
-                          Play
-                          <Icon size="x-small" icon="mdi:chevron-down" />
-                        </Chip>
-                      )}
-                    />
-                  </div>
-                )}
-              </Fragment>
-            )}
-          </div>
-        )}
       />
     </div>
   );

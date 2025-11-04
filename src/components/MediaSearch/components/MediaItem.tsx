@@ -1,13 +1,20 @@
 import { useCallback, useState } from "preact/hooks";
 import { MediaImage } from "./MediaImage";
 import { css } from "@emotion/react";
+import {
+  ButtonHTMLAttributes,
+  DOMAttributes,
+  TargetedMouseEvent,
+} from "preact";
+import { forwardRef } from "preact/compat";
 
 const styles = {
   root: css({
+    border: "none",
+    cursor: "pointer",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    cursor: "pointer",
     transition: "transform 0.2s",
     borderRadius: "8px",
     padding: "8px",
@@ -47,46 +54,61 @@ const styles = {
   }),
 };
 
-export type MediaItemProps = {
+export type MediaItemProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "ref"
+> & {
   imageUrl?: string | null;
   mdiIcon?: string | null;
   name: string;
   artist?: string;
-  onClick: () => void;
 };
 
-export const MediaItem = ({
-  imageUrl,
-  mdiIcon,
-  name,
-  artist,
-  onClick,
-}: MediaItemProps) => {
-  const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
-  const handleOnClick = useCallback(async () => {
-    setDone(false);
-    setLoading(true);
-    try {
-      await onClick();
-      setDone(true);
-    } catch (error) {
-      console.error("Error in MediaItem onClick:", error);
-    }
-    setLoading(false);
-  }, [onClick]);
+export const MediaItem = forwardRef<HTMLButtonElement, MediaItemProps>(
+  ({ imageUrl, mdiIcon, name, artist, onClick, ...buttonProps }, ref) => {
+    const [loading, setLoading] = useState(false);
+    const [done, setDone] = useState(false);
+    const handleOnClick: DOMAttributes<HTMLButtonElement>["onClick"] =
+      useCallback(
+        async (e: TargetedMouseEvent<HTMLButtonElement>) => {
+          if (!onClick) return;
+          if (
+            typeof onClick === "function" &&
+            onClick.constructor.name === "AsyncFunction"
+          ) {
+            setDone(false);
+            setLoading(true);
+            try {
+              await onClick(e);
+              setDone(true);
+            } catch (error) {
+              console.error("Error in MediaItem onClick:", error);
+            }
+            setLoading(false);
+          } else {
+            onClick(e);
+          }
+        },
+        [onClick]
+      );
 
-  return (
-    <div css={styles.root} onClick={handleOnClick}>
-      <MediaImage
-        css={styles.mediaImage}
-        imageUrl={imageUrl}
-        mdiIcon={mdiIcon}
-        loading={loading}
-        done={done}
-      />
-      <div css={styles.name}>{name}</div>
-      <div css={styles.artist}>{artist}</div>
-    </div>
-  );
-};
+    return (
+      <button
+        css={styles.root}
+        onClick={handleOnClick}
+        {...buttonProps}
+        ref={ref}
+      >
+        <MediaImage
+          css={styles.mediaImage}
+          imageUrl={imageUrl}
+          mdiIcon={mdiIcon}
+          loading={loading}
+          done={done}
+        />
+        <div css={styles.name}>{name}</div>
+        <div css={styles.artist}>{artist}</div>
+      </button>
+    );
+  }
+);
