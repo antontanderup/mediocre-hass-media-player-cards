@@ -84,6 +84,7 @@ export const PlayerActions = () => {
     speaker_group,
     ma_entity_id,
     search,
+    media_browser,
     ma_favorite_button_entity_id,
     options: { always_show_power_button: alwaysShowPowerButton } = {},
   } = config;
@@ -96,6 +97,8 @@ export const PlayerActions = () => {
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
 
+  const hasMediaBrowser = !!media_browser?.enabled;
+
   const [selected, setSelected] = useState<
     | "volume"
     | "speaker-grouping"
@@ -103,7 +106,7 @@ export const PlayerActions = () => {
     | "search"
     | "media-browser"
     | undefined
-  >("media-browser");
+  >();
 
   const toggleSelected = useCallback(
     (
@@ -144,7 +147,7 @@ export const PlayerActions = () => {
         padding="0px"
       >
         <MediaBrowser
-          entity_id={ma_entity_id ?? entity_id}
+          entity_id={config.media_browser?.entity_id ?? config.entity_id}
           horizontalPadding={16}
         />
       </Modal>
@@ -214,6 +217,13 @@ export const PlayerActions = () => {
           size="small"
           icon={"mdi:magnify"}
           onClick={() => setSelected("search")}
+        />
+      )}
+      {hasMediaBrowser && (
+        <IconButton
+          size="small"
+          icon={"mdi:folder-music"}
+          onClick={() => toggleSelected("media-browser")}
         />
       )}
       {(!isOn || alwaysShowPowerButton) && (
