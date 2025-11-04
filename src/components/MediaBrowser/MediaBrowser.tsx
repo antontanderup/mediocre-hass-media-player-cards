@@ -166,10 +166,10 @@ export const MediaBrowser = ({
           entity_id,
           ...(history.length > 0
             ? {
-              media_content_id: history[history.length - 1].media_content_id,
-              media_content_type:
-                history[history.length - 1].media_content_type,
-            }
+                media_content_id: history[history.length - 1].media_content_id,
+                media_content_type:
+                  history[history.length - 1].media_content_type,
+              }
             : {}),
         })) as { children?: MediaBrowserItem[] };
 
@@ -321,24 +321,17 @@ export const MediaBrowser = ({
   };
 
   const renderItem = (item: MediaBrowserItem[]) => {
-    if (item.length === 1) {
-      return item[0].media_class === MediaClass.Track ||
-        item[0].media_content_type === MediaContentType.Track
-        ? renderTrack(item[0])
-        : renderFolder(item[0]);
-    } else {
-      return (
-        <MediaGrid numberOfColumns={chunkSize}>
-          {item.map(mediaItem => {
-            return (item[0].media_class === MediaClass.Track ||
-              item[0].media_content_type === MediaContentType.Track) &&
-              mediaItem.media_content_type !== "favorite"
-              ? renderTrack(mediaItem)
-              : renderFolder(mediaItem);
-          })}
-        </MediaGrid>
-      );
-    }
+    return (
+      <MediaGrid numberOfColumns={chunkSize}>
+        {item.map(mediaItem => {
+          return (item[0].media_class === MediaClass.Track ||
+            item[0].media_content_type === MediaContentType.Track) &&
+            mediaItem.media_content_type !== "favorite"
+            ? renderTrack(mediaItem)
+            : renderFolder(mediaItem);
+        })}
+      </MediaGrid>
+    );
   };
 
   return (
