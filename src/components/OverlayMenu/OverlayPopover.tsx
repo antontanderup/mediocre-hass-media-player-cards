@@ -4,13 +4,11 @@ import { forwardRef, useImperativeHandle } from "preact/compat";
 import type { JSX, ButtonHTMLAttributes } from "preact";
 import {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "preact/hooks";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { useWindowScroll } from "@uidotdev/usehooks";
 
 export type OverlayPopoverProps = {
@@ -42,23 +40,23 @@ const styles = {
     height: "100vh",
     margin: 0,
     padding: 0,
-    backgroundColor: 'transparent',
-    border: 'none',
-    pointerEvents: 'none',
+    backgroundColor: "transparent",
+    border: "none",
+    pointerEvents: "none",
   }),
   popoverRoot: css({
-    pointerEvents: 'auto',
+    pointerEvents: "auto",
     position: "absolute",
     zIndex: 100,
     opacity: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     padding: 0,
     animation: `${fadeIn} 0.3s ease`,
     maxHeight: "100vh",
     overflowY: "auto",
-    ':popover-open': {
+    ":popover-open": {
       border: 0,
-    }
+    },
   }),
 };
 
@@ -151,7 +149,6 @@ export const OverlayPopover = forwardRef<
     }, [open]);
 
     const [scroll] = useWindowScroll();
-    console.log(scroll)
     const getSidePosition = useCallback(
       (
         side: "left" | "right" | "top" | "bottom",
@@ -161,7 +158,7 @@ export const OverlayPopover = forwardRef<
         switch (side) {
           case "top":
             return {
-              top: Math.max(0, trigger.top - triggerPadding - popover.height)
+              top: Math.max(0, trigger.top - triggerPadding - popover.height),
             };
           case "bottom":
             return {
@@ -329,8 +326,10 @@ export const OverlayPopover = forwardRef<
       };
     }, [popoverRef.current, open, sideInput, alignInput]);
 
-    const popoverId = useState(() => `overlay-popover-${Math.random().toString(36).substr(2, 9)}`)[0];
-    
+    const popoverId = useState(
+      () => `overlay-popover-${Math.random().toString(36).substr(2, 9)}`
+    )[0];
+
     return (
       <Fragment>
         {renderTrigger({
@@ -340,11 +339,12 @@ export const OverlayPopover = forwardRef<
           ref: triggerRef,
         })}
         {open && (
-          <div style={{
-            top: (scroll?.y || 0),
-            left: (scroll?.x || 0),
-          }}
-          css={styles.popoverWrap}
+          <div
+            style={{
+              top: scroll?.y || 0,
+              left: scroll?.x || 0,
+            }}
+            css={styles.popoverWrap}
             id={popoverId}
             popover="manual"
           >
@@ -357,7 +357,8 @@ export const OverlayPopover = forwardRef<
             >
               {children}
             </div>
-          </div>)}
+          </div>
+        )}
       </Fragment>
     );
   }
