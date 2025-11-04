@@ -40,10 +40,12 @@ export const FooterActions = memo<FooterActionsProps>(
         CardContext
       );
 
-    const { entity_id, ma_entity_id, search, custom_buttons } = mediaPlayer;
+    const { entity_id, ma_entity_id, search, custom_buttons, media_browser } =
+      mediaPlayer;
 
     const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
     const hasSearch = hasMaSearch || search?.enabled;
+    const hasMediaBrowser = media_browser && media_browser.enabled;
 
     return (
       <div css={styles.root}>
@@ -59,6 +61,14 @@ export const FooterActions = memo<FooterActionsProps>(
             icon={"mdi:magnify"}
             onClick={() => setNavigationRoute("search")}
             selected={navigationRoute === "search"}
+          />
+        )}
+        {hasMediaBrowser && (
+          <IconButton
+            size="small"
+            icon={"mdi:folder-music"}
+            onClick={() => setNavigationRoute("media-browser")}
+            selected={navigationRoute === "media-browser"}
           />
         )}
         {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (

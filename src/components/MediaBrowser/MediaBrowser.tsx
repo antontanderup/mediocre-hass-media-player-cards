@@ -20,6 +20,8 @@ import { Fragment } from "preact/jsx-runtime";
 export type MediaBrowserProps = {
   entity_id: string;
   horizontalPadding?: number;
+  maxHeight?: number;
+  renderHeader?: () => preact.JSX.Element;
 };
 
 export enum MediaContentType {
@@ -109,6 +111,8 @@ export type MediaBrowserItem = {
 export const MediaBrowser = ({
   entity_id,
   horizontalPadding,
+  maxHeight,
+  renderHeader,
 }: MediaBrowserProps) => {
   const [mediaBrowserItems, setMediaBrowserItems] = useState<
     MediaBrowserItem[]
@@ -358,41 +362,45 @@ export const MediaBrowser = ({
             setChunkSize(3);
           }
         }}
+        maxHeight={maxHeight}
         renderItem={renderItem}
         renderHeader={() => (
-          <div css={styles.header}>
-            {history.length > 0 && (
-              <Fragment>
-                <div css={styles.navigationBar}>
-                  <IconButton
-                    icon="mdi:arrow-left"
-                    size="x-small"
-                    onClick={goBack}
-                    disabled={history.length === 0}
-                  />
-                  <div css={styles.breadCrumbs}>
-                    <button
-                      css={styles.breadCrumbItem}
-                      onClick={() => setHistory([])}
-                    >
-                      Home
-                    </button>
-                    {history.map((item, index) => (
-                      <Fragment key={`breadcrumb-${index}-${item.title}`}>
-                        <span css={styles.breadCrumbSeparator}>/</span>
-                        <button
-                          css={styles.breadCrumbItem}
-                          onClick={() => goToIndex(index)}
-                        >
-                          {item.title}
-                        </button>
-                      </Fragment>
-                    ))}
+          <Fragment>
+            {renderHeader && renderHeader()}
+            <div css={styles.header}>
+              {history.length > 0 && (
+                <Fragment>
+                  <div css={styles.navigationBar}>
+                    <IconButton
+                      icon="mdi:arrow-left"
+                      size="x-small"
+                      onClick={goBack}
+                      disabled={history.length === 0}
+                    />
+                    <div css={styles.breadCrumbs}>
+                      <button
+                        css={styles.breadCrumbItem}
+                        onClick={() => setHistory([])}
+                      >
+                        Home
+                      </button>
+                      {history.map((item, index) => (
+                        <Fragment key={`breadcrumb-${index}-${item.title}`}>
+                          <span css={styles.breadCrumbSeparator}>/</span>
+                          <button
+                            css={styles.breadCrumbItem}
+                            onClick={() => goToIndex(index)}
+                          >
+                            {item.title}
+                          </button>
+                        </Fragment>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Fragment>
-            )}
-          </div>
+                </Fragment>
+              )}
+            </div>
+          </Fragment>
         )}
         renderEmpty={() => {
           if (isFetching) return <Spinner />;

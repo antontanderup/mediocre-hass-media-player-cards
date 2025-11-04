@@ -7,6 +7,7 @@ import {
 import { useContext, useState } from "preact/hooks";
 import {
   ArtworkColorWrap,
+  MediaBrowserView,
   MiniPlayer,
   SearchView,
   SpeakerGrouping,
@@ -23,6 +24,7 @@ import { AdditionalActionsView } from "./components/AdditionalActionsView";
 
 export type NavigationRoute =
   | "search"
+  | "media-browser"
   | "massive"
   | "speaker-grouping"
   | "custom-buttons"
@@ -156,6 +158,12 @@ export const MediocreMultiMediaPlayerCard = () => {
             >
               {navigationRoute === "search" && contentHeight && (
                 <SearchView
+                  height={contentHeight}
+                  mediaPlayer={selectedPlayer}
+                />
+              )}
+              {navigationRoute === "media-browser" && contentHeight && (
+                <MediaBrowserView
                   height={contentHeight}
                   mediaPlayer={selectedPlayer}
                 />
