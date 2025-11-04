@@ -89,6 +89,7 @@ const styles = {
   }),
   noMediaText: css({
     padding: "16px",
+    paddingBottom: "32px",
     color: "var(--secondary-text-color)",
     textAlign: "center",
   }),
@@ -165,10 +166,10 @@ export const MediaBrowser = ({
           entity_id,
           ...(history.length > 0
             ? {
-                media_content_id: history[history.length - 1].media_content_id,
-                media_content_type:
-                  history[history.length - 1].media_content_type,
-              }
+              media_content_id: history[history.length - 1].media_content_id,
+              media_content_type:
+                history[history.length - 1].media_content_type,
+            }
             : {}),
         })) as { children?: MediaBrowserItem[] };
 
@@ -347,39 +348,6 @@ export const MediaBrowser = ({
         "--mmpc-search-padding": `${horizontalPadding}px`,
       }}
     >
-      <div css={styles.header}>
-        {history.length > 0 && (
-          <Fragment>
-            <div css={styles.navigationBar}>
-              <IconButton
-                icon="mdi:arrow-left"
-                size="x-small"
-                onClick={goBack}
-                disabled={history.length === 0}
-              />
-              <div css={styles.breadCrumbs}>
-                <button
-                  css={styles.breadCrumbItem}
-                  onClick={() => setHistory([])}
-                >
-                  Home
-                </button>
-                {history.map((item, index) => (
-                  <Fragment key={`breadcrumb-${index}-${item.title}`}>
-                    <span css={styles.breadCrumbSeparator}>/</span>
-                    <button
-                      css={styles.breadCrumbItem}
-                      onClick={() => goToIndex(index)}
-                    >
-                      {item.title}
-                    </button>
-                  </Fragment>
-                ))}
-              </div>
-            </div>
-          </Fragment>
-        )}
-      </div>
       <VirtualList
         key={history[history.length - 1]?.media_content_id || "root"}
         onLayout={({ width }) => {
@@ -392,6 +360,41 @@ export const MediaBrowser = ({
           }
         }}
         renderItem={renderItem}
+        renderHeader={() => (
+          <div css={styles.header}>
+            {history.length > 0 && (
+              <Fragment>
+                <div css={styles.navigationBar}>
+                  <IconButton
+                    icon="mdi:arrow-left"
+                    size="x-small"
+                    onClick={goBack}
+                    disabled={history.length === 0}
+                  />
+                  <div css={styles.breadCrumbs}>
+                    <button
+                      css={styles.breadCrumbItem}
+                      onClick={() => setHistory([])}
+                    >
+                      Home
+                    </button>
+                    {history.map((item, index) => (
+                      <Fragment key={`breadcrumb-${index}-${item.title}`}>
+                        <span css={styles.breadCrumbSeparator}>/</span>
+                        <button
+                          css={styles.breadCrumbItem}
+                          onClick={() => goToIndex(index)}
+                        >
+                          {item.title}
+                        </button>
+                      </Fragment>
+                    ))}
+                  </div>
+                </div>
+              </Fragment>
+            )}
+          </div>
+        )}
         renderEmpty={() => {
           if (isFetching) return <Spinner />;
           if (!isFetching && mediaBrowserItems.length === 0) {
