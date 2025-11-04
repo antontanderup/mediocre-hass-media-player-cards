@@ -246,21 +246,26 @@ export const MediaBrowser = ({
     if (item.can_play) {
       menuItems.push({
         label: "Play",
+        icon: getEnqueueModeIcon("play"),
+        onClick: () => playItem(item, "play"),
+      });
+      menuItems.push({
+        label: "Enqueue",
+        icon: getEnqueueModeIcon("next"),
         children: [
           {
-            label: "Play",
-            onClick: () => playItem(item, "play"),
-          },
-          {
             label: "Play Next",
+            icon: getEnqueueModeIcon("next"),
             onClick: () => playItem(item, "next"),
           },
           {
             label: "Replace Queue",
+            icon: getEnqueueModeIcon("replace"),
             onClick: () => playItem(item, "replace"),
           },
           {
             label: "Add to Queue",
+            icon: getEnqueueModeIcon("add"),
             onClick: () => playItem(item, "add"),
           },
         ],
@@ -269,6 +274,7 @@ export const MediaBrowser = ({
     if (item.can_expand) {
       menuItems.push({
         label: "Browse",
+        icon: "mdi:folder-outline",
         onClick: () => onMediaBrowserItemClick(item),
       });
     }
@@ -401,6 +407,21 @@ export const MediaBrowser = ({
       />
     </div>
   );
+};
+
+const getEnqueueModeIcon = (enqueueMode: HaEnqueueMode) => {
+  switch (enqueueMode) {
+    case "play": // Play now
+      return "mdi:play-circle";
+    case "replace": // Replace the existing queue and play now
+      return "mdi:playlist-remove";
+    case "next": // Add to the current queue after the currently playing item
+      return "mdi:playlist-play";
+    case "add": // Add to the end of the queue
+      return "mdi:playlist-plus";
+    default:
+      return "mdi:play-circle";
+  }
 };
 
 const getItemMdiIcon = (item: MediaBrowserItem) => {
