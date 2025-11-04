@@ -1,8 +1,7 @@
 import { css, keyframes } from "@emotion/react";
 import { Fragment } from "preact";
-import { createPortal, forwardRef, useImperativeHandle } from "preact/compat";
-import type { JSX } from "preact";
-import type { ButtonHTMLAttributes } from "preact/compat";
+import { forwardRef, useImperativeHandle } from "preact/compat";
+import type { JSX, ButtonHTMLAttributes } from "preact";
 import {
   useCallback,
   useContext,
@@ -12,7 +11,6 @@ import {
   useState,
 } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { windowScroll } from "@tanstack/react-virtual";
 import { useWindowScroll } from "@uidotdev/usehooks";
 
 export type OverlayPopoverProps = {
@@ -38,7 +36,18 @@ const fadeIn = keyframes`
 `;
 
 const styles = {
+  popoverWrap: css({
+    position: "relative",
+    width: "100vw",
+    height: "100vh",
+    margin: 0,
+    padding: 0,
+    backgroundColor: 'transparent',
+    border: 'none',
+    pointerEvents: 'none',
+  }),
   popoverRoot: css({
+    pointerEvents: 'auto',
     position: "absolute",
     zIndex: 100,
     opacity: 1,
@@ -152,11 +161,11 @@ export const OverlayPopover = forwardRef<
         switch (side) {
           case "top":
             return {
-              top: trigger.top - triggerPadding - popover.height
+              top: Math.max(0, trigger.top - triggerPadding - popover.height)
             };
           case "bottom":
             return {
-              top: trigger.top + trigger.height + triggerPadding,
+              top: Math.max(0, trigger.top + trigger.height + triggerPadding),
             };
           case "left":
             return {
@@ -321,44 +330,32 @@ export const OverlayPopover = forwardRef<
     }, [popoverRef.current, open, sideInput, alignInput]);
 
     const popoverId = useState(() => `overlay-popover-${Math.random().toString(36).substr(2, 9)}`)[0];
-    const { rootElement } =
-      useContext<CardContextType<{}>>(
-        CardContext
-      );
-
-    const popoverContainer = useMemo(() => rootElement.querySelector("#mmpc-modals-root") || document.body, [rootElement]);
-
-    console.log("Rendering OverlayPopover", { popoverId, popoverContainer });
+    
     return (
       <Fragment>
         {renderTrigger({
           onClick: handleOnClick,
-          popovertarget: popoverId,
+          // @ts-expect-error this works, it's just TS being weird
+          popoverTarget: popoverId,
           ref: triggerRef,
         })}
         {open && (
-          <div style={{ 
-            position: "relative",
-            width: "100vw",
-            height: "100vh",
-            margin: 0,
-            padding: 0,
+          <div style={{
             top: (scroll?.y || 0),
             left: (scroll?.x || 0),
-            backgroundColor: 'transparent',
-            border: 'none',
-           }}
+          }}
+          css={styles.popoverWrap}
             id={popoverId}
             popover="manual"
           >
-
-          <div
-            css={styles.popoverRoot}
-            role="menu"
-            style={popoverStyles}
-            ref={popoverRef}
+            <button popoverTarget={popoverId}> </button>
+            <div
+              css={styles.popoverRoot}
+              role="menu"
+              style={popoverStyles}
+              ref={popoverRef}
             >
-            {children}
+              {children}
             </div>
           </div>)}
       </Fragment>
