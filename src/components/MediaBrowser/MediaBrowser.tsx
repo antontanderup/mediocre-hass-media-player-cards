@@ -1,4 +1,6 @@
 import {
+  MediaClass,
+  MediaContentType,
   MediaGrid,
   MediaItem,
   MediaTrack,
@@ -16,6 +18,7 @@ import { css } from "@emotion/react";
 import { getHass } from "@utils";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
+import { getEnqueueModeIcon, getItemMdiIcon } from "./utils";
 
 export type MediaBrowserProps = {
   entity_id: string;
@@ -23,32 +26,6 @@ export type MediaBrowserProps = {
   maxHeight?: number;
   renderHeader?: () => preact.JSX.Element;
 };
-
-export enum MediaContentType {
-  Favorites = "favorites",
-  Artists = "artists",
-  Albums = "albums",
-  Tracks = "tracks",
-  Playlists = "playlists",
-  Genres = "genres",
-  NewMusic = "new music",
-  AlbumArtists = "album artists",
-  Apps = "apps",
-  Radios = "radios",
-  App = "app",
-  Track = "track",
-}
-
-// Media class enum
-export enum MediaClass {
-  Track = "track",
-  Artist = "artist",
-  Album = "album",
-  Playlist = "playlist",
-  Genre = "genre",
-  App = "app",
-  Directory = "directory",
-}
 
 const styles = {
   header: css({
@@ -179,7 +156,6 @@ export const MediaBrowser = ({
 
         if (response && response.children) {
           setMediaBrowserItems(response.children);
-          console.log("Media items:", response.children);
         } else {
           setMediaBrowserItems([]);
         }
@@ -415,65 +391,4 @@ export const MediaBrowser = ({
       />
     </div>
   );
-};
-
-const getEnqueueModeIcon = (enqueueMode: HaEnqueueMode) => {
-  switch (enqueueMode) {
-    case "play": // Play now
-      return "mdi:play-circle";
-    case "replace": // Replace the existing queue and play now
-      return "mdi:playlist-remove";
-    case "next": // Add to the current queue after the currently playing item
-      return "mdi:playlist-play";
-    case "add": // Add to the end of the queue
-      return "mdi:playlist-plus";
-    default:
-      return "mdi:play-circle";
-  }
-};
-
-const getItemMdiIcon = (item: MediaBrowserItem) => {
-  if (item.thumbnail) return null;
-  // this function is a little silly because it seems like there's no real standard way to declare these
-
-  switch (item.media_content_type) {
-    case MediaContentType.Albums:
-      return "mdi:album";
-    case MediaContentType.Artists:
-      return "mdi:account-music";
-    case MediaContentType.Tracks:
-      return "mdi:music-note";
-    case MediaContentType.Playlists:
-      return "mdi:playlist-music";
-    case MediaContentType.Genres:
-      return "mdi:music-box-multiple";
-    case MediaContentType.App:
-      return "mdi:application";
-    case MediaContentType.Favorites:
-      return "mdi:star";
-    case MediaContentType.NewMusic:
-    case MediaContentType.AlbumArtists:
-    case MediaContentType.Radios:
-    default:
-      break;
-  }
-
-  switch (item.media_class) {
-    case MediaClass.Album:
-      return "mdi:album";
-    case MediaClass.Artist:
-      return "mdi:account-music";
-    case MediaClass.Track:
-      return "mdi:music-note";
-    case MediaClass.Playlist:
-      return "mdi:playlist-music";
-    case MediaClass.Genre:
-      return "mdi:music-box-multiple";
-    case MediaClass.App:
-      return "mdi:application";
-    case MediaClass.Directory:
-      return "mdi:folder";
-    default:
-      return "mdi:folder";
-  }
 };
