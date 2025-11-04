@@ -411,7 +411,6 @@ describe("cardConfigUtils", () => {
         columns: "full",
         rows: 2,
       });
-  
     });
 
     it("should remove falsy values but preserve grid_options", () => {
