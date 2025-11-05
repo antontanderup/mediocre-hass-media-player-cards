@@ -36,7 +36,7 @@ export const HaSearch = ({
   renderHeader,
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
-  const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("play");
+  const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
   const debouncedQuery = useDebounce(query, 600);
   const [activeFilter, setActiveFilter] = useState<HaFilterType>("all");
 
