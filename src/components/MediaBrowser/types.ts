@@ -20,6 +20,8 @@ export enum MediaClass {
   Album = "album",
   Playlist = "playlist",
   Genre = "genre",
+  Music = "music",
+  Podcast = "podcast",
   App = "app",
   Directory = "directory",
 }

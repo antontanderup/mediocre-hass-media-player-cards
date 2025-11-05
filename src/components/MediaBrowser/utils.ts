@@ -20,7 +20,6 @@ export const getEnqueueModeIcon = (enqueueMode: HaEnqueueMode) => {
 export const getItemMdiIcon = (item: MediaBrowserItem) => {
   if (item.thumbnail) return null;
   // this function is a little silly because it seems like there's no real standard way to declare these
-
   switch (item.media_content_type) {
     case MediaContentType.Albums:
       return "mdi:album";
@@ -43,7 +42,7 @@ export const getItemMdiIcon = (item: MediaBrowserItem) => {
       break;
   }
 
-  switch (item.media_class) {
+  switch (item.children_media_class ?? item.media_class) {
     case MediaClass.Album:
       return "mdi:album";
     case MediaClass.Artist:
@@ -56,6 +55,10 @@ export const getItemMdiIcon = (item: MediaBrowserItem) => {
       return "mdi:music-box-multiple";
     case MediaClass.App:
       return "mdi:application";
+    case MediaClass.Music:
+      return "mdi:music";
+    case MediaClass.Podcast:
+      return "mdi:podcast";
     case MediaClass.Directory:
       return "mdi:folder";
     default:
