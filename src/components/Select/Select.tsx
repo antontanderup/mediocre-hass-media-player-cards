@@ -99,6 +99,7 @@ export const Select = ({
             : options.map(option => ({
                 label: option.label,
                 icon: option.icon,
+                selected: option.value === value,
                 onClick: () => {
                   if (onChange) onChange(option);
                 },

@@ -5,6 +5,7 @@ import { css } from "@emotion/react";
 export type OverlayMenuItem = {
   label: string;
   icon?: string; // mdi:icon string
+  selected?: boolean;
   onClick?: () => void;
   children?: OverlayMenuItem[];
 };
@@ -47,6 +48,9 @@ const styles = {
       cursor: "not-allowed",
     },
   }),
+  itemSelected: css({
+    background: theme.colors.onCardDivider,
+  }),
   itemChevron: css({
     marginLeft: "auto",
   }),
@@ -74,7 +78,7 @@ export const OverlayMenu = ({
     return (
       <button
         key={item.label + index}
-        css={styles.item}
+        css={[styles.item, item.selected && styles.itemSelected]}
         onClick={() => {
           if (!hasChildren) {
             overlayRef.current?.setOpen(false);
