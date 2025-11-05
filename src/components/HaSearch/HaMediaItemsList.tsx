@@ -107,6 +107,9 @@ export const HaMediaItemsList = ({
             config.media_type === item.mediaType ||
             config.media_type.slice(0, -1) === item.mediaType
         );
+        const name =
+          filterConfigItem?.name ??
+          item.mediaType.charAt(0).toUpperCase() + item.mediaType.slice(1);
         return (
           <MediaSectionTitle
             onClick={
@@ -115,7 +118,7 @@ export const HaMediaItemsList = ({
                 : undefined
             }
           >
-            {filterConfigItem?.name ?? item.mediaType}
+            {name}
           </MediaSectionTitle>
         );
       }
