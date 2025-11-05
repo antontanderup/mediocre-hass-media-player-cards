@@ -2,6 +2,7 @@ import { Input as BaseInput } from "@base-ui-components/react/input";
 import { Icon } from "@components/Icon";
 import { theme } from "@constants";
 import { css, keyframes } from "@emotion/react";
+import { CSSProperties } from "preact";
 
 interface InputProps {
   value?: string;
@@ -13,6 +14,7 @@ interface InputProps {
   name?: string;
   loading?: boolean;
   className?: string;
+  style?: CSSProperties;
 }
 
 const spinAnimation = keyframes({
@@ -83,13 +85,14 @@ export const Input = ({
   name,
   loading = false,
   className,
+  style,
 }: InputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.((e.target as HTMLInputElement).value);
   };
 
   return (
-    <div css={styles.root} className={className}>
+    <div css={styles.root} className={className} style={style}>
       {label && <label css={styles.label}>{label}</label>}
       <BaseInput
         css={styles.input}
