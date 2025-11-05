@@ -106,7 +106,7 @@ export const Select = ({
               }))
         }
         renderTrigger={triggerProps => (
-          <button css={styles.trigger} {...triggerProps}>
+          <button css={styles.trigger} disabled={disabled} {...triggerProps}>
             {selectedItem.icon && (
               <Icon icon={selectedItem.icon} size={"x-small"} />
             )}
