@@ -1,5 +1,6 @@
 import { useHass } from "@components/HassContext";
 import { Slider, SliderProps } from "@components/Slider";
+import { css } from "@emotion/react";
 import { getHass, setVolume } from "@utils";
 import { useCallback } from "preact/hooks";
 
@@ -12,6 +13,17 @@ export type VolumeSliderProps = {
   "value" | "onChange" | "min" | "max" | "step" | "getThumbLabel"
 >;
 
+const styles = {
+  off: css({
+    opacity: 0.25,
+    overflow: "hidden",
+    borderRadius: "6px",
+    "--primary-color": "var(--disabled-text-color)",
+    "--text-primary-color": "var(--disabled-text-color)",
+    "--art-surface-color": "var(--disabled-text-color)",
+  }),
+};
+
 export const VolumeSlider = ({
   entityId,
   useVolumeUpDownForSteps,
@@ -20,7 +32,9 @@ export const VolumeSlider = ({
 }: VolumeSliderProps) => {
   const hass = useHass();
 
-  const volumeLevel = hass.states[entityId]?.attributes?.volume_level ?? 0;
+  const player = hass.states[entityId];
+  const isOff = player?.state === "off";
+  const volumeLevel = player?.attributes?.volume_level ?? 0;
 
   const handleVolumeChange = useCallback(
     (volume: number) => {
@@ -52,6 +66,7 @@ export const VolumeSlider = ({
         useVolumeUpDownForSteps ? handleVolumeStepChange : undefined
       }
       getThumbLabel={value => `${Math.round(value * 100)}%`}
+      css={isOff ? styles.off : {}}
       {...sliderProps}
     />
   );
