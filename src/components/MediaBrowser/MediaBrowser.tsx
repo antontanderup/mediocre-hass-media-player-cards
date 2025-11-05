@@ -1,4 +1,5 @@
 import {
+  Input,
   MediaClass,
   MediaContentType,
   MediaGrid,
@@ -72,6 +73,10 @@ const styles = {
     color: "var(--secondary-text-color)",
     textAlign: "center",
   }),
+  itemFilter: css({
+    marginTop: "8px",
+    marginBottom: "16px",
+  }),
 };
 
 export type MediaBrowserItem = {
@@ -97,6 +102,7 @@ export const MediaBrowser = ({
   const [history, setHistory] = useState<MediaBrowserItem[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [chunkSize, setChunkSize] = useState(4);
+  const [itemFilter, setItemFilter] = useState<string>("");
 
   const items: MediaBrowserItem[][] = useMemo(() => {
     const result: MediaBrowserItem[][] = [];
@@ -105,8 +111,15 @@ export const MediaBrowser = ({
       expandable: [],
     };
 
+    const filteredResults =
+      itemFilter === ""
+        ? mediaBrowserItems
+        : mediaBrowserItems.filter(item =>
+            item.title.toLowerCase().includes(itemFilter.toLowerCase())
+          );
+
     // Group items by media_content_type
-    mediaBrowserItems.forEach(item => {
+    filteredResults.forEach(item => {
       const isTrack =
         item.media_content_type === MediaContentType.Tracks ||
         item.media_class === MediaClass.Track;
@@ -135,9 +148,10 @@ export const MediaBrowser = ({
     });
 
     return result;
-  }, [mediaBrowserItems, chunkSize]);
+  }, [mediaBrowserItems, chunkSize, itemFilter]);
 
   useEffect(() => {
+    setItemFilter("");
     const fetchMediaBrowserItems = async () => {
       setIsFetching(true);
       try {
@@ -376,6 +390,18 @@ export const MediaBrowser = ({
                 </Fragment>
               )}
             </div>
+            {mediaBrowserItems.length > 3 && history.length > 0 && (
+              <Input
+                placeholder={"Filter results..."}
+                onChange={setItemFilter}
+                value={itemFilter}
+                css={styles.itemFilter}
+                style={{
+                  marginLeft: horizontalPadding,
+                  marginRight: horizontalPadding,
+                }}
+              />
+            )}
           </Fragment>
         )}
         renderEmpty={() => {
