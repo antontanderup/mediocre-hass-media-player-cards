@@ -12,6 +12,7 @@ export type SliderProps = {
   value: number;
   sliderSize?: SliderSize;
   showStepButtons?: boolean;
+  className?: string;
   onStepButtonClick?: (stepDirection: "increment" | "decrement") => void;
   getThumbLabel?: (value: number) => string;
   onChange: (value: number) => void;
@@ -68,7 +69,7 @@ const styles = {
           "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
       },
       width: "6px",
-      borderRadius: "2px",
+      borderRadius: "6px",
       top: "50%",
       left: "50%",
       height: "68%",
@@ -128,6 +129,7 @@ export const Slider = ({
   value,
   sliderSize = "medium",
   showStepButtons = false,
+  className,
   onStepButtonClick,
   getThumbLabel,
   onChange,
@@ -165,6 +167,7 @@ export const Slider = ({
       min={min}
       max={max}
       step={step}
+      className={className}
     >
       <BaseSlider.Control css={styles.control}>
         <BaseSlider.Track
