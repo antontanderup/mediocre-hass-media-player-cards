@@ -46,7 +46,7 @@ const styles = {
     "--input-disabled-bg-color": "var(--disabled-color)",
     "--input-disabled-text-color": "var(--disabled-text-color)",
     width: "100%",
-    padding: "8px 14px 8px 12px",
+    padding: "8px 12px",
     color: "var(--input-text-color)",
     backgroundColor: "var(--input-bg-color)",
     border: "none",
