@@ -100,7 +100,7 @@ export const Select = ({
                 label: option.label,
                 icon: option.icon,
                 onClick: () => {
-                  onChange && onChange(option);
+                  if (onChange) onChange(option);
                 },
               }))
         }
