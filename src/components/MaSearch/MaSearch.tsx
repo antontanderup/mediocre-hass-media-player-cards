@@ -55,6 +55,7 @@ export const MaSearch = ({
           />
           <Select
             value={enqueueMode}
+            hideSelectedCopy
             onChange={value => setEnqueueMode(value.value as MaEnqueueMode)}
             options={[
               {

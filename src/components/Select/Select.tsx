@@ -16,6 +16,7 @@ interface SelectProps {
   value?: string;
   placeholder?: string;
   onChange: (value: SelectItem) => void;
+  hideSelectedCopy?: boolean;
   disabled?: boolean;
   type?: string;
   label?: string;
@@ -72,6 +73,7 @@ export const Select = ({
   value = "",
   options = [],
   placeholder,
+  hideSelectedCopy = false,
   onChange,
   disabled,
   label,
@@ -107,7 +109,7 @@ export const Select = ({
             {selectedItem.icon && (
               <Icon icon={selectedItem.icon} size={"x-small"} />
             )}
-            {selectedItem.label}
+            {!hideSelectedCopy && selectedItem.label}
           </button>
         )}
       />

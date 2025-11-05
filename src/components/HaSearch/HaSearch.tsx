@@ -71,6 +71,7 @@ export const HaSearch = ({
           />
           <Select
             value={enqueueMode}
+            hideSelectedCopy
             onChange={value => setEnqueueMode(value.value as HaEnqueueMode)}
             options={[
               {
