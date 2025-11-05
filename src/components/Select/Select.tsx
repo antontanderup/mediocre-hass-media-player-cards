@@ -1,35 +1,34 @@
-import { Input as BaseInput } from "@base-ui-components/react/input";
 import { Icon } from "@components/Icon";
+import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
 import { theme } from "@constants";
-import { css, keyframes } from "@emotion/react";
+import { css } from "@emotion/react";
 import { CSSProperties } from "preact";
+import { useMemo } from "preact/hooks";
 
-interface InputProps {
+export type SelectItem = {
+  label: string;
+  value: string;
+  icon?: string;
+};
+
+interface SelectProps {
+  options: SelectItem[];
   value?: string;
   placeholder?: string;
-  onChange?: (value: string) => void;
+  onChange: (value: SelectItem) => void;
   disabled?: boolean;
   type?: string;
   label?: string;
   name?: string;
-  loading?: boolean;
   className?: string;
   style?: CSSProperties;
 }
-
-const spinAnimation = keyframes({
-  "0%": {
-    transform: "rotate(0deg)",
-  },
-  "100%": {
-    transform: "rotate(360deg)",
-  },
-});
 
 const styles = {
   root: css({
     display: "flex",
     position: "relative",
+    flexShrink: 0,
   }),
   label: css({
     display: "block",
@@ -38,7 +37,7 @@ const styles = {
     fontSize: "14px",
     fontWeight: 500,
   }),
-  input: css({
+  trigger: css({
     "--input-text-color": "var(--primary-text-color)",
     "--input-bg-color": "var(--secondary-background-color)",
     "--input-border-color": "var(--divider-color)",
@@ -46,13 +45,17 @@ const styles = {
     "--input-disabled-bg-color": "var(--disabled-color)",
     "--input-disabled-text-color": "var(--disabled-text-color)",
     width: "100%",
-    padding: "8px 12px",
+    padding: "8px 14px 8px 12px",
     color: "var(--input-text-color)",
     backgroundColor: "var(--input-bg-color)",
     border: "none",
     boxShadow: "0 0 1px 1px var(--input-border-color)",
     borderRadius: "6px",
     fontSize: "14px",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "6px",
     "&:focus": {
       outline: "none",
       boxShadow: "0 0 1px 1px var(--input-focus-border-color)",
@@ -63,47 +66,51 @@ const styles = {
       cursor: "not-allowed",
     },
   }),
-  icon: css({
-    position: "absolute",
-    right: "16px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    "& ha-icon": {
-      pointerEvents: "none",
-      animation: `${spinAnimation} 1s linear infinite`,
-    },
-  }),
 };
 
-export const Input = ({
+export const Select = ({
   value = "",
+  options = [],
   placeholder,
   onChange,
   disabled,
-  type = "text",
   label,
-  name,
-  loading = false,
   className,
   style,
-}: InputProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.((e.target as HTMLInputElement).value);
-  };
+}: SelectProps) => {
+  const selectedItem: SelectItem = useMemo(() => {
+    return (
+      options.find(item => item.value === value) || {
+        label: placeholder ?? "Please choose..",
+        value: "",
+      }
+    );
+  }, [value, options]);
 
   return (
     <div css={styles.root} className={className} style={style}>
       {label && <label css={styles.label}>{label}</label>}
-      <BaseInput
-        css={styles.input}
-        value={value}
-        placeholder={placeholder}
-        onChange={handleChange}
-        disabled={disabled}
-        type={type}
-        name={name}
+      <OverlayMenu
+        menuItems={
+          disabled
+            ? []
+            : options.map(option => ({
+                label: option.label,
+                icon: option.icon,
+                onClick: () => {
+                  onChange && onChange(option);
+                },
+              }))
+        }
+        renderTrigger={triggerProps => (
+          <button css={styles.trigger} {...triggerProps}>
+            {selectedItem.icon && (
+              <Icon icon={selectedItem.icon} size={"x-small"} />
+            )}
+            {selectedItem.label}
+          </button>
+        )}
       />
-      {loading && <Icon size="x-small" icon="mdi:loading" css={styles.icon} />}
     </div>
   );
 };

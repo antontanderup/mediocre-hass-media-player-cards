@@ -1,5 +1,5 @@
 import { Chip, Input } from "@components";
-import { useCallback, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import { searchStyles } from "@components/MediaSearch";
 import { HaFilterConfig, HaEnqueueMode, HaFilterType } from "./types";
@@ -7,6 +7,7 @@ import { useSearchQuery } from "./useSearchQuery";
 import { useMediaBrowser } from "./useMediaBrowser";
 import { HaMediaItemsList } from "./HaMediaItemsList";
 import { JSX } from "preact";
+import { Select } from "@components/Select";
 
 const filters: HaFilterConfig[] = [
   { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
@@ -35,16 +36,9 @@ export const HaSearch = ({
   renderHeader,
 }: HaSearchProps) => {
   const [query, setQuery] = useState("");
-  const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
+  const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("play");
   const debouncedQuery = useDebounce(query, 600);
   const [activeFilter, setActiveFilter] = useState<HaFilterType>("all");
-
-  const toggleEnqueueMode = useCallback(() => {
-    const enqueueModes: HaEnqueueMode[] = ["play", "replace", "next", "add"];
-    const currentIndex = enqueueModes.indexOf(enqueueMode);
-    const nextIndex = (currentIndex + 1) % enqueueModes.length;
-    setEnqueueMode(enqueueModes[nextIndex]);
-  }, [enqueueMode]);
 
   const { results, loading, error, playItem } = useSearchQuery(
     debouncedQuery,
@@ -63,29 +57,46 @@ export const HaSearch = ({
     return (
       <div css={searchStyles.searchBarContainer}>
         {!!renderHeader && renderHeader()}
-        <Input
-          placeholder={
-            Math.random() > 0.99 ? "Never gonna giv..." : "Search for media..."
-          }
-          onChange={setQuery}
-          value={query}
-          loading={loading}
-          css={searchStyles.searchInput}
-        />
-        <div css={searchStyles.filterContainer}>
-          <Chip
-            css={searchStyles.chip}
-            style={{
-              "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
-            }}
-            icon={getEnqueModeIcon(enqueueMode)}
-            onClick={toggleEnqueueMode}
-          >
-            {getEnqueueModeLabel(enqueueMode)}
-          </Chip>
-          <div css={searchStyles.verticalChipSeperator} />
-          {renderFilterChips()}
+        <div css={searchStyles.inputRow}>
+          <Input
+            placeholder={
+              Math.random() > 0.99
+                ? "Never gonna giv..."
+                : "Search for media..."
+            }
+            onChange={setQuery}
+            value={query}
+            loading={loading}
+            css={searchStyles.input}
+          />
+          <Select
+            value={enqueueMode}
+            onChange={value => setEnqueueMode(value.value as HaEnqueueMode)}
+            options={[
+              {
+                label: "Play",
+                value: "play",
+                icon: getEnqueModeIcon("play"),
+              },
+              {
+                label: "Replace Queue",
+                value: "replace",
+                icon: getEnqueModeIcon("replace"),
+              },
+              {
+                label: "Add Next",
+                value: "next",
+                icon: getEnqueModeIcon("next"),
+              },
+              {
+                label: "Add to Queue",
+                value: "add",
+                icon: getEnqueModeIcon("add"),
+              },
+            ]}
+          />
         </div>
+        <div css={searchStyles.filterContainer}>{renderFilterChips()}</div>
       </div>
     );
   };
@@ -152,20 +163,5 @@ const getEnqueModeIcon = (enqueueMode: HaEnqueueMode) => {
       return "mdi:playlist-plus";
     default:
       return "mdi:play-circle";
-  }
-};
-
-const getEnqueueModeLabel = (enqueueMode: HaEnqueueMode) => {
-  switch (enqueueMode) {
-    case "play":
-      return "Play now";
-    case "replace":
-      return "Replace queue";
-    case "next":
-      return "Add next";
-    case "add":
-      return "Add to queue";
-    default:
-      return "Play";
   }
 };

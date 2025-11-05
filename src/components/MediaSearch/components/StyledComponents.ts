@@ -16,7 +16,6 @@ export const searchStyles = {
     gap: 12,
     marginBottom: 12,
   }),
-  searchInput: css({ padding: "1px var(--mmpc-search-padding, 0px)" }),
   filterContainer: css({
     display: "flex",
     flexDirection: "row",
@@ -48,5 +47,14 @@ export const searchStyles = {
   }),
   resultsContainerSearchBarBottom: css({
     overflowY: "auto",
+  }),
+  inputRow: css({
+    display: "flex",
+    flexDirection: "row",
+    gap: "8px",
+    padding: "1px var(--mmpc-search-padding, 0px)",
+  }),
+  input: css({
+    flexGrow: 1,
   }),
 };
