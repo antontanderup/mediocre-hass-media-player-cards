@@ -3,12 +3,37 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { css } from "@emotion/react";
 import { type ComponentChildren } from "preact";
 import { useMeasure } from "@uidotdev/usehooks";
+import { theme } from "@constants";
 
 const styles = {
   container: css({
     height: "100%",
     overflowX: "hidden",
     overflowY: "auto",
+    boxSizing: "border-box",
+    /* Only apply custom scrollbar styles for non-touch devices */
+    "@media (hover: hover) and (pointer: fine)": {
+      paddingRight: "2px", // slight padding to avoid content shift
+      scrollbarWidth: "thin",
+      scrollbarColor: `${theme.colors.onCardDivider} transparent`,
+      "&::-webkit-scrollbar": {
+        width: "8px",
+        background: "transparent",
+      },
+      "&::-webkit-scrollbar-track": {
+        background: "transparent",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        background: theme.colors.onCardDivider,
+        borderRadius: "8px",
+        minHeight: "24px",
+        border: `2px solid ${theme.colors.onCardDivider}`,
+      },
+      "&::-webkit-scrollbar-thumb:hover": {
+        background: theme.colors.onCard,
+        opacity: 0.8,
+      },
+    },
   }),
   item: css({
     padding: "4px 0",
