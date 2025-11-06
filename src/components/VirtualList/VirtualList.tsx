@@ -9,10 +9,10 @@ const styles = {
   container: css({
     height: "100%",
     overflowX: "hidden",
-    overflowY: "auto",    
+    overflowY: "auto",
     boxSizing: "border-box",
     /* Only apply custom scrollbar styles for non-touch devices */
-    '@media (hover: hover) and (pointer: fine)': {
+    "@media (hover: hover) and (pointer: fine)": {
       paddingRight: "2px", // slight padding to avoid content shift
       scrollbarWidth: "thin",
       scrollbarColor: `${theme.colors.onCardDivider} transparent`,
