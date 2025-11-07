@@ -1,9 +1,11 @@
 {
-  "SpeakerGrouping": {
-    "join_title": "Join media players",
-    "join_subtitle": "Selected player grouping.",
-    "link_volume": "Link Volume",
-    "player_focus_title": "Player focus",
-    "player_focus_subtitle": "Change which player you are controlling."
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Join media players",
+      "join_subtitle": "Selected player grouping.",
+      "link_volume": "Link Volume",
+      "player_focus_title": "Player focus",
+      "player_focus_subtitle": "Change which player you are controlling."
+    }
   }
 }

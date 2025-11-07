@@ -226,8 +226,8 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           <Fragment>
             <div css={styles.horizontalPadding}>
               <ViewHeader
-                title={t("SpeakerGrouping.join_title")}
-                subtitle={t("SpeakerGrouping.join_subtitle")}
+                title={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title")}
+                subtitle={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle")}
                 renderAction={() => (
                   <div css={styles.syncContainer}>
                     <span
@@ -236,7 +236,7 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                         setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
                       }
                     >
-                      {t("SpeakerGrouping.link_volume")}
+                      {t("MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume")}
                     </span>
                     <IconButton
                       icon={
@@ -284,8 +284,8 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
         )}
         <div css={styles.horizontalPadding}>
           <ViewHeader
-            title={t("SpeakerGrouping.player_focus_title")}
-            subtitle={t("SpeakerGrouping.player_focus_subtitle")}
+            title={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title")}
+            subtitle={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle")}
           />
         </div>
         <div css={[styles.playerChips, styles.horizontalPadding]}>
