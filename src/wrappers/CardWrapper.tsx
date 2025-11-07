@@ -4,6 +4,7 @@ import {
   CardContextProvider,
   HassContextProvider,
 } from "@components";
+import './../i18n';
 import { PlayerContextProvider } from "@components/PlayerContext";
 import { HomeAssistant } from "@types";
 

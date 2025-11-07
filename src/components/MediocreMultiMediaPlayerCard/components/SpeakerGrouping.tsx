@@ -1,4 +1,5 @@
 import { useContext, useMemo, useState } from "preact/hooks";
+import { useTranslation } from "react-i18next";
 import type {
   MediaPlayerEntity,
   MediocreMultiMediaPlayer,
@@ -91,6 +92,7 @@ export type SpeakerGroupingProps = {
 
 export const SpeakerGrouping = memo<SpeakerGroupingProps>(
   ({ mediaPlayer, setSelectedPlayer }: SpeakerGroupingProps) => {
+    const { t } = useTranslation();
     const { config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
@@ -222,52 +224,52 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
       <div css={styles.speakerGroupContainer}>
         {!!groupableEntities && groupableEntities.length > 0 && (
           <Fragment>
-            <ViewHeader
-              title="Join media players"
-              subtitle="Selected player grouping."
-              css={styles.horizontalPadding}
-              renderAction={() => (
-                <div css={styles.syncContainer}>
-                  <span
-                    css={styles.syncText}
-                    onClick={() =>
-                      setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
-                    }
-                  >
-                    Link Volume
-                  </span>
-                  <IconButton
-                    icon={
-                      syncMainSpeakerVolume
-                        ? "mdi:check-circle"
-                        : "mdi:circle-outline"
-                    }
-                    size="x-small"
-                    onClick={() =>
-                      setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
-                    }
-                  />
-                </div>
-              )}
-            />
-            <GroupVolumeController
-              config={{
-                entity_id,
-                speaker_group: {
-                  entities: groupableEntities,
-                  entity_id: mainEntityId,
-                },
-                options: {
-                  show_volume_step_buttons:
-                    config.options?.show_volume_step_buttons ?? false,
-                  use_volume_up_down_for_step_buttons:
-                    config.options?.use_volume_up_down_for_step_buttons ??
-                    false,
-                },
-              }}
-              syncMainSpeaker={syncMainSpeakerVolume}
-              css={styles.horizontalPadding}
-            />
+            <div css={styles.horizontalPadding}>
+              <ViewHeader
+                title={t("SpeakerGrouping.join_title")}
+                subtitle={t("SpeakerGrouping.join_subtitle")}
+                renderAction={() => (
+                  <div css={styles.syncContainer}>
+                    <span
+                      css={styles.syncText}
+                      onClick={() =>
+                        setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
+                      }
+                    >
+                      {t("SpeakerGrouping.link_volume")}
+                    </span>
+                    <IconButton
+                      icon={
+                        syncMainSpeakerVolume
+                          ? "mdi:check-circle"
+                          : "mdi:circle-outline"
+                      }
+                      size="x-small"
+                      onClick={() =>
+                        setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
+                      }
+                    />
+                  </div>
+                )}
+              />
+              <GroupVolumeController
+                config={{
+                  entity_id,
+                  speaker_group: {
+                    entities: groupableEntities,
+                    entity_id: mainEntityId,
+                  },
+                  options: {
+                    show_volume_step_buttons:
+                      config.options?.show_volume_step_buttons ?? false,
+                    use_volume_up_down_for_step_buttons:
+                      config.options?.use_volume_up_down_for_step_buttons ??
+                      false,
+                  },
+                }}
+                syncMainSpeaker={syncMainSpeakerVolume}
+              />
+            </div>
             <div>
               <GroupChipsController
                 config={{
@@ -280,11 +282,12 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
             </div>
           </Fragment>
         )}
-        <ViewHeader
-          title="Player focus"
-          subtitle="Change which player you are controlling."
-          css={styles.horizontalPadding}
-        />
+        <div css={styles.horizontalPadding}>
+          <ViewHeader
+            title={t("SpeakerGrouping.player_focus_title")}
+            subtitle={t("SpeakerGrouping.player_focus_subtitle")}
+          />
+        </div>
         <div css={[styles.playerChips, styles.horizontalPadding]}>
           {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
         </div>
