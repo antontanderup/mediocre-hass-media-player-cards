@@ -25,11 +25,14 @@ export const SearchView = memo<SearchViewProps>(
   ({ mediaPlayer: { ma_entity_id, search, entity_id }, height }) => {
     const { t } = useTranslation();
     const renderHeader = () => (
-      <div css={styles.header}>
-        <ViewHeader
-          title={ma_entity_id ? t("MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title") : t("MediocreMultiMediaPlayerCard.SearchView.search_title")}
-        />
-      </div>
+      <ViewHeader
+        title={
+          ma_entity_id
+            ? t("MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title")
+            : t("MediocreMultiMediaPlayerCard.SearchView.search_title")
+        }
+        css={styles.header}
+      />
     );
 
     const renderSearch = () => {

@@ -9,13 +9,11 @@ const resources = {
   da: { translation: da },
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: getHass().locale.language ?? "en",
-    fallbackLng: "en",
-    interpolation: { escapeValue: false },
-  });
+i18n.use(initReactI18next).init({
+  resources,
+  lng: getHass().locale.language ?? "en",
+  fallbackLng: "en",
+  interpolation: { escapeValue: false },
+});
 
 export default i18n;

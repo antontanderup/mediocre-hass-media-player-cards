@@ -25,9 +25,12 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(
   ({ mediaPlayer: { entity_id, media_browser }, height }) => {
     const { t } = useTranslation();
     const renderHeader = () => (
-      <div css={styles.header}>
-        <ViewHeader title={t("MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title")} />
-      </div>
+      <ViewHeader
+        title={t(
+          "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title"
+        )}
+        css={styles.header}
+      />
     );
 
     return (

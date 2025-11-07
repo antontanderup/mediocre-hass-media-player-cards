@@ -133,8 +133,12 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
         {custom_buttons && custom_buttons.length > 0 && (
           <Fragment>
             <ViewHeader
-              title={t("MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title")}
-              subtitle={t("MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle")}
+              title={t(
+                "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title"
+              )}
+              subtitle={t(
+                "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle"
+              )}
             />
             <div css={styles.buttons}>
               {custom_buttons?.map((button, index) => (
@@ -150,15 +154,21 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
         {renderMediaPlayerActions && (
           <Fragment>
             <ViewHeader
-              title={t("MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title")}
-              subtitle={t("MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle")}
+              title={t(
+                "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title"
+              )}
+              subtitle={t(
+                "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle"
+              )}
             />
             <div css={styles.buttons}>
               {!!ma_entity_id && isMainEntityMassPlayer && (
                 <Fragment>
                   {ma_favorite_button_entity_id && (
                     <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
-                      {t("MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite")}
+                      {t(
+                        "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite"
+                      )}
                     </Chip>
                   )}
                   {maTransferMenuItems.length > 0 && (
@@ -167,7 +177,9 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
                       side="bottom"
                       renderTrigger={triggerProps => (
                         <Chip icon="mdi:transfer" {...triggerProps}>
-                          {t("MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue")}
+                          {t(
+                            "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue"
+                          )}
                           <Icon size="x-small" icon="mdi:chevron-down" />
                         </Chip>
                       )}

@@ -224,52 +224,58 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
       <div css={styles.speakerGroupContainer}>
         {!!groupableEntities && groupableEntities.length > 0 && (
           <Fragment>
-            <div css={styles.horizontalPadding}>
-              <ViewHeader
-                title={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title")}
-                subtitle={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle")}
-                renderAction={() => (
-                  <div css={styles.syncContainer}>
-                    <span
-                      css={styles.syncText}
-                      onClick={() =>
-                        setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
-                      }
-                    >
-                      {t("MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume")}
-                    </span>
-                    <IconButton
-                      icon={
-                        syncMainSpeakerVolume
-                          ? "mdi:check-circle"
-                          : "mdi:circle-outline"
-                      }
-                      size="x-small"
-                      onClick={() =>
-                        setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
-                      }
-                    />
-                  </div>
-                )}
-              />
-              <GroupVolumeController
-                config={{
-                  entity_id,
-                  speaker_group: {
-                    entities: groupableEntities,
-                    entity_id: mainEntityId,
-                  },
-                  options: {
-                    show_volume_step_buttons:
-                      config.options?.show_volume_step_buttons ?? false,
-                    use_volume_up_down_for_step_buttons:
-                      config.options?.use_volume_up_down_for_step_buttons ??
-                      false,
-                  },
-                }}
-                syncMainSpeaker={syncMainSpeakerVolume}
-              />
-            </div>
+            <ViewHeader
+              title={t(
+                "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title"
+              )}
+              subtitle={t(
+                "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle"
+              )}
+              css={styles.horizontalPadding}
+              renderAction={() => (
+                <div css={styles.syncContainer}>
+                  <span
+                    css={styles.syncText}
+                    onClick={() =>
+                      setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
+                    }
+                  >
+                    {t(
+                      "MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume"
+                    )}
+                  </span>
+                  <IconButton
+                    icon={
+                      syncMainSpeakerVolume
+                        ? "mdi:check-circle"
+                        : "mdi:circle-outline"
+                    }
+                    size="x-small"
+                    onClick={() =>
+                      setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
+                    }
+                  />
+                </div>
+              )}
+            />
+            <GroupVolumeController
+              config={{
+                entity_id,
+                speaker_group: {
+                  entities: groupableEntities,
+                  entity_id: mainEntityId,
+                },
+                options: {
+                  show_volume_step_buttons:
+                    config.options?.show_volume_step_buttons ?? false,
+                  use_volume_up_down_for_step_buttons:
+                    config.options?.use_volume_up_down_for_step_buttons ??
+                    false,
+                },
+              }}
+              syncMainSpeaker={syncMainSpeakerVolume}
+              css={styles.horizontalPadding}
+            />
             <div>
               <GroupChipsController
                 config={{
@@ -282,12 +288,15 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
             </div>
           </Fragment>
         )}
-        <div css={styles.horizontalPadding}>
-          <ViewHeader
-            title={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title")}
-            subtitle={t("MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle")}
-          />
-        </div>
+        <ViewHeader
+          title={t(
+            "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title"
+          )}
+          subtitle={t(
+            "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle"
+          )}
+          css={styles.horizontalPadding}
+        />
         <div css={[styles.playerChips, styles.horizontalPadding]}>
           {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
         </div>
