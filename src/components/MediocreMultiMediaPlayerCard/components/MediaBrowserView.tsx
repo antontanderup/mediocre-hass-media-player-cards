@@ -2,6 +2,7 @@ import type { MediocreMultiMediaPlayer } from "@types";
 import { MediaBrowser } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
+import { useTranslation } from "react-i18next";
 import { memo } from "preact/compat";
 
 const styles = {
@@ -22,8 +23,11 @@ export type MediaBrowserViewProps = {
 
 export const MediaBrowserView = memo<MediaBrowserViewProps>(
   ({ mediaPlayer: { entity_id, media_browser }, height }) => {
+    const { t } = useTranslation();
     const renderHeader = () => (
-      <ViewHeader title={"Browse Media"} css={styles.header} />
+      <div css={styles.header}>
+        <ViewHeader title={t("MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title")} />
+      </div>
     );
 
     return (

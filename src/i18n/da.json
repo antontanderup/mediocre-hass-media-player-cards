@@ -2,10 +2,25 @@
   "MediocreMultiMediaPlayerCard": {
     "SpeakerGrouping": {
       "join_title": "Synk. medieafspillere",
-      "join_subtitle": "Valg medieafspiller-gruppering.",
+      "join_subtitle": "Valgt medieafspiller-gruppering.",
       "link_volume": "Synk. lydstyrke",
       "player_focus_title": "Afspillerfokus",
       "player_focus_subtitle": "Vælg hvilken afspiller du styrer."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Gennemse medier"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Søg i Music Assistant",
+      "search_title": "Søg"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Genveje",
+      "shortcuts_subtitle": "Hurtig adgang til dine favorit-handlinger.",
+      "media_player_actions_title": "Medieafspiller-handlinger",
+      "media_player_actions_subtitle": "Ekstra valgmuligheder til din medieafspiller.",
+      "mark_as_favorite": "Marker som favorit",
+      "transfer_queue": "Overfør kø"
     }
   }
 }
