@@ -128,7 +128,7 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
   );
 
   return (
-    <div css={styles.root}>
+    <div css={styles.root} id="mmpc-group-chips-controller">
       {availableSpeakers.map(speaker => (
         <Chip
           css={styles.speakerChip}
