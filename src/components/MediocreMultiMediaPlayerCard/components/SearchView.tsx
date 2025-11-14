@@ -2,7 +2,7 @@ import type { MediocreMultiMediaPlayer } from "@types";
 import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
-import { useTranslation } from "react-i18next";
+import { useIntl } from "react-intl";
 import { memo } from "preact/compat";
 
 const styles = {
@@ -23,13 +23,13 @@ export type SearchViewProps = {
 
 export const SearchView = memo<SearchViewProps>(
   ({ mediaPlayer: { ma_entity_id, search, entity_id }, height }) => {
-    const { t } = useTranslation();
+    const intl = useIntl();
     const renderHeader = () => (
       <ViewHeader
         title={
           ma_entity_id
-            ? t("MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title")
-            : t("MediocreMultiMediaPlayerCard.SearchView.search_title")
+            ? intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title" })
+            : intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.SearchView.search_title" })
         }
         css={styles.header}
       />

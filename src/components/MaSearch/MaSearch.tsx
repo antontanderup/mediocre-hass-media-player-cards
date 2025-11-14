@@ -9,6 +9,7 @@ import { filters } from "./constants";
 import { MaMediaItemsList } from "./MaMediaItemsList";
 import { JSX } from "preact/jsx-runtime";
 import { Select } from "@components/Select";
+import { useIntl } from "react-intl";
 
 export type MaSearchProps = {
   maEntityId: string;
@@ -25,6 +26,7 @@ export const MaSearch = ({
   maxHeight = 300,
   renderHeader,
 }: MaSearchProps) => {
+  const intl = useIntl();
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<MaEnqueueMode>("play");
   const debouncedQuery = useDebounce(query, 600);
@@ -43,11 +45,7 @@ export const MaSearch = ({
         {!!renderHeader && renderHeader()}
         <div css={searchStyles.inputRow}>
           <Input
-            placeholder={
-              Math.random() > 0.99
-                ? "Never gonna giv..."
-                : "Search for media..."
-            }
+            placeholder={intl.formatMessage({ id: "Search.input_placeholder" })}
             onChange={setQuery}
             value={query}
             loading={loading}
@@ -59,27 +57,27 @@ export const MaSearch = ({
             onChange={value => setEnqueueMode(value.value as MaEnqueueMode)}
             options={[
               {
-                label: "Play",
+                label: intl.formatMessage({ id: "Search.enqueue_mode.play", defaultMessage: "Play" }),
                 value: "play",
                 icon: getEnqueModeIcon("play"),
               },
               {
-                label: "Replace Queue",
+                label: intl.formatMessage({ id: "Search.enqueue_mode.replace", defaultMessage: "Replace Queue" }),
                 value: "replace",
                 icon: getEnqueModeIcon("replace"),
               },
               {
-                label: "Add Next",
+                label: intl.formatMessage({ id: "Search.enqueue_mode.next", defaultMessage: "Add Next" }),
                 value: "next",
                 icon: getEnqueModeIcon("next"),
               },
               {
-                label: "Replace Next",
+                label: intl.formatMessage({ id: "Search.enqueue_mode.replace_next", defaultMessage: "Replace Next" }),
                 value: "replace_next",
                 icon: getEnqueModeIcon("replace_next"),
               },
               {
-                label: "Add to Queue",
+                label: intl.formatMessage({ id: "Search.enqueue_mode.add", defaultMessage: "Add to Queue" }),
                 value: "add",
                 icon: getEnqueModeIcon("add"),
               },
@@ -104,7 +102,7 @@ export const MaSearch = ({
         onClick={() => setActiveFilter(filter.type)}
         icon={filter.icon}
       >
-        {filter.label}
+        {intl.formatMessage({ id: `Search.categories.${filter.label}`, defaultMessage: filter.label })}
       </Chip>
     ));
   };

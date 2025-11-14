@@ -21,7 +21,7 @@ import {
   OverlayMenuItem,
 } from "@components/OverlayMenu/OverlayMenu";
 import { memo } from "preact/compat";
-import { useTranslation } from "react-i18next";
+import { useIntl } from "react-intl";
 
 const styles = {
   root: css({
@@ -127,18 +127,14 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
       (!!ma_entity_id && isMainEntityMassPlayer) ||
       sourceSelectMenuItems.length > 0;
 
-    const { t } = useTranslation();
+  const intl = useIntl();
     return (
       <div css={styles.root}>
         {custom_buttons && custom_buttons.length > 0 && (
           <Fragment>
             <ViewHeader
-              title={t(
-                "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title"
-              )}
-              subtitle={t(
-                "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle"
-              )}
+              title={intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title" })}
+              subtitle={intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle" })}
             />
             <div css={styles.buttons}>
               {custom_buttons?.map((button, index) => (
@@ -154,21 +150,15 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
         {renderMediaPlayerActions && (
           <Fragment>
             <ViewHeader
-              title={t(
-                "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title"
-              )}
-              subtitle={t(
-                "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle"
-              )}
+              title={intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title" })}
+              subtitle={intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle" })}
             />
             <div css={styles.buttons}>
               {!!ma_entity_id && isMainEntityMassPlayer && (
                 <Fragment>
                   {ma_favorite_button_entity_id && (
                     <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
-                      {t(
-                        "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite"
-                      )}
+                      {intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite" })}
                     </Chip>
                   )}
                   {maTransferMenuItems.length > 0 && (
@@ -177,9 +167,7 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
                       side="bottom"
                       renderTrigger={triggerProps => (
                         <Chip icon="mdi:transfer" {...triggerProps}>
-                          {t(
-                            "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue"
-                          )}
+                          {intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue" })}
                           <Icon size="x-small" icon="mdi:chevron-down" />
                         </Chip>
                       )}

@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from "preact/hooks";
-import { useTranslation } from "react-i18next";
+import { useIntl } from "react-intl";
 import type {
   MediaPlayerEntity,
   MediocreMultiMediaPlayer,
@@ -92,7 +92,7 @@ export type SpeakerGroupingProps = {
 
 export const SpeakerGrouping = memo<SpeakerGroupingProps>(
   ({ mediaPlayer, setSelectedPlayer }: SpeakerGroupingProps) => {
-    const { t } = useTranslation();
+    const intl = useIntl();
     const { config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
@@ -225,12 +225,12 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
         {!!groupableEntities && groupableEntities.length > 0 && (
           <Fragment>
             <ViewHeader
-              title={t(
-                "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title"
-              )}
-              subtitle={t(
-                "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle"
-              )}
+              title={intl.formatMessage({
+                id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title",
+              })}
+              subtitle={intl.formatMessage({
+                id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle",
+              })}
               css={styles.horizontalPadding}
               renderAction={() => (
                 <div css={styles.syncContainer}>
@@ -240,9 +240,9 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                       setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
                     }
                   >
-                    {t(
-                      "MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume"
-                    )}
+                    {intl.formatMessage({
+                      id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume",
+                    })}
                   </span>
                   <IconButton
                     icon={
@@ -289,12 +289,12 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           </Fragment>
         )}
         <ViewHeader
-          title={t(
-            "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title"
-          )}
-          subtitle={t(
-            "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle"
-          )}
+          title={intl.formatMessage({
+            id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title",
+          })}
+          subtitle={intl.formatMessage({
+            id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle",
+          })}
           css={styles.horizontalPadding}
         />
         <div css={[styles.playerChips, styles.horizontalPadding]}>
