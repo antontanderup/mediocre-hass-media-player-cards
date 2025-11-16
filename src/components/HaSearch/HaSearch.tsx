@@ -73,22 +73,34 @@ export const HaSearch = ({
             onChange={value => setEnqueueMode(value.value as HaEnqueueMode)}
             options={[
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.play", defaultMessage: "Play" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.play",
+                  defaultMessage: "Play",
+                }),
                 value: "play",
                 icon: getEnqueModeIcon("play"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.replace", defaultMessage: "Replace Queue" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.replace",
+                  defaultMessage: "Replace Queue",
+                }),
                 value: "replace",
                 icon: getEnqueModeIcon("replace"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.next", defaultMessage: "Add Next" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.next",
+                  defaultMessage: "Add Next",
+                }),
                 value: "next",
                 icon: getEnqueModeIcon("next"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.add", defaultMessage: "Add to Queue" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.add",
+                  defaultMessage: "Add to Queue",
+                }),
                 value: "add",
                 icon: getEnqueModeIcon("add"),
               },
@@ -116,7 +128,10 @@ export const HaSearch = ({
         onClick={() => setActiveFilter(filter.media_type)}
         icon={filter.icon}
       >
-        {intl.formatMessage({ id: `Search.categories.${filter.name}`, defaultMessage: filter.name })}
+        {intl.formatMessage({
+          id: `Search.categories.${filter.name}`,
+          defaultMessage: filter.name,
+        })}
       </Chip>
     ));
   };

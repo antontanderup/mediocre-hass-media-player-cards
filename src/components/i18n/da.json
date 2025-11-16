@@ -23,6 +23,25 @@
       "transfer_queue": "Overfør kø"
     }
   },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Synk. medieafspillere",
+      "link_volume_title": "Synk. lydstyrke",
+      "add_speakers_title": "Tilføj medieafspillere til gruppe"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Lydstyrke",
+      "speaker_grouping_modal_title": "Synk. medieafspillere",
+      "media_browser_modal_title": "Gennemse medier",
+      "search_modal_title": "Søg",
+      "shortcuts_modal_title": "Genveje"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Synk. lydstyrke"
+    }
+  },
   "Search": {
     "input_placeholder": "Søg efter medier...",
     "categories": {

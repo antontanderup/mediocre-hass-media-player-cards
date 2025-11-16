@@ -26,7 +26,9 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(
     const intl = useIntl();
     const renderHeader = () => (
       <ViewHeader
-        title={intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title" })}
+        title={intl.formatMessage({
+          id: "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title",
+        })}
         css={styles.header}
       />
     );

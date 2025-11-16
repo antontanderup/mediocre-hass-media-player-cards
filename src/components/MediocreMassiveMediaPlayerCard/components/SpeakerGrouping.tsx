@@ -8,6 +8,7 @@ import {
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { css } from "@emotion/react";
+import { useIntl } from "react-intl";
 
 const styles = {
   root: css({
@@ -39,6 +40,7 @@ const styles = {
 };
 
 export const SpeakerGrouping = () => {
+  const intl = useIntl();
   const hass = useHass();
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
@@ -62,7 +64,9 @@ export const SpeakerGrouping = () => {
               css={styles.syncText}
               onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
             >
-              Link Volume
+              {intl.formatMessage({
+                id: "MediocreMassiveMediaPlayerCard.SpeakerGrouping.link_volume",
+              })}
             </span>
             <IconButton
               icon={

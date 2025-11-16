@@ -28,8 +28,12 @@ export const SearchView = memo<SearchViewProps>(
       <ViewHeader
         title={
           ma_entity_id
-            ? intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title" })
-            : intl.formatMessage({ id: "MediocreMultiMediaPlayerCard.SearchView.search_title" })
+            ? intl.formatMessage({
+                id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
+              })
+            : intl.formatMessage({
+                id: "MediocreMultiMediaPlayerCard.SearchView.search_title",
+              })
         }
         css={styles.header}
       />

@@ -23,6 +23,25 @@
       "transfer_queue": "Transfer Queue"
     }
   },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Grouped speakers",
+      "link_volume_title": "Link volume",
+      "add_speakers_title": "Add speakers to group"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Volume",
+      "speaker_grouping_modal_title": "Speaker Grouping",
+      "media_browser_modal_title": "Media Browser",
+      "search_modal_title": "Search",
+      "shortcuts_modal_title": "Shortcuts"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Link volume"
+    }
+  },
   "Search": {
     "input_placeholder": "Search for media...",
     "categories": {

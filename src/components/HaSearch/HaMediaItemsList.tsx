@@ -120,7 +120,10 @@ export const HaMediaItemsList = ({
                 : undefined
             }
           >
-            {intl.formatMessage({ id: `Search.categories.${name}`, defaultMessage: name })}
+            {intl.formatMessage({
+              id: `Search.categories.${name}`,
+              defaultMessage: name,
+            })}
           </MediaSectionTitle>
         );
       }
@@ -207,7 +210,12 @@ export const HaMediaItemsList = ({
           {error ? (
             <p css={searchStyles.mediaEmptyText}>{error}</p>
           ) : !hideEmpty ? (
-            <p css={searchStyles.mediaEmptyText}>{intl.formatMessage({ id: "Search.no_results", defaultMessage: "No results found." })}</p>
+            <p css={searchStyles.mediaEmptyText}>
+              {intl.formatMessage({
+                id: "Search.no_results",
+                defaultMessage: "No results found.",
+              })}
+            </p>
           ) : null}
         </Fragment>
       )}

@@ -57,27 +57,42 @@ export const MaSearch = ({
             onChange={value => setEnqueueMode(value.value as MaEnqueueMode)}
             options={[
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.play", defaultMessage: "Play" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.play",
+                  defaultMessage: "Play",
+                }),
                 value: "play",
                 icon: getEnqueModeIcon("play"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.replace", defaultMessage: "Replace Queue" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.replace",
+                  defaultMessage: "Replace Queue",
+                }),
                 value: "replace",
                 icon: getEnqueModeIcon("replace"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.next", defaultMessage: "Add Next" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.next",
+                  defaultMessage: "Add Next",
+                }),
                 value: "next",
                 icon: getEnqueModeIcon("next"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.replace_next", defaultMessage: "Replace Next" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.replace_next",
+                  defaultMessage: "Replace Next",
+                }),
                 value: "replace_next",
                 icon: getEnqueModeIcon("replace_next"),
               },
               {
-                label: intl.formatMessage({ id: "Search.enqueue_mode.add", defaultMessage: "Add to Queue" }),
+                label: intl.formatMessage({
+                  id: "Search.enqueue_mode.add",
+                  defaultMessage: "Add to Queue",
+                }),
                 value: "add",
                 icon: getEnqueModeIcon("add"),
               },
@@ -102,7 +117,10 @@ export const MaSearch = ({
         onClick={() => setActiveFilter(filter.type)}
         icon={filter.icon}
       >
-        {intl.formatMessage({ id: `Search.categories.${filter.label}`, defaultMessage: filter.label })}
+        {intl.formatMessage({
+          id: `Search.categories.${filter.label}`,
+          defaultMessage: filter.label,
+        })}
       </Chip>
     ));
   };

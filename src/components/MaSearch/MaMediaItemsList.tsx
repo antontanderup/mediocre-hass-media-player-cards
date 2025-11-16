@@ -104,7 +104,10 @@ export const MaMediaItemsList = ({
       case "header": {
         return (
           <MediaSectionTitle onClick={() => onHeaderClick?.(item.mediaType)}>
-            {intl.formatMessage({ id: `Search.categories.${labelMap[item.mediaType]}`, defaultMessage: labelMap[item.mediaType] })}
+            {intl.formatMessage({
+              id: `Search.categories.${labelMap[item.mediaType]}`,
+              defaultMessage: labelMap[item.mediaType],
+            })}
           </MediaSectionTitle>
         );
       }
@@ -215,7 +218,12 @@ export const MaMediaItemsList = ({
       data={data}
       renderItem={renderItem}
       renderEmpty={() => (
-        <p css={searchStyles.mediaEmptyText}>{intl.formatMessage({ id: "Search.no_results", defaultMessage: "No results found." })}</p>
+        <p css={searchStyles.mediaEmptyText}>
+          {intl.formatMessage({
+            id: "Search.no_results",
+            defaultMessage: "No results found.",
+          })}
+        </p>
       )}
       {...listProps}
     />
