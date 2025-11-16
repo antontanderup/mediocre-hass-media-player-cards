@@ -1,10 +1,12 @@
-import { createContext } from "preact";
+import { createContext, JSX } from "preact";
 import { IntlProvider } from "react-intl";
 import en from "./en.json";
 import da from "./da.json";
 
+type Messages = { [key: string]: string | Messages };
+
 function flattenMessages(
-  nestedMessages: Record<string, any>,
+  nestedMessages: Messages,
   prefix = ""
 ): Record<string, string> {
   return Object.keys(nestedMessages).reduce(
@@ -14,7 +16,10 @@ function flattenMessages(
       if (typeof value === "string") {
         messages[prefixedKey] = value;
       } else if (typeof value === "object" && value !== null) {
-        Object.assign(messages, flattenMessages(value, prefixedKey));
+        Object.assign(
+          messages,
+          flattenMessages(value as Messages, prefixedKey)
+        );
       }
       return messages;
     },
@@ -24,7 +29,7 @@ function flattenMessages(
 
 const defaultMessages = flattenMessages(en);
 
-export const messages: Record<string, any> = {
+export const messages: Record<string, Record<string, string>> = {
   en: defaultMessages,
   da: Object.assign(defaultMessages, flattenMessages(da)),
 };
@@ -43,7 +48,7 @@ export function IntlProviderWrapper({
   children,
   locale,
 }: {
-  children: any;
+  children: JSX.Element;
   locale: string;
 }) {
   return (

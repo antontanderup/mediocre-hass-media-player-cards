@@ -52,7 +52,6 @@ export class CardWrapper<
               </HassContextProvider>
             </CardContextProvider>
           </EmotionContextProvider>
-          ,
         </IntlProviderWrapper>,
         this
       );
