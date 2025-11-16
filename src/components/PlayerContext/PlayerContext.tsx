@@ -33,7 +33,7 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
     entityId,
   }: PlayerContextProviderProps): preact.ComponentChildren => {
     const hass = useHass();
-    const intl = useIntl()
+    const intl = useIntl();
 
     const contextValue = useMemo((): PlayerContextType => {
       const player = hass.states[entityId] as MediaPlayerEntity;
@@ -50,7 +50,14 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
       }
       const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
       return {
-        player: { ...player, title: intl.formatMessage({ id: `player_states.${title}`, defaultMessage: title }), subtitle },
+        player: {
+          ...player,
+          title: intl.formatMessage({
+            id: `player_states.${title}`,
+            defaultMessage: title,
+          }),
+          subtitle,
+        },
       };
     }, [hass.states[entityId], entityId]);
 
