@@ -47,7 +47,14 @@ export function IntlProviderWrapper({
   locale: string;
 }) {
   return (
-    <IntlProvider locale={locale} messages={messages[locale] || messages["en"]}>
+    <IntlProvider
+      locale={locale}
+      messages={messages[locale] || messages["en"]}
+      onError={() => {
+        // don't log errors as we do sometimes intentionally use fallbacks
+        // eg. in PlayerContextProvider where we use defaultMessage when title is not a player state
+      }}
+    >
       {children}
     </IntlProvider>
   );

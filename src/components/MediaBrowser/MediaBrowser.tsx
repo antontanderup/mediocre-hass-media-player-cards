@@ -251,7 +251,7 @@ export const MediaBrowser = ({
       });
       menuItems.push({
         label: intl.formatMessage({
-          id: "MediaBrowser.media_item_menu.enqueue_mode.enqueue",
+          id: "MediaBrowser.media_item_menu.enqueue_dropdown_label",
           defaultMessage: "Enqueue",
         }),
         icon: getEnqueueModeIcon("next"),

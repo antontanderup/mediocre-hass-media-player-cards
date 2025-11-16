@@ -85,5 +85,13 @@
     "mark_as_favorite": "Marker som favorit",
     "transfer_queue": "Overfør kø",
     "select_source": "Vælg kilde"
+  },
+  "player_states": {
+    "Off": "Slukket",
+    "Idle": "Inaktiv",
+    "Playing": "Afspiller",
+    "Paused": "På pause",
+    "Stopped": "Stoppet",
+    "Unavailable": "Utilgængelig"
   }
 }

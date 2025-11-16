@@ -85,5 +85,13 @@
     "mark_as_favorite": "Mark as Favorite",
     "transfer_queue": "Transfer Queue",
     "select_source": "Select Source"
+  },
+  "player_states": {
+    "Off": "Off",
+    "Idle": "Idle",
+    "Playing": "Playing",
+    "Paused": "Paused",
+    "Stopped": "Stopped",
+    "Unavailable": "Unavailable"
   }
 }

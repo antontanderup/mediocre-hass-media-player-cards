@@ -4,6 +4,7 @@ import { MediaPlayerEntity } from "@types";
 import { getMediaPlayerTitleAndSubtitle } from "@utils/getMediaPlayerTitleAndSubtitle";
 import { memo } from "preact/compat";
 import { useHass } from "@components";
+import { useIntl } from "react-intl";
 
 export type PlayerContextType = {
   player: Omit<
@@ -32,6 +33,7 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
     entityId,
   }: PlayerContextProviderProps): preact.ComponentChildren => {
     const hass = useHass();
+    const intl = useIntl()
 
     const contextValue = useMemo((): PlayerContextType => {
       const player = hass.states[entityId] as MediaPlayerEntity;
@@ -41,14 +43,14 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
             entity_id: entityId,
             state: "unavailable",
             attributes: {},
-            title: "Unavailable",
+            title: intl.formatMessage({ id: "player_states.Unavailable" }),
             subtitle: `${entityId} unavailable`,
           },
         };
       }
       const { title, subtitle } = getMediaPlayerTitleAndSubtitle(player);
       return {
-        player: { ...player, title, subtitle },
+        player: { ...player, title: intl.formatMessage({ id: `player_states.${title}`, defaultMessage: title }), subtitle },
       };
     }, [hass.states[entityId], entityId]);
 
