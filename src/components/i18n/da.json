@@ -80,5 +80,10 @@
       },
       "browse": "Gennemse"
     }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Marker som favorit",
+    "transfer_queue": "Overfør kø",
+    "select_source": "Vælg kilde"
   }
 }

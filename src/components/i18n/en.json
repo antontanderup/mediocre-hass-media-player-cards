@@ -80,5 +80,10 @@
       },
       "browse": "Browse"
     }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Mark as Favorite",
+    "transfer_queue": "Transfer Queue",
+    "select_source": "Select Source"
   }
 }
