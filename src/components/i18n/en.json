@@ -1,0 +1,97 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Join media players",
+      "join_subtitle": "Selected player grouping.",
+      "link_volume": "Link Volume",
+      "player_focus_title": "Player focus",
+      "player_focus_subtitle": "Change which player you are controlling."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Browse Media"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Search in Music Assistant",
+      "search_title": "Search"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Shortcuts",
+      "shortcuts_subtitle": "Quick access to your favorite actions.",
+      "media_player_actions_title": "Media Player actions",
+      "media_player_actions_subtitle": "Additional controls for your media player.",
+      "mark_as_favorite": "Mark as Favorite",
+      "transfer_queue": "Transfer Queue"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Grouped speakers",
+      "link_volume_title": "Link volume",
+      "add_speakers_title": "Add speakers to group"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Volume",
+      "speaker_grouping_modal_title": "Speaker Grouping",
+      "media_browser_modal_title": "Media Browser",
+      "search_modal_title": "Search",
+      "shortcuts_modal_title": "Shortcuts"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Link volume"
+    }
+  },
+  "Search": {
+    "input_placeholder": "Search for media...",
+    "categories": {
+      "All": "All",
+      "Favorites": "Favorites",
+      "Favorite": "Favorite",
+      "Artists": "Artists",
+      "Albums": "Albums",
+      "Tracks": "Tracks",
+      "Playlists": "Playlists",
+      "Podcasts": "Podcasts",
+      "Audiobooks": "Audiobooks",
+      "Genres": "Genres",
+      "Radio": "Radio"
+    },
+    "enqueue_mode": {
+      "play": "Play",
+      "replace": "Replace Queue",
+      "next": "Add Next",
+      "replace_next": "Replace Next",
+      "add": "Add to Queue"
+    },
+    "no_results": "No results found."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Home",
+    "filter_placeholder": "Filter results...",
+    "empty_text": "No media items available.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "Enqueue",
+      "enqueue_mode": {
+        "play": "Play",
+        "next": "Play Next",
+        "replace": "Replace Queue",
+        "add": "Add to Queue"
+      },
+      "browse": "Browse"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Mark as Favorite",
+    "transfer_queue": "Transfer Queue",
+    "select_source": "Select Source"
+  },
+  "player_states": {
+    "Off": "Off",
+    "Idle": "Idle",
+    "Playing": "Playing",
+    "Paused": "Paused",
+    "Stopped": "Stopped",
+    "Unavailable": "Unavailable"
+  }
+}

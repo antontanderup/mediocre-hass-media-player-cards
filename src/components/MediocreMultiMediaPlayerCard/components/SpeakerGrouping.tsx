@@ -1,4 +1,5 @@
 import { useContext, useMemo, useState } from "preact/hooks";
+import { useIntl } from "react-intl";
 import type {
   MediaPlayerEntity,
   MediocreMultiMediaPlayer,
@@ -91,6 +92,7 @@ export type SpeakerGroupingProps = {
 
 export const SpeakerGrouping = memo<SpeakerGroupingProps>(
   ({ mediaPlayer, setSelectedPlayer }: SpeakerGroupingProps) => {
+    const intl = useIntl();
     const { config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
@@ -223,8 +225,12 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
         {!!groupableEntities && groupableEntities.length > 0 && (
           <Fragment>
             <ViewHeader
-              title="Join media players"
-              subtitle="Selected player grouping."
+              title={intl.formatMessage({
+                id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title",
+              })}
+              subtitle={intl.formatMessage({
+                id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle",
+              })}
               css={styles.horizontalPadding}
               renderAction={() => (
                 <div css={styles.syncContainer}>
@@ -234,7 +240,9 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                       setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
                     }
                   >
-                    Link Volume
+                    {intl.formatMessage({
+                      id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume",
+                    })}
                   </span>
                   <IconButton
                     icon={
@@ -281,8 +289,12 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           </Fragment>
         )}
         <ViewHeader
-          title="Player focus"
-          subtitle="Change which player you are controlling."
+          title={intl.formatMessage({
+            id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title",
+          })}
+          subtitle={intl.formatMessage({
+            id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle",
+          })}
           css={styles.horizontalPadding}
         />
         <div css={[styles.playerChips, styles.horizontalPadding]}>

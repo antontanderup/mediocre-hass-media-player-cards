@@ -14,6 +14,7 @@ import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
 import { getHass } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
+import { useIntl } from "react-intl";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -73,6 +74,8 @@ const styles = {
 };
 
 export const PlayerActions = () => {
+  const intl = useIntl();
+
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
@@ -126,14 +129,20 @@ export const PlayerActions = () => {
   return (
     <div css={styles.root}>
       <Modal
-        title="Volume"
+        title={intl.formatMessage({
+          id: "MediocreMassiveMediaPlayerCard.PlayerActions.volume_modal_title",
+          defaultMessage: "Volume",
+        })}
         isOpen={selected === "volume"}
         onClose={() => setSelected(undefined)}
       >
         <VolumeController />
       </Modal>
       <Modal
-        title="Speaker Grouping"
+        title={intl.formatMessage({
+          id: "MediocreMassiveMediaPlayerCard.PlayerActions.speaker_grouping_modal_title",
+          defaultMessage: "Speaker Grouping",
+        })}
         isOpen={selected === "speaker-grouping"}
         onClose={() => setSelected(undefined)}
         padding="16px 0px 16px 0px"
@@ -141,7 +150,10 @@ export const PlayerActions = () => {
         <SpeakerGrouping />
       </Modal>
       <Modal
-        title="Media Browser"
+        title={intl.formatMessage({
+          id: "MediocreMassiveMediaPlayerCard.PlayerActions.media_browser_modal_title",
+          defaultMessage: "Media Browser",
+        })}
         isOpen={selected === "media-browser"}
         onClose={() => setSelected(undefined)}
         padding="0px"
@@ -152,7 +164,10 @@ export const PlayerActions = () => {
         />
       </Modal>
       <Modal
-        title="Search"
+        title={intl.formatMessage({
+          id: "MediocreMassiveMediaPlayerCard.PlayerActions.search_modal_title",
+          defaultMessage: "Search",
+        })}
         isOpen={selected === "search"}
         onClose={() => setSelected(undefined)}
         padding="16px 0px 16px 0px"
@@ -190,7 +205,10 @@ export const PlayerActions = () => {
             onClick={() => toggleSelected("custom-buttons")}
           />
           <Modal
-            title="Shortcuts"
+            title={intl.formatMessage({
+              id: "MediocreMassiveMediaPlayerCard.PlayerActions.shortcuts_modal_title",
+              defaultMessage: "Shortcuts",
+            })}
             isOpen={selected === "custom-buttons"}
             onClose={() => setSelected(undefined)}
             padding="16px 0px 16px 0px"
