@@ -2,6 +2,7 @@ import { createContext, JSX } from "preact";
 import { IntlProvider } from "react-intl";
 import en from "./en.json";
 import da from "./da.json";
+import pt from "./pt.json";
 
 type Messages = { [key: string]: string | Messages };
 
@@ -32,6 +33,7 @@ const defaultMessages = flattenMessages(en);
 export const messages: Record<string, Record<string, string>> = {
   en: defaultMessages,
   da: Object.assign(defaultMessages, flattenMessages(da)),
+  pt: Object.assign(defaultMessages, flattenMessages(pt)),
 };
 
 export type LocaleContextType = {

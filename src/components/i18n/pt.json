@@ -1,0 +1,97 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Juntar leitores multimédia",
+      "join_subtitle": "Agrupamento de leitor selecionado.",
+      "link_volume": "Sincronizar Volume",
+      "player_focus_title": "Foco do leitor",
+      "player_focus_subtitle": "Altere qual o leitor que está a controlar."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Explorar Multimédia"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Pesquisar no Music Assistant",
+      "search_title": "Pesquisar"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Atalhos",
+      "shortcuts_subtitle": "Acesso rápido às suas ações favoritas.",
+      "media_player_actions_title": "Ações do leitor multimédia",
+      "media_player_actions_subtitle": "Controlos adicionais para o seu leitor multimédia.",
+      "mark_as_favorite": "Marcar como Favorito",
+      "transfer_queue": "Transferir Fila"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Altifalantes agrupados",
+      "link_volume_title": "Sincronizar volume",
+      "add_speakers_title": "Adicionar altifalantes ao grupo"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Volume",
+      "speaker_grouping_modal_title": "Agrupamento de Altifalantes",
+      "media_browser_modal_title": "Explorador de Multimédia",
+      "search_modal_title": "Pesquisar",
+      "shortcuts_modal_title": "Atalhos"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Sincronizar volume"
+    }
+  },
+  "Search": {
+    "input_placeholder": "Pesquisar multimédia...",
+    "categories": {
+      "All": "Tudo",
+      "Favorites": "Favoritos",
+      "Favorite": "Favorito",
+      "Artists": "Artistas",
+      "Albums": "Álbuns",
+      "Tracks": "Faixas",
+      "Playlists": "Listas de reprodução",
+      "Podcasts": "Podcasts",
+      "Audiobooks": "Audiolivros",
+      "Genres": "Géneros",
+      "Radio": "Rádio"
+    },
+    "enqueue_mode": {
+      "play": "Reproduzir",
+      "replace": "Substituir Fila",
+      "next": "Adicionar a Seguir",
+      "replace_next": "Substituir Seguinte",
+      "add": "Adicionar à Fila"
+    },
+    "no_results": "Nenhum resultado encontrado."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Início",
+    "filter_placeholder": "Filtrar resultados...",
+    "empty_text": "Nenhum item multimédia disponível.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "Adicionar à fila",
+      "enqueue_mode": {
+        "play": "Reproduzir",
+        "next": "Reproduzir a Seguir",
+        "replace": "Substituir Fila",
+        "add": "Adicionar à Fila"
+      },
+      "browse": "Explorar"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Marcar como Favorito",
+    "transfer_queue": "Transferir Fila",
+    "select_source": "Selecionar Fonte"
+  },
+  "player_states": {
+    "Off": "Desligado",
+    "Idle": "Inativo",
+    "Playing": "A reproduzir",
+    "Paused": "Em pausa",
+    "Stopped": "Parado",
+    "Unavailable": "Indisponível"
+  }
+}
