@@ -11,7 +11,7 @@ import {
   OverlayMenuProps,
 } from "@components/OverlayMenu/OverlayMenu";
 import { usePlayer } from "@components/PlayerContext";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 export type MaMenuProps = {
   ma_entity_id?: string;
@@ -23,7 +23,7 @@ export const MaMenu = ({
   ma_favorite_button_entity_id,
   ...overlayMenuProps
 }: MaMenuProps) => {
-  const intl = useIntl();
+  const { t } = useIntl();
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(
     () => getIsMassPlayer(player),
@@ -57,7 +57,7 @@ export const MaMenu = ({
     const items: OverlayMenuItem[] = [];
     if (ma_favorite_button_entity_id) {
       items.push({
-        label: intl.formatMessage({
+        label: t({
           id: "AdditionalActionsMenu.mark_as_favorite",
         }),
         icon: "mdi:heart-plus",
@@ -66,7 +66,7 @@ export const MaMenu = ({
     }
     if (massPlayers.length > 0) {
       items.push({
-        label: intl.formatMessage({
+        label: t({
           id: "AdditionalActionsMenu.transfer_queue",
         }),
         icon: "mdi:transfer",

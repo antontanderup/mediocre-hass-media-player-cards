@@ -7,7 +7,7 @@ import {
 import "@types/emotion.d.ts";
 import { PlayerContextProvider } from "@components/PlayerContext";
 import { HomeAssistant } from "@types";
-import { IntlProviderWrapper } from "@components/i18n/IntlProviderWrapper";
+import { IntlContextProvider } from "@components/i18n";
 
 export class CardWrapper<
   Config extends { entity_id: string },
@@ -38,7 +38,7 @@ export class CardWrapper<
       this._previousHass = hass;
       this._previousConfig = this.config;
       render(
-        <IntlProviderWrapper locale={hass.language ?? "en"}>
+        <IntlContextProvider locale={hass.language ?? "en"}>
           <EmotionContextProvider rootElement={this}>
             <CardContextProvider rootElement={this} config={this.config}>
               <HassContextProvider hass={hass}>
@@ -52,7 +52,7 @@ export class CardWrapper<
               </HassContextProvider>
             </CardContextProvider>
           </EmotionContextProvider>
-        </IntlProviderWrapper>,
+        </IntlContextProvider>,
         this
       );
     } else {

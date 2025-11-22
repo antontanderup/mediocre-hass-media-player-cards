@@ -8,7 +8,7 @@ import { useMediaBrowser } from "./useMediaBrowser";
 import { HaMediaItemsList } from "./HaMediaItemsList";
 import { JSX } from "preact";
 import { Select } from "@components/Select";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 const filters: HaFilterConfig[] = [
   { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
@@ -36,7 +36,7 @@ export const HaSearch = ({
   filterConfig = filters,
   renderHeader,
 }: HaSearchProps) => {
-  const intl = useIntl();
+  const { t } = useIntl();
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
   const debouncedQuery = useDebounce(query, 600);
@@ -61,7 +61,7 @@ export const HaSearch = ({
         {!!renderHeader && renderHeader()}
         <div css={searchStyles.inputRow}>
           <Input
-            placeholder={intl.formatMessage({ id: "Search.input_placeholder" })}
+            placeholder={t({ id: "Search.input_placeholder" })}
             onChange={setQuery}
             value={query}
             loading={loading}
@@ -73,7 +73,7 @@ export const HaSearch = ({
             onChange={value => setEnqueueMode(value.value as HaEnqueueMode)}
             options={[
               {
-                label: intl.formatMessage({
+                label: t({
                   id: "Search.enqueue_mode.play",
                   defaultMessage: "Play",
                 }),
@@ -81,7 +81,7 @@ export const HaSearch = ({
                 icon: getEnqueModeIcon("play"),
               },
               {
-                label: intl.formatMessage({
+                label: t({
                   id: "Search.enqueue_mode.replace",
                   defaultMessage: "Replace Queue",
                 }),
@@ -89,7 +89,7 @@ export const HaSearch = ({
                 icon: getEnqueModeIcon("replace"),
               },
               {
-                label: intl.formatMessage({
+                label: t({
                   id: "Search.enqueue_mode.next",
                   defaultMessage: "Add Next",
                 }),
@@ -97,7 +97,7 @@ export const HaSearch = ({
                 icon: getEnqueModeIcon("next"),
               },
               {
-                label: intl.formatMessage({
+                label: t({
                   id: "Search.enqueue_mode.add",
                   defaultMessage: "Add to Queue",
                 }),
@@ -128,7 +128,7 @@ export const HaSearch = ({
         onClick={() => setActiveFilter(filter.media_type)}
         icon={filter.icon}
       >
-        {intl.formatMessage({
+        {t({
           id: `Search.categories.${filter.name}`,
           defaultMessage: filter.name,
         })}

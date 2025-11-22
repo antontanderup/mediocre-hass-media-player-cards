@@ -21,7 +21,7 @@ import {
   OverlayMenuItem,
 } from "@components/OverlayMenu/OverlayMenu";
 import { memo } from "preact/compat";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 const styles = {
   root: css({
@@ -127,16 +127,16 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
       (!!ma_entity_id && isMainEntityMassPlayer) ||
       sourceSelectMenuItems.length > 0;
 
-    const intl = useIntl();
+    const { t } = useIntl();
     return (
       <div css={styles.root}>
         {custom_buttons && custom_buttons.length > 0 && (
           <Fragment>
             <ViewHeader
-              title={intl.formatMessage({
+              title={t({
                 id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title",
               })}
-              subtitle={intl.formatMessage({
+              subtitle={t({
                 id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle",
               })}
             />
@@ -154,10 +154,10 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
         {renderMediaPlayerActions && (
           <Fragment>
             <ViewHeader
-              title={intl.formatMessage({
+              title={t({
                 id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title",
               })}
-              subtitle={intl.formatMessage({
+              subtitle={t({
                 id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle",
               })}
             />
@@ -166,7 +166,7 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
                 <Fragment>
                   {ma_favorite_button_entity_id && (
                     <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
-                      {intl.formatMessage({
+                      {t({
                         id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite",
                       })}
                     </Chip>
@@ -177,7 +177,7 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
                       side="bottom"
                       renderTrigger={triggerProps => (
                         <Chip icon="mdi:transfer" {...triggerProps}>
-                          {intl.formatMessage({
+                          {t({
                             id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
                           })}
                           <Icon size="x-small" icon="mdi:chevron-down" />
