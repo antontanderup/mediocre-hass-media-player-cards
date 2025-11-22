@@ -122,6 +122,7 @@ export const MediocreMultiMediaPlayerCard = () => {
   const [navigationRoute, setNavigationRoute] =
     useState<NavigationRoute>("massive");
 
+  const [cardSizeRef, { height: cardHeight }] = useMeasure<HTMLDivElement>();
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
 
@@ -141,6 +142,7 @@ export const MediocreMultiMediaPlayerCard = () => {
               config.mode === "card" && styles.rootCard,
             ]}
             style={config.height ? { height: config.height } : {}}
+            ref={cardSizeRef}
           >
             <div
               css={[
@@ -190,9 +192,9 @@ export const MediocreMultiMediaPlayerCard = () => {
             <div
               css={[styles.footer, config.mode === "card" && styles.footerCard]}
             >
-              {navigationRoute !== "massive" && (
-                <MiniPlayer mediaPlayer={selectedPlayer} />
-              )}
+              {navigationRoute !== "massive" &&
+                cardHeight &&
+                cardHeight > 500 && <MiniPlayer mediaPlayer={selectedPlayer} />}
               <FooterActions
                 mediaPlayer={selectedPlayer}
                 setNavigationRoute={setNavigationRoute}
