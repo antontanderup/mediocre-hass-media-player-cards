@@ -1,8 +1,9 @@
 import { getIconSize, Icon } from "@components/Icon";
 import { Spinner } from "@components/Spinner";
+import { fadeIn } from "@constants";
 import { css, keyframes } from "@emotion/react";
 import { getHass } from "@utils";
-import { useEffect, useState } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 const fadeInOut = keyframes({
   "0%": { opacity: 1, transform: "translateY(0px)" },
@@ -35,6 +36,10 @@ const styles = {
     height: "100%",
     objectFit: "cover",
     borderRadius: "4px",
+    opacity: 0,
+  }),
+  imageLoaded: css({
+    animation: `${fadeIn} 0.3s ease forwards`,
   }),
   icon: css({
     position: "absolute",
@@ -70,18 +75,65 @@ export const MediaImage = ({
   className,
 }: MediaImageProps) => {
   const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const latestImageUrl = useRef<string | null | undefined>(null);
+
   useEffect(() => {
-    setError(false);
+    if (latestImageUrl.current === imageUrl) {
+      return;
+    }
+    latestImageUrl.current = imageUrl;
+    getImage(imageUrl);
   }, [imageUrl]);
+
+  const getImage = useCallback((url?: string | null, retries = 0) => {
+    if (!url) {
+      setLoaded(false);
+      setError(false);
+      setImage(null);
+      return null;
+    }
+    setImage(null);
+    const img = new Image();
+    img.onerror = () => {
+      if (latestImageUrl.current !== url) {
+        return;
+      }
+      if (retries === 0) {
+        // Retry once
+        getImage(url, 1);
+        return;
+      }
+      setError(true);
+    };
+    img.onloadstart = () => {
+      if (latestImageUrl.current !== url) {
+        return;
+      }
+
+      setLoaded(false);
+      setError(false);
+    };
+    img.onload = () => {
+      if (latestImageUrl.current !== url) {
+        return;
+      }
+
+      setLoaded(true);
+    };
+
+    img.src = getHass().hassUrl(url);
+    setImage(img);
+  }, []);
 
   return (
     <div css={styles.root} className={className}>
-      {imageUrl && !error && (
+      {image?.src && !error && (
         <img
-          src={getHass().hassUrl(imageUrl)}
-          css={styles.image}
+          src={image?.src}
+          css={[styles.image, loaded && styles.imageLoaded]}
           alt=""
-          onError={() => setError(true)}
         />
       )}
       {!imageUrl && mdiIcon && !error && (

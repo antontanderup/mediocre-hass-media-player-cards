@@ -1,8 +1,9 @@
 import { Icon, IconSize, usePlayer } from "@components";
-import { theme } from "@constants";
+import { fadeIn, theme } from "@constants";
 import { css } from "@emotion/react";
 import { getDeviceIcon } from "@utils";
-import { ButtonHTMLAttributes, JSX, useEffect, useState } from "preact/compat";
+import { ButtonHTMLAttributes, JSX } from "preact/compat";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { getHass } from "@utils";
 
 export type AlbumArtProps = {
@@ -45,6 +46,10 @@ const styles = {
     aspectRatio: "1 / 1",
     objectFit: "cover",
     borderRadius: "var(--mmpc-art-border-radius, 4px)",
+    opacity: 0,
+  }),
+  imageLoaded: css({
+    animation: `${fadeIn} 0.3s ease forwards`,
   }),
   iconContainer: css({
     display: "flex",
@@ -80,9 +85,58 @@ export const AlbumArt = ({
   const state = player.state;
 
   const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const latestImageUrl = useRef<string | null | undefined>(null);
+
   useEffect(() => {
-    setError(false);
+    if (latestImageUrl.current === albumArt) {
+      return;
+    }
+    latestImageUrl.current = albumArt;
+    getImage(albumArt);
   }, [albumArt]);
+
+  const getImage = useCallback((url?: string | null, retries = 0) => {
+    if (!url) {
+      setLoaded(false);
+      setError(false);
+      setImage(null);
+      return null;
+    }
+    setImage(null);
+    const img = new Image();
+    img.onerror = () => {
+      if (latestImageUrl.current !== url) {
+        return;
+      }
+      if (retries === 0) {
+        // Retry once
+        getImage(url, 1);
+        return;
+      }
+      setError(true);
+    };
+    img.onloadstart = () => {
+      if (latestImageUrl.current !== url) {
+        return;
+      }
+
+      setLoaded(false);
+      setError(false);
+    };
+    img.onload = () => {
+      if (latestImageUrl.current !== url) {
+        return;
+      }
+
+      setLoaded(true);
+    };
+
+    img.src = getHass().hassUrl(url);
+    setImage(img);
+  }, []);
 
   return (
     <button
@@ -108,16 +162,15 @@ export const AlbumArt = ({
       {...buttonProps}
     >
       <div css={styles.contentContainer}>
-        {albumArt && state !== "off" && !error ? (
+        {image?.src && state !== "off" && !error ? (
           <img
-            css={styles.image}
-            src={getHass().hassUrl(albumArt)}
+            css={[styles.image, loaded && styles.imageLoaded]}
+            src={image.src}
             alt={
               !!title && !!artist
                 ? `${title} by ${artist}`
                 : `Source: ${source}`
             }
-            onError={() => setError(true)}
           />
         ) : (
           <div css={styles.iconContainer}>
