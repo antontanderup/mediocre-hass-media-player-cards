@@ -3,12 +3,7 @@ import { Spinner } from "@components/Spinner";
 import { fadeIn } from "@constants";
 import { css, keyframes } from "@emotion/react";
 import { getHass } from "@utils";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 const fadeInOut = keyframes({
   "0%": { opacity: 1, transform: "translateY(0px)" },
