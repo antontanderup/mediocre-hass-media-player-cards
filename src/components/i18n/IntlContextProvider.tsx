@@ -46,7 +46,6 @@ export const IntlContext = createContext<IntlContextType>(
   {} as IntlContextType
 );
 
-
 export const IntlContextProvider = memo<
   Omit<IntlContextType, "messages"> & { children: preact.ComponentChildren }
 >(
