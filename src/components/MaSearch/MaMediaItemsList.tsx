@@ -16,7 +16,7 @@ import { MediaTrack } from "@components";
 import { useMemo, useState } from "preact/hooks";
 import { labelMap, responseKeyMediaTypeMap } from "./constants";
 import { MediaGrid } from "@components/MediaSearch/components/MediaGrid";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 export type MaMediaItemsListProps = Omit<
   VirtualListProps<MaMediaListItem>,
@@ -51,7 +51,7 @@ export const MaMediaItemsList = ({
   results,
   ...listProps
 }: MaMediaItemsListProps) => {
-  const intl = useIntl();
+  const { t } = useIntl();
   const [chunkSize, setChunkSize] = useState(4);
 
   const data: MaMediaListItem[] = useMemo(() => {
@@ -104,7 +104,7 @@ export const MaMediaItemsList = ({
       case "header": {
         return (
           <MediaSectionTitle onClick={() => onHeaderClick?.(item.mediaType)}>
-            {intl.formatMessage({
+            {t({
               id: `Search.categories.${labelMap[item.mediaType]}`,
               defaultMessage: labelMap[item.mediaType],
             })}
@@ -219,7 +219,7 @@ export const MaMediaItemsList = ({
       renderItem={renderItem}
       renderEmpty={() => (
         <p css={searchStyles.mediaEmptyText}>
-          {intl.formatMessage({
+          {t({
             id: "Search.no_results",
             defaultMessage: "No results found.",
           })}

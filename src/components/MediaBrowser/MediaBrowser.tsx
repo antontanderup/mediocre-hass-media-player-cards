@@ -20,7 +20,7 @@ import { getHass } from "@utils";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { getEnqueueModeIcon, getItemMdiIcon } from "./utils";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 export type MediaBrowserProps = {
   entity_id: string;
@@ -97,7 +97,7 @@ export const MediaBrowser = ({
   maxHeight,
   renderHeader,
 }: MediaBrowserProps) => {
-  const intl = useIntl();
+  const { t } = useIntl();
 
   const [mediaBrowserItems, setMediaBrowserItems] = useState<
     MediaBrowserItem[]
@@ -242,7 +242,7 @@ export const MediaBrowser = ({
     const menuItems: OverlayMenuItem[] = [];
     if (item.can_play) {
       menuItems.push({
-        label: intl.formatMessage({
+        label: t({
           id: "MediaBrowser.media_item_menu.enqueue_mode.play",
           defaultMessage: "Play",
         }),
@@ -250,14 +250,14 @@ export const MediaBrowser = ({
         onClick: () => playItem(item, "play"),
       });
       menuItems.push({
-        label: intl.formatMessage({
+        label: t({
           id: "MediaBrowser.media_item_menu.enqueue_dropdown_label",
           defaultMessage: "Enqueue",
         }),
         icon: getEnqueueModeIcon("next"),
         children: [
           {
-            label: intl.formatMessage({
+            label: t({
               id: "MediaBrowser.media_item_menu.enqueue_mode.next",
               defaultMessage: "Play Next",
             }),
@@ -265,7 +265,7 @@ export const MediaBrowser = ({
             onClick: () => playItem(item, "next"),
           },
           {
-            label: intl.formatMessage({
+            label: t({
               id: "MediaBrowser.media_item_menu.enqueue_mode.replace",
               defaultMessage: "Replace Queue",
             }),
@@ -273,7 +273,7 @@ export const MediaBrowser = ({
             onClick: () => playItem(item, "replace"),
           },
           {
-            label: intl.formatMessage({
+            label: t({
               id: "MediaBrowser.media_item_menu.enqueue_mode.add",
               defaultMessage: "Add to Queue",
             }),
@@ -285,7 +285,7 @@ export const MediaBrowser = ({
     }
     if (item.can_expand) {
       menuItems.push({
-        label: intl.formatMessage({
+        label: t({
           id: "MediaBrowser.media_item_menu.browse",
           defaultMessage: "Browse",
         }),
@@ -393,7 +393,7 @@ export const MediaBrowser = ({
                         css={styles.breadCrumbItem}
                         onClick={() => setHistory([])}
                       >
-                        {intl.formatMessage({
+                        {t({
                           id: "MediaBrowser.breadcrumb_home",
                           defaultMessage: "Home",
                         })}
@@ -416,7 +416,7 @@ export const MediaBrowser = ({
             </div>
             {mediaBrowserItems.length > 3 && history.length > 0 && (
               <Input
-                placeholder={intl.formatMessage({
+                placeholder={t({
                   id: "MediaBrowser.filter_placeholder",
                   defaultMessage: "Filter items...",
                 })}
@@ -436,7 +436,7 @@ export const MediaBrowser = ({
           if (!isFetching && mediaBrowserItems.length === 0) {
             return (
               <div css={styles.noMediaText}>
-                {intl.formatMessage({
+                {t({
                   id: "MediaBrowser.empty_text",
                   defaultMessage: "No media items available.",
                 })}

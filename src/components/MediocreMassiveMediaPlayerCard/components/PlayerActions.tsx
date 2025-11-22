@@ -14,7 +14,7 @@ import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
 import { getHass } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -74,7 +74,7 @@ const styles = {
 };
 
 export const PlayerActions = () => {
-  const intl = useIntl();
+  const { t } = useIntl();
 
   const { config } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
@@ -129,7 +129,7 @@ export const PlayerActions = () => {
   return (
     <div css={styles.root}>
       <Modal
-        title={intl.formatMessage({
+        title={t({
           id: "MediocreMassiveMediaPlayerCard.PlayerActions.volume_modal_title",
           defaultMessage: "Volume",
         })}
@@ -139,7 +139,7 @@ export const PlayerActions = () => {
         <VolumeController />
       </Modal>
       <Modal
-        title={intl.formatMessage({
+        title={t({
           id: "MediocreMassiveMediaPlayerCard.PlayerActions.speaker_grouping_modal_title",
           defaultMessage: "Speaker Grouping",
         })}
@@ -150,7 +150,7 @@ export const PlayerActions = () => {
         <SpeakerGrouping />
       </Modal>
       <Modal
-        title={intl.formatMessage({
+        title={t({
           id: "MediocreMassiveMediaPlayerCard.PlayerActions.media_browser_modal_title",
           defaultMessage: "Media Browser",
         })}
@@ -164,7 +164,7 @@ export const PlayerActions = () => {
         />
       </Modal>
       <Modal
-        title={intl.formatMessage({
+        title={t({
           id: "MediocreMassiveMediaPlayerCard.PlayerActions.search_modal_title",
           defaultMessage: "Search",
         })}
@@ -205,7 +205,7 @@ export const PlayerActions = () => {
             onClick={() => toggleSelected("custom-buttons")}
           />
           <Modal
-            title={intl.formatMessage({
+            title={t({
               id: "MediocreMassiveMediaPlayerCard.PlayerActions.shortcuts_modal_title",
               defaultMessage: "Shortcuts",
             })}

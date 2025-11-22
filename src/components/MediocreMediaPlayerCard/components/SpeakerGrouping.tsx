@@ -11,7 +11,7 @@ import {
 import { GroupChipsController } from "@components/GroupChipsController";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 const styles = {
   speakerGroupContainer: css({
@@ -54,7 +54,7 @@ const styles = {
 };
 
 export const SpeakerGrouping = () => {
-  const intl = useIntl();
+  const { t } = useIntl();
   const hass = useHass();
   const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
@@ -73,7 +73,7 @@ export const SpeakerGrouping = () => {
         <Fragment>
           <div css={styles.titleRow}>
             <h3 css={styles.groupTitle}>
-              {intl.formatMessage({
+              {t({
                 id: "MediocreMediaPlayerCard.SpeakerGrouping.grouped_speakers_title",
               })}
             </h3>
@@ -82,7 +82,7 @@ export const SpeakerGrouping = () => {
                 css={styles.syncText}
                 onClick={() => setSyncMainSpeakerVolume(!syncMainSpeakerVolume)}
               >
-                {intl.formatMessage({
+                {t({
                   id: "MediocreMediaPlayerCard.SpeakerGrouping.link_volume_title",
                 })}
               </span>
@@ -106,7 +106,7 @@ export const SpeakerGrouping = () => {
         </Fragment>
       )}
       <h3 css={styles.groupTitle}>
-        {intl.formatMessage({
+        {t({
           id: "MediocreMediaPlayerCard.SpeakerGrouping.add_speakers_title",
         })}
       </h3>

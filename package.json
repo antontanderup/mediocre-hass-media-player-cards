@@ -25,8 +25,7 @@
     "arktype": "^2.1.20",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.3",
-    "preact": "10.27.2",
-    "react-intl": "^7.1.14"
+    "preact": "10.27.2"
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",

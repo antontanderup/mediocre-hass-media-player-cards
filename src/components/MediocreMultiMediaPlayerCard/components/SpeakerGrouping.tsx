@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from "preact/hooks";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 import type {
   MediaPlayerEntity,
   MediocreMultiMediaPlayer,
@@ -92,7 +92,7 @@ export type SpeakerGroupingProps = {
 
 export const SpeakerGrouping = memo<SpeakerGroupingProps>(
   ({ mediaPlayer, setSelectedPlayer }: SpeakerGroupingProps) => {
-    const intl = useIntl();
+    const { t } = useIntl();
     const { config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
@@ -225,10 +225,10 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
         {!!groupableEntities && groupableEntities.length > 0 && (
           <Fragment>
             <ViewHeader
-              title={intl.formatMessage({
+              title={t({
                 id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_title",
               })}
-              subtitle={intl.formatMessage({
+              subtitle={t({
                 id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.join_subtitle",
               })}
               css={styles.horizontalPadding}
@@ -240,7 +240,7 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
                       setSyncMainSpeakerVolume(!syncMainSpeakerVolume)
                     }
                   >
-                    {intl.formatMessage({
+                    {t({
                       id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.link_volume",
                     })}
                   </span>
@@ -289,10 +289,10 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           </Fragment>
         )}
         <ViewHeader
-          title={intl.formatMessage({
+          title={t({
             id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title",
           })}
-          subtitle={intl.formatMessage({
+          subtitle={t({
             id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle",
           })}
           css={styles.horizontalPadding}

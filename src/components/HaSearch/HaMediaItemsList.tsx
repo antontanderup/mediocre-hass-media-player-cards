@@ -10,7 +10,7 @@ import { VirtualList, VirtualListProps } from "@components/VirtualList";
 import { MediaTrack } from "@components";
 import { useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
-import { useIntl } from "react-intl";
+import { useIntl } from "@components/i18n";
 
 export type HaMediaItemsListProps = Omit<
   VirtualListProps<HaMediaItem>,
@@ -48,7 +48,7 @@ export const HaMediaItemsList = ({
   error = null,
   ...listProps
 }: HaMediaItemsListProps) => {
-  const intl = useIntl();
+  const { t } = useIntl();
   const [chunkSize, setChunkSize] = useState(4);
 
   const items: HaMediaListItem[] = useMemo(() => {
@@ -120,7 +120,7 @@ export const HaMediaItemsList = ({
                 : undefined
             }
           >
-            {intl.formatMessage({
+            {t({
               id: `Search.categories.${name}`,
               defaultMessage: name,
             })}
@@ -211,7 +211,7 @@ export const HaMediaItemsList = ({
             <p css={searchStyles.mediaEmptyText}>{error}</p>
           ) : !hideEmpty ? (
             <p css={searchStyles.mediaEmptyText}>
-              {intl.formatMessage({
+              {t({
                 id: "Search.no_results",
                 defaultMessage: "No results found.",
               })}
