@@ -1,0 +1,97 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Medienplayer verbinden",
+      "join_subtitle": "Ausgewählte Player-Gruppierung.",
+      "link_volume": "Lautstärke verknüpfen",
+      "player_focus_title": "Player-Fokus",
+      "player_focus_subtitle": "Ändern, welchen Player gesteuert wird."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Medien durchsuchen"
+    },
+    "SearchView": {
+      "search_in_ma_title": "In Music Assistant suchen",
+      "search_title": "Suche"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Kurzbefehle",
+      "shortcuts_subtitle": "Schnellzugriff auf bevorzugten Aktionen.",
+      "media_player_actions_title": "Medienplayer-Aktionen",
+      "media_player_actions_subtitle": "Zusätzliche Steuerungen für Medienplayer.",
+      "mark_as_favorite": "Als Favorit markieren",
+      "transfer_queue": "Warteschlange übertragen"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Gruppierte Lautsprecher",
+      "link_volume_title": "Lautstärke verknüpfen",
+      "add_speakers_title": "Lautsprecher zur Gruppe hinzufügen"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Lautstärke",
+      "speaker_grouping_modal_title": "Lautsprecher-Gruppierung",
+      "media_browser_modal_title": "Medienbrowser",
+      "search_modal_title": "Suche",
+      "shortcuts_modal_title": "Kurzbefehle"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Lautstärke verknüpfen"
+    }
+  },
+  "Search": {
+    "input_placeholder": "Nach Medien suchen...",
+    "categories": {
+      "All": "Alle",
+      "Favorites": "Favoriten",
+      "Favorite": "Favorit",
+      "Artists": "Künstler",
+      "Albums": "Alben",
+      "Tracks": "Titel",
+      "Playlists": "Playlisten",
+      "Podcasts": "Podcasts",
+      "Audiobooks": "Hörbücher",
+      "Genres": "Genres",
+      "Radio": "Radio"
+    },
+    "enqueue_mode": {
+      "play": "Abspielen",
+      "replace": "Warteschlange ersetzen",
+      "next": "Als Nächstes abspielen",
+      "replace_next": "Nächstes ersetzen",
+      "add": "Zur Warteschlange hinzufügen"
+    },
+    "no_results": "Keine Ergebnisse gefunden."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Startseite",
+    "filter_placeholder": "Ergebnisse filtern...",
+    "empty_text": "Keine Medienelemente verfügbar.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "Zur Warteschlange",
+      "enqueue_mode": {
+        "play": "Abspielen",
+        "next": "Als Nächstes abspielen",
+        "replace": "Warteschlange ersetzen",
+        "add": "Zur Warteschlange hinzufügen"
+      },
+      "browse": "Durchsuchen"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Als Favorit markieren",
+    "transfer_queue": "Wiedergabeliste übergeben",
+    "select_source": "Quelle wählen"
+  },
+  "player_states": {
+    "Off": "Aus",
+    "Idle": "Leerlauf",
+    "Playing": "Abspielen",
+    "Paused": "Pausiert",
+    "Stopped": "Gestoppt",
+    "Unavailable": "Nicht verfügbar"
+  }
+}
