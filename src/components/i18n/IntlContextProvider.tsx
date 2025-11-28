@@ -59,12 +59,10 @@ export const IntlContextProvider = memo<
   }): preact.ComponentChildren => {
     const messagesForLocale = useMemo(() => {
       if (translatedLocales.includes(locale)) {
-        return flattenMessages(
-          Object.assign(
-            {},
-            messages["en"],
-            messages[locale as keyof typeof messages]
-          )
+        return Object.assign(
+          {},
+          flattenMessages(messages["en"]),
+          flattenMessages(messages[locale as keyof typeof messages])
         );
       }
       return flattenMessages(messages["en"]);
