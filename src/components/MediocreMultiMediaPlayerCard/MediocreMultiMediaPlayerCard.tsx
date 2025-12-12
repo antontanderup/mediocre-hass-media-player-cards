@@ -57,7 +57,7 @@ const styles = {
     marginBottom: 0,
   }),
   contentAreaCard: css({
-    margin: "12px 0",
+    margin: "0 0 12px 0",
     borderRadius: "var(--ha-card-border-radius, 12px)",
   }),
   contentAreaMassiveTransparent: css({
