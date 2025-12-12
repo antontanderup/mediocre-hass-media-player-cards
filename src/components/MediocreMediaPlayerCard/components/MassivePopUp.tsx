@@ -14,7 +14,7 @@ import {
 import { css, keyframes } from "@emotion/react";
 import { useActionProps } from "@hooks";
 import { MediocreMediaPlayerCardConfig } from "@types";
-import { getDeviceIcon } from "@utils";
+import { getDeviceIcon, isDarkMode } from "@utils";
 import { theme } from "@constants";
 
 const slideUp = keyframes`
@@ -70,9 +70,9 @@ const styles = {
       borderRadius: "var(--ha-dialog-border-radius, 28px)",
       boxShadow: "0px 0px 20px var(--clear-background-color)",
     },
-    "@media (prefers-color-scheme: light)": {
-      boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",
-    },
+  }),
+  popUpContainerLight: css({
+    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",
   }),
   popUpContent: css({
     display: "grid",
@@ -156,7 +156,12 @@ export const MassivePopUp = ({
   return (
     <div css={styles.overlay}>
       <div css={styles.clickableBackground} onClick={() => setVisible(false)} />
-      <div css={styles.popUpContainer}>
+      <div
+        css={[
+          styles.popUpContainer,
+          !isDarkMode() && styles.popUpContainerLight,
+        ]}
+      >
         <div css={styles.popUpHeader}>
           <Icon size={"small"} icon={mdiIcon} />
           <h2 css={styles.title}>

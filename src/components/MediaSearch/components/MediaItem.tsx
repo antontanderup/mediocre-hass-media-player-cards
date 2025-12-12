@@ -7,6 +7,7 @@ import {
   TargetedMouseEvent,
 } from "preact";
 import { forwardRef } from "preact/compat";
+import { isDarkMode } from "@utils";
 
 const styles = {
   root: css({
@@ -19,12 +20,12 @@ const styles = {
     borderRadius: "8px",
     padding: "8px",
     background: "rgba(255, 255, 255, 0.05)",
-    "@media (prefers-color-scheme: light)": {
-      background: "rgba(0, 0, 0, 0.05)",
-    },
     "&:hover": {
       transform: "translateY(-4px)",
     },
+  }),
+  rootLight: css({
+    background: "rgba(0, 0, 0, 0.05)",
   }),
   name: css({
     fontSize: "14px",
@@ -94,7 +95,7 @@ export const MediaItem = forwardRef<HTMLButtonElement, MediaItemProps>(
 
     return (
       <button
-        css={styles.root}
+        css={[styles.root, !isDarkMode() && styles.rootLight]}
         onClick={handleOnClick}
         {...buttonProps}
         ref={ref}

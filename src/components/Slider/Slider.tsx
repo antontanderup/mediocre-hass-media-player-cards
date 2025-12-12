@@ -2,6 +2,7 @@ import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 import { IconButton } from "@components/IconButton";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
+import { isDarkMode } from "@utils";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 
@@ -63,16 +64,18 @@ const styles = {
       transform: "translate(-50%, -50%)",
       backgroundColor: "var(--text-primary-color)",
       boxShadow: "0px 0px 20px 0px var(--divider-color)",
-      "@media (prefers-color-scheme: light)": {
-        backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
-        boxShadow:
-          "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
-      },
       width: "6px",
       borderRadius: "6px",
       top: "50%",
       left: "50%",
       height: "68%",
+    },
+  }),
+  thumbLight: css({
+    ["&:after"]: {
+      backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+      boxShadow:
+        "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
     },
   }),
   value: css({
@@ -115,10 +118,10 @@ const styles = {
     left: "0px",
     transform: "translateY(-50%)",
     "--icon-primary-color": "var(--text-primary-color)",
-    "@media (prefers-color-scheme: light)": {
-      "--icon-primary-color":
-        "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
-    },
+  }),
+  decrementButtonLight: css({
+    "--icon-primary-color":
+      "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
   }),
 };
 
@@ -177,7 +180,9 @@ export const Slider = ({
           }}
         >
           <BaseSlider.Indicator css={styles.indicator} />
-          <BaseSlider.Thumb css={styles.thumb}>
+          <BaseSlider.Thumb
+            css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
+          >
             {getThumbLabel ? (
               <div css={styles.value}>{getThumbLabel(internalValue)}</div>
             ) : null}
@@ -197,7 +202,11 @@ export const Slider = ({
                 }
               }}
               icon={"mdi:minus"}
-              css={[styles.decrementButton, styles.stepButton]}
+              css={[
+                styles.decrementButton,
+                styles.stepButton,
+                !isDarkMode() && styles.decrementButtonLight,
+              ]}
             />
           )}
           {(internalValue * 100) / max > 90 ? null : (

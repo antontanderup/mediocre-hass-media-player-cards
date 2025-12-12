@@ -7,6 +7,7 @@ import {
   TargetedMouseEvent,
 } from "preact";
 import { forwardRef } from "preact/compat";
+import { isDarkMode } from "@utils";
 
 const styles = {
   root: css({
@@ -24,11 +25,11 @@ const styles = {
     "&:hover": {
       background: "rgba(255, 255, 255, 0.1)",
     },
-    "@media (prefers-color-scheme: light)": {
-      background: "rgba(0, 0, 0, 0.05)",
-      "&:hover": {
-        background: "rgba(0, 0, 0, 0.01)",
-      },
+  }),
+  rootLight: css({
+    background: "rgba(0, 0, 0, 0.05)",
+    "&:hover": {
+      background: "rgba(0, 0, 0, 0.01)",
     },
   }),
   trackInfo: css({
@@ -98,7 +99,7 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
 
     return (
       <button
-        css={styles.root}
+        css={[styles.root, !isDarkMode() && styles.rootLight]}
         onClick={handleOnClick}
         {...buttonProps}
         ref={ref}
