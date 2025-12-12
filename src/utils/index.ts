@@ -4,6 +4,7 @@ export * from "./getAllMassPlayers";
 export * from "./getDeviceIcon";
 export * from "./getDidMediaPlayerUpdate";
 export * from "./getHass";
+export * from "./getIsDarkMode";
 export * from "./getIsMassPlayer";
 export * from "./getMediaPlayerTitleAndSubtitle";
 export * from "./getSourceIcon";

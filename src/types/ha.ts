@@ -3,8 +3,12 @@ import { HomeAssistant as CCHHomeAssistant } from "custom-card-helpers";
 import "preact";
 import { MediaPlayerEntity } from "@types";
 
-export type HomeAssistant = Omit<CCHHomeAssistant, "states"> & {
+export type HomeAssistant = Omit<
+  CCHHomeAssistant,
+  "states" | "selectedTheme"
+> & {
   hassUrl: (path: string) => string;
+  selectedTheme?: { theme: string; dark: boolean } | null;
   states: CCHHomeAssistant["states"] & {
     [key: `media_player.${string}`]: MediaPlayerEntity | undefined;
   };

@@ -2,11 +2,7 @@ import { Vibrant } from "node-vibrant/browser";
 import type { Palette } from "@vibrant/color";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { usePlayer } from "@components";
-
-// Helper function to detect dark mode
-const isDarkMode = () =>
-  window.matchMedia &&
-  window.matchMedia("(prefers-color-scheme: dark)").matches;
+import { isDarkMode } from "@utils";
 
 export function useArtworkColors() {
   const {
