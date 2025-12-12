@@ -24,6 +24,9 @@ const styles = {
     width: "100%",
     position: "relative",
     boxSizing: "border-box",
+    borderWidth: "var(--ha-card-border-width, 1px)",
+    borderColor: "var(--ha-card-border-color,var(--divider-color,#e0e0e0))",
+    borderStyle: "var(--ha-card-border-style, solid)",
   }),
 };
 

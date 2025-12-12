@@ -55,6 +55,9 @@ const styles = {
     borderRadius: 12,
     margin: 12,
     marginBottom: 0,
+    borderWidth: "var(--ha-card-border-width, 1px)",
+    borderColor: "var(--ha-card-border-color,var(--divider-color,#e0e0e0))",
+    borderStyle: "var(--ha-card-border-style, solid)",
   }),
   contentAreaCard: css({
     margin: "0 0 12px 0",
@@ -62,6 +65,7 @@ const styles = {
   }),
   contentAreaMassiveTransparent: css({
     backgroundColor: "transparent",
+    borderStyle: "none",
   }),
   contentAreaPannelMassiveTransparent: css({
     margin: "12px 8px 12px 8px",
