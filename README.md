@@ -6,9 +6,7 @@
 [![Chat on Oase](<https://img.shields.io/badge/Chat-Oase-lightblue?color=rgb(74%20196%20169)>)](https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180)
 [![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-yellow.svg)](https://www.buymeacoffee.com/antontadamsen)
 
-
-
-Media player cards for Home Assistant that let you group speakers, add custom action buttons, search for music and more. A visual editor is available for all media player card configuration options.
+Media player cards for Home Assistant that let you group speakers, add custom action buttons, browse and search for music and more. A visual editor is available for all media player card configuration options.
 
 > **Note:** This is a pretty new project, so you might encounter some bugs. If you do, please do report them.
 
@@ -45,10 +43,9 @@ resources:
 
 </details>
 
+### Mediocre Media Player Card
 
-### 🎚️ Mediocre Media Player Card
-
-A standard-sized media player card for a single entity. Supports grouping, custom actions, and Music Assistant integration.
+A standard-sized media player card for a single entity. Supports grouping, custom actions, and (optional) Music Assistant integration.
 
 <img width="396" height="135" alt="Mediocre Media Player Card Screenshot" src="https://github.com/user-attachments/assets/443cbfb0-7cf9-4941-b909-360693266aab" />
 
@@ -56,7 +53,7 @@ A standard-sized media player card for a single entity. Supports grouping, custo
 
 ---
 
-### 🖼️ Mediocre Massive Media Player Card
+### Mediocre Massive Media Player Card
 
 A full-sized, feature-rich card for a single media player. Includes all features of the standard card, plus multiple display modes.
 
@@ -66,7 +63,7 @@ A full-sized, feature-rich card for a single media player. Includes all features
 
 ---
 
-### 🔊 Mediocre Multi Media Player Card
+### Mediocre Multi Media Player Card
 
 Control and view multiple media players at once. Great for dashboards with several speakers or grouped devices.
 
@@ -76,7 +73,7 @@ Control and view multiple media players at once. Great for dashboards with sever
 
 ---
 
-### 🎛️ Mediocre Chip Media Player Group Card
+### Mediocre Chip Media Player Group Card
 
 A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for putting under your media player card of choice.
 
