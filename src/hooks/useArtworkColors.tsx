@@ -1,6 +1,12 @@
 import { Vibrant } from "node-vibrant/browser";
 import type { Palette } from "@vibrant/color";
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "preact/hooks";
 import { usePlayer } from "@components";
 import { isDarkMode } from "@utils";
 
@@ -9,6 +15,7 @@ export function useArtworkColors() {
     attributes: { entity_picture, entity_picture_local },
   } = usePlayer();
   const albumArt = entity_picture_local || entity_picture;
+  const albumArtRef = useRef<string | undefined>(null);
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
   // Track dark mode state
@@ -16,13 +23,18 @@ export function useArtworkColors() {
 
   // Handle image load to calculate average color
   const getColors = useCallback(() => {
-    if (albumArt) {
-      Vibrant.from(albumArt)
-        .getPalette()
-        .then(setPalette)
-        .catch(e => {
-          console.error("Error getting color with Vibrant:", e);
-        });
+    if (albumArt && albumArt !== albumArtRef.current) {
+      albumArtRef.current = albumArt;
+      // delay ensures we wait for the image to be loaded and rely on caching
+      setTimeout(() => {
+        if (albumArtRef.current !== albumArt) return;
+        Vibrant.from(albumArt)
+          .getPalette()
+          .then(setPalette)
+          .catch(e => {
+            console.error("Error getting color with Vibrant:", e);
+          });
+      }, 800);
     }
   }, [albumArt]);
 
