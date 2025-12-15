@@ -147,8 +147,6 @@ export const AlbumArt = ({
     }
   }, []);
 
-
-
   return (
     <button
       css={styles.root}
