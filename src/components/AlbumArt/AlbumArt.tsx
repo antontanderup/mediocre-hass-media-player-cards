@@ -106,14 +106,18 @@ export const AlbumArt = ({
       return null;
     }
     setImage(null);
+    setError(false);
     const img = new Image();
     img.onerror = () => {
       if (latestImageUrl.current !== url) {
         return;
       }
-      if (retries === 0) {
-        // Retry once
-        getImage(url, 1);
+      if (retries < 2) {
+        setTimeout(() => {
+          if (latestImageUrl.current === url) {
+            getImage(url, retries + 1);
+          }
+        }, 500);
         return;
       }
       setError(true);
@@ -130,13 +134,20 @@ export const AlbumArt = ({
       if (latestImageUrl.current !== url) {
         return;
       }
-
       setLoaded(true);
     };
 
     img.src = getHass().hassUrl(url);
     setImage(img);
+
+    if (img.complete) {
+      // Image was cached and loaded immediately
+      setError(false);
+      setLoaded(true);
+    }
   }, []);
+
+
 
   return (
     <button
