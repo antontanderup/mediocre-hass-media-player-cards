@@ -113,7 +113,12 @@ export const PlayerActions = () => {
 
   const toggleSelected = useCallback(
     (
-      key: "volume" | "speaker-grouping" | "custom-buttons" | "media-browser"
+      key:
+        | "volume"
+        | "speaker-grouping"
+        | "custom-buttons"
+        | "media-browser"
+        | "search"
     ) => {
       setSelected(selected === key ? undefined : key);
     },
@@ -234,7 +239,7 @@ export const PlayerActions = () => {
         <IconButton
           size="small"
           icon={"mdi:magnify"}
-          onClick={() => setSelected("search")}
+          onClick={() => toggleSelected("search")}
         />
       )}
       {hasMediaBrowser && (
