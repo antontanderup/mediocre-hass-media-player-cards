@@ -1,4 +1,4 @@
-import { Slider as BaseSlider } from "@base-ui/react/slider";
+import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 import { IconButton } from "@components/IconButton";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
