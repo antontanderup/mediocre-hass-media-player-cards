@@ -1,10 +1,10 @@
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
-  MediaPlayerEntity,
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { useContext, useState } from "preact/hooks";
+import { useContext, useState, useEffect } from "preact/hooks";
+import { selectActiveMultiMediaPlayer } from "@utils/selectActiveMultiMediaPlayer";
 import {
   ArtworkColorWrap,
   MediaBrowserView,
@@ -94,34 +94,12 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   const [selectedPlayer, setSelectedPlayer] = useState<
     MediocreMultiMediaPlayer | undefined
-  >(() => {
-    let player = config.media_players.find(
-      player => player.entity_id === config.entity_id
-    );
+  >(() => selectActiveMultiMediaPlayer(hass, config));
 
-    const playerState =
-      hass.states[player?.entity_id ?? config.entity_id]?.state;
-    if (player && (playerState == "playing" || playerState === "paused")) {
-      const groupState =
-        hass.states[player?.speaker_group_entity_id || player.entity_id];
-      if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
-        return player;
-      }
-    }
-
-    config.media_players.forEach(p => {
-      const state = hass.states[p.entity_id] as MediaPlayerEntity;
-      if (state.state === "playing" || state.state === "paused") {
-        const groupState =
-          hass.states[p.speaker_group_entity_id || p.entity_id];
-        if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
-          player = p;
-        }
-      }
-    });
-
-    return player;
-  });
+  // Update selectedPlayer when hass or config changes
+  useEffect(() => {
+    setSelectedPlayer(selectActiveMultiMediaPlayer(hass, config));
+  }, [hass, config]);
 
   const [navigationRoute, setNavigationRoute] =
     useState<NavigationRoute>("massive");
