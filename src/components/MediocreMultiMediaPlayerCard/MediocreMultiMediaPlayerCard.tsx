@@ -3,7 +3,13 @@ import {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { useContext, useState, useEffect } from "preact/hooks";
+import {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "preact/hooks";
 import { selectActiveMultiMediaPlayer } from "@utils/selectActiveMultiMediaPlayer";
 import {
   ArtworkColorWrap,
@@ -92,12 +98,21 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   const hass = useHass();
 
+  const lastInteractionRef = useRef<number | null>(null);
+
   const [selectedPlayer, setSelectedPlayer] = useState<
     MediocreMultiMediaPlayer | undefined
   >(() => selectActiveMultiMediaPlayer(hass, config));
 
-  // Update selectedPlayer when hass or config changes
+  // Update selectedPlayer when hass or config changes, unless card was interacted with in last 2 minutes
   useEffect(() => {
+    const now = Date.now();
+    if (
+      lastInteractionRef.current &&
+      now - lastInteractionRef.current < 2 * 60 * 1000
+    ) {
+      return;
+    }
     setSelectedPlayer(selectActiveMultiMediaPlayer(hass, config));
   }, [hass, config]);
 
@@ -107,6 +122,10 @@ export const MediocreMultiMediaPlayerCard = () => {
   const [cardSizeRef, { height: cardHeight }] = useMeasure<HTMLDivElement>();
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
+
+  const handleCardClick = useCallback(() => {
+    lastInteractionRef.current = Date.now();
+  }, []);
 
   return (
     <PlayerContextProvider
@@ -125,6 +144,7 @@ export const MediocreMultiMediaPlayerCard = () => {
             ]}
             style={config.height ? { height: config.height } : {}}
             ref={cardSizeRef}
+            onClick={handleCardClick}
           >
             <div
               css={[

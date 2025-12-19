@@ -2,7 +2,10 @@ import { selectActiveMultiMediaPlayer } from "./selectActiveMultiMediaPlayer";
 import { HomeAssistant, MediocreMultiMediaPlayerCardConfig } from "@types";
 
 describe("selectActiveMultiMediaPlayer", () => {
-  const basePlayer = (entity_id: string, overrides: Record<string, unknown> = {}) => ({
+  const basePlayer = (
+    entity_id: string,
+    overrides: Record<string, unknown> = {}
+  ) => ({
     entity_id,
     ...overrides,
   });
@@ -18,10 +21,10 @@ describe("selectActiveMultiMediaPlayer", () => {
   });
 
   function makeHass(states: Record<string, unknown>): HomeAssistant {
-    return ({
+    return {
       states,
       hassUrl: () => "",
-    } as unknown) as HomeAssistant;
+    } as unknown as HomeAssistant;
   }
 
   it("returns the config.entity_id player if it is playing and group leader", () => {
