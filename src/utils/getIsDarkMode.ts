@@ -3,9 +3,9 @@ import { getHass } from "@utils";
 // Helper to parse a CSS color string to RGB
 function parseColorToRgb(color: string): [number, number, number] | null {
   // Remove spaces and lowercase
-  color = color.replace(/\s+/g, '').toLowerCase();
+  color = color.replace(/\s+/g, "").toLowerCase();
   // Hex
-  if (color[0] === '#') {
+  if (color[0] === "#") {
     if (color.length === 4) {
       // #rgb
       return [
@@ -49,7 +49,7 @@ export const isDarkMode = () => {
   // Try to get --primary-text-color from document root
   const root = window.document.documentElement;
   const style = getComputedStyle(root);
-  const color = style.getPropertyValue('--primary-text-color');
+  const color = style.getPropertyValue("--primary-text-color");
   if (color) {
     const rgb = parseColorToRgb(color);
     if (rgb) {

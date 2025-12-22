@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-
 import { isDarkMode } from "./getIsDarkMode";
 
 // Mock getHass
@@ -43,44 +42,59 @@ describe("isDarkMode", () => {
   it("parses hex --primary-text-color as bright (dark mode)", () => {
     getHass.mockReturnValue({ selectedTheme: { dark: undefined } });
     document.documentElement.style.setProperty("--primary-text-color", "#fff");
-    window.getComputedStyle = () => ({
-      getPropertyValue: (name: string) => (name === "--primary-text-color" ? "#fff" : ""),
-    }) as any;
+    window.getComputedStyle = () =>
+      ({
+        getPropertyValue: (name: string) =>
+          name === "--primary-text-color" ? "#fff" : "",
+      }) as any;
     expect(isDarkMode()).toBe(true);
   });
 
   it("parses hex --primary-text-color as dark (light mode)", () => {
     getHass.mockReturnValue({ selectedTheme: { dark: undefined } });
     document.documentElement.style.setProperty("--primary-text-color", "#111");
-    window.getComputedStyle = () => ({
-      getPropertyValue: (name: string) => (name === "--primary-text-color" ? "#111" : ""),
-    }) as any;
+    window.getComputedStyle = () =>
+      ({
+        getPropertyValue: (name: string) =>
+          name === "--primary-text-color" ? "#111" : "",
+      }) as any;
     expect(isDarkMode()).toBe(false);
   });
 
   it("parses rgb --primary-text-color as bright (dark mode)", () => {
     getHass.mockReturnValue({ selectedTheme: { dark: undefined } });
-    document.documentElement.style.setProperty("--primary-text-color", "rgb(255,255,255)");
-    window.getComputedStyle = () => ({
-      getPropertyValue: (name: string) => (name === "--primary-text-color" ? "rgb(255,255,255)" : ""),
-    }) as any;
+    document.documentElement.style.setProperty(
+      "--primary-text-color",
+      "rgb(255,255,255)"
+    );
+    window.getComputedStyle = () =>
+      ({
+        getPropertyValue: (name: string) =>
+          name === "--primary-text-color" ? "rgb(255,255,255)" : "",
+      }) as any;
     expect(isDarkMode()).toBe(true);
   });
 
   it("parses rgb --primary-text-color as dark (light mode)", () => {
     getHass.mockReturnValue({ selectedTheme: { dark: undefined } });
-    document.documentElement.style.setProperty("--primary-text-color", "rgb(10,10,10)");
-    window.getComputedStyle = () => ({
-      getPropertyValue: (name: string) => (name === "--primary-text-color" ? "rgb(10,10,10)" : ""),
-    }) as any;
+    document.documentElement.style.setProperty(
+      "--primary-text-color",
+      "rgb(10,10,10)"
+    );
+    window.getComputedStyle = () =>
+      ({
+        getPropertyValue: (name: string) =>
+          name === "--primary-text-color" ? "rgb(10,10,10)" : "",
+      }) as any;
     expect(isDarkMode()).toBe(false);
   });
 
   it("falls back to matchMedia if no theme or color", () => {
     getHass.mockReturnValue({ selectedTheme: { dark: undefined } });
-    window.getComputedStyle = () => ({
-      getPropertyValue: () => "",
-    }) as any;
+    window.getComputedStyle = () =>
+      ({
+        getPropertyValue: () => "",
+      }) as any;
     window.matchMedia = jest.fn().mockReturnValue({ matches: true });
     expect(isDarkMode()).toBe(true);
     window.matchMedia = jest.fn().mockReturnValue({ matches: false });
