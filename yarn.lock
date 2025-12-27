@@ -10,17 +10,17 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@ark/schema@0.46.0":
-  version "0.46.0"
-  resolved "https://registry.yarnpkg.com/@ark/schema/-/schema-0.46.0.tgz#81a1a0dc1ff0f2faa098cba05de505a174bdc64e"
-  integrity sha512-c2UQdKgP2eqqDArfBqQIJppxJHvNNXuQPeuSPlDML4rjw+f1cu0qAlzOG4b8ujgm9ctIDWwhpyw6gjG5ledIVQ==
+"@ark/schema@0.56.0":
+  version "0.56.0"
+  resolved "https://registry.yarnpkg.com/@ark/schema/-/schema-0.56.0.tgz#62126c285e372fa7f0be5c7419dd24728b090ab2"
+  integrity sha512-ECg3hox/6Z/nLajxXqNhgPtNdHWC9zNsDyskwO28WinoFEnWow4IsERNz9AnXRhTZJnYIlAJ4uGn3nlLk65vZA==
   dependencies:
-    "@ark/util" "0.46.0"
+    "@ark/util" "0.56.0"
 
-"@ark/util@0.46.0":
-  version "0.46.0"
-  resolved "https://registry.yarnpkg.com/@ark/util/-/util-0.46.0.tgz#aee240bdaf413793e5ca4c4e8e3707aa965f4be3"
-  integrity sha512-JPy/NGWn/lvf1WmGCPw2VGpBg5utZraE84I7wli18EDF3p3zc/e9WolT35tINeZO3l7C77SjqRJeAUoT0CvMRg==
+"@ark/util@0.56.0":
+  version "0.56.0"
+  resolved "https://registry.yarnpkg.com/@ark/util/-/util-0.56.0.tgz#d110f1c55ea934f0fba930deada16254791d7fe3"
+  integrity sha512-BghfRC8b9pNs3vBoDJhcta0/c1J1rsoS1+HgVUreMFPdhz/CRAKReAu57YEllNaSy98rWAdY1gE+gFup7OXpgA==
 
 "@asamuzakjp/css-color@^3.2.0":
   version "3.2.0"
@@ -2338,13 +2338,21 @@ argparse@^2.0.1:
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
-arktype@^2.1.20:
-  version "2.1.20"
-  resolved "https://registry.yarnpkg.com/arktype/-/arktype-2.1.20.tgz#dd46726b0faf23c2753369876c77bb037e7089d9"
-  integrity sha512-IZCEEXaJ8g+Ijd59WtSYwtjnqXiwM8sWQ5EjGamcto7+HVN9eK0C4p0zDlCuAwWhpqr6fIBkxPuYDl4/Mcj/+Q==
+arkregex@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/arkregex/-/arkregex-0.0.5.tgz#0a2d5f6ae11de6b6200f2326f65960f85dac62fb"
+  integrity sha512-ncYjBdLlh5/QnVsAA8De16Tc9EqmYM7y/WU9j+236KcyYNUXogpz3sC4ATIZYzzLxwI+0sEOaQLEmLmRleaEXw==
   dependencies:
-    "@ark/schema" "0.46.0"
-    "@ark/util" "0.46.0"
+    "@ark/util" "0.56.0"
+
+arktype@^2.1.29:
+  version "2.1.29"
+  resolved "https://registry.yarnpkg.com/arktype/-/arktype-2.1.29.tgz#23bee076c8851d14e792bde6cd328b578a5654d9"
+  integrity sha512-jyfKk4xIOzvYNayqnD8ZJQqOwcrTOUbIU4293yrzAjA3O1dWh61j71ArMQ6tS/u4pD7vabSPe7nG3RCyoXW6RQ==
+  dependencies:
+    "@ark/schema" "0.56.0"
+    "@ark/util" "0.56.0"
+    arkregex "0.0.5"
 
 array-buffer-byte-length@^1.0.1, array-buffer-byte-length@^1.0.2:
   version "1.0.2"

@@ -22,7 +22,7 @@
     "@tanstack/react-form": "^1.23.0",
     "@tanstack/react-virtual": "^3.13.12",
     "@uidotdev/usehooks": "^2.4.1",
-    "arktype": "^2.1.20",
+    "arktype": "^2.1.29",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.3",
     "preact": "^10.28.0"
