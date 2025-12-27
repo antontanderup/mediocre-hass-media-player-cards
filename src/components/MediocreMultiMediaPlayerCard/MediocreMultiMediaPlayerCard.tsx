@@ -113,8 +113,15 @@ export const MediocreMultiMediaPlayerCard = () => {
     ) {
       return;
     }
-    setSelectedPlayer(selectActiveMultiMediaPlayer(hass, config));
-  }, [hass, config]);
+    const newSelectedPlayer = selectActiveMultiMediaPlayer(
+      hass,
+      config,
+      selectedPlayer
+    );
+    if (newSelectedPlayer?.entity_id !== selectedPlayer?.entity_id) {
+      setSelectedPlayer(newSelectedPlayer);
+    }
+  }, [hass, config, selectedPlayer]);
 
   const [navigationRoute, setNavigationRoute] =
     useState<NavigationRoute>("massive");
