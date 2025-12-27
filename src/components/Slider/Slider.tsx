@@ -1,9 +1,7 @@
-import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 import { IconButton } from "@components/IconButton";
-import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { isDarkMode } from "@utils";
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 
 export type SliderProps = {
@@ -15,7 +13,7 @@ export type SliderProps = {
   showStepButtons?: boolean;
   className?: string;
   onStepButtonClick?: (stepDirection: "increment" | "decrement") => void;
-  getThumbLabel?: (value: number) => string;
+  unit?: string;
   onChange: (value: number) => void;
 };
 
@@ -28,71 +26,29 @@ export type SliderSize =
   | "x-large"
   | "xx-large";
 
+const getSliderSize = (sliderSize: SliderSize) => {
+  switch (sliderSize) {
+    case "xx-small":
+      return 12;
+    case "x-small":
+      return 18;
+    case "small":
+      return 24;
+    case "medium":
+      return 32;
+    case "large":
+      return 48;
+    case "x-large":
+      return 80;
+    case "xx-large":
+      return 120;
+    default:
+      return 32;
+  }
+};
+
 const styles = {
-  root: css({
-    width: "100%",
-    "--unselected-color": "var(--divider-color)",
-    margin: "0",
-    position: "relative",
-  }),
-  control: css({
-    position: "relative",
-    cursor: "pointer",
-  }),
-  track: css({
-    background: "var(--unselected-color)",
-    height: "var(--mmpc-slider-height)",
-    borderRadius: "6px",
-  }),
-  indicator: css({
-    background: "var(--primary-color)",
-    height: "100%",
-    borderRadius: "4px",
-  }),
-  thumb: css({
-    width: "16px",
-    height: "var(--mmpc-slider-height)",
-    cursor: "pointer",
-    background: "var(--primary-color)",
-    position: "relative",
-    borderRadius: "6px",
-    top: "0px !important",
-    translate: "-50% 0% !important",
-    ["&:after"]: {
-      content: '""',
-      position: "absolute",
-      transform: "translate(-50%, -50%)",
-      backgroundColor: "var(--text-primary-color)",
-      boxShadow: "0px 0px 20px 0px var(--divider-color)",
-      width: "6px",
-      borderRadius: "6px",
-      top: "50%",
-      left: "50%",
-      height: "68%",
-    },
-  }),
-  thumbLight: css({
-    ["&:after"]: {
-      backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
-      boxShadow:
-        "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
-    },
-  }),
-  value: css({
-    position: "absolute",
-    color: theme.colors.card,
-    bottom: "calc(100% + 6px)",
-    right: "-50%",
-    backgroundColor: theme.colors.onCard,
-    padding: "0px 6px",
-    borderRadius: "4px",
-    fontSize: 12,
-    display: "none",
-    "[data-dragging] &": {
-      display: "block",
-      zIndex: 99,
-    },
-  }),
+  root: css({ width: "100%", position: "relative" }),
   stepButton: css({
     opacity: 0.8,
     "@media (hover: hover)": {
@@ -130,28 +86,15 @@ export const Slider = ({
   max,
   step,
   value,
+  unit,
   sliderSize = "medium",
   showStepButtons = false,
   className,
   onStepButtonClick,
-  getThumbLabel,
   onChange,
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
   const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
-
-  const handleValueChange = useCallback(
-    (newVolume: number) => {
-      setInternalValue(newVolume);
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        onChange(newVolume);
-      }, 250);
-    },
-    [onChange]
-  );
 
   useEffect(() => {
     if (value !== internalValue) {
@@ -159,36 +102,46 @@ export const Slider = ({
     }
   }, [value]);
 
-  const sliderSizeValue = getSliderSize(sliderSize);
+  // Handle value change from ha-control-slider (value-changed event)
+  const sliderRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+    const handler = (e: CustomEvent) => {
+      const newValue = Number(e.detail.value);
+      setInternalValue(newValue);
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        onChange(newValue);
+      }, 250);
+    };
+    slider.addEventListener("value-changed", handler as EventListener);
+    return () => {
+      slider.removeEventListener("value-changed", handler as EventListener);
+    };
+  }, [onChange]);
+
+  const thickness = getSliderSize(sliderSize);
 
   return (
-    <BaseSlider.Root
-      css={styles.root}
-      value={internalValue}
-      onValueChange={handleValueChange}
-      thumbAlignment="edge"
-      min={min}
-      max={max}
-      step={step}
-      className={className}
-    >
-      <BaseSlider.Control css={styles.control}>
-        <BaseSlider.Track
-          css={styles.track}
-          style={{
-            "--mmpc-slider-height": sliderSizeValue + "px",
-          }}
-        >
-          <BaseSlider.Indicator css={styles.indicator} />
-          <BaseSlider.Thumb
-            css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
-          >
-            {getThumbLabel ? (
-              <div css={styles.value}>{getThumbLabel(internalValue)}</div>
-            ) : null}
-          </BaseSlider.Thumb>
-        </BaseSlider.Track>
-      </BaseSlider.Control>
+    <div css={styles.root}>
+      {/* @ts-expect-error --- web component from home assistant --- */}
+      <ha-control-slider
+        ref={sliderRef}
+        min={min}
+        max={max}
+        step={step}
+        unit={unit}
+        value={internalValue}
+        aria-valuenow={internalValue}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-orientation="horizontal"
+        class={className}
+        style={{ "--control-slider-thickness": `${thickness}px` }}
+      />
       {showStepButtons && (
         <Fragment>
           {(internalValue * 100) / max < 10 ? null : (
@@ -225,25 +178,6 @@ export const Slider = ({
           )}
         </Fragment>
       )}
-    </BaseSlider.Root>
+    </div>
   );
-};
-
-const getSliderSize = (sliderSize: SliderSize) => {
-  switch (sliderSize) {
-    case "xx-small":
-      return 12;
-    case "x-small":
-      return 18;
-    case "small":
-      return 24;
-    case "medium":
-      return 32;
-    case "large":
-      return 48;
-    case "x-large":
-      return 80;
-    case "xx-large":
-      return 120;
-  }
 };
