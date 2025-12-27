@@ -1,7 +1,6 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
-// @ts-expect-error it's not typed yet
 import importPlugin from "eslint-plugin-import";
 import * as emotion from "@emotion/eslint-plugin";
 
