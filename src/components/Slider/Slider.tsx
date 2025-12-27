@@ -1,4 +1,3 @@
-import { Slider as BaseSlider } from "@base-ui-components/react/slider";
 import { IconButton } from "@components/IconButton";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
@@ -34,45 +33,83 @@ const styles = {
     "--unselected-color": "var(--divider-color)",
     margin: "0",
     position: "relative",
+    display: "flex",
+    alignItems: "center",
   }),
-  control: css({
-    position: "relative",
-    cursor: "pointer",
-  }),
-  track: css({
+  slider: css({
+    width: "100%",
+    appearance: "none",
     background: "var(--unselected-color)",
     height: "var(--mmpc-slider-height)",
     borderRadius: "6px",
-  }),
-  indicator: css({
-    background: "var(--primary-color)",
-    height: "100%",
-    borderRadius: "4px",
-  }),
-  thumb: css({
-    width: "16px",
-    height: "var(--mmpc-slider-height)",
-    cursor: "pointer",
-    background: "var(--primary-color)",
+    outline: "none",
     position: "relative",
-    borderRadius: "6px",
-    top: "0px !important",
-    translate: "-50% 0% !important",
-    ["&:after"]: {
+    transition: "background 0.2s",
+    padding: 0,
+    margin: 0,
+    zIndex: 1,
+    // Track fill
+    "&::-webkit-slider-runnable-track": {
+      height: "var(--mmpc-slider-height)",
+      background: "var(--unselected-color)",
+      borderRadius: "6px",
+    },
+    "&::-moz-range-track": {
+      height: "var(--mmpc-slider-height)",
+      background: "var(--unselected-color)",
+      borderRadius: "6px",
+    },
+    // Thumb
+    "&::-webkit-slider-thumb": {
+      appearance: "none",
+      width: "16px",
+      height: "var(--mmpc-slider-height)",
+      background: "var(--primary-color)",
+      borderRadius: "6px",
+      position: "relative",
+      cursor: "pointer",
+      boxShadow: "0px 0px 20px 0px var(--divider-color)",
+      border: "none",
+      zIndex: 2,
+    },
+    "&::-moz-range-thumb": {
+      width: "16px",
+      height: "var(--mmpc-slider-height)",
+      background: "var(--primary-color)",
+      borderRadius: "6px",
+      cursor: "pointer",
+      boxShadow: "0px 0px 20px 0px var(--divider-color)",
+      border: "none",
+    },
+    "&::-ms-thumb": {
+      width: "16px",
+      height: "var(--mmpc-slider-height)",
+      background: "var(--primary-color)",
+      borderRadius: "6px",
+      cursor: "pointer",
+      boxShadow: "0px 0px 20px 0px var(--divider-color)",
+      border: "none",
+    },
+    // Remove outline on focus
+    ":focus": {
+      outline: "none",
+    },
+    // Progress fill (for Chrome)
+    "&::-webkit-slider-thumb:after": {
       content: '""',
       position: "absolute",
+      left: "50%",
+      top: "50%",
       transform: "translate(-50%, -50%)",
       backgroundColor: "var(--text-primary-color)",
-      boxShadow: "0px 0px 20px 0px var(--divider-color)",
       width: "6px",
-      borderRadius: "6px",
-      top: "50%",
-      left: "50%",
       height: "68%",
+      borderRadius: "6px",
+      boxShadow: "0px 0px 20px 0px var(--divider-color)",
     },
   }),
-  thumbLight: css({
-    ["&:after"]: {
+  sliderLight: css({
+    "&::-webkit-slider-thumb:after": {
       backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
       boxShadow:
         "0px 0px 20px 0px var(--art-on-surface-color, rgba(0, 0, 0, 0.2))",
@@ -81,6 +118,7 @@ const styles = {
   value: css({
     position: "absolute",
     color: theme.colors.card,
+    width: "fit-content",
     bottom: "calc(100% + 6px)",
     right: "-50%",
     backgroundColor: theme.colors.onCard,
@@ -88,9 +126,10 @@ const styles = {
     borderRadius: "4px",
     fontSize: 12,
     display: "none",
-    "[data-dragging] &": {
+    zIndex: 99,
+    // Show when dragging
+    "&.show": {
       display: "block",
-      zIndex: 99,
     },
   }),
   stepButton: css({
@@ -138,16 +177,19 @@ export const Slider = ({
   onChange,
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
+  const [dragging, setDragging] = useState(false);
   const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
 
   const handleValueChange = useCallback(
-    (newVolume: number) => {
-      setInternalValue(newVolume);
+    (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const newValue = Number(target.value);
+      setInternalValue(newValue);
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current);
       }
       debounceTimeout.current = setTimeout(() => {
-        onChange(newVolume);
+        onChange(newValue);
       }, 250);
     },
     [onChange]
@@ -161,34 +203,15 @@ export const Slider = ({
 
   const sliderSizeValue = getSliderSize(sliderSize);
 
+  // Calculate percent for track fill
+  const percent = ((internalValue - min) / (max - min)) * 100;
+
   return (
-    <BaseSlider.Root
+    <div
       css={styles.root}
-      value={internalValue}
-      onValueChange={handleValueChange}
-      thumbAlignment="edge"
-      min={min}
-      max={max}
-      step={step}
       className={className}
+      style={{ position: "relative", minWidth: 0 }}
     >
-      <BaseSlider.Control css={styles.control}>
-        <BaseSlider.Track
-          css={styles.track}
-          style={{
-            "--mmpc-slider-height": sliderSizeValue + "px",
-          }}
-        >
-          <BaseSlider.Indicator css={styles.indicator} />
-          <BaseSlider.Thumb
-            css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
-          >
-            {getThumbLabel ? (
-              <div css={styles.value}>{getThumbLabel(internalValue)}</div>
-            ) : null}
-          </BaseSlider.Thumb>
-        </BaseSlider.Track>
-      </BaseSlider.Control>
       {showStepButtons && (
         <Fragment>
           {(internalValue * 100) / max < 10 ? null : (
@@ -209,6 +232,41 @@ export const Slider = ({
               ]}
             />
           )}
+        </Fragment>
+      )}
+      <div style={{ flex: 1, position: "relative", minWidth: 0 }}>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={internalValue}
+          onInput={handleValueChange}
+          onMouseDown={() => setDragging(true)}
+          onMouseUp={() => setDragging(false)}
+          onTouchStart={() => setDragging(true)}
+          onTouchEnd={() => setDragging(false)}
+          css={[
+            styles.slider,
+            !isDarkMode() && styles.sliderLight,
+          ]}
+          style={{
+            "--mmpc-slider-height": sliderSizeValue + "px",
+            background: `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${percent}%, var(--unselected-color) ${percent}%, var(--unselected-color) 100%)`,
+          } as any}
+        />
+        {getThumbLabel ? (
+          <div
+            css={styles.value}
+            className={dragging ? "show" : undefined}
+            style={{ left: `calc(${percent}% - 16px)` }}
+          >
+            {getThumbLabel(internalValue)}
+          </div>
+        ) : null}
+      </div>
+      {showStepButtons && (
+        <Fragment>
           {(internalValue * 100) / max > 90 ? null : (
             <IconButton
               size="x-small"
@@ -225,7 +283,7 @@ export const Slider = ({
           )}
         </Fragment>
       )}
-    </BaseSlider.Root>
+    </div>
   );
 };
 
@@ -245,5 +303,7 @@ const getSliderSize = (sliderSize: SliderSize) => {
       return 80;
     case "xx-large":
       return 120;
+    default:
+      return 32;
   }
 };
