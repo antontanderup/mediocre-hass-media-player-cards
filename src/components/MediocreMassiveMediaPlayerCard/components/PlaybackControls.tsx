@@ -43,26 +43,26 @@ export const PlaybackControls = () => {
     getHass().callService("media_player", "media_play_pause", {
       entity_id: config.entity_id,
     });
-  }, []);
+  }, [config]);
 
   const nextTrack = useCallback(() => {
     getHass().callService("media_player", "media_next_track", {
       entity_id: config.entity_id,
     });
-  }, []);
+  }, [config]);
 
   const previousTrack = useCallback(() => {
     getHass().callService("media_player", "media_previous_track", {
       entity_id: config.entity_id,
     });
-  }, []);
+  }, [config]);
 
   const toggleShuffle = useCallback(() => {
     getHass().callService("media_player", "shuffle_set", {
       entity_id: config.entity_id,
       shuffle: !shuffle,
     });
-  }, [shuffle]);
+  }, [shuffle, config]);
 
   const toggleRepeat = useCallback(() => {
     const newRepeat =
@@ -71,7 +71,7 @@ export const PlaybackControls = () => {
       entity_id: config.entity_id,
       repeat: newRepeat,
     });
-  }, [repeat]);
+  }, [repeat, config]);
 
   return (
     <div css={styles.root}>
