@@ -53,6 +53,7 @@ export function useButtonCallbacks({
 
   const [isLongPressing, setIsLongPressing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const screenPosition = useRef<{ x: number; y: number }>(null);
 
   const reset = useCallback(() => {
     if (mouseUpTimeout.current) {
@@ -64,9 +65,10 @@ export function useButtonCallbacks({
     setIsLongPressing(false);
     mouseDownTimestamp.current = null;
     numClicks.current = 0;
-  }, []);
+    screenPosition.current = null;
+  }, [setIsLongPressing]);
 
-  const renderLongPressIndicator = () => {
+  const renderLongPressIndicator = useCallback(() => {
     if (!isLongPressing) return null;
     return (
       <div
@@ -74,7 +76,7 @@ export function useButtonCallbacks({
         style={{ left: `${position.x}px`, top: `${position.y}px` }}
       />
     );
-  };
+  }, [isLongPressing, position]);
 
   const isLongPress = useCallback(() => {
     const now = Date.now();
@@ -146,6 +148,7 @@ export function useButtonCallbacks({
   const onMouseDown = useCallback(
     (e: MouseEvent) => {
       handleStart(e.clientX, e.clientY);
+      screenPosition.current = { x: e.screenX, y: e.screenY };
     },
     [handleStart]
   );
@@ -157,11 +160,16 @@ export function useButtonCallbacks({
     [handleMove]
   );
 
+  const onMouseUp = useCallback(() => {
+    handleEnd();
+  }, [handleEnd]);
+
   const onTouchStart = useCallback(
     (e: TouchEvent) => {
       if (e.touches.length > 0) {
         const touch = e.touches[0];
         handleStart(touch.clientX, touch.clientY);
+        screenPosition.current = { x: touch.screenX, y: touch.screenY };
       }
     },
     [handleStart]
@@ -177,20 +185,38 @@ export function useButtonCallbacks({
     [handleMove]
   );
 
+  const onTouchEnd = useCallback(
+    (e: TouchEvent) => {
+      if (e.changedTouches.length > 0) {
+        // abort if y position has changed significantly
+        const touch = e.changedTouches[0];
+        if (
+          screenPosition.current?.y &&
+          Math.abs(touch.screenY - screenPosition.current.y) > 20
+        ) {
+          reset();
+          return;
+        }
+      }
+      handleEnd();
+    },
+    [handleEnd]
+  );
+
   return useMemo(
     () => ({
       ...(supportsTouchEvents
         ? {
             onTouchStart,
             onTouchMove,
-            onTouchEnd: handleEnd,
+            onTouchEnd,
             onTouchCancel: reset,
             loading,
           }
         : {
             onMouseDown,
             onMouseMove,
-            onMouseUp: handleEnd,
+            onMouseUp,
             onMouseOut: reset,
             loading,
           }),
