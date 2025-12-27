@@ -63,33 +63,43 @@ export const Slider = ({
     }
   }, [value]);
 
-  // Handle value change from ha-control-slider
-  const handleSliderChange = (e: any) => {
-    const newValue = Number(e.target.value);
-    setInternalValue(newValue);
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
-    debounceTimeout.current = setTimeout(() => {
-      onChange(newValue);
-    }, 250);
-  };
+  // Handle value change from ha-control-slider (value-changed event)
+  const sliderRef = useRef<any>(null);
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+    const handler = (e: CustomEvent) => {
+      const newValue = Number(e.detail.value);
+      setInternalValue(newValue);
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        onChange(newValue);
+      }, 250);
+    };
+    slider.addEventListener("value-changed", handler as EventListener);
+    return () => {
+      slider.removeEventListener("value-changed", handler as EventListener);
+    };
+  }, [onChange]);
 
   const thickness = getSliderSize(sliderSize);
 
-  return ( // @ts-expect-error --- web component from home assistant ---
+  return (
+    // @ts-expect-error --- web component from home assistant ---
     <ha-control-slider
-      style={{ "--control-slider-thickness": `${thickness}px` }}
+      ref={sliderRef}
       min={min}
       max={max}
       step={step}
       value={internalValue}
+      aria-valuenow={internalValue}
       aria-valuemin={min}
       aria-valuemax={max}
-      unit="%"
       aria-orientation="horizontal"
       class={className}
-      onInput={handleSliderChange}
+      style={{ "--control-slider-thickness": `${thickness}px` }}
     />
   );
 };

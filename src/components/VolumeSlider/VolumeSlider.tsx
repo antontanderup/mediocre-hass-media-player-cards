@@ -60,7 +60,7 @@ export const VolumeSlider = ({
     <Slider
       min={0}
       max={100}
-      step={0.10}
+      step={0.1}
       value={volumeLevel * 100}
       onChange={handleVolumeChange}
       onStepButtonClick={
