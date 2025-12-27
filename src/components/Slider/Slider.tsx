@@ -1,4 +1,8 @@
+import { IconButton } from "@components/IconButton";
+import { css } from "@emotion/react";
+import { isDarkMode } from "@utils";
 import { useEffect, useRef, useState } from "preact/hooks";
+import { Fragment } from "preact/jsx-runtime";
 
 export type SliderProps = {
   min: number;
@@ -43,11 +47,46 @@ const getSliderSize = (sliderSize: SliderSize) => {
   }
 };
 
+const styles = {
+  root: css({ width: "100%", position: "relative" }),
+  stepButton: css({
+    opacity: 0.8,
+    "@media (hover: hover)": {
+      "&:hover": {
+        backgroundColor: "unset",
+      },
+      "&:active": {
+        backgroundColor: "unset",
+      },
+    },
+    borderRadius: 0,
+    height: "100%",
+  }),
+  incrementButton: css({
+    position: "absolute",
+    top: "50%",
+    right: "0px",
+    transform: "translateY(-50%)",
+  }),
+  decrementButton: css({
+    position: "absolute",
+    top: "50%",
+    left: "0px",
+    transform: "translateY(-50%)",
+    "--icon-primary-color": "var(--text-primary-color)",
+  }),
+  decrementButtonLight: css({
+    "--icon-primary-color":
+      "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+  }),
+};
+
 export const Slider = ({
   min,
   max,
   step,
   value,
+  unit,
   sliderSize = "medium",
   showStepButtons = false,
   className,
@@ -64,7 +103,7 @@ export const Slider = ({
   }, [value]);
 
   // Handle value change from ha-control-slider (value-changed event)
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
@@ -87,19 +126,58 @@ export const Slider = ({
   const thickness = getSliderSize(sliderSize);
 
   return (
-    // @ts-expect-error --- web component from home assistant ---
-    <ha-control-slider
-      ref={sliderRef}
-      min={min}
-      max={max}
-      step={step}
-      value={internalValue}
-      aria-valuenow={internalValue}
-      aria-valuemin={min}
-      aria-valuemax={max}
-      aria-orientation="horizontal"
-      class={className}
-      style={{ "--control-slider-thickness": `${thickness}px` }}
-    />
+    <div css={styles.root}>
+      {/* @ts-expect-error --- web component from home assistant --- */}
+      <ha-control-slider
+        ref={sliderRef}
+        min={min}
+        max={max}
+        step={step}
+        unit={unit}
+        value={internalValue}
+        aria-valuenow={internalValue}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-orientation="horizontal"
+        class={className}
+        style={{ "--control-slider-thickness": `${thickness}px` }}
+      />
+      {showStepButtons && (
+        <Fragment>
+          {(internalValue * 100) / max < 10 ? null : (
+            <IconButton
+              size="x-small"
+              onClick={() => {
+                if (onStepButtonClick) {
+                  onStepButtonClick("decrement");
+                } else {
+                  onChange(Math.max(min, internalValue - step));
+                }
+              }}
+              icon={"mdi:minus"}
+              css={[
+                styles.decrementButton,
+                styles.stepButton,
+                !isDarkMode() && styles.decrementButtonLight,
+              ]}
+            />
+          )}
+          {(internalValue * 100) / max > 90 ? null : (
+            <IconButton
+              size="x-small"
+              onClick={() => {
+                if (onStepButtonClick) {
+                  onStepButtonClick("increment");
+                } else {
+                  onChange(Math.min(max, internalValue + step));
+                }
+              }}
+              icon={"mdi:plus"}
+              css={[styles.incrementButton, styles.stepButton]}
+            />
+          )}
+        </Fragment>
+      )}
+    </div>
   );
 };
