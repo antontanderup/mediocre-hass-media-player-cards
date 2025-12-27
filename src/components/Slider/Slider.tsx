@@ -48,7 +48,13 @@ const getSliderSize = (sliderSize: SliderSize) => {
 };
 
 const styles = {
-  root: css({ width: "100%", position: "relative" }),
+  root: css({
+    width: "100%",
+    position: "relative",
+  }),
+  slider: css({
+    "--control-slider-border-radius": "6px",
+  }),
   stepButton: css({
     opacity: 0.8,
     "@media (hover: hover)": {
@@ -139,6 +145,7 @@ export const Slider = ({
         aria-valuemin={min}
         aria-valuemax={max}
         aria-orientation="horizontal"
+        css={styles.slider}
         class={className}
         style={{ "--control-slider-thickness": `${thickness}px` }}
       />
