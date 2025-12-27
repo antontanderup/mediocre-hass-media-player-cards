@@ -38,8 +38,9 @@ export const VolumeSlider = ({
 
   const handleVolumeChange = useCallback(
     (volume: number) => {
+      const newVolume = volume / 100;
       // Use setVolume utility, with sync if this is the main speaker
-      setVolume(entityId, volume, syncGroupChildren);
+      setVolume(entityId, newVolume, syncGroupChildren);
     },
     [entityId, syncGroupChildren]
   );
@@ -58,14 +59,13 @@ export const VolumeSlider = ({
   return (
     <Slider
       min={0}
-      max={1}
-      step={0.01}
-      value={volumeLevel}
+      max={100}
+      step={0.10}
+      value={volumeLevel * 100}
       onChange={handleVolumeChange}
       onStepButtonClick={
         useVolumeUpDownForSteps ? handleVolumeStepChange : undefined
       }
-      getThumbLabel={value => `${Math.round(value * 100)}%`}
       css={isOff ? styles.off : {}}
       {...sliderProps}
     />
