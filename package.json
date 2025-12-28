@@ -40,7 +40,7 @@
     "eslint-plugin-react": "^7.37.5",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
-    "jiti": "^2.4.2",
+    "jiti": "^2.6.1",
     "prettier": "^3.1.0",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3",
