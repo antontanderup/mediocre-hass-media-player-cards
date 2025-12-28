@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v4
       - run: |
           yarn
-          yarn prettier . --write
+          yarn format
       - uses: autofix-ci/action@v1
         with:
           commit-message: "Apply Prettier format"
