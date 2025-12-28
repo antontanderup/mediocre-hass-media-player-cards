@@ -439,9 +439,10 @@ export const MediaBrowser = ({
                         <OverlayMenu
                           menuItems={selectMediaBrowserMenuItems}
                           side="bottom"
+                          align="end"
                           renderTrigger={triggerProps => (
                             <Chip
-                              icon="mdi:transfer"
+                              icon="mdi:import"
                               css={styles.mediaBrowserEntrySelector}
                               {...triggerProps}
                             >
