@@ -24,7 +24,7 @@ export const getDefaultValuesFromConfig = (
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
   },
-  media_browser: !!config?.media_browser
+  media_browser: config?.media_browser
     ? Array.isArray(config.media_browser)
       ? config.media_browser
       : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
@@ -69,7 +69,7 @@ export const getDefaultValuesFromMassiveConfig = (
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
   },
-  media_browser: !!config?.media_browser
+  media_browser: config?.media_browser
     ? Array.isArray(config.media_browser)
       ? config.media_browser
       : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
