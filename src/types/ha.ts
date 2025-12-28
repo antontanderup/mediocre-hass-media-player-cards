@@ -35,8 +35,8 @@ interface HaFormAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
   required?: boolean;
 }
 
-interface HaIconPickerAttributes
-  extends preact.JSX.HTMLAttributes<HTMLElement> {
+interface HaIconPickerAttributes extends preact.JSX
+  .HTMLAttributes<HTMLElement> {
   label?: string;
   value?: string;
   disabled?: boolean;
@@ -53,8 +53,8 @@ interface HaTextfieldAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
   onchange?: (e: Event) => void;
 }
 
-interface HaEntityPickerAttributes
-  extends preact.JSX.HTMLAttributes<HTMLElement> {
+interface HaEntityPickerAttributes extends preact.JSX
+  .HTMLAttributes<HTMLElement> {
   hass?: HomeAssistant;
   value?: string;
   label?: string;
@@ -64,8 +64,8 @@ interface HaEntityPickerAttributes
   "allow-custom-entity"?: boolean;
 }
 
-interface HaEntitiesPickerAttributes
-  extends preact.JSX.HTMLAttributes<HTMLElement> {
+interface HaEntitiesPickerAttributes extends preact.JSX
+  .HTMLAttributes<HTMLElement> {
   hass?: HomeAssistant;
   value?: string[];
   label?: string;
