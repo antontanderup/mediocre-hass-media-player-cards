@@ -21,9 +21,10 @@ import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { getEnqueueModeIcon, getItemMdiIcon } from "./utils";
 import { useIntl } from "@components/i18n";
+import { MediaBrowserEntry } from "@types";
 
 export type MediaBrowserProps = {
-  entity_id: string;
+  mediaBrowserEntryArray: MediaBrowserEntry[];
   horizontalPadding?: number;
   maxHeight?: number;
   renderHeader?: () => preact.JSX.Element;
@@ -92,12 +93,17 @@ export type MediaBrowserItem = {
 };
 
 export const MediaBrowser = ({
-  entity_id,
+  mediaBrowserEntryArray,
   horizontalPadding,
   maxHeight,
   renderHeader,
 }: MediaBrowserProps) => {
   const { t } = useIntl();
+
+  const [selectedMediaBrowser, setSelectedMediaBrowser] = useState<MediaBrowserEntry>(
+    mediaBrowserEntryArray[0]
+  );
+  const { entity_id } = selectedMediaBrowser;
 
   const [mediaBrowserItems, setMediaBrowserItems] = useState<
     MediaBrowserItem[]

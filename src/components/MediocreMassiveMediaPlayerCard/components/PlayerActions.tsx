@@ -12,7 +12,7 @@ import {
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
-import { getHass } from "@utils";
+import { getHasMediaBrowser, getHasMediaBrowserEntryArray, getHass } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 import { useIntl } from "@components/i18n";
 
@@ -100,7 +100,7 @@ export const PlayerActions = () => {
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = hasMaSearch || search?.enabled;
 
-  const hasMediaBrowser = !!media_browser?.enabled;
+  const hasMediaBrowser = getHasMediaBrowser(media_browser);
 
   const [selected, setSelected] = useState<
     | "volume"
@@ -164,7 +164,7 @@ export const PlayerActions = () => {
         padding="0px"
       >
         <MediaBrowser
-          entity_id={config.media_browser?.entity_id ?? config.entity_id}
+          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(media_browser, entity_id)}
           horizontalPadding={16}
         />
       </Modal>
