@@ -1,15 +1,15 @@
 name: autofix.ci
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows:
+      - Prettier
+    types:
+      - completed
   
 permissions: {}
 jobs:
   prettier:
+    if: ${{ github.event.workflow_run.conclusion != 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
