@@ -1,3 +1,4 @@
+import { theme } from "@constants";
 import { css } from "@emotion/react";
 
 export const searchStyles = {
@@ -43,6 +44,7 @@ export const searchStyles = {
     marginRight: "6px",
   }),
   mediaEmptyText: css({
+    color: theme.colors.onCard,
     padding: "0px var(--mmpc-search-padding, 0px)",
   }),
   resultsContainerSearchBarBottom: css({
