@@ -1,7 +1,7 @@
 import { MediaBrowserConfig } from "@types";
 
 export const getHasMediaBrowser = (mediaBrowser: MediaBrowserConfig | undefined): boolean => {
-  if (typeof mediaBrowser === "undefined") {
+  if (!mediaBrowser) {
     return false;
   }
 

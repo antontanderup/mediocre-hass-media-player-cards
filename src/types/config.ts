@@ -29,7 +29,7 @@ const mediaBrowserLegacyEntry = type({
     "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
   });
 
-const mediaBrowser = mediaBrowserLegacyEntry.or(mediaBrowserEntry.array());
+const mediaBrowser = mediaBrowserLegacyEntry.or(mediaBrowserEntry.array()).or("null");
 
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
