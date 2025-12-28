@@ -70,39 +70,30 @@ This README is intended for AI agents (such as GitHub Copilot or other automated
 The following patterns are consistently used throughout the codebase and should be followed when creating or updating components:
 
 1. **Export Style:**
-
    - Components should always be named exported, not default exported.
 
 2. **Functional Components with Hooks:**
-
    - All components are functional and use Preact hooks (`useContext`, `useState`, `useCallback`, `useMemo`, etc.) for state and side effects.
 
 3. **Context Usage:**
-
    - Shared state and configuration are accessed via context providers (e.g., `CardContext`, `PlayerContext`).
 
 4. **CSS-in-JS Styling:**
-
    - Styling is handled using `@emotion/react`'s `css` function, with a `styles` object at the top of each file. Styles are applied using the `css` prop.
 
 5. **Modular, Composable UI:**
-
    - Components are small, focused, and composed together to build complex UIs.
 
 6. **Utility and Type Imports:**
-
    - Utilities (e.g., `getHass`, `getVolumeIcon`) and types (e.g., `MediocreMediaPlayerCardConfig`) are imported from `@utils` and `@types`.
 
 7. **Service Calls via Utility Functions:**
-
    - Interactions with Home Assistant (e.g., calling services) are abstracted through utility functions like `getHass().callService(...)`.
 
 8. **Conditional Rendering:**
-
    - UI elements are conditionally rendered based on props, context, or state.
 
 9. **Prop-Driven and Configurable:**
-
    - Components accept props and/or read from config/context, making them highly configurable and reusable.
 
 10. **Responsiveness (Container Queries Only):**
