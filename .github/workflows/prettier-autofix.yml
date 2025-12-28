@@ -1,4 +1,4 @@
-name: prettier
+name: autofix.ci
 on:
   pull_request:
     branches:
