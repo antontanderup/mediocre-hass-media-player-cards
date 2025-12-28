@@ -27,7 +27,10 @@ export const MediaBrowserBar = () => {
   return (
     <div css={styles.root}>
       <MediaBrowser
-        mediaBrowserEntryArray={getHasMediaBrowserEntryArray(media_browser, entity_id)}
+        mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
+          media_browser,
+          entity_id
+        )}
         horizontalPadding={12}
       />
     </div>

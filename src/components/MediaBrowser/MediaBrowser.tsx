@@ -1,4 +1,6 @@
 import {
+  Chip,
+  Icon,
   Input,
   MediaClass,
   MediaContentType,
@@ -79,6 +81,9 @@ const styles = {
     marginTop: "8px",
     marginBottom: "16px",
   }),
+  mediaBrowserEntrySelector: css({
+    marginLeft: "auto",
+  }),
 };
 
 export type MediaBrowserItem = {
@@ -100,10 +105,19 @@ export const MediaBrowser = ({
 }: MediaBrowserProps) => {
   const { t } = useIntl();
 
-  const [selectedMediaBrowser, setSelectedMediaBrowser] = useState<MediaBrowserEntry>(
-    mediaBrowserEntryArray[0]
-  );
+  const [selectedMediaBrowser, setSelectedMediaBrowser] =
+    useState<MediaBrowserEntry>(mediaBrowserEntryArray[0]);
   const { entity_id } = selectedMediaBrowser;
+
+  const selectMediaBrowserMenuItems: OverlayMenuItem[] = useMemo(() => {
+    return mediaBrowserEntryArray.map(mediaBrowserEntry => ({
+      label: mediaBrowserEntry.name ?? mediaBrowserEntry.entity_id,
+      selected: mediaBrowserEntry.entity_id === selectedMediaBrowser.entity_id,
+      onClick: () => {
+        setSelectedMediaBrowser(mediaBrowserEntry);
+      },
+    }));
+  }, [mediaBrowserEntryArray, selectedMediaBrowser.entity_id]);
 
   const [mediaBrowserItems, setMediaBrowserItems] = useState<
     MediaBrowserItem[]
@@ -385,15 +399,19 @@ export const MediaBrowser = ({
           <Fragment>
             {renderHeader && renderHeader()}
             <div css={styles.header}>
-              {history.length > 0 && (
+              {history.length > 0 || mediaBrowserEntryArray.length > 1 ? (
                 <Fragment>
                   <div css={styles.navigationBar}>
-                    <IconButton
-                      icon="mdi:arrow-left"
-                      size="x-small"
-                      onClick={goBack}
-                      disabled={history.length === 0}
-                    />
+                    {history.length > 0 ? (
+                      <IconButton
+                        icon="mdi:arrow-left"
+                        size="x-small"
+                        onClick={goBack}
+                        disabled={history.length === 0}
+                      />
+                    ) : (
+                      <Icon icon="mdi:home" size="x-small" />
+                    )}
                     <div css={styles.breadCrumbs}>
                       <button
                         css={styles.breadCrumbItem}
@@ -416,9 +434,27 @@ export const MediaBrowser = ({
                         </Fragment>
                       ))}
                     </div>
+                    {mediaBrowserEntryArray.length > 1 &&
+                      history.length === 0 && (
+                        <OverlayMenu
+                          menuItems={selectMediaBrowserMenuItems}
+                          side="bottom"
+                          renderTrigger={triggerProps => (
+                            <Chip
+                              icon="mdi:transfer"
+                              css={styles.mediaBrowserEntrySelector}
+                              {...triggerProps}
+                            >
+                              {selectedMediaBrowser.name ??
+                                selectedMediaBrowser.entity_id}
+                              <Icon size="x-small" icon="mdi:chevron-down" />
+                            </Chip>
+                          )}
+                        />
+                      )}
                   </div>
                 </Fragment>
-              )}
+              ) : null}
             </div>
             {mediaBrowserItems.length > 3 && history.length > 0 && (
               <Input

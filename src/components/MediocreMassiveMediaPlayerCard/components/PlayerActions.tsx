@@ -12,7 +12,11 @@ import {
 } from "@types";
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
-import { getHasMediaBrowser, getHasMediaBrowserEntryArray, getHass } from "@utils";
+import {
+  getHasMediaBrowser,
+  getHasMediaBrowserEntryArray,
+  getHass,
+} from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 import { useIntl } from "@components/i18n";
 
@@ -164,7 +168,10 @@ export const PlayerActions = () => {
         padding="0px"
       >
         <MediaBrowser
-          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(media_browser, entity_id)}
+          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
+            media_browser,
+            entity_id
+          )}
           horizontalPadding={16}
         />
       </Modal>

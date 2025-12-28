@@ -24,7 +24,11 @@ export const getDefaultValuesFromConfig = (
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
   },
-  media_browser: !!config?.media_browser ? (Array.isArray(config.media_browser) ? config.media_browser : [{entity_id: config.media_browser.entity_id ?? config.entity_id}]) : null,
+  media_browser: !!config?.media_browser
+    ? Array.isArray(config.media_browser)
+      ? config.media_browser
+      : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
+    : null,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
@@ -65,7 +69,11 @@ export const getDefaultValuesFromMassiveConfig = (
     entity_id: config?.search?.entity_id ?? null,
     media_types: config?.search?.media_types ?? [],
   },
-  media_browser: !!config?.media_browser ? (Array.isArray(config.media_browser) ? config.media_browser : [{entity_id: config.media_browser.entity_id ?? config.entity_id}]) : null,
+  media_browser: !!config?.media_browser
+    ? Array.isArray(config.media_browser)
+      ? config.media_browser
+      : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
+    : null,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],

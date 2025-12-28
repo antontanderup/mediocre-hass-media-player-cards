@@ -37,7 +37,10 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(
     return (
       <div css={styles.root} style={{ maxHeight: height }}>
         <MediaBrowser
-          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(media_browser, entity_id)}
+          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
+            media_browser,
+            entity_id
+          )}
           horizontalPadding={16}
           renderHeader={renderHeader}
           maxHeight={height}

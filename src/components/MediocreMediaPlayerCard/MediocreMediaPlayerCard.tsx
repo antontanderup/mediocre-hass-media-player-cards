@@ -108,7 +108,8 @@ export const MediocreMediaPlayerCard = ({
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
   const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
   const hasSearch = (hasMaSearch || search?.enabled) && !isEmbeddedInMultiCard;
-  const hasMediaBrowser = getHasMediaBrowser(media_browser) && !isEmbeddedInMultiCard;
+  const hasMediaBrowser =
+    getHasMediaBrowser(media_browser) && !isEmbeddedInMultiCard;
 
   const [showGrouping, setShowGrouping] = useState(false);
   const [showCustomButtons, setShowCustomButtons] = useState(

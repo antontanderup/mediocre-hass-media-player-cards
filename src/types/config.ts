@@ -21,15 +21,17 @@ export const mediaPlayerConfigEntity = type({
 export const mediaPlayerConfigEntityArray = mediaPlayerConfigEntity.array();
 
 const mediaBrowserEntry = type({
-    "name?": "string | null",
-    "entity_id": type("string")
-  });
+  "name?": "string | null",
+  entity_id: type("string"),
+});
 const mediaBrowserLegacyEntry = type({
-    "enabled?": "boolean | null", // Enables media browser functionality
-    "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
-  });
+  "enabled?": "boolean | null", // Enables media browser functionality
+  "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
+});
 
-const mediaBrowser = mediaBrowserLegacyEntry.or(mediaBrowserEntry.array()).or("null");
+const mediaBrowser = mediaBrowserLegacyEntry
+  .or(mediaBrowserEntry.array())
+  .or("null");
 
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
@@ -95,7 +97,7 @@ export const MediocreMultiMediaPlayer = type({
     "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
     "media_types?": searchMediaTypeSchema.array(),
   },
-"media_browser?": mediaBrowser,
+  "media_browser?": mediaBrowser,
 });
 
 export const MediocreMultiMediaPlayerCardConfigSchema = type({
