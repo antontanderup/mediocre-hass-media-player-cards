@@ -6,6 +6,7 @@ import type {
 import { IconButton, useHass, VolumeSlider } from "@components";
 import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
+import { theme } from "@constants";
 
 const styles = {
   speakersTable: css({
@@ -18,6 +19,7 @@ const styles = {
     height: "32px",
   }),
   nameCell: css({
+    color: theme.colors.onCard,
     paddingRight: "8px",
     fontSize: "14px",
     whiteSpace: "nowrap",
