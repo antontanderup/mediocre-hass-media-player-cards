@@ -443,6 +443,7 @@ export const MediaBrowser = ({
                           renderTrigger={triggerProps => (
                             <Chip
                               icon="mdi:import"
+                              size="small"
                               css={styles.mediaBrowserEntrySelector}
                               {...triggerProps}
                             >
