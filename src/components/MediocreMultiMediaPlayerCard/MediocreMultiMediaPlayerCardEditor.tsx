@@ -53,19 +53,33 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     [rootElement]
   );
 
-  const form = useForm({
-    defaultValues: config
-      ? config
-      : {
+  const getDefaultValuesFromConfig = useCallback((
+    config?: MediocreMultiMediaPlayerCardConfig
+  ): MediocreMultiMediaPlayerCardConfig => {
+    if (!config) {
+      return {
           type: "custom:mediocre-multi-media-player-card",
           entity_id: "",
           mode: "card",
           use_art_colors: true,
           media_players: [],
-          speaker_group: {
-            entities: [],
-          },
-        },
+        }
+    }
+    return {
+          ...config,
+          media_players: config.media_players.map(mp => ({
+            ...mp,
+            media_browser: (mp?.media_browser
+              ? Array.isArray(mp.media_browser)
+                ? mp.media_browser
+                : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }] 
+              : [])
+          })),
+        }
+  }, []);
+
+  const form = useForm({
+    defaultValues: getDefaultValuesFromConfig(config),
     validators: {
       onChange: MediocreMultiMediaPlayerCardConfigSchema,
     },
