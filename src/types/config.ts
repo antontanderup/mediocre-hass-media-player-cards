@@ -29,9 +29,9 @@ const mediaBrowserLegacyEntry = type({
   "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
 });
 
-const mediaBrowser = mediaBrowserLegacyEntry
-  .or(mediaBrowserEntry.array())
-  .or("null");
+const mediaBrowser = type("null")
+  .or(mediaBrowserLegacyEntry)
+  .or(mediaBrowserEntry.array());
 
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
@@ -129,3 +129,4 @@ export type MediocreMultiMediaPlayer = typeof MediocreMultiMediaPlayer.infer;
 export type MediaPlayerConfigEntity = typeof mediaPlayerConfigEntity.infer;
 export type MediaBrowserConfig = typeof mediaBrowser.infer;
 export type MediaBrowserEntry = typeof mediaBrowserEntry.infer;
+export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;

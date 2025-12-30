@@ -19,7 +19,7 @@ import {
   SubForm,
 } from "@components";
 import { css } from "@emotion/react";
-import { FC } from "preact/compat";
+import { FC, Fragment } from "preact/compat";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import {
   getDefaultValuesFromConfig,
@@ -383,6 +383,96 @@ export const MediocreMediaPlayerCardEditor: FC<
                 field.handleChange(value ?? []);
               }}
             />
+          )}
+        </form.Field>
+      </SubForm>
+      <SubForm
+        title="Media Browser (optional)"
+        error={getSubformError("media_browser")}
+      >
+        <form.Field name="media_browser">
+          {mediaBrowserField => (
+            <Fragment>
+              {Array.isArray(mediaBrowserField.state.value) &&
+                mediaBrowserField.state.value?.map(
+                  (mediaBrowserEntry, index) => {
+                    return (
+                      <SubForm
+                        title={
+                          mediaBrowserEntry.name ??
+                          mediaBrowserEntry.entity_id ??
+                          `Entry ${index}`
+                        }
+                        error={getSubformError(`media_browser[${index}]`)}
+                        buttons={[
+                          {
+                            icon: "mdi:delete",
+                            onClick: () => mediaBrowserField.removeValue(index),
+                          },
+                          {
+                            icon: "mdi:arrow-up",
+                            onClick: () => {
+                              mediaBrowserField.moveValue(index, index - 1);
+                            },
+                          },
+                          {
+                            icon: "mdi:arrow-down",
+                            onClick: () => {
+                              mediaBrowserField.moveValue(index, index + 1);
+                            },
+                          },
+                        ]}
+                        key={index}
+                      >
+                        <FormGroup>
+                          <form.Field name={`media_browser[${index}].name`}>
+                            {field => (
+                              <InputGroup>
+                                <TextInput
+                                  value={field.state.value ?? ""}
+                                  onChange={value =>
+                                    field.handleChange(value ?? "")
+                                  }
+                                  hass={hass}
+                                  label={"Name"}
+                                  error={getFieldError(field)}
+                                />
+                              </InputGroup>
+                            )}
+                          </form.Field>
+                          <form.Field
+                            name={`media_browser[${index}].entity_id`}
+                          >
+                            {field => (
+                              <EntityPicker
+                                hass={hass}
+                                value={field.state.value ?? ""}
+                                onChange={value => {
+                                  field.handleChange(value ?? null);
+                                }}
+                                label="Media Browser Entity ID"
+                                error={getFieldError(field)}
+                                domains={["media_player"]}
+                              />
+                            )}
+                          </form.Field>
+                        </FormGroup>
+                      </SubForm>
+                    );
+                  }
+                )}
+              <EntityPicker
+                hass={hass}
+                value={""}
+                onChange={value => {
+                  mediaBrowserField.pushValue({
+                    entity_id: value ?? "",
+                  });
+                }}
+                label="Add Media Browser"
+                domains={["media_player"]}
+              />
+            </Fragment>
           )}
         </form.Field>
       </SubForm>
