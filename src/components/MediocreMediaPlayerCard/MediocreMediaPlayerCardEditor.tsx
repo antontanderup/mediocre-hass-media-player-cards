@@ -465,8 +465,11 @@ export const MediocreMediaPlayerCardEditor: FC<
                 hass={hass}
                 value={""}
                 onChange={value => {
+                  if (!value) return;
                   mediaBrowserField.pushValue({
-                    entity_id: value ?? "",
+                    entity_id: value,
+                    name:
+                      hass.states[value]?.attributes.friendly_name ?? undefined,
                   });
                 }}
                 label="Add Media Browser"
@@ -475,46 +478,6 @@ export const MediocreMediaPlayerCardEditor: FC<
             </Fragment>
           )}
         </form.Field>
-      </SubForm>
-
-      <SubForm
-        title="Media Browser (optional)"
-        error={getSubformError("media_browser")}
-      >
-        <FormGroup>
-          <form.Field name="media_browser.enabled">
-            {field => (
-              <ToggleContainer>
-                <Toggle
-                  type="checkbox"
-                  id="media_browser.enabled"
-                  checked={field.state.value ?? false}
-                  onChange={e =>
-                    field.handleChange((e.target as HTMLInputElement).checked)
-                  }
-                />
-                <ToggleLabel htmlFor="media_browser.enabled">
-                  Enable Media Browser
-                </ToggleLabel>
-              </ToggleContainer>
-            )}
-          </form.Field>
-
-          <form.Field name="media_browser.entity_id">
-            {field => (
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Media Browser target (Optional, if not set, will use the main entity_id)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            )}
-          </form.Field>
-        </FormGroup>
       </SubForm>
 
       <SubForm
