@@ -26,6 +26,7 @@ import {
   getSimpleConfigFromFormValues,
 } from "@utils/cardConfigUtils";
 import { useAppForm } from "@components/Form/hooks/useAppForm";
+import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -295,96 +296,11 @@ export const MediocreMediaPlayerCardEditor: FC<
         title="Media Browser (optional)"
         error={getSubformError("media_browser")}
       >
-        <form.Field name="media_browser">
-          {mediaBrowserField => (
-            <Fragment>
-              {Array.isArray(mediaBrowserField.state.value) &&
-                mediaBrowserField.state.value?.map(
-                  (mediaBrowserEntry, index) => {
-                    return (
-                      <SubForm
-                        title={
-                          mediaBrowserEntry.name ??
-                          mediaBrowserEntry.entity_id ??
-                          `Entry ${index}`
-                        }
-                        error={getSubformError(`media_browser[${index}]`)}
-                        buttons={[
-                          {
-                            icon: "mdi:delete",
-                            onClick: () => mediaBrowserField.removeValue(index),
-                          },
-                          {
-                            icon: "mdi:arrow-up",
-                            onClick: () => {
-                              mediaBrowserField.moveValue(index, index - 1);
-                            },
-                          },
-                          {
-                            icon: "mdi:arrow-down",
-                            onClick: () => {
-                              mediaBrowserField.moveValue(index, index + 1);
-                            },
-                          },
-                        ]}
-                        key={index}
-                      >
-                        <FormGroup>
-                          <form.Field name={`media_browser[${index}].name`}>
-                            {field => (
-                              <InputGroup>
-                                <TextInput
-                                  value={field.state.value ?? ""}
-                                  onChange={value =>
-                                    field.handleChange(value ?? "")
-                                  }
-                                  hass={hass}
-                                  label={"Name"}
-                                  error={getFieldError(field)}
-                                />
-                              </InputGroup>
-                            )}
-                          </form.Field>
-                          <form.Field
-                            name={`media_browser[${index}].entity_id`}
-                          >
-                            {field => (
-                              <EntityPicker
-                                hass={hass}
-                                value={field.state.value ?? ""}
-                                onChange={value => {
-                                  field.handleChange(value ?? null);
-                                }}
-                                label="Media Browser Entity ID"
-                                error={getFieldError(field)}
-                                domains={["media_player"]}
-                              />
-                            )}
-                          </form.Field>
-                        </FormGroup>
-                      </SubForm>
-                    );
-                  }
-                )}
-              <EntityPicker
-                hass={hass}
-                value={""}
-                onChange={value => {
-                  if (!value) return;
-                  mediaBrowserField.pushValue({
-                    entity_id: value,
-                    name:
-                      hass.states[value]?.attributes.friendly_name ?? undefined,
-                  });
-                }}
-                label="Add Media Browser"
-                domains={["media_player"]}
-              />
-            </Fragment>
-          )}
-        </form.Field>
+        <FieldGroupMediaBrowser
+          form={form}
+          fields={{ media_browser: "media_browser" as never }} // todo this casting is stupid
+        />
       </SubForm>
-
       <SubForm
         title="Custom Buttons (optional)"
         error={getSubformError("custom_buttons")}

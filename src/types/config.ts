@@ -34,10 +34,9 @@ const mediaBrowser = type("null")
   .or(mediaBrowserEntry.array());
 
 const customButton = type({
-    icon: "string > 0",
-    name: "string > 0",
-  })
-    .and(interactionConfigSchema)
+  icon: "string > 0",
+  name: "string > 0",
+}).and(interactionConfigSchema);
 
 const customButtons = customButton.array();
 
