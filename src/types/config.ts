@@ -33,6 +33,14 @@ const mediaBrowser = type("null")
   .or(mediaBrowserLegacyEntry)
   .or(mediaBrowserEntry.array());
 
+const customButton = type({
+    icon: "string > 0",
+    name: "string > 0",
+  })
+    .and(interactionConfigSchema)
+
+const customButtons = customButton.array();
+
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
   "name?": "string | null",
@@ -43,12 +51,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
     "entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
     entities: mediaPlayerConfigEntityArray, // entity_ids of the speakers that can be grouped with the main speaker
   },
-  "custom_buttons?": type({
-    icon: "string > 0",
-    name: "string > 0",
-  })
-    .and(interactionConfigSchema)
-    .array(),
+  "custom_buttons?": customButtons,
   "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
   "search?": {
@@ -80,12 +83,7 @@ export const MediocreMassiveMediaPlayerCardConfigSchema =
 
 export const MediocreMultiMediaPlayer = type({
   entity_id: "string",
-  "custom_buttons?": type({
-    icon: "string > 0",
-    name: "string > 0",
-  })
-    .and(interactionConfigSchema)
-    .array(),
+  "custom_buttons?": customButtons,
   "name?": "string | null",
   "speaker_group_entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
   "can_be_grouped?": "boolean | null",
@@ -130,3 +128,5 @@ export type MediaPlayerConfigEntity = typeof mediaPlayerConfigEntity.infer;
 export type MediaBrowserConfig = typeof mediaBrowser.infer;
 export type MediaBrowserEntry = typeof mediaBrowserEntry.infer;
 export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;
+export type CustomButton = typeof customButton.infer;
+export type CustomButtons = typeof customButtons.infer;

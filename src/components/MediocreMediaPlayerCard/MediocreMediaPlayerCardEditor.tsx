@@ -158,41 +158,14 @@ export const MediocreMediaPlayerCardEditor: FC<
       <FormGroup
         css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
       >
-        <form.Field name="use_art_colors">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="use_art_colors"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="use_art_colors">
-                Use album art colors
-              </ToggleLabel>
-            </ToggleContainer>
-          )}
-        </form.Field>
-
-        <form.Field name="tap_opens_popup">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="tap_opens_popup"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange((e.target as HTMLInputElement).checked)
-                }
-              />
-              <ToggleLabel htmlFor="tap_opens_popup">
-                Tap opens popup.
-              </ToggleLabel>
-            </ToggleContainer>
-          )}
-        </form.Field>
+        <form.AppField
+          name="use_art_colors"
+          children={field => <field.Toggle label="Use album art colors." />}
+        />
+        <form.AppField
+          name="tap_opens_popup"
+          children={field => <field.Toggle label="Tap opens popup." />}
+        />
       </FormGroup>
 
       <SubForm title="Interactions" error={getSubformError("action")}>
@@ -205,15 +178,10 @@ export const MediocreMediaPlayerCardEditor: FC<
             </>
           )}
         </form.Field>
-        <form.Field name="action">
-          {field => (
-            <InteractionsPicker
-              hass={hass}
-              value={field.state.value}
-              onChange={value => field.handleChange(value ?? {})}
-            />
-          )}
-        </form.Field>
+        <form.AppField
+          name="action"
+          children={field => <field.InteractionsPicker />}
+        />
       </SubForm>
 
       <SubForm
@@ -281,47 +249,21 @@ export const MediocreMediaPlayerCardEditor: FC<
           )}
         </form.Field>
         <FormGroup>
-          <form.Field name="search.enabled">
-            {field => (
-              <ToggleContainer>
-                <Toggle
-                  type="checkbox"
-                  id="search.enabled"
-                  checked={field.state.value ?? false}
-                  onChange={e =>
-                    field.handleChange((e.target as HTMLInputElement).checked)
-                  }
-                />
-                <ToggleLabel htmlFor="search.enabled">
-                  Enable Search
-                </ToggleLabel>
-              </ToggleContainer>
-            )}
-          </form.Field>
+          <form.AppField
+            name="search.enabled"
+            children={field => <field.Toggle label="Enable Search" />}
+          />
 
           <form.Field name="search.enabled">
             {enabledField => (
               <>
                 {enabledField.state.value && (
-                  <form.Field name="search.show_favorites">
-                    {field => (
-                      <ToggleContainer>
-                        <Toggle
-                          type="checkbox"
-                          id="search.show_favorites"
-                          checked={field.state.value ?? false}
-                          onChange={e =>
-                            field.handleChange(
-                              (e.target as HTMLInputElement).checked
-                            )
-                          }
-                        />
-                        <ToggleLabel htmlFor="search.show_favorites">
-                          Show Favorites when not searching
-                        </ToggleLabel>
-                      </ToggleContainer>
+                  <form.AppField
+                    name="search.show_favorites"
+                    children={field => (
+                      <field.Toggle label="Show Favorites when not searching" />
                     )}
-                  </form.Field>
+                  />
                 )}
               </>
             )}
@@ -534,108 +476,40 @@ export const MediocreMediaPlayerCardEditor: FC<
         title="Additional options (optional)"
         error={getSubformError("options")}
       >
-        <form.Field name="options.always_show_power_button">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.always_show_power_button"
-                checked={field.state.value ?? false}
-                onChange={e =>
-                  field.handleChange((e.target as HTMLInputElement).checked)
-                }
-              />
-              <ToggleLabel htmlFor="options.always_show_power_button">
-                Always show power button
-              </ToggleLabel>
-            </ToggleContainer>
+        <form.AppField
+          name="options.always_show_power_button"
+          children={field => <field.Toggle label="Always show power button." />}
+        />
+        <form.AppField
+          name="options.always_show_custom_buttons"
+          children={field => (
+            <field.Toggle label="Always show custom buttons panel below card" />
           )}
-        </form.Field>
-        <form.Field name="options.always_show_custom_buttons">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.always_show_custom_buttons"
-                checked={field.state.value ?? false}
-                onChange={e =>
-                  field.handleChange((e.target as HTMLInputElement).checked)
-                }
-              />
-              <ToggleLabel htmlFor="options.always_show_custom_buttons">
-                Always show custom buttons panel below card
-              </ToggleLabel>
-            </ToggleContainer>
+        />
+        <form.AppField
+          name="options.hide_when_off"
+          children={field => (
+            <field.Toggle label="Hide when media player is off" />
           )}
-        </form.Field>
-        <form.Field name="options.hide_when_off">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.hide_when_off"
-                checked={field.state.value ?? false}
-                onChange={e =>
-                  field.handleChange((e.target as HTMLInputElement).checked)
-                }
-              />
-              <ToggleLabel htmlFor="options.hide_when_off">
-                Hide when media player is off
-              </ToggleLabel>
-            </ToggleContainer>
+        />
+        <form.AppField
+          name="options.hide_when_group_child"
+          children={field => (
+            <field.Toggle label="Hide when media player is a group child" />
           )}
-        </form.Field>
-        <form.Field name="options.hide_when_group_child">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.hide_when_group_child"
-                checked={field.state.value ?? false}
-                onChange={e =>
-                  field.handleChange((e.target as HTMLInputElement).checked)
-                }
-              />
-              <ToggleLabel htmlFor="options.hide_when_group_child">
-                Hide when media player is a group child
-              </ToggleLabel>
-            </ToggleContainer>
+        />
+        <form.AppField
+          name="options.show_volume_step_buttons"
+          children={field => (
+            <field.Toggle label="Show volume step buttons + - on volume sliders" />
           )}
-        </form.Field>
-
-        <form.Field name={"options.show_volume_step_buttons"}>
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.show_volume_step_buttons"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.show_volume_step_buttons">
-                Show volume step buttons + - on volume sliders
-              </ToggleLabel>
-            </ToggleContainer>
+        />
+        <form.AppField
+          name="options.use_volume_up_down_for_step_buttons"
+          children={field => (
+            <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
           )}
-        </form.Field>
-        <form.Field name={"options.use_volume_up_down_for_step_buttons"}>
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.use_volume_up_down_for_step_buttons"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.use_volume_up_down_for_step_buttons">
-                Use volume_up and volume_down services for step buttons (breaks
-                volume sync when step buttons are used)
-              </ToggleLabel>
-            </ToggleContainer>
-          )}
-        </form.Field>
+        />
       </SubForm>
     </form>
   );

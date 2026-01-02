@@ -1,6 +1,8 @@
 import { createFormHookContexts, createFormHook } from '@tanstack/react-form'
 import { EntityPicker } from '../components/EntityPicker'
 import { EntitiesPicker } from '../components/EntitiesPicker'
+import { Toggle } from '../components/Toggle'
+import { InteractionsPicker } from '../components/InteractionsPicker'
 
 // export useFieldContext for use in your custom components
 export const { fieldContext, formContext, useFieldContext } =
@@ -12,7 +14,9 @@ export const { useAppForm } = createFormHook({
   // We'll learn more about these options later
   fieldComponents: {
     EntityPicker,
-    EntitiesPicker
+    EntitiesPicker,
+    InteractionsPicker,
+    Toggle,
   },
   formComponents: {},
 })
