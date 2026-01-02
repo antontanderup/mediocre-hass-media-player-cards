@@ -33,6 +33,13 @@ const styles = {
       pointerEvents: "none",
     },
   }),
+  rootSmall: css({
+    height: "24px",
+    fontSize: "12px",
+    lineHeight: "24px",
+    padding: "0 8px",
+    borderRadius: "12px",
+  }),
   rootLoading: css({
     opacity: 0.8,
   }),
@@ -42,10 +49,21 @@ export type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "ref"> & {
   loading?: boolean;
   icon?: string;
   iconPosition?: "left" | "right";
+  size?: "small" | "medium";
 };
 
 export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
-  ({ loading, icon, iconPosition = "left", children, ...buttonProps }, ref) => {
+  (
+    {
+      loading,
+      icon,
+      iconPosition = "left",
+      size = "medium",
+      children,
+      ...buttonProps
+    },
+    ref
+  ) => {
     const renderIcon = () => {
       if (loading) {
         return <Spinner size="x-small" />;
@@ -57,7 +75,11 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
 
     return (
       <button
-        css={[styles.root, loading && styles.rootLoading]}
+        css={[
+          styles.root,
+          size === "small" && styles.rootSmall,
+          loading && styles.rootLoading,
+        ]}
         {...buttonProps}
         ref={ref}
       >

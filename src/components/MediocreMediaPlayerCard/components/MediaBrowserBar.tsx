@@ -4,6 +4,7 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import { MediaBrowser } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { getHasMediaBrowser, getHasMediaBrowserEntryArray } from "@utils";
 
 const styles = {
   root: css({
@@ -19,14 +20,17 @@ export const MediaBrowserBar = () => {
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { media_browser, entity_id } = config;
 
-  if (!media_browser?.enabled) {
+  if (getHasMediaBrowser(media_browser) === false) {
     return null;
   }
 
   return (
     <div css={styles.root}>
       <MediaBrowser
-        entity_id={media_browser.entity_id ?? entity_id}
+        mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
+          media_browser,
+          entity_id
+        )}
         horizontalPadding={12}
       />
     </div>
