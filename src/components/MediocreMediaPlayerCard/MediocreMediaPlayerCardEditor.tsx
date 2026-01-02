@@ -1,25 +1,14 @@
 import { HomeAssistant, MediocreMediaPlayerCardConfigSchema } from "@types";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { useCallback, useEffect } from "preact/hooks";
-import { useForm, useStore } from "@tanstack/react-form";
+import { useStore, ValidationErrorMap } from "@tanstack/react-form";
 import {
-  Button,
-  ButtonsContainer,
-  DeleteButton,
-  EntitiesPicker,
-  EntityPicker,
   FormGroup,
-  InputGroup,
-  InteractionsPicker,
   Label,
-  TextInput,
-  Toggle,
-  ToggleContainer,
-  ToggleLabel,
   SubForm,
 } from "@components";
 import { css } from "@emotion/react";
-import { FC, Fragment } from "preact/compat";
+import { FC } from "preact/compat";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import {
   getDefaultValuesFromConfig,
@@ -27,6 +16,7 @@ import {
 } from "@utils/cardConfigUtils";
 import { useAppForm } from "@components/Form/hooks/useAppForm";
 import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
+import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -66,6 +56,7 @@ export const MediocreMediaPlayerCardEditor: FC<
             JSON.stringify(config) !==
             JSON.stringify(getSimpleConfigFromFormValues(simpleConfig))
           ) {
+            console.log("Updating config", simpleConfig);
             updateConfig(simpleConfig);
           }
         } else {
@@ -86,39 +77,6 @@ export const MediocreMediaPlayerCardEditor: FC<
     [formErrorMap]
   );
 
-  const addCustomButton = useCallback(() => {
-    const currentButtons = form.getFieldValue("custom_buttons") || [];
-    const newButtons = [
-      ...currentButtons,
-      {
-        icon: "mdi:paper-roll",
-        name: "New Button",
-        tap_action: { action: "toggle" as const },
-      },
-    ];
-
-    const newConfig = {
-      ...config,
-      custom_buttons: newButtons,
-    };
-    updateConfig(newConfig);
-    form.setFieldValue("custom_buttons", newButtons);
-  }, [config, form, updateConfig]);
-
-  const removeCustomButton = useCallback(
-    (index: number) => {
-      const newButtons = [...(form.getFieldValue("custom_buttons") || [])];
-      newButtons.splice(index, 1);
-
-      const newConfig = {
-        ...config,
-        custom_buttons: newButtons,
-      };
-      updateConfig(newConfig);
-      form.setFieldValue("custom_buttons", newButtons);
-    },
-    [config, form, updateConfig]
-  );
 
   // Reset form when config changes externally
   useEffect(() => {
@@ -305,88 +263,11 @@ export const MediocreMediaPlayerCardEditor: FC<
         title="Custom Buttons (optional)"
         error={getSubformError("custom_buttons")}
       >
-        <ButtonsContainer>
-          <form.Field name="custom_buttons">
-            {field =>
-              field.state.value?.map((button, index) => {
-                return (
-                  <SubForm
-                    title={`Button ${index} - ${button.name}`}
-                    error={getSubformError(`custom_buttons[${index}]`)}
-                    key={index}
-                  >
-                    <FormGroup>
-                      <form.Field name={`custom_buttons[${index}].name`}>
-                        {field => (
-                          <InputGroup>
-                            <TextInput
-                              value={field.state.value ?? ""}
-                              onChange={value =>
-                                field.handleChange(value ?? "")
-                              }
-                              hass={hass}
-                              label={"Name"}
-                              error={getFieldError(field)}
-                            />
-                          </InputGroup>
-                        )}
-                      </form.Field>
-
-                      <form.Field name={`custom_buttons[${index}].icon`}>
-                        {field => (
-                          <InputGroup>
-                            <TextInput
-                              value={field.state.value ?? ""}
-                              onChange={value =>
-                                field.handleChange(value ?? "")
-                              }
-                              hass={hass}
-                              isIconInput
-                              label={"Icon"}
-                              error={getFieldError(field)}
-                            />
-                          </InputGroup>
-                        )}
-                      </form.Field>
-                      <Label>Interactions</Label>
-                      <form.Field name={`custom_buttons[${index}]`}>
-                        {field => {
-                          const value = field.state.value ?? {
-                            icon: "",
-                            name: "",
-                          };
-                          const { name, icon, ...interactions } = value;
-                          return (
-                            <InteractionsPicker
-                              hass={hass}
-                              value={interactions}
-                              onChange={newValue => {
-                                field.handleChange({
-                                  name,
-                                  icon,
-                                  ...newValue,
-                                });
-                              }}
-                            />
-                          );
-                        }}
-                      </form.Field>
-                    </FormGroup>
-                    <DeleteButton
-                      type="button"
-                      onClick={() => removeCustomButton(index)}
-                    >
-                      Remove Button
-                    </DeleteButton>
-                  </SubForm>
-                );
-              })
-            }
-          </form.Field>
-          <Button type="button" onClick={addCustomButton}>
-            Add Custom Button
-          </Button>
-        </ButtonsContainer>
+        <FieldGroupCustomButtons
+          form={form}
+          formErrors={formErrorMap as ValidationErrorMap<unknown>}
+          fields={{ custom_buttons: "custom_buttons" as never }} // todo this casting is stupid
+        />
       </SubForm>
       <SubForm
         title="Additional options (optional)"
