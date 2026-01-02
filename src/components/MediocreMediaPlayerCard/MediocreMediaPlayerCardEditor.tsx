@@ -25,6 +25,7 @@ import {
   getDefaultValuesFromConfig,
   getSimpleConfigFromFormValues,
 } from "@utils/cardConfigUtils";
+import { useAppForm } from "@components/Form/hooks/useAppForm";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -48,7 +49,7 @@ export const MediocreMediaPlayerCardEditor: FC<
     [rootElement]
   );
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: getDefaultValuesFromConfig(config),
     validators: {
       onChange: MediocreMediaPlayerCardConfigSchema,
@@ -143,21 +144,17 @@ export const MediocreMediaPlayerCardEditor: FC<
         form.handleSubmit();
       }}
     >
-      <form.Field name="entity_id">
-        {field => (
-          <FormGroup>
-            <EntityPicker
-              hass={hass}
-              value={field.state.value}
-              onChange={value => field.handleChange(value ?? "")}
-              label="Media Player Entity"
-              domains={["media_player"]}
-              error={getFieldError(field)}
-              required
-            />
-          </FormGroup>
+      <form.AppField
+        name="entity_id"
+        children={field => (
+          <field.EntityPicker
+            label="Media Player Entity"
+            required
+            domains={["media_player"]}
+          />
         )}
-      </form.Field>
+      />
+
       <FormGroup
         css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
       >
@@ -223,38 +220,24 @@ export const MediocreMediaPlayerCardEditor: FC<
         title="Speaker Group Configuration (optional)"
         error={getSubformError("speaker_group")}
       >
-        <form.Field name="speaker_group.entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value || ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Main Speaker Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            </FormGroup>
+        <form.AppField
+          name="speaker_group.entity_id"
+          children={field => (
+            <field.EntityPicker
+              label="Main Speaker Entity ID (Optional)"
+              domains={["media_player"]}
+            />
           )}
-        </form.Field>
-
-        <form.Field name="speaker_group.entities">
-          {field => (
-            <FormGroup>
-              <EntitiesPicker
-                hass={hass}
-                value={field.state.value ?? []}
-                onChange={value => {
-                  field.handleChange(value ?? []);
-                }}
-                label="Select Speakers (including main speaker)"
-                domains={["media_player"]}
-              />
-            </FormGroup>
+        />
+        <form.AppField
+          name="speaker_group.entities"
+          children={field => (
+            <field.EntitiesPicker
+              label="Select Speakers (including main speaker)"
+              domains={["media_player"]}
+            />
           )}
-        </form.Field>
+        />
       </SubForm>
 
       <SubForm
@@ -264,38 +247,24 @@ export const MediocreMediaPlayerCardEditor: FC<
           getSubformError("ma_favorite_button_entity_id")
         }
       >
-        <form.Field name="ma_entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Music Assistant Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            </FormGroup>
+        <form.AppField
+          name="ma_entity_id"
+          children={field => (
+            <field.EntityPicker
+              label="Music Assistant Entity ID (Optional)"
+              domains={["media_player"]}
+            />
           )}
-        </form.Field>
-        <form.Field name="ma_favorite_button_entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="MA Favorite Button Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["button"]}
-              />
-            </FormGroup>
+        />
+        <form.AppField
+          name="ma_favorite_button_entity_id"
+          children={field => (
+            <field.EntityPicker
+              label="MA Favorite Button Entity ID (Optional)"
+              domains={["button"]}
+            />
           )}
-        </form.Field>
+        />
       </SubForm>
 
       <SubForm title="Search (optional)" error={getSubformError("search")}>
@@ -357,21 +326,15 @@ export const MediocreMediaPlayerCardEditor: FC<
               </>
             )}
           </form.Field>
-
-          <form.Field name="search.entity_id">
-            {field => (
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
+          <form.AppField
+            name="search.entity_id"
+            children={field => (
+              <field.EntityPicker
                 label="Search target (Optional, if not set, will use the main entity_id)"
-                error={getFieldError(field)}
                 domains={["media_player"]}
               />
             )}
-          </form.Field>
+          />
         </FormGroup>
         <form.Field name="search.media_types">
           {field => (
