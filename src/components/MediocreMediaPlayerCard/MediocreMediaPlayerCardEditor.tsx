@@ -88,16 +88,7 @@ export const MediocreMediaPlayerCardEditor: FC<
   if (!config || !hass) return null;
 
   return (
-    <form
-      onSubmit={(e: {
-        preventDefault: () => void;
-        stopPropagation: () => void;
-      }) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-    >
+    <form.AppForm>
       <form.AppField
         name="entity_id"
         children={field => (
@@ -303,6 +294,6 @@ export const MediocreMediaPlayerCardEditor: FC<
           )}
         />
       </SubForm>
-    </form>
+    </form.AppForm>
   );
 };

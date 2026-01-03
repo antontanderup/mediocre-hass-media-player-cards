@@ -38,7 +38,6 @@ export const FieldGroupMediaBrowser = withFieldGroup({
                       mediaBrowserEntry.entity_id ??
                       `Entry ${index}`
                     }
-                    // error={getSubformError(`media_browser[${index}]`)}
                     buttons={[
                       {
                         icon: "mdi:delete",
