@@ -47,6 +47,7 @@ export const FieldGroupCustomButtons = withFieldGroup({
             {Array.isArray(customButtonsField.state.value) &&
               customButtonsField.state.value?.map(
                 (customButtonEntry, index) => {
+                  const stableKey = `${customButtonEntry.name}-${index}`;
                   return (
                     <SubForm
                       title={`Button ${index} - ${customButtonEntry.name}`}
@@ -59,17 +60,17 @@ export const FieldGroupCustomButtons = withFieldGroup({
                         {
                           icon: "mdi:arrow-up",
                           onClick: () => {
-                            customButtonsField.moveValue(index, index - 1);
+                            customButtonsField.swapValues(index, index - 1);
                           },
                         },
                         {
                           icon: "mdi:arrow-down",
                           onClick: () => {
-                            customButtonsField.moveValue(index, index + 1);
+                            customButtonsField.swapValues(index, index + 1);
                           },
                         },
                       ]}
-                      key={index}
+                      key={stableKey}
                     >
                       <FormGroup>
                         <group.Field name={`custom_buttons[${index}].name`}>

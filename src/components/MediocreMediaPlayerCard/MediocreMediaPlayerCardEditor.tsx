@@ -2,11 +2,7 @@ import { HomeAssistant, MediocreMediaPlayerCardConfigSchema } from "@types";
 import { MediocreMediaPlayerCardConfig } from "@types";
 import { useCallback, useEffect } from "preact/hooks";
 import { useStore, ValidationErrorMap } from "@tanstack/react-form";
-import {
-  FormGroup,
-  Label,
-  SubForm,
-} from "@components";
+import { FormGroup, Label, SubForm } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
@@ -76,7 +72,6 @@ export const MediocreMediaPlayerCardEditor: FC<
     },
     [formErrorMap]
   );
-
 
   // Reset form when config changes externally
   useEffect(() => {
@@ -311,17 +306,3 @@ export const MediocreMediaPlayerCardEditor: FC<
     </form>
   );
 };
-
-// Helper function to get field error message
-const getFieldError = (field: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  state: { meta: { isValid: boolean; errors: any[] } };
-}) =>
-  !field.state.meta.isValid
-    ? field.state.meta.errors
-        .map(error =>
-          typeof error === "string" ? error : error?.message || String(error)
-        )
-        .filter(Boolean)
-        .join(", ")
-    : undefined;
