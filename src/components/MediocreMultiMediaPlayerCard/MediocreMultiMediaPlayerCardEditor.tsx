@@ -8,12 +8,8 @@ import { useStore, ValidationErrorMap } from "@tanstack/react-form";
 import {
   EntityPicker,
   FormGroup,
-  Toggle,
-  ToggleLabel,
   SubForm,
   FormSelect,
-  InputGroup,
-  TextInput,
   Button,
 } from "@components";
 import { css } from "@emotion/react";
@@ -163,7 +159,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         )}
       />
       <FormGroup
-        css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
+        css={css({
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: "16px",
+        })}
       >
         <form.AppField
           name="use_art_colors"
@@ -221,25 +222,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       ]}
                     >
                       <FormGroup>
-                        <form.Field name={`media_players[${index}].name`}>
-                          {subField => (
-                            <InputGroup>
-                              <TextInput
-                                value={subField.state.value ?? ""}
-                                onChange={value => {
-                                  if (value === "") {
-                                    subField.handleChange(null);
-                                  } else {
-                                    subField.handleChange(value ?? null);
-                                  }
-                                }}
-                                hass={hass}
-                                label={"Name (optional)"}
-                                error={getFieldError(subField)}
-                              />
-                            </InputGroup>
+                        <form.AppField
+                          name={`media_players[${index}].name`}
+                          children={subField => (
+                            <subField.Text label="Name (optional)" />
                           )}
-                        </form.Field>
+                        />
                         <form.AppField
                           name={`media_players[${index}].speaker_group_entity_id`}
                           children={subField => (
@@ -362,93 +350,31 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         </form.Field>
       </SubForm>
       <SubForm title="Advanced" error={getSubformError("height")}>
-        <form.Field name={"height"}>
-          {field => (
-            <InputGroup>
-              <TextInput
-                value={
-                  typeof field.state.value === "number"
-                    ? field.state.value.toString()
-                    : (field.state.value ?? "")
-                }
-                onChange={value => field.handleChange(value ?? "")}
-                hass={hass}
-                label={"Height"}
-                error={getFieldError(field)}
-              />
-            </InputGroup>
-          )}
-        </form.Field>
-        <form.Field name={"options.transparent_background_on_home"}>
-          {field => (
-            <div>
-              <Toggle
-                id="options.transparent_background_on_home"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.transparent_background_on_home">
-                Hide the card background on the home tab (massive player)
-              </ToggleLabel>
-            </div>
-          )}
-        </form.Field>
-        <form.Field name={"options.show_volume_step_buttons"}>
-          {field => (
-            <div>
-              <Toggle
-                id="options.show_volume_step_buttons"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.show_volume_step_buttons">
-                Show volume step buttons + - on volume sliders
-              </ToggleLabel>
-            </div>
-          )}
-        </form.Field>
-        <form.Field name={"options.use_volume_up_down_for_step_buttons"}>
-          {field => (
-            <div>
-              <Toggle
-                id="options.use_volume_up_down_for_step_buttons"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.use_volume_up_down_for_step_buttons">
-                Use volume_up and volume_down services for step buttons (breaks
-                volume sync when step buttons are used)
-              </ToggleLabel>
-            </div>
-          )}
-        </form.Field>
+        <FormGroup>
+          <form.AppField
+            name="height"
+            children={field => <field.Text label="Height" />}
+          />
+          <form.AppField
+            name="options.transparent_background_on_home"
+            children={field => (
+              <field.Toggle label="Hide the card background on the home tab (massive player)" />
+            )}
+          />
+          <form.AppField
+            name="options.show_volume_step_buttons"
+            children={field => (
+              <field.Toggle label="Show volume step buttons + - on volume sliders" />
+            )}
+          />
+          <form.AppField
+            name="options.use_volume_up_down_for_step_buttons"
+            children={field => (
+              <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
+            )}
+          />
+        </FormGroup>
       </SubForm>
     </form.AppForm>
   );
 };
-
-// Helper function to get field error message
-const getFieldError = (field: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  state: { meta: { isValid: boolean; errors: any[] } };
-}) =>
-  !field.state.meta.isValid
-    ? field.state.meta.errors
-        .map(error =>
-          typeof error === "string" ? error : error?.message || String(error)
-        )
-        .filter(Boolean)
-        .join(", ")
-    : undefined;

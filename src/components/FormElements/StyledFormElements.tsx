@@ -44,7 +44,6 @@ const styles = {
   toggleContainer: css({
     display: "flex",
     alignItems: "center",
-    marginBottom: "16px",
   }),
   toggleLabel: css({
     marginLeft: "8px",
