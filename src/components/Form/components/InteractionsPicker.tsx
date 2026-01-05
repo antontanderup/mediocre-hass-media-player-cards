@@ -1,5 +1,5 @@
 import { InteractionsPicker as InteractionsPickerComponent } from "@components/FormElements";
-import { useFieldContext } from "../hooks/useAppForm";
+import { useFieldContext } from "@components/Form";
 import { useHass } from "@components";
 import { InteractionConfig } from "@types";
 

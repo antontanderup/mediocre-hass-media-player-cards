@@ -1,5 +1,5 @@
 import { SearchConfig } from "@types";
-import { withFieldGroup } from "../hooks/useAppForm";
+import { withFieldGroup } from "@components/Form";
 import { Fragment } from "preact/jsx-runtime";
 import { FormGroup, Label } from "@components/FormElements";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";

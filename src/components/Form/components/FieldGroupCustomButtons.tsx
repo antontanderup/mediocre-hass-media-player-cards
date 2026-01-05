@@ -1,5 +1,5 @@
 import { CustomButtons } from "@types";
-import { withFieldGroup } from "../hooks/useAppForm";
+import { withFieldGroup } from "@components/Form";
 import { Fragment } from "preact/jsx-runtime";
 import { SubForm } from "@components/SubForm";
 import {
