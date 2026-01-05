@@ -5,8 +5,6 @@ import { SubForm } from "@components/SubForm";
 import {
   EntityPicker,
   FormGroup,
-  InputGroup,
-  TextInput,
 } from "@components/FormElements";
 import { useHass } from "@components/HassContext";
 
@@ -59,35 +57,16 @@ export const FieldGroupMediaBrowser = withFieldGroup({
                     key={index}
                   >
                     <FormGroup>
-                      <group.Field name={`media_browser[${index}].name`}>
-                        {field => (
-                          <InputGroup>
-                            <TextInput
-                              value={field.state.value ?? ""}
-                              onChange={value =>
-                                field.handleChange(value ?? "")
-                              }
-                              hass={hass}
-                              label={"Name"}
-                              error={field.state.meta.errors.join(", ")}
-                            />
-                          </InputGroup>
+                      <group.AppField
+                        name={`media_browser[${index}].name`}
+                        children={field => <field.Text label={"Name"} />}
+                      />
+                      <group.AppField
+                        name={`media_browser[${index}].entity_id`}
+                        children={field => (
+                          <field.EntityPicker label={"Media Browser Entity ID"} domains={["media_player"]} />
                         )}
-                      </group.Field>
-                      <group.Field name={`media_browser[${index}].entity_id`}>
-                        {field => (
-                          <EntityPicker
-                            hass={hass}
-                            value={field.state.value ?? ""}
-                            onChange={value => {
-                              field.handleChange(value ?? "");
-                            }}
-                            label="Media Browser Entity ID"
-                            error={field.state.meta.errors.join(", ")}
-                            domains={["media_player"]}
-                          />
-                        )}
-                      </group.Field>
+                      />
                     </FormGroup>
                   </SubForm>
                 );

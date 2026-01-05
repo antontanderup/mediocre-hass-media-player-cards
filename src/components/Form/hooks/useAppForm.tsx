@@ -3,6 +3,7 @@ import { EntityPicker } from "../components/EntityPicker";
 import { EntitiesPicker } from "../components/EntitiesPicker";
 import { Toggle } from "../components/Toggle";
 import { InteractionsPicker } from "../components/InteractionsPicker";
+import { Text } from "../components/Text";
 
 // export useFieldContext for use in your custom components
 export const { fieldContext, formContext, useFieldContext } =
@@ -17,6 +18,7 @@ export const { useAppForm, withFieldGroup } = createFormHook({
     EntitiesPicker,
     InteractionsPicker,
     Toggle,
+    Text,
   },
   formComponents: {},
 });

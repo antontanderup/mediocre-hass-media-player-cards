@@ -5,10 +5,8 @@ import { SubForm } from "@components/SubForm";
 import {
   Button,
   FormGroup,
-  InputGroup,
   InteractionsPicker,
   Label,
-  TextInput,
 } from "@components/FormElements";
 import { useHass } from "@components/HassContext";
 import { ValidationErrorMap } from "@tanstack/react-form";
@@ -73,38 +71,17 @@ export const FieldGroupCustomButtons = withFieldGroup({
                       key={stableKey}
                     >
                       <FormGroup>
-                        <group.Field name={`custom_buttons[${index}].name`}>
-                          {field => (
-                            <InputGroup>
-                              <TextInput
-                                value={field.state.value ?? ""}
-                                onChange={value =>
-                                  field.handleChange(value ?? "")
-                                }
-                                hass={hass}
-                                label={"Name"}
-                                error={field.state.meta.errors.join(", ")}
-                              />
-                            </InputGroup>
+                        <group.AppField
+                          name={`custom_buttons[${index}].name`}
+                          children={field => <field.Text label="Name" />}
+                        />
+                        <group.AppField
+                          name={`custom_buttons[${index}].icon`}
+                          children={field => (
+                            <field.Text label="Icon" isIconInput />
                           )}
-                        </group.Field>
+                        />
 
-                        <group.Field name={`custom_buttons[${index}].icon`}>
-                          {field => (
-                            <InputGroup>
-                              <TextInput
-                                value={field.state.value ?? ""}
-                                onChange={value =>
-                                  field.handleChange(value ?? "")
-                                }
-                                hass={hass}
-                                isIconInput
-                                label={"Icon"}
-                                error={field.state.meta.errors.join(", ")}
-                              />
-                            </InputGroup>
-                          )}
-                        </group.Field>
                         <Label>Interactions</Label>
 
                         <group.Field name={`custom_buttons[${index}]`}>
