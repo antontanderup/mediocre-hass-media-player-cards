@@ -40,6 +40,13 @@ const customButton = type({
 
 const customButtons = customButton.array();
 
+const search = type({
+    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
+    "show_favorites?": type("boolean | null").or("undefined"), // Shows favorites no search query has been entered
+    "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+    "media_types?": searchMediaTypeSchema.array(),
+  }).or("undefined");
+
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
   "name?": "string | null",
@@ -53,12 +60,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "custom_buttons?": customButtons,
   "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
-  "search?": {
-    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
-    "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
-    "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
-    "media_types?": searchMediaTypeSchema.array(),
-  },
+  "search?": search,
   "media_browser?": mediaBrowser,
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
@@ -88,12 +90,7 @@ export const MediocreMultiMediaPlayer = type({
   "can_be_grouped?": "boolean | null",
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
-  "search?": {
-    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
-    "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
-    "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
-    "media_types?": searchMediaTypeSchema.array(),
-  },
+  "search?": search,
   "media_browser?": mediaBrowser,
 });
 
@@ -129,3 +126,4 @@ export type MediaBrowserEntry = typeof mediaBrowserEntry.infer;
 export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;
 export type CustomButton = typeof customButton.infer;
 export type CustomButtons = typeof customButtons.infer;
+export type SearchConfig = typeof search.infer;

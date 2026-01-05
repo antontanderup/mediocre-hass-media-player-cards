@@ -14,6 +14,7 @@ import { useAppForm } from "@components/Form/hooks/useAppForm";
 import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
 import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
 import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
+import { FieldGroupSearch } from "@components/Form/components/FieldGroupSearch";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -171,60 +172,11 @@ export const MediocreMediaPlayerCardEditor: FC<
       </SubForm>
 
       <SubForm title="Search (optional)" error={getSubformError("search")}>
-        <form.Field name="ma_entity_id">
-          {tapField => (
-            <>
-              {(tapField.state.value?.length ?? 0) > 0 && (
-                <Label>
-                  ma_entity_id is already set. Any change in this section will
-                  not have any effect.
-                </Label>
-              )}
-            </>
-          )}
-        </form.Field>
-        <FormGroup>
-          <form.AppField
-            name="search.enabled"
-            children={field => <field.Toggle label="Enable Search" />}
-          />
-
-          <form.Field name="search.enabled">
-            {enabledField => (
-              <>
-                {enabledField.state.value && (
-                  <form.AppField
-                    name="search.show_favorites"
-                    children={field => (
-                      <field.Toggle label="Show Favorites when not searching" />
-                    )}
-                  />
-                )}
-              </>
-            )}
-          </form.Field>
-          <form.AppField
-            name="search.entity_id"
-            children={field => (
-              <field.EntityPicker
-                label="Search target (Optional, if not set, will use the main entity_id)"
-                domains={["media_player"]}
-              />
-            )}
-          />
-        </FormGroup>
-        <form.Field name="search.media_types">
-          {field => (
-            <HaSearchMediaTypesEditor
-              entityId={config.search?.entity_id ?? config.entity_id ?? ""}
-              hass={hass}
-              mediaTypes={field.state.value ?? []}
-              onChange={value => {
-                field.handleChange(value ?? []);
-              }}
-            />
-          )}
-        </form.Field>
+        <FieldGroupSearch
+          form={form}
+          fallbackEntityId={config.entity_id}
+          fields={{ search: "search", ma_entity_id: "ma_entity_id" }}
+        />
       </SubForm>
       <SubForm
         title="Media Browser (optional)"

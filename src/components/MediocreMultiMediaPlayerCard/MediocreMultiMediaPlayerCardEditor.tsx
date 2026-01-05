@@ -9,23 +9,21 @@ import {
   EntityPicker,
   FormGroup,
   Toggle,
-  ToggleContainer,
   ToggleLabel,
   SubForm,
   FormSelect,
-  Label,
   InputGroup,
   TextInput,
   Button,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
-import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import { getAllMassPlayers } from "@utils";
 import { useAppForm } from "@components/Form/hooks/useAppForm";
 import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
 import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
 import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
+import { FieldGroupSearch } from "@components/Form/components/FieldGroupSearch";
 
 export type MediocreMultiMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -270,100 +268,14 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           `media_players[${index}].search`
                         )}
                       >
-                        <FormGroup>
-                          <form.Field
-                            name={`media_players[${index}].ma_entity_id`}
-                          >
-                            {tapField => (
-                              <>
-                                {(tapField.state.value?.length ?? 0) > 0 && (
-                                  <Label>
-                                    ma_entity_id is set. Any change in this
-                                    section will not have any effect.
-                                  </Label>
-                                )}
-                              </>
-                            )}
-                          </form.Field>
-                          <form.Field
-                            name={`media_players[${index}].search.enabled`}
-                          >
-                            {subField => (
-                              <ToggleContainer>
-                                <Toggle
-                                  type="checkbox"
-                                  id={`media_players[${index}].search.enabled`}
-                                  checked={subField.state.value ?? false}
-                                  onChange={e =>
-                                    subField.handleChange(
-                                      (e.target as HTMLInputElement).checked
-                                    )
-                                  }
-                                />
-                                <ToggleLabel htmlFor="search.enabled">
-                                  Enable Search
-                                </ToggleLabel>
-                              </ToggleContainer>
-                            )}
-                          </form.Field>
-                          <form.Field
-                            name={`media_players[${index}].search.show_favorites`}
-                          >
-                            {subField => (
-                              <ToggleContainer>
-                                <Toggle
-                                  type="checkbox"
-                                  id="search.show_favorites"
-                                  checked={subField.state.value ?? false}
-                                  onChange={e =>
-                                    subField.handleChange(
-                                      (e.target as HTMLInputElement).checked
-                                    )
-                                  }
-                                />
-                                <ToggleLabel htmlFor="search.show_favorites">
-                                  Show Favorites when not searching
-                                </ToggleLabel>
-                              </ToggleContainer>
-                            )}
-                          </form.Field>
-                          <form.Field
-                            name={`media_players[${index}].search.entity_id`}
-                          >
-                            {subField => (
-                              <EntityPicker
-                                hass={hass}
-                                value={subField.state.value ?? ""}
-                                onChange={value => {
-                                  subField.handleChange(value ?? null);
-                                }}
-                                label="Search target (Optional, if not set, will use the main entity_id)"
-                                error={getFieldError(subField)}
-                                domains={["media_player"]}
-                              />
-                            )}
-                          </form.Field>
-                          <form.Field
-                            name={`media_players[${index}].search.entity_id`}
-                          >
-                            {tapField => (
-                              <form.Field
-                                name={`media_players[${index}].search.media_types`}
-                              >
-                                {subField => (
-                                  <HaSearchMediaTypesEditor
-                                    entityId={tapField.state.value ?? ""}
-                                    hass={hass}
-                                    mediaTypes={subField.state.value ?? []}
-                                    onChange={value => {
-                                      subField.handleChange(value ?? []);
-                                    }}
-                                  />
-                                )}
-                              </form.Field>
-                            )}
-                          </form.Field>
-                        </FormGroup>
+                        <FieldGroupSearch
+                          form={form}
+                          fallbackEntityId={mediaPlayer.entity_id}
+                          fields={{
+                            search: `media_players[${index}].search`,
+                            ma_entity_id: `media_players[${index}].ma_entity_id`,
+                          }}
+                        />
                       </SubForm>
                       <SubForm
                         title="Media Browser (optional)"
