@@ -41,11 +41,11 @@ const customButton = type({
 const customButtons = customButton.array();
 
 const search = type({
-    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
-    "show_favorites?": type("boolean | null").or("undefined"), // Shows favorites no search query has been entered
-    "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
-    "media_types?": searchMediaTypeSchema.array(),
-  }).or("undefined");
+  "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
+  "show_favorites?": type("boolean | null").or("undefined"), // Shows favorites no search query has been entered
+  "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+  "media_types?": searchMediaTypeSchema.array(),
+}).or("undefined");
 
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
