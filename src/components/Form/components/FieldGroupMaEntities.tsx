@@ -16,7 +16,6 @@ export const FieldGroupMaEntities = withFieldGroup({
   defaultValues,
   props: {},
   render: function Render({ group }) {
-
     return (
       <Fragment>
         <group.AppField
