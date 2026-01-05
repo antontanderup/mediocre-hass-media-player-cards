@@ -13,6 +13,7 @@ import {
 import { useAppForm } from "@components/Form/hooks/useAppForm";
 import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
 import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
+import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
 
 export type MediocreMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -160,23 +161,12 @@ export const MediocreMediaPlayerCardEditor: FC<
           getSubformError("ma_favorite_button_entity_id")
         }
       >
-        <form.AppField
-          name="ma_entity_id"
-          children={field => (
-            <field.EntityPicker
-              label="Music Assistant Entity ID (Optional)"
-              domains={["media_player"]}
-            />
-          )}
-        />
-        <form.AppField
-          name="ma_favorite_button_entity_id"
-          children={field => (
-            <field.EntityPicker
-              label="MA Favorite Button Entity ID (Optional)"
-              domains={["button"]}
-            />
-          )}
+        <FieldGroupMaEntities
+          form={form}
+          fields={{
+            ma_entity_id: "ma_entity_id",
+            ma_favorite_button_entity_id: "ma_favorite_button_entity_id",
+          }}
         />
       </SubForm>
 

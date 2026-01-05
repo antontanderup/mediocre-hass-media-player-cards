@@ -4,7 +4,7 @@ import {
   MediocreMultiMediaPlayerCardConfigSchema,
 } from "@types";
 import { useCallback, useEffect, useRef } from "preact/hooks";
-import { useForm, useStore } from "@tanstack/react-form";
+import { useStore, ValidationErrorMap } from "@tanstack/react-form";
 import {
   EntityPicker,
   FormGroup,
@@ -14,16 +14,18 @@ import {
   SubForm,
   FormSelect,
   Label,
-  ButtonsContainer,
   InputGroup,
   TextInput,
-  InteractionsPicker,
   Button,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import { getAllMassPlayers } from "@utils";
+import { useAppForm } from "@components/Form/hooks/useAppForm";
+import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
+import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
+import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
 
 export type MediocreMultiMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -81,7 +83,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     []
   );
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: getDefaultValuesFromConfig(config),
     validators: {
       onChange: MediocreMultiMediaPlayerCardConfigSchema,
@@ -143,59 +145,31 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     // Check if the external config is different from current form values
     if (JSON.stringify(currentFormValues) !== JSON.stringify(newConfigValues)) {
       // Reset the form with the new config values
-      form.reset(newConfigValues);
+      form.reset(getDefaultValuesFromConfig(newConfigValues));
     }
   }, [config, form]);
 
   if (!config || !hass) return null;
 
   return (
-    <form
-      onSubmit={(e: {
-        preventDefault: () => void;
-        stopPropagation: () => void;
-      }) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-    >
-      <form.Field name="entity_id">
-        {field => (
-          <FormGroup>
-            <EntityPicker
-              hass={hass}
-              value={field.state.value}
-              onChange={value => field.handleChange(value ?? "")}
-              label="Default Media Player (used when no media player is active)"
-              domains={["media_player"]}
-              error={getFieldError(field)}
-              required
-            />
-          </FormGroup>
+    <form.AppForm>
+      <form.AppField
+        name="entity_id"
+        children={field => (
+          <field.EntityPicker
+            label="Default Media Player (used when no media player is active)"
+            required
+            domains={["media_player"]}
+          />
         )}
-      </form.Field>
+      />
       <FormGroup
         css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
       >
-        <form.Field name="use_art_colors">
-          {field => (
-            <div>
-              <Toggle
-                id="use_art_colors"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="use_art_colors">
-                Use album art colors
-              </ToggleLabel>
-            </div>
-          )}
-        </form.Field>
+        <form.AppField
+          name="use_art_colors"
+          children={field => <field.Toggle label="Use album art colors." />}
+        />
         <form.Field name="mode">
           {field => (
             <FormSelect
@@ -236,21 +210,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       ]}
                     >
                       <FormGroup>
-                        <form.Field name={`media_players[${index}].entity_id`}>
-                          {subField => (
-                            <EntityPicker
-                              hass={hass}
-                              value={subField.state.value}
-                              onChange={value => {
-                                subField.handleChange(value ?? "");
-                              }}
-                              label="Media Player"
-                              domains={["media_player"]}
-                              error={getFieldError(subField)}
-                              required
-                            />
-                          )}
-                        </form.Field>
                         <form.Field name={`media_players[${index}].name`}>
                           {subField => (
                             <InputGroup>
@@ -270,47 +229,21 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                             </InputGroup>
                           )}
                         </form.Field>
-                        <form.Field
+                        <form.AppField
                           name={`media_players[${index}].speaker_group_entity_id`}
-                        >
-                          {subField => (
-                            <EntityPicker
-                              hass={hass}
-                              value={subField.state.value ?? ""}
-                              onChange={value => {
-                                subField.handleChange(value ?? null);
-                              }}
+                          children={subField => (
+                            <subField.EntityPicker
                               label="Group Media Player (if different from above)"
                               domains={["media_player"]}
-                              error={getFieldError(subField)}
-                              required
                             />
                           )}
-                        </form.Field>
-                        <form.Field
+                        />
+                        <form.AppField
                           name={`media_players[${index}].can_be_grouped`}
-                        >
-                          {subField => (
-                            <div>
-                              <Toggle
-                                id={`media_players[${index}].can_be_grouped`}
-                                checked={subField.state.value ?? false}
-                                onChange={e =>
-                                  subField.handleChange(
-                                    (e.target as HTMLInputElement)?.checked ??
-                                      false
-                                  )
-                                }
-                              />
-                              <ToggleLabel
-                                htmlFor={`media_players[${index}].can_be_grouped`}
-                              >
-                                Enable speaker grouping (joining) for this
-                                player
-                              </ToggleLabel>
-                            </div>
+                          children={subField => (
+                            <subField.Toggle label="Enable speaker grouping (joining) for this player" />
                           )}
-                        </form.Field>
+                        />
                       </FormGroup>
                       <SubForm
                         title="Music Assistant Integration (optional)"
@@ -323,42 +256,13 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           )
                         }
                       >
-                        <FormGroup>
-                          <form.Field
-                            name={`media_players[${index}].ma_entity_id`}
-                          >
-                            {subField => (
-                              <EntityPicker
-                                hass={hass}
-                                value={subField.state.value ?? ""}
-                                onChange={value => {
-                                  subField.handleChange(value ?? null);
-                                }}
-                                label="Music Assistant Player (if set this enables MA specific features like search and queue transfer)"
-                                domains={["media_player"]}
-                                error={getFieldError(subField)}
-                                required
-                              />
-                            )}
-                          </form.Field>
-                          <form.Field
-                            name={`media_players[${index}].ma_favorite_button_entity_id`}
-                          >
-                            {subField => (
-                              <EntityPicker
-                                hass={hass}
-                                value={subField.state.value ?? ""}
-                                onChange={value => {
-                                  subField.handleChange(value ?? null);
-                                }}
-                                label="Music Assistant Favorite Button (entity_id of the MA button to mark current song as favorite)"
-                                domains={["button"]}
-                                error={getFieldError(subField)}
-                                required
-                              />
-                            )}
-                          </form.Field>
-                        </FormGroup>
+                        <FieldGroupMaEntities
+                          form={form}
+                          fields={{
+                            ma_entity_id: `media_players[${index}].ma_entity_id`,
+                            ma_favorite_button_entity_id: `media_players[${index}].ma_favorite_button_entity_id`,
+                          }}
+                        />
                       </SubForm>
                       <SubForm
                         title="Search Configuration (optional) (not for music assistant)"
@@ -467,199 +371,31 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           `media_players[${index}].media_browser`
                         )}
                       >
-                        <FormGroup>
-                          <form.Field
-                            name={`media_players[${index}].media_browser.enabled`}
-                          >
-                            {field => (
-                              <ToggleContainer>
-                                <Toggle
-                                  type="checkbox"
-                                  id={`media_players[${index}].media_browser.enabled`}
-                                  checked={field.state.value ?? false}
-                                  onChange={e =>
-                                    field.handleChange(
-                                      (e.target as HTMLInputElement).checked
-                                    )
-                                  }
-                                />
-                                <ToggleLabel
-                                  htmlFor={`media_players[${index}].media_browser.enabled`}
-                                >
-                                  Enable Media Browser
-                                </ToggleLabel>
-                              </ToggleContainer>
-                            )}
-                          </form.Field>
-
-                          <form.Field
-                            name={`media_players[${index}].media_browser.entity_id`}
-                          >
-                            {field => (
-                              <EntityPicker
-                                hass={hass}
-                                value={field.state.value ?? ""}
-                                onChange={value => {
-                                  field.handleChange(value ?? null);
-                                }}
-                                label="Media Browser target (Optional, if not set, will use the main entity_id)"
-                                error={getFieldError(field)}
-                                domains={["media_player"]}
-                              />
-                            )}
-                          </form.Field>
-                        </FormGroup>
+                        <FieldGroupMediaBrowser
+                          form={form}
+                          fields={{
+                            media_browser:
+                              `media_players[${index}].media_browser` as never,
+                          }} // todo this casting is stupid
+                        />
                       </SubForm>
+
                       <SubForm
                         title="Custom Buttons (optional)"
                         error={getSubformError(
                           `media_players[${index}].custom_buttons`
                         )}
                       >
-                        <ButtonsContainer>
-                          <form.Field
-                            name={`media_players[${index}].custom_buttons`}
-                            mode="array"
-                          >
-                            {buttonsField => {
-                              return (
-                                <Fragment>
-                                  {buttonsField.state.value?.map(
-                                    (button, buttonIndex) => (
-                                      <SubForm
-                                        title={`Button ${index} - ${button.name}`}
-                                        error={getSubformError(
-                                          `media_players[${index}].custom_buttons[${buttonIndex}]`
-                                        )}
-                                        buttons={[
-                                          {
-                                            icon: "mdi:delete",
-                                            onClick: () =>
-                                              buttonsField.removeValue(
-                                                buttonIndex
-                                              ),
-                                          },
-                                          {
-                                            icon: "mdi:arrow-up",
-                                            onClick: () => {
-                                              buttonsField.moveValue(
-                                                buttonIndex,
-                                                buttonIndex - 1
-                                              );
-                                            },
-                                          },
-                                          {
-                                            icon: "mdi:arrow-down",
-                                            onClick: () => {
-                                              buttonsField.moveValue(
-                                                buttonIndex,
-                                                buttonIndex + 1
-                                              );
-                                            },
-                                          },
-                                        ]}
-                                        key={buttonIndex}
-                                      >
-                                        <FormGroup>
-                                          <form.Field
-                                            name={`media_players[${index}].custom_buttons[${buttonIndex}].name`}
-                                          >
-                                            {subField => (
-                                              <InputGroup>
-                                                <TextInput
-                                                  value={
-                                                    subField.state.value ?? ""
-                                                  }
-                                                  onChange={value =>
-                                                    subField.handleChange(
-                                                      value ?? ""
-                                                    )
-                                                  }
-                                                  hass={hass}
-                                                  label={"Name"}
-                                                  error={getFieldError(
-                                                    subField
-                                                  )}
-                                                />
-                                              </InputGroup>
-                                            )}
-                                          </form.Field>
-
-                                          <form.Field
-                                            name={`media_players[${index}].custom_buttons[${buttonIndex}].icon`}
-                                          >
-                                            {subField => (
-                                              <InputGroup>
-                                                <TextInput
-                                                  value={
-                                                    subField.state.value ?? ""
-                                                  }
-                                                  onChange={value =>
-                                                    subField.handleChange(
-                                                      value ?? ""
-                                                    )
-                                                  }
-                                                  hass={hass}
-                                                  isIconInput
-                                                  label={"Icon"}
-                                                  error={getFieldError(
-                                                    subField
-                                                  )}
-                                                />
-                                              </InputGroup>
-                                            )}
-                                          </form.Field>
-                                          <Label>Interactions</Label>
-                                          <form.Field
-                                            name={`media_players[${index}].custom_buttons[${buttonIndex}]`}
-                                          >
-                                            {subField => {
-                                              const value = subField.state
-                                                .value ?? {
-                                                icon: "",
-                                                name: "",
-                                              };
-                                              const {
-                                                name,
-                                                icon,
-                                                ...interactions
-                                              } = value;
-                                              return (
-                                                <InteractionsPicker
-                                                  hass={hass}
-                                                  value={interactions}
-                                                  onChange={newValue => {
-                                                    subField.handleChange({
-                                                      name,
-                                                      icon,
-                                                      ...newValue,
-                                                    });
-                                                  }}
-                                                />
-                                              );
-                                            }}
-                                          </form.Field>
-                                        </FormGroup>
-                                      </SubForm>
-                                    )
-                                  )}
-                                  <Button
-                                    type="button"
-                                    onClick={() => {
-                                      buttonsField.pushValue({
-                                        icon: "mdi:paper-roll",
-                                        name: "New Button",
-                                        tap_action: { action: "toggle" },
-                                      });
-                                    }}
-                                  >
-                                    Add Custom Button
-                                  </Button>
-                                </Fragment>
-                              );
-                            }}
-                          </form.Field>
-                        </ButtonsContainer>
+                        <FieldGroupCustomButtons
+                          form={form}
+                          formErrors={
+                            formErrorMap as ValidationErrorMap<unknown>
+                          }
+                          fields={{
+                            custom_buttons:
+                              `media_players[${index}].custom_buttons` as never,
+                          }} // todo this casting is stupid
+                        />
                       </SubForm>
                     </SubForm>
                   );
@@ -774,7 +510,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           )}
         </form.Field>
       </SubForm>
-    </form>
+    </form.AppForm>
   );
 };
 

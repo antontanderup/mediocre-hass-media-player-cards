@@ -86,8 +86,8 @@ export const MediocreMultiMediaPlayer = type({
   "name?": "string | null",
   "speaker_group_entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
   "can_be_grouped?": "boolean | null",
-  "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
-  "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
+  "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
+  "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
   "search?": {
     "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
     "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
