@@ -26,7 +26,7 @@ export const FieldGroupMediaBrowser = withFieldGroup({
     const hass = useHass();
 
     return (
-      <group.Field name="media_browser">
+      <group.Field name="media_browser" mode="array">
         {mediaBrowserField => (
           <Fragment>
             {Array.isArray(mediaBrowserField.state.value) &&

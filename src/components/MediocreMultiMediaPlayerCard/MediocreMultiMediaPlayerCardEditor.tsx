@@ -131,6 +131,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     return maPlayers.map(player => ({
       entity_id: player.entity_id,
       ma_entity_id: player.entity_id,
+      media_browser: [{ entity_id: player.entity_id, name: "Music Assistant" }],
       can_be_grouped: true,
     }));
   }, []);
@@ -204,6 +205,18 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         {
                           icon: "mdi:delete",
                           onClick: () => field.removeValue(index),
+                        },
+                        {
+                          icon: "mdi:arrow-up",
+                          onClick: () => {
+                            field.moveValue(index, index - 1);
+                          },
+                        },
+                        {
+                          icon: "mdi:arrow-down",
+                          onClick: () => {
+                            field.moveValue(index, index + 1);
+                          },
                         },
                       ]}
                     >

@@ -41,7 +41,7 @@ export const FieldGroupCustomButtons = withFieldGroup({
     );
 
     return (
-      <group.Field name="custom_buttons">
+      <group.Field name="custom_buttons" mode="array">
         {customButtonsField => (
           <Fragment>
             {Array.isArray(customButtonsField.state.value) &&
