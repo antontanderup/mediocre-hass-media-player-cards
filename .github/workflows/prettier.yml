@@ -8,13 +8,18 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   prettier:
     name: Prettier Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,3 +33,14 @@ jobs:
 
       - name: Check formatting with Prettier
         run: yarn prettier --check "**/*.{js,jsx,ts,tsx,json,css,scss}"
+
+      - name: Format if failure
+        if: failure()
+        run: yarn format
+      
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        if: failure()
+        with:
+          commit_message: 🧑‍🎨 Fix prettier issues
+          file_pattern: '. :(exclude).yarn'
+          branch: ${{ github.head_ref }}
