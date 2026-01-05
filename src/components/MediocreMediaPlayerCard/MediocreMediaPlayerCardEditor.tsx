@@ -5,7 +5,6 @@ import { useStore, ValidationErrorMap } from "@tanstack/react-form";
 import { FormGroup, Label, SubForm } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
-import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import {
   getDefaultValuesFromConfig,
   getSimpleConfigFromFormValues,
@@ -116,15 +115,14 @@ export const MediocreMediaPlayerCardEditor: FC<
       </FormGroup>
 
       <SubForm title="Interactions" error={getSubformError("action")}>
-        <form.Field name="tap_opens_popup">
-          {tapField => (
-            <>
-              {tapField.state.value && (
-                <Label>Tap action overridden by "tap opens popup".</Label>
-              )}
-            </>
-          )}
-        </form.Field>
+        <form.Field
+          name="tap_opens_popup"
+          children={tapField =>
+            tapField.state.value && (
+              <Label>Tap action overridden by "tap opens popup".</Label>
+            )
+          }
+        />
         <form.AppField
           name="action"
           children={field => <field.InteractionsPicker />}
