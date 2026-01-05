@@ -112,7 +112,6 @@ export const FieldGroupCustomButtons = withFieldGroup({
                 }
               )}
             <Button
-              type="button"
               onClick={() => {
                 customButtonsField.pushValue({
                   name: "New Button",

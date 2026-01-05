@@ -333,7 +333,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                   />
                   <span>or</span>
                   <Button
-                    type="button"
                     onClick={() => {
                       const newPlayers = getMusicAssistantPlayers();
                       newPlayers.forEach(newPlayer => {

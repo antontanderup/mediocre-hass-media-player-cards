@@ -8,7 +8,6 @@ import { useForm, useStore } from "@tanstack/react-form";
 import {
   Button,
   ButtonsContainer,
-  DeleteButton,
   EntitiesPicker,
   EntityPicker,
   FormGroup,
@@ -495,20 +494,18 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
                         }}
                       </form.Field>
                     </FormGroup>
-                    <DeleteButton
-                      type="button"
+                    <Button
+                      variant="danger"
                       onClick={() => removeCustomButton(index)}
                     >
                       Remove Button
-                    </DeleteButton>
+                    </Button>
                   </SubForm>
                 );
               })
             }
           </form.Field>
-          <Button type="button" onClick={addCustomButton}>
-            Add Custom Button
-          </Button>
+          <Button onClick={addCustomButton}>Add Custom Button</Button>
         </ButtonsContainer>
       </SubForm>
       <SubForm
