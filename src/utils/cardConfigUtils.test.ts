@@ -145,9 +145,7 @@ describe("cardConfigUtils", () => {
       // The new format converts media_browser to an array
       expect(result).toEqual({
         ...fullConfig,
-        media_browser: [
-          { entity_id: "media_player.browser" },
-        ],
+        media_browser: [{ entity_id: "media_player.browser" }],
       });
     });
   });
