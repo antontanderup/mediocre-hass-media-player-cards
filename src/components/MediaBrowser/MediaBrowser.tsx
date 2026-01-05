@@ -444,6 +444,8 @@ export const MediaBrowser = ({
                             <Chip
                               icon="mdi:import"
                               size="small"
+                              invertedColors={true}
+                              border={true}
                               css={styles.mediaBrowserEntrySelector}
                               {...triggerProps}
                             >

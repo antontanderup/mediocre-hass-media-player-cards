@@ -20,6 +20,9 @@ const styles = {
     color: `var(--mmpc-chip-foreground, ${theme.colors.card})`,
     backgroundColor: `var(--mmpc-chip-background, ${theme.colors.onCard})`,
     "--icon-primary-color": `var(--mmpc-chip-foreground, ${theme.colors.card})`,
+    borderColor: `var(--mmpc-chip-border, ${theme.colors.onCardDivider})`,
+    borderStyle: "solid",
+    borderWidth: 0,
     marginRight: "5px",
     alignItems: "center",
     gap: "4px",
@@ -32,6 +35,14 @@ const styles = {
     "& ha-icon": {
       pointerEvents: "none",
     },
+  }),
+  rootInvertedColors: css({
+    color: `var(--mmpc-chip-background, ${theme.colors.onCard})`,
+    backgroundColor: `var(--mmpc-chip-foreground, ${theme.colors.card})`,
+    "--icon-primary-color": `var(--mmpc-chip-background, ${theme.colors.onCard})`,
+  }),
+  rootWithBorder: css({
+    borderWidth: "1px",
   }),
   rootSmall: css({
     height: "24px",
@@ -50,6 +61,8 @@ export type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "ref"> & {
   icon?: string;
   iconPosition?: "left" | "right";
   size?: "small" | "medium";
+  invertedColors?: boolean;
+  border?: boolean;
 };
 
 export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
@@ -59,6 +72,8 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
       icon,
       iconPosition = "left",
       size = "medium",
+      invertedColors = false,
+      border = false,
       children,
       ...buttonProps
     },
@@ -78,6 +93,8 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
         css={[
           styles.root,
           size === "small" && styles.rootSmall,
+          invertedColors && styles.rootInvertedColors,
+          border && styles.rootWithBorder,
           loading && styles.rootLoading,
         ]}
         {...buttonProps}
