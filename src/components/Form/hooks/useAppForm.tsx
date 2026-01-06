@@ -1,11 +1,9 @@
 import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
-import {
-  Text,
-  InteractionsPicker,
-  Toggle,
-  EntitiesPicker,
-  EntityPicker,
-} from "@components/Form/components";
+import { EntityPicker } from "../components/EntityPicker";
+import { EntitiesPicker } from "../components/EntitiesPicker";
+import { Toggle } from "../components/Toggle";
+import { InteractionsPicker } from "../components/InteractionsPicker";
+import { Text } from "../components/Text";
 
 // export useFieldContext for use in your custom components
 export const { fieldContext, formContext, useFieldContext } =

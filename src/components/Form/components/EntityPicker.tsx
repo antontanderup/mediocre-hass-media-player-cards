@@ -1,5 +1,5 @@
 import { FormGroup } from "@components/FormElements";
-import { useFieldContext } from "@components/Form";
+import { useFieldContext } from "../hooks/useAppForm";
 import { EntityPicker as EntityPickerComponent } from "@components/FormElements/EntityPicker";
 import { useHass } from "@components/HassContext";
 

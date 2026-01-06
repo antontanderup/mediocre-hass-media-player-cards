@@ -3,7 +3,7 @@ import {
   TextInput,
   TextInputProps,
 } from "@components/FormElements";
-import { useFieldContext } from "@components/Form";
+import { useFieldContext } from "../hooks/useAppForm";
 import { useHass } from "@components/HassContext";
 
 export function Text({

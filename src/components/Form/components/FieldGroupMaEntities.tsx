@@ -1,4 +1,4 @@
-import { withFieldGroup } from "@components/Form";
+import { withFieldGroup } from "../hooks/useAppForm";
 import { Fragment } from "preact/jsx-runtime";
 
 type MaEntitiesFields = {

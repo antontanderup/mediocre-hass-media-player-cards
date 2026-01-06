@@ -1,5 +1,5 @@
 import { MediaBrowserConfig } from "@types";
-import { withFieldGroup } from "@components/Form";
+import { withFieldGroup } from "../hooks/useAppForm";
 import { Fragment } from "preact/jsx-runtime";
 import { SubForm } from "@components/SubForm";
 import { EntityPicker, FormGroup } from "@components/FormElements";
