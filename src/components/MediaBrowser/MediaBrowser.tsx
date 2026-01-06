@@ -5,6 +5,7 @@ import {
   MediaClass,
   MediaContentType,
   MediaGrid,
+  MediaImage,
   MediaItem,
   MediaTrack,
   searchStyles,
@@ -84,6 +85,13 @@ const styles = {
   mediaBrowserEntrySelector: css({
     marginLeft: "auto",
   }),
+  mediaItemHeaderMenuImage: css({
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginRight: 2,
+    marginLeft: -4,
+  }),
 };
 
 export type MediaBrowserItem = {
@@ -144,8 +152,9 @@ export const MediaBrowser = ({
     // Group items by media_content_type
     filteredResults.forEach(item => {
       const isTrack =
-        item.media_content_type === MediaContentType.Tracks ||
-        item.media_class === MediaClass.Track;
+        (item.media_content_type === MediaContentType.Tracks ||
+          item.media_class === MediaClass.Track) &&
+        item.media_content_type !== "favorite";
       const type = isTrack && !(history.length === 0) ? "track" : "expandable";
       if (!groupedByType[type]) {
         groupedByType[type] = [];
@@ -258,63 +267,74 @@ export const MediaBrowser = ({
     [isFetching]
   );
 
-  const getItemOverlayMenuItems = useCallback((item: MediaBrowserItem) => {
-    const menuItems: OverlayMenuItem[] = [];
-    if (item.can_play) {
-      menuItems.push({
-        label: t({
-          id: "MediaBrowser.media_item_menu.enqueue_mode.play",
-          defaultMessage: "Play",
-        }),
-        icon: getEnqueueModeIcon("play"),
-        onClick: () => playItem(item, "play"),
-      });
-      menuItems.push({
-        label: t({
-          id: "MediaBrowser.media_item_menu.enqueue_dropdown_label",
-          defaultMessage: "Enqueue",
-        }),
-        icon: getEnqueueModeIcon("next"),
-        children: [
-          {
-            label: t({
-              id: "MediaBrowser.media_item_menu.enqueue_mode.next",
-              defaultMessage: "Play Next",
-            }),
-            icon: getEnqueueModeIcon("next"),
-            onClick: () => playItem(item, "next"),
-          },
-          {
-            label: t({
-              id: "MediaBrowser.media_item_menu.enqueue_mode.replace",
-              defaultMessage: "Replace Queue",
-            }),
-            icon: getEnqueueModeIcon("replace"),
-            onClick: () => playItem(item, "replace"),
-          },
-          {
-            label: t({
-              id: "MediaBrowser.media_item_menu.enqueue_mode.add",
-              defaultMessage: "Add to Queue",
-            }),
-            icon: getEnqueueModeIcon("add"),
-            onClick: () => playItem(item, "add"),
-          },
-        ],
-      });
-    }
-    if (item.can_expand) {
-      menuItems.push({
-        label: t({
-          id: "MediaBrowser.media_item_menu.browse",
-          defaultMessage: "Browse",
-        }),
-        icon: "mdi:folder-outline",
-        onClick: () => onMediaBrowserItemClick(item),
-      });
-    }
-    return menuItems;
-  }, []);
+  const getItemOverlayMenuItems = useCallback(
+    (item: MediaBrowserItem, excludeExpandOptions = false) => {
+      const menuItems: OverlayMenuItem[] = [];
+      if (item.can_play) {
+        menuItems.push({
+          label: t({
+            id: "MediaBrowser.media_item_menu.enqueue_mode.play",
+            defaultMessage: "Play",
+          }),
+          icon: getEnqueueModeIcon("play"),
+          onClick: () => playItem(item, "play"),
+        });
+        menuItems.push({
+          label: t({
+            id: "MediaBrowser.media_item_menu.enqueue_dropdown_label",
+            defaultMessage: "Enqueue",
+          }),
+          icon: getEnqueueModeIcon("next"),
+          children: [
+            {
+              label: t({
+                id: "MediaBrowser.media_item_menu.enqueue_mode.next",
+                defaultMessage: "Play Next",
+              }),
+              icon: getEnqueueModeIcon("next"),
+              onClick: () => playItem(item, "next"),
+            },
+            {
+              label: t({
+                id: "MediaBrowser.media_item_menu.enqueue_mode.replace",
+                defaultMessage: "Replace Queue",
+              }),
+              icon: getEnqueueModeIcon("replace"),
+              onClick: () => playItem(item, "replace"),
+            },
+            {
+              label: t({
+                id: "MediaBrowser.media_item_menu.enqueue_mode.add",
+                defaultMessage: "Add to Queue",
+              }),
+              icon: getEnqueueModeIcon("add"),
+              onClick: () => playItem(item, "add"),
+            },
+          ],
+        });
+      }
+      if (item.can_expand && !excludeExpandOptions) {
+        menuItems.push({
+          label: t({
+            id: "MediaBrowser.media_item_menu.browse",
+            defaultMessage: "Browse",
+          }),
+          icon: "mdi:folder-outline",
+          onClick: () => onMediaBrowserItemClick(item),
+        });
+      }
+      return menuItems;
+    },
+    []
+  );
+
+  const currentHistoryDropdownMenuItems: OverlayMenuItem[] = useMemo(
+    () =>
+      history[history.length - 1]
+        ? getItemOverlayMenuItems(history[history.length - 1], true)
+        : [],
+    [history]
+  );
 
   const renderTrack = (item: MediaBrowserItem) => {
     if (history.length === 0) return renderFolder(item);
@@ -334,7 +354,7 @@ export const MediaBrowser = ({
   };
 
   const renderFolder = (item: MediaBrowserItem) => {
-    if (!item.can_play) {
+    if (!item.can_play || (item.can_expand && history.length === 0)) {
       return (
         <MediaItem
           key={item.media_content_id + history.length}
@@ -456,6 +476,39 @@ export const MediaBrowser = ({
                           )}
                         />
                       )}
+                    {currentHistoryDropdownMenuItems.length > 0 && (
+                      <OverlayMenu
+                        menuItems={currentHistoryDropdownMenuItems}
+                        side="bottom"
+                        align="end"
+                        renderTrigger={triggerProps => (
+                          <Chip
+                            size="small"
+                            invertedColors={true}
+                            border={true}
+                            css={styles.mediaBrowserEntrySelector}
+                            {...triggerProps}
+                          >
+                            {history[history.length - 1].thumbnail ? (
+                              <MediaImage
+                                css={styles.mediaItemHeaderMenuImage}
+                                imageUrl={history[history.length - 1].thumbnail}
+                                mdiIcon={getItemMdiIcon(
+                                  history[history.length - 1]
+                                )}
+                              />
+                            ) : (
+                              <Icon size="x-small" icon="mdi:play" />
+                            )}
+                            {t({
+                              id: "MediaBrowser.media_item_menu.enqueue_mode.play",
+                              defaultMessage: "Play",
+                            })}
+                            <Icon size="x-small" icon="mdi:chevron-down" />
+                          </Chip>
+                        )}
+                      />
+                    )}
                   </div>
                 </Fragment>
               ) : null}
