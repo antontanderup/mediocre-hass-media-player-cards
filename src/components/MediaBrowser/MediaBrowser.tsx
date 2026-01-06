@@ -277,7 +277,7 @@ export const MediaBrowser = ({
             defaultMessage: "Play",
           }),
           icon: getEnqueueModeIcon("play"),
-          onClick: () => playItem(item, "play"),
+          onClick: () => playItem(item),
         });
         menuItems.push({
           label: t({
