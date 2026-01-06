@@ -437,10 +437,14 @@ export const MediaBrowser = ({
                         css={styles.breadCrumbItem}
                         onClick={() => setHistory([])}
                       >
-                        {t({
-                          id: "MediaBrowser.breadcrumb_home",
-                          defaultMessage: "Home",
-                        })}
+                        {history.length === 0 ? (
+                          t({
+                            id: "MediaBrowser.breadcrumb_home",
+                            defaultMessage: "Home",
+                          })
+                        ) : (
+                          <Icon icon="mdi:home" size="x-small" />
+                        )}
                       </button>
                       {history.map((item, index) => (
                         <Fragment key={`breadcrumb-${index}-${item.title}`}>
