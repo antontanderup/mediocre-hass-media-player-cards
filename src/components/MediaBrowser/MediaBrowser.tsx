@@ -117,6 +117,14 @@ export const MediaBrowser = ({
     useState<MediaBrowserEntry>(mediaBrowserEntryArray[0]);
   const { entity_id } = selectedMediaBrowser;
 
+  const [mediaBrowserItems, setMediaBrowserItems] = useState<
+    MediaBrowserItem[]
+  >([]);
+  const [history, setHistory] = useState<MediaBrowserItem[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [chunkSize, setChunkSize] = useState(4);
+  const [itemFilter, setItemFilter] = useState<string>("");
+
   const selectMediaBrowserMenuItems: OverlayMenuItem[] = useMemo(() => {
     return mediaBrowserEntryArray.map(mediaBrowserEntry => ({
       label: mediaBrowserEntry.name ?? mediaBrowserEntry.entity_id,
@@ -126,14 +134,6 @@ export const MediaBrowser = ({
       },
     }));
   }, [mediaBrowserEntryArray, selectedMediaBrowser.entity_id]);
-
-  const [mediaBrowserItems, setMediaBrowserItems] = useState<
-    MediaBrowserItem[]
-  >([]);
-  const [history, setHistory] = useState<MediaBrowserItem[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [chunkSize, setChunkSize] = useState(4);
-  const [itemFilter, setItemFilter] = useState<string>("");
 
   const items: MediaBrowserItem[][] = useMemo(() => {
     const result: MediaBrowserItem[][] = [];
@@ -207,12 +207,13 @@ export const MediaBrowser = ({
         }
       } catch (error) {
         console.error("Error fetching media items:", error);
+        setMediaBrowserItems([]);
       }
       setIsFetching(false);
     };
 
     fetchMediaBrowserItems();
-  }, [entity_id, history]);
+  }, [entity_id, history, selectedMediaBrowser]);
 
   const playItem = useCallback(
     (item: MediaBrowserItem, enqueue?: HaEnqueueMode) => {
