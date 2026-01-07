@@ -4,30 +4,23 @@ import {
 } from "@types";
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { useCallback, useEffect } from "preact/hooks";
-import { useForm, useStore } from "@tanstack/react-form";
+import { useStore, ValidationErrorMap } from "@tanstack/react-form";
 import {
-  Button,
-  ButtonsContainer,
-  EntitiesPicker,
-  EntityPicker,
   FormGroup,
-  InputGroup,
-  InteractionsPicker,
-  Label,
-  TextInput,
-  Toggle,
-  ToggleContainer,
-  ToggleLabel,
   SubForm,
   FormSelect,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
-import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import {
   getDefaultValuesFromMassiveConfig,
   getSimpleConfigFromMassiveFormValues,
 } from "@utils/cardConfigUtils";
+import { useAppForm } from "@components/Form/hooks/useAppForm";
+import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
+import { FieldGroupSearch } from "@components/Form/components/FieldGroupSearch";
+import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMediaBrowser";
+import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
 
 export type MediocreMassiveMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -51,7 +44,7 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
     [rootElement]
   );
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: getDefaultValuesFromMassiveConfig(config),
     validators: {
       onChange: MediocreMassiveMediaPlayerCardConfigSchema,
@@ -87,40 +80,6 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
     [formErrorMap]
   );
 
-  const addCustomButton = useCallback(() => {
-    const currentButtons = form.getFieldValue("custom_buttons") || [];
-    const newButtons = [
-      ...currentButtons,
-      {
-        icon: "mdi:paper-roll",
-        name: "New Button",
-        tap_action: { action: "toggle" as const },
-      },
-    ];
-
-    const newConfig = {
-      ...config,
-      custom_buttons: newButtons,
-    };
-    updateConfig(newConfig);
-    form.setFieldValue("custom_buttons", newButtons);
-  }, [config, form, updateConfig]);
-
-  const removeCustomButton = useCallback(
-    (index: number) => {
-      const newButtons = [...(form.getFieldValue("custom_buttons") || [])];
-      newButtons.splice(index, 1);
-
-      const newConfig = {
-        ...config,
-        custom_buttons: newButtons,
-      };
-      updateConfig(newConfig);
-      form.setFieldValue("custom_buttons", newButtons);
-    },
-    [config, form, updateConfig]
-  );
-
   // Reset form when config changes externally
   useEffect(() => {
     const currentFormValues = form.state.values;
@@ -136,54 +95,29 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
   if (!config || !hass) return null;
 
   return (
-    <form
-      onSubmit={(e: {
-        preventDefault: () => void;
-        stopPropagation: () => void;
-      }) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-    >
-      <form.Field name="entity_id">
-        {field => (
-          <FormGroup>
-            <EntityPicker
-              hass={hass}
-              value={field.state.value}
-              onChange={value => field.handleChange(value ?? "")}
-              label="Media Player Entity"
-              domains={["media_player"]}
-              error={getFieldError(field)}
-              required
-            />
-          </FormGroup>
+    <form.AppForm>
+      <form.AppField
+        name="entity_id"
+        children={field => (
+          <field.EntityPicker
+            label="Media Player Entity"
+            required
+            domains={["media_player"]}
+          />
         )}
-      </form.Field>
+      />
       <FormGroup
-        css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
+        css={css({
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: "16px",
+        })}
       >
-        <form.Field name="use_art_colors">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="use_art_colors"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="use_art_colors">
-                Use album art colors
-              </ToggleLabel>
-            </ToggleContainer>
-          )}
-        </form.Field>
-      </FormGroup>
-      <SubForm title="Display Mode" error={getSubformError("mode")}>
+        <form.AppField
+          name="use_art_colors"
+          children={field => <field.Toggle label="Use album art colors." />}
+        />
         <form.Field name="mode">
           {field => (
             <FormSelect
@@ -201,56 +135,37 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
             />
           )}
         </form.Field>
-      </SubForm>
+      </FormGroup>
 
       <SubForm title="Interactions" error={getSubformError("action")}>
-        <form.Field name="action">
-          {field => (
-            <InteractionsPicker
-              hass={hass}
-              value={field.state.value}
-              onChange={value => field.handleChange(value ?? {})}
-            />
-          )}
-        </form.Field>
+        <form.AppField
+          name="action"
+          children={field => <field.InteractionsPicker />}
+        />
       </SubForm>
 
       <SubForm
         title="Speaker Group Configuration (optional)"
         error={getSubformError("speaker_group")}
       >
-        <form.Field name="speaker_group.entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value || ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Main Speaker Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            </FormGroup>
+        <form.AppField
+          name="speaker_group.entity_id"
+          children={field => (
+            <field.EntityPicker
+              label="Main Speaker Entity ID (Optional)"
+              domains={["media_player"]}
+            />
           )}
-        </form.Field>
-
-        <form.Field name="speaker_group.entities">
-          {field => (
-            <FormGroup>
-              <EntitiesPicker
-                hass={hass}
-                value={field.state.value ?? []}
-                onChange={value => {
-                  field.handleChange(value ?? []);
-                }}
-                label="Select Speakers (including main speaker)"
-                domains={["media_player"]}
-              />
-            </FormGroup>
+        />
+        <form.AppField
+          name="speaker_group.entities"
+          children={field => (
+            <field.EntitiesPicker
+              label="Select Speakers (including main speaker)"
+              domains={["media_player"]}
+            />
           )}
-        </form.Field>
+        />
       </SubForm>
 
       <SubForm
@@ -260,326 +175,64 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
           getSubformError("ma_favorite_button_entity_id")
         }
       >
-        <form.Field name="ma_entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Music Assistant Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            </FormGroup>
-          )}
-        </form.Field>
-        <form.Field name="ma_favorite_button_entity_id">
-          {field => (
-            <FormGroup>
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="MA Favorite Button Entity ID (Optional)"
-                error={getFieldError(field)}
-                domains={["button"]}
-              />
-            </FormGroup>
-          )}
-        </form.Field>
+        <FieldGroupMaEntities
+          form={form}
+          fields={{
+            ma_entity_id: "ma_entity_id",
+            ma_favorite_button_entity_id: "ma_favorite_button_entity_id",
+          }}
+        />
       </SubForm>
 
       <SubForm title="Search (optional)" error={getSubformError("search")}>
-        <form.Field name="ma_entity_id">
-          {tapField => (
-            <>
-              {(tapField.state.value?.length ?? 0) > 0 && (
-                <Label>
-                  ma_entity_id is already set. Any change in this section will
-                  not have any effect.
-                </Label>
-              )}
-            </>
-          )}
-        </form.Field>
-        <FormGroup>
-          <form.Field name="search.enabled">
-            {field => (
-              <ToggleContainer>
-                <Toggle
-                  type="checkbox"
-                  id="search.enabled"
-                  checked={field.state.value ?? false}
-                  onChange={e =>
-                    field.handleChange((e.target as HTMLInputElement).checked)
-                  }
-                />
-                <ToggleLabel htmlFor="search.enabled">
-                  Enable Search
-                </ToggleLabel>
-              </ToggleContainer>
-            )}
-          </form.Field>
-
-          <form.Field name="search.enabled">
-            {enabledField => (
-              <>
-                {enabledField.state.value && (
-                  <form.Field name="search.show_favorites">
-                    {field => (
-                      <ToggleContainer>
-                        <Toggle
-                          type="checkbox"
-                          id="search.show_favorites"
-                          checked={field.state.value ?? false}
-                          onChange={e =>
-                            field.handleChange(
-                              (e.target as HTMLInputElement).checked
-                            )
-                          }
-                        />
-                        <ToggleLabel htmlFor="search.show_favorites">
-                          Show Favorites when not searching
-                        </ToggleLabel>
-                      </ToggleContainer>
-                    )}
-                  </form.Field>
-                )}
-              </>
-            )}
-          </form.Field>
-
-          <form.Field name="search.entity_id">
-            {field => (
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Search target (Optional, if not set, will use the main entity_id)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            )}
-          </form.Field>
-        </FormGroup>
-        <form.Field name="search.media_types">
-          {field => (
-            <HaSearchMediaTypesEditor
-              entityId={config.search?.entity_id ?? config.entity_id ?? ""}
-              hass={hass}
-              mediaTypes={field.state.value ?? []}
-              onChange={value => {
-                field.handleChange(value ?? []);
-              }}
-            />
-          )}
-        </form.Field>
+        <FieldGroupSearch
+          form={form}
+          fallbackEntityId={config.entity_id}
+          fields={{ search: "search", ma_entity_id: "ma_entity_id" }}
+        />
       </SubForm>
 
       <SubForm
         title="Media Browser (optional)"
         error={getSubformError("media_browser")}
       >
-        <FormGroup>
-          <form.Field name="media_browser.enabled">
-            {field => (
-              <ToggleContainer>
-                <Toggle
-                  type="checkbox"
-                  id="media_browser.enabled"
-                  checked={field.state.value ?? false}
-                  onChange={e =>
-                    field.handleChange((e.target as HTMLInputElement).checked)
-                  }
-                />
-                <ToggleLabel htmlFor="media_browser.enabled">
-                  Enable Media Browser
-                </ToggleLabel>
-              </ToggleContainer>
-            )}
-          </form.Field>
-
-          <form.Field name="media_browser.entity_id">
-            {field => (
-              <EntityPicker
-                hass={hass}
-                value={field.state.value ?? ""}
-                onChange={value => {
-                  field.handleChange(value ?? null);
-                }}
-                label="Media Browser target (Optional, if not set, will use the main entity_id)"
-                error={getFieldError(field)}
-                domains={["media_player"]}
-              />
-            )}
-          </form.Field>
-        </FormGroup>
+        <FieldGroupMediaBrowser
+          form={form}
+          fields={{ media_browser: "media_browser" as never }} // todo this casting is stupid
+        />
       </SubForm>
 
       <SubForm
         title="Custom Buttons (optional)"
         error={getSubformError("custom_buttons")}
       >
-        <ButtonsContainer>
-          <form.Field name="custom_buttons">
-            {field =>
-              field.state.value?.map((button, index) => {
-                return (
-                  <SubForm
-                    title={`Button ${index} - ${button.name}`}
-                    error={getSubformError(`custom_buttons[${index}]`)}
-                    key={index}
-                  >
-                    <FormGroup>
-                      <form.Field name={`custom_buttons[${index}].name`}>
-                        {field => (
-                          <InputGroup>
-                            <TextInput
-                              value={field.state.value ?? ""}
-                              onChange={value =>
-                                field.handleChange(value ?? "")
-                              }
-                              hass={hass}
-                              label={"Name"}
-                              error={getFieldError(field)}
-                            />
-                          </InputGroup>
-                        )}
-                      </form.Field>
-
-                      <form.Field name={`custom_buttons[${index}].icon`}>
-                        {field => (
-                          <InputGroup>
-                            <TextInput
-                              value={field.state.value ?? ""}
-                              onChange={value =>
-                                field.handleChange(value ?? "")
-                              }
-                              hass={hass}
-                              isIconInput
-                              label={"Icon"}
-                              error={getFieldError(field)}
-                            />
-                          </InputGroup>
-                        )}
-                      </form.Field>
-                      <Label>Interactions</Label>
-                      <form.Field name={`custom_buttons[${index}]`}>
-                        {field => {
-                          const value = field.state.value ?? {
-                            icon: "",
-                            name: "",
-                          };
-                          const { name, icon, ...interactions } = value;
-                          return (
-                            <InteractionsPicker
-                              hass={hass}
-                              value={interactions}
-                              onChange={newValue => {
-                                field.handleChange({
-                                  name,
-                                  icon,
-                                  ...newValue,
-                                });
-                              }}
-                            />
-                          );
-                        }}
-                      </form.Field>
-                    </FormGroup>
-                    <Button
-                      variant="danger"
-                      onClick={() => removeCustomButton(index)}
-                    >
-                      Remove Button
-                    </Button>
-                  </SubForm>
-                );
-              })
-            }
-          </form.Field>
-          <Button onClick={addCustomButton}>Add Custom Button</Button>
-        </ButtonsContainer>
+        <FieldGroupCustomButtons
+          form={form}
+          formErrors={formErrorMap as ValidationErrorMap<unknown>}
+          fields={{ custom_buttons: "custom_buttons" as never }} // todo this casting is stupid
+        />
       </SubForm>
       <SubForm
         title="Additional options (optional)"
         error={getSubformError("options")}
       >
-        <form.Field name="options.always_show_power_button">
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.always_show_power_button"
-                checked={field.state.value ?? false}
-                onChange={e =>
-                  field.handleChange((e.target as HTMLInputElement).checked)
-                }
-              />
-              <ToggleLabel htmlFor="options.always_show_power_button">
-                Always show power button
-              </ToggleLabel>
-            </ToggleContainer>
+        <form.AppField
+          name="options.always_show_power_button"
+          children={field => <field.Toggle label="Always show power button." />}
+        />
+        <form.AppField
+          name="options.show_volume_step_buttons"
+          children={field => (
+            <field.Toggle label="Show volume step buttons + - on volume sliders" />
           )}
-        </form.Field>
-        <form.Field name={"options.show_volume_step_buttons"}>
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.show_volume_step_buttons"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.show_volume_step_buttons">
-                Show volume step buttons + - on volume sliders
-              </ToggleLabel>
-            </ToggleContainer>
+        />
+        <form.AppField
+          name="options.use_volume_up_down_for_step_buttons"
+          children={field => (
+            <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
           )}
-        </form.Field>
-        <form.Field name={"options.use_volume_up_down_for_step_buttons"}>
-          {field => (
-            <ToggleContainer>
-              <Toggle
-                id="options.use_volume_up_down_for_step_buttons"
-                checked={field.state.value}
-                onChange={e =>
-                  field.handleChange(
-                    (e.target as HTMLInputElement)?.checked ?? false
-                  )
-                }
-              />
-              <ToggleLabel htmlFor="options.use_volume_up_down_for_step_buttons">
-                Use volume_up and volume_down services for step buttons (breaks
-                volume sync when step buttons are used)
-              </ToggleLabel>
-            </ToggleContainer>
-          )}
-        </form.Field>
+        />
       </SubForm>
-    </form>
+    </form.AppForm>
   );
 };
-
-// Helper function to get field error message
-const getFieldError = (field: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  state: { meta: { isValid: boolean; errors: any[] } };
-}) =>
-  !field.state.meta.isValid
-    ? field.state.meta.errors
-        .map(error =>
-          typeof error === "string" ? error : error?.message || String(error)
-        )
-        .filter(Boolean)
-        .join(", ")
-    : undefined;
