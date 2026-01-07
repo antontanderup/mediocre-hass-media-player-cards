@@ -5,11 +5,7 @@ import {
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { useCallback, useEffect } from "preact/hooks";
 import { useStore, ValidationErrorMap } from "@tanstack/react-form";
-import {
-  FormGroup,
-  SubForm,
-  FormSelect,
-} from "@components";
+import { FormGroup, SubForm, FormSelect } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
 import {
