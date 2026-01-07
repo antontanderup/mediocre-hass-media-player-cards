@@ -11,6 +11,7 @@ import { useActionProps, useArtworkColors } from "@hooks";
 import { AlbumArt } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { isDarkMode } from "@utils";
 
 const styles = {
   root: css({
@@ -22,7 +23,7 @@ const styles = {
     "*": {
       boxSizing: "border-box",
     },
-    "--mmpc-surface-higher": theme.colors.card,
+    "--mmpc-surface-higher": `hsl(from ${theme.colors.card} h s calc(l ${isDarkMode() ? "+" : "-"} 5))`,
   }),
   rootPanelMode: css({
     width: "100%",
@@ -33,6 +34,7 @@ const styles = {
   }),
   rootPopupMode: css({
     "--mmpc-extra-horizontal-padding": "12px",
+    "--mmpc-surface-higher": `hsl(from ${theme.colors.dialog} h s calc(l ${isDarkMode() ? "+" : "-"}  5))`,
   }),
   rootMultiMode: css({
     width: "100%",

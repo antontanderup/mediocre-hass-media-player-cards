@@ -2685,7 +2685,7 @@ debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-decimal.js@^10.5.0:
+decimal.js@^10.4.3, decimal.js@^10.5.0:
   version "10.6.0"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.6.0.tgz#e649a43e3ab953a72192ff5983865e509f37ed9a"
   integrity sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==
@@ -5867,6 +5867,13 @@ ts-api-utils@^2.2.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-2.4.0.tgz#2690579f96d2790253bdcf1ca35d569ad78f9ad8"
   integrity sha512-3TaVTaAv2gTiMB35i3FiGJaRfwb3Pyn/j3m/bfAvGe8FB7CF6u+LMYqYlDh7reQf7UNvoTvdfAqHGmPGOSsPmA==
+
+ts-color-converter@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/ts-color-converter/-/ts-color-converter-1.0.18.tgz#111be14728ce5240413ccb36c4616f58d8d6c735"
+  integrity sha512-+M1wS8cg+6tH+ChhZr4N/72tUvN9IPhFnapSYwPI1/kXpl9WGBZH5yimm/jQXOhe0MxaXuklD1Ru5v+uNu5vqw==
+  dependencies:
+    decimal.js "^10.4.3"
 
 ts-jest@^29.4.6:
   version "29.4.6"

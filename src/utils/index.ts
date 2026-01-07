@@ -1,5 +1,6 @@
 export * from "./actions";
 export * from "./cardConfigUtils";
+export * from "./colorUtils";
 export * from "./getAllMassPlayers";
 export * from "./getDeviceIcon";
 export * from "./getDidMediaPlayerUpdate";
@@ -9,6 +10,7 @@ export * from "./getIsMassPlayer";
 export * from "./getMediaPlayerTitleAndSubtitle";
 export * from "./getSourceIcon";
 export * from "./getVolumeIcon";
+export * from "./selectActiveMultiMediaPlayer";
 export * from "./setVolume";
 export * from "./supportedFeaturesUtils";
 export * from "./transferMaQueue";

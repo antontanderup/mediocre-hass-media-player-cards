@@ -39,7 +39,6 @@ const styles = {
     width: "100%",
     position: "relative",
     boxSizing: "border-box",
-    boxShadow: "0 15px 100px var(--clear-background-color)",
   }),
   modalRoot: css({
     position: "absolute",
@@ -50,7 +49,6 @@ const styles = {
     borderRadius: "12px",
     boxSizing: "border-box",
     animation: `${slideUpFadeIn} 0.3s ease forwards`,
-    boxShadow: "0 0px 80px var(--clear-background-color)",
   }),
   modalHeader: css({
     display: "flex",

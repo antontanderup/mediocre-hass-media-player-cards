@@ -63,16 +63,17 @@ const styles = {
     maxWidth: "98vw",
     backgroundColor: theme.colors.dialog,
     overflow: "hidden",
-    boxShadow: "0px 10px 20px var(--clear-background-color)",
+    "--mmpc-popup-shadow-color": `hsl(from ${theme.colors.dialog} h s calc(l - 20))`,
+    boxShadow: "0px 10px 20px var(--mmpc-popup-shadow-color)",
     borderTopLeftRadius: "var(--ha-dialog-border-radius, 28px)",
     borderTopRightRadius: "var(--ha-dialog-border-radius, 28px)",
     "@media screen and (min-height: 832px)": {
       borderRadius: "var(--ha-dialog-border-radius, 28px)",
-      boxShadow: "0px 0px 20px var(--clear-background-color)",
+      boxShadow: "0px 0px 20px var(--mmpc-popup-shadow-color)",
     },
   }),
   popUpContainerLight: css({
-    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",
+    boxShadow: "0px 10px 20px --mmpc-popup-shadow-color",
   }),
   popUpContent: css({
     display: "grid",
