@@ -8,19 +8,16 @@ import {
   useState,
 } from "preact/hooks";
 import { usePlayer } from "@components";
-import {
-  converter,
-  getCssColorVariable,
-  isDarkMode,
-  parseColorToRgb,
-} from "@utils";
+import { getCssColorVariable, isDarkMode, parseColorToHsla } from "@utils";
 
 export function useArtworkColors() {
   const {
     attributes: { entity_picture, entity_picture_local },
   } = usePlayer();
+
   const albumArt = entity_picture_local || entity_picture;
   const albumArtRef = useRef<string | undefined>(null);
+
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
   // Track dark mode state
@@ -35,8 +32,11 @@ export function useArtworkColors() {
         if (albumArtRef.current !== albumArt) return;
         Vibrant.from(albumArt)
           .getPalette()
-          .then(setPalette)
+          .then((palette) => {
+            setPalette(palette)
+          })
           .catch(e => {
+            setPalette(null);
             console.error("Error getting color with Vibrant:", e);
           });
       }, 800);
@@ -45,7 +45,6 @@ export function useArtworkColors() {
 
   // Reset average color when album art changes
   useEffect(() => {
-    setPalette(null);
     if (albumArt) {
       getColors();
     }
@@ -69,64 +68,74 @@ export function useArtworkColors() {
   const extractHslFromCssVariable = useCallback((variableName: string) => {
     const color = getCssColorVariable(variableName);
     if (color) {
-      const rgba = parseColorToRgb(color);
-      if (!rgba) return null;
-      const hslObject = converter
-        .rgba({ r: rgba[0], g: rgba[1], b: rgba[2], a: rgba[3] ?? 255 })
-        .to("HSL", false) as
-        | { h: number; s: number; l: number; a?: number }
-        | string;
-      if (typeof hslObject === "string") return null;
-      return hslObject;
+      const hsla = parseColorToHsla(color);
+      if (!hsla) return null;
+      return {
+        h: hsla[0],
+        s: hsla[1],
+        l: hsla[2],
+        a: hsla[3] ?? 1,
+      };
     }
     return null;
   }, []);
 
-  const cssVariablesLight = useMemo(() => {
-    if (darkMode) return null;
-    if (!palette) return null;
-    const variant = palette.Vibrant ?? palette.Muted;
-    if (!variant) return null;
-
-    const haCardBackgroundHsl = extractHslFromCssVariable(
+  const userThemeHlsValues = useMemo(() => {
+    const cardBackgroundColor = extractHslFromCssVariable(
       "--card-background-color"
     );
-    const haDialogSurfaceBackgroundHsl = extractHslFromCssVariable(
+    const haDialogSurfaceBackground = extractHslFromCssVariable(
       "--ha-dialog-surface-background"
     ) ??
       extractHslFromCssVariable("--mdc-theme-surface") ?? {
         h: 0,
         s: 0,
-        l: 100,
+        l: darkMode ? 0 : 100,
         a: 1,
       };
-
-    const primaryColorHsl = extractHslFromCssVariable("--primary-color");
-    const secondaryBackgroundColorHsl = extractHslFromCssVariable(
+    const primaryColor = extractHslFromCssVariable("--primary-color");
+    const secondaryBackgroundColor = extractHslFromCssVariable(
       "--secondary-background-color"
     );
-    const dividerColorHsl = extractHslFromCssVariable("--divider-color");
+    const dividerColor = extractHslFromCssVariable("--divider-color");
+
+    return {
+      cardBackgroundColor,
+      haDialogSurfaceBackground,
+      primaryColor,
+      secondaryBackgroundColor,
+      dividerColor,
+    };
+  }, [darkMode, extractHslFromCssVariable]);
+
+  const cssVariablesLight = useMemo(() => {
+    if (darkMode || !palette) return null;
+
+    const artColor = palette.Vibrant;
+    const variant = palette.LightVibrant ?? palette.Vibrant;
+    const variantAlternative = palette.DarkVibrant ?? palette.Muted;
+    if (!variant || !variantAlternative || !artColor) return null;
 
     const primaryVibrantHls = vibrantHslToHsl(variant.hsl);
     const primaryColor = {
       ...primaryVibrantHls,
-      s: primaryColorHsl?.s ?? primaryVibrantHls.s,
-      l: primaryColorHsl?.l ?? 50,
+      s: userThemeHlsValues.primaryColor?.s ?? primaryVibrantHls.s,
+      l: userThemeHlsValues.primaryColor?.l ?? 50,
     };
     const surfaceColor = {
       ...primaryColor,
-      s: haCardBackgroundHsl?.s ?? 4.35,
-      l: haCardBackgroundHsl?.l ?? 95.49,
+      s: userThemeHlsValues.cardBackgroundColor?.s ?? 4.35,
+      l: userThemeHlsValues.cardBackgroundColor?.l ?? 95.49,
     };
 
     const onSurfaceColor = {
       ...getContrastingHsl(surfaceColor),
-      l: 15.29,
     };
 
     return {
       artVars: {
-        "--art-color": `${hslToCss(vibrantHslToHsl(variant.hsl))}`,
+        "--art-color": `${hslToCss(vibrantHslToHsl(artColor.hsl))}`,
+        "--art-alternative-color": `${hslToCss(vibrantHslToHsl(variantAlternative.hsl))}`,
         "--art-surface-color": `${hslToCss(surfaceColor)}`,
       },
       haVars: {
@@ -136,61 +145,44 @@ export function useArtworkColors() {
         "--primary-text-color": `${hslToCss(onSurfaceColor)}`,
         "--secondary-text-color": `${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 1.1 })}`,
         "--icon-primary-color": `${hslToCss(onSurfaceColor)}`,
-        "--divider-color": `${hslToCss({ ...surfaceColor, s: dividerColorHsl?.s ?? surfaceColor.s, l: dividerColorHsl?.l ?? 88, a: dividerColorHsl?.a ?? 0.2 })}`,
+        "--divider-color": `${hslToCss({ ...surfaceColor, s: userThemeHlsValues.dividerColor?.s ?? surfaceColor.s, l: userThemeHlsValues.dividerColor?.l ?? 88, a: userThemeHlsValues.dividerColor?.a ?? 0.2 })}`,
         "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 10 })}`,
-        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, l: secondaryBackgroundColorHsl?.l ?? 95 })}`,
-        "--ha-dialog-surface-background": `${hslToCss({ ...haDialogSurfaceBackgroundHsl, h: primaryColor.h })}`,
+        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, s: userThemeHlsValues.secondaryBackgroundColor?.s ?? onSurfaceColor.s, l: userThemeHlsValues.secondaryBackgroundColor?.l ?? 95 })}`,
+        "--ha-dialog-surface-background": `${hslToCss({ ...userThemeHlsValues.haDialogSurfaceBackground, h: primaryColor.h, a: 1 })}`,
       },
     };
-  }, [palette, darkMode]);
+  }, [palette, darkMode, userThemeHlsValues]);
 
   const cssVariablesDark = useMemo(() => {
-    if (!darkMode) return null;
-    if (!palette) return null;
-    const variant = palette.Vibrant ?? palette.Muted;
-    if (!variant) return null;
+    if (!darkMode || !palette) return null;
 
-    const haCardBackgroundHsl = extractHslFromCssVariable(
-      "--card-background-color"
-    );
-    const haDialogSurfaceBackgroundHsl = extractHslFromCssVariable(
-      "--ha-dialog-surface-background"
-    ) ??
-      extractHslFromCssVariable("--mdc-theme-surface") ?? {
-        h: 0,
-        s: 0,
-        l: 0,
-        a: 1,
-      };
-
-    const primaryColorHsl = extractHslFromCssVariable("--primary-color");
-    const secondaryBackgroundColorHsl = extractHslFromCssVariable(
-      "--secondary-background-color"
-    );
-    const dividerColorHsl = extractHslFromCssVariable("--divider-color");
+    const artColor = palette.Vibrant;
+    const variant = palette.DarkVibrant ?? palette.Vibrant;
+    const variantAlternative = palette.LightVibrant ?? palette.Muted;
+    if (!variant || !variantAlternative || !artColor) return null;
 
     const primaryVibrantHls = vibrantHslToHsl(variant.hsl);
     const primaryColor = {
       ...primaryVibrantHls,
-      s: primaryColorHsl?.s ?? primaryVibrantHls.s,
-      l: primaryColorHsl?.l ?? 50,
-      a: primaryColorHsl?.a ?? 1,
+      s: userThemeHlsValues.primaryColor?.s ?? primaryVibrantHls.s,
+      l: userThemeHlsValues.primaryColor?.l ?? 50,
+      a: userThemeHlsValues.primaryColor?.a ?? 1,
     };
     const surfaceColor = {
       ...primaryColor,
-      s: haCardBackgroundHsl?.s ?? 2.91,
-      l: haCardBackgroundHsl?.l ?? 20.2,
-      a: haCardBackgroundHsl?.a ?? 1,
+      s: userThemeHlsValues.cardBackgroundColor?.s ?? 2.91,
+      l: userThemeHlsValues.cardBackgroundColor?.l ?? 20.2,
+      a: userThemeHlsValues.cardBackgroundColor?.a ?? 1,
     };
 
     const onSurfaceColor = {
       ...getContrastingHsl(surfaceColor),
-      l: 86.47,
     };
 
     return {
       artVars: {
-        "--art-color": `${hslToCss(vibrantHslToHsl(variant.hsl))}`,
+        "--art-color": `${hslToCss(vibrantHslToHsl(artColor.hsl))}`,
+        "--art-alternative-color": `${hslToCss(vibrantHslToHsl(variantAlternative.hsl))}`,
         "--art-surface-color": `${hslToCss(surfaceColor)}`,
       },
       haVars: {
@@ -200,10 +192,10 @@ export function useArtworkColors() {
         "--primary-text-color": `${hslToCss(onSurfaceColor)}`,
         "--secondary-text-color": `${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 0.9 })}`,
         "--icon-primary-color": `${hslToCss(onSurfaceColor)}`,
-        "--divider-color": `${hslToCss({ ...surfaceColor, s: dividerColorHsl?.s ?? surfaceColor.s, l: dividerColorHsl?.l ?? 25, a: dividerColorHsl?.a ?? 0.2 })}`,
+        "--divider-color": `${hslToCss({ ...surfaceColor, s: userThemeHlsValues.dividerColor?.s ?? surfaceColor.s, l: userThemeHlsValues.dividerColor?.l ?? 25, a: userThemeHlsValues.dividerColor?.a ?? 0.2 })}`,
         "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 0 })}`,
-        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, l: secondaryBackgroundColorHsl?.l ?? 19 })}`,
-        "--ha-dialog-surface-background": `${hslToCss({ ...haDialogSurfaceBackgroundHsl, h: primaryColor.h })}`,
+        "--secondary-background-color": `${hslToCss({ ...surfaceColor, s: userThemeHlsValues.secondaryBackgroundColor?.s ?? onSurfaceColor.s, l: userThemeHlsValues.secondaryBackgroundColor?.l ?? 19 })}`,
+        "--ha-dialog-surface-background": `${hslToCss({ ...userThemeHlsValues.haDialogSurfaceBackground, h: primaryColor.h, a: 1 })}`,
       },
     };
   }, [palette, darkMode]);
@@ -237,7 +229,9 @@ const getContrastingHsl = ({
 }) => {
   // Rotate hue by 180 degrees
   const newHue = (h + 180) % 360;
-  return { h: newHue, s, l };
+  // Get opposite lightness
+  const newLightness = 100 - l;
+  return { h: newHue, s, l: newLightness };
 };
 
 const hslToCss = ({

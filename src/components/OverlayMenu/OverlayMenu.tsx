@@ -16,8 +16,8 @@ export type OverlayMenuProps = {
 
 const styles = {
   menuRoot: css({
-    background: theme.colors.card,
-    color: theme.colors.onCard,
+    background: theme.colors.dialog,
+    color: theme.colors.onDialog,
     borderRadius: 12,
     minWidth: 180,
     boxShadow: "0 2px 12px rgba(0,0,0,0.12)",
@@ -25,7 +25,7 @@ const styles = {
     gap: 4,
     display: "flex",
     flexDirection: "column",
-    border: `1px solid ${theme.colors.onCardDivider}`,
+    border: `1px solid ${theme.colors.onDialogDivider}`,
   }),
   item: css({
     display: "flex",
@@ -41,15 +41,15 @@ const styles = {
     position: "relative",
     border: "none",
     "&:hover, &[data-highlighted]": {
-      background: theme.colors.onCardDivider,
+      background: theme.colors.onDialogDivider,
     },
     "&[data-disabled]": {
-      color: theme.colors.onCardMuted,
+      color: theme.colors.onDialogMuted,
       cursor: "not-allowed",
     },
   }),
   itemSelected: css({
-    background: theme.colors.onCardDivider,
+    background: theme.colors.onDialogDivider,
   }),
   itemChevron: css({
     marginLeft: "auto",

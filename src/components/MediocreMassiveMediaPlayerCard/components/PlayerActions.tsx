@@ -39,6 +39,8 @@ const styles = {
     width: "100%",
     position: "relative",
     boxSizing: "border-box",
+    "--mmpc-surface-shadow": `hsl(from var(--mmpc-surface-higher) h calc(s / 2) calc(l - 10))`,
+    boxShadow: "0px 0px 20px var(--mmpc-surface-shadow)",
   }),
   modalRoot: css({
     position: "absolute",
@@ -49,6 +51,7 @@ const styles = {
     borderRadius: "12px",
     boxSizing: "border-box",
     animation: `${slideUpFadeIn} 0.3s ease forwards`,
+    boxShadow: "0px 0px 20px var(--mmpc-surface-shadow)",
   }),
   modalHeader: css({
     display: "flex",

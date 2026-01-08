@@ -63,8 +63,8 @@ const styles = {
     maxWidth: "98vw",
     backgroundColor: theme.colors.dialog,
     overflow: "hidden",
-    "--mmpc-popup-shadow-color": `hsl(from ${theme.colors.dialog} h s calc(l - 20))`,
-    boxShadow: "0px 10px 20px var(--mmpc-popup-shadow-color)",
+    "--mmpc-popup-shadow-color": "var(--ha-color-shadow-dark)",
+    boxShadow: "var(--ha-box-shadow-l)",
     borderTopLeftRadius: "var(--ha-dialog-border-radius, 28px)",
     borderTopRightRadius: "var(--ha-dialog-border-radius, 28px)",
     "@media screen and (min-height: 832px)": {
