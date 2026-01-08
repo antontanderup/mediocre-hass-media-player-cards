@@ -32,8 +32,8 @@ export function useArtworkColors() {
         if (albumArtRef.current !== albumArt) return;
         Vibrant.from(albumArt)
           .getPalette()
-          .then((palette) => {
-            setPalette(palette)
+          .then(palette => {
+            setPalette(palette);
           })
           .catch(e => {
             setPalette(null);

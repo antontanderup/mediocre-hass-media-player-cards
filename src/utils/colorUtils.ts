@@ -4,16 +4,12 @@ export type HLSA = [number, number, number, number?];
 export type RGBA = [number, number, number, number?];
 
 // Helper to parse a CSS color string to RGB
-export function parseColorToRgb(
-  color: string
-): RGBA | null {
+export function parseColorToRgb(color: string): RGBA | null {
   // Remove spaces and lowercase
   return chroma(color).rgba();
 }
 
-export function parseColorToHsla(
-  inputColor: string
-): HLSA | null {
+export function parseColorToHsla(inputColor: string): HLSA | null {
   const color = chroma(inputColor).hsl();
   return [
     color[0],
