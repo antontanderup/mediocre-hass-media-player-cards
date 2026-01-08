@@ -1,6 +1,10 @@
 import { FunctionComponent, render } from "preact";
 import { HomeAssistant } from "@types";
-import { EmotionContextProvider, GlanceGuard } from "@components";
+import {
+  EmotionContextProvider,
+  GlanceGuard,
+  HassContextProvider,
+} from "@components";
 
 export type EditorCardProps<T> = {
   config: T;
@@ -24,12 +28,14 @@ export class CardEditorWrapper<T> extends HTMLElement {
     render(
       <EmotionContextProvider rootElement={this}>
         <GlanceGuard>
-          <this.Card
-            config={this._config}
-            hass={this._hass}
-            rootElement={this}
-            {...this.extraProps}
-          />
+          <HassContextProvider hass={this._hass}>
+            <this.Card
+              config={this._config}
+              hass={this._hass}
+              rootElement={this}
+              {...this.extraProps}
+            />
+          </HassContextProvider>
         </GlanceGuard>
       </EmotionContextProvider>,
       this

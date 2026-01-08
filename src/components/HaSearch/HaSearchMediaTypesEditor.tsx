@@ -158,7 +158,7 @@ export const HaSearchMediaTypesEditor: FC<HaSearchMediaTypesEditorProps> = ({
         ))}
         <div css={styles.buttons}>
           <Button
-            type="button"
+            variant="neutral"
             onClick={() =>
               onChange([...mediaTypes, { name: "", media_type: "" }])
             }
@@ -166,7 +166,7 @@ export const HaSearchMediaTypesEditor: FC<HaSearchMediaTypesEditorProps> = ({
             Add
           </Button>
           <Button
-            type="button"
+            variant="neutral"
             onClick={async () => {
               const mediaTypes = await getMediaTypesFromMediaBrowser();
               if (mediaTypes.length === 0) return;
@@ -175,7 +175,7 @@ export const HaSearchMediaTypesEditor: FC<HaSearchMediaTypesEditorProps> = ({
           >
             Generate
           </Button>
-          <Button type="button" onClick={() => onChange([])}>
+          <Button variant="danger" onClick={() => onChange([])}>
             Clear
           </Button>
         </div>

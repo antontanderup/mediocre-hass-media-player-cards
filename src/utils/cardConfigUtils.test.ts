@@ -46,10 +46,9 @@ describe("cardConfigUtils", () => {
         columns: "full",
         rows: 2,
       });
-      expect(result.media_browser).toEqual({
-        enabled: true,
-        entity_id: "media_player.browser",
-      });
+      expect(result.media_browser).toEqual([
+        { entity_id: "media_player.browser" },
+      ]);
     });
 
     it("should preserve grid_options as undefined when not present", () => {
@@ -101,7 +100,7 @@ describe("cardConfigUtils", () => {
         use_volume_up_down_for_step_buttons: false,
       });
       expect(result.grid_options).toBeUndefined();
-      expect(result.media_browser).toEqual({ enabled: false, entity_id: null });
+      expect(result.media_browser).toBeNull();
     });
 
     it("should preserve existing values when present", () => {
@@ -143,7 +142,11 @@ describe("cardConfigUtils", () => {
 
       const result = getDefaultValuesFromConfig(fullConfig);
 
-      expect(result).toEqual(fullConfig);
+      // The new format converts media_browser to an array
+      expect(result).toEqual({
+        ...fullConfig,
+        media_browser: [{ entity_id: "media_player.browser" }],
+      });
     });
   });
 
@@ -205,7 +208,9 @@ describe("cardConfigUtils", () => {
       expect(result.visibility).toEqual([
         { condition: "user", users: ["user1", "user2"] },
       ]);
-      expect(result.media_browser).toEqual({ enabled: true, entity_id: null });
+      expect(result.media_browser).toEqual([
+        { entity_id: "media_player.test" },
+      ]);
     });
 
     it("should set default values for all fields", () => {
@@ -240,7 +245,7 @@ describe("cardConfigUtils", () => {
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
       });
-      expect(result.media_browser).toEqual({ enabled: false, entity_id: null });
+      expect(result.media_browser).toBeNull();
       expect(result.grid_options).toBeUndefined();
     });
   });

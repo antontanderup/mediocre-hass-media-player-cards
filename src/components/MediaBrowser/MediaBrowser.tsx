@@ -1,8 +1,11 @@
 import {
+  Chip,
+  Icon,
   Input,
   MediaClass,
   MediaContentType,
   MediaGrid,
+  MediaImage,
   MediaItem,
   MediaTrack,
   searchStyles,
@@ -21,9 +24,10 @@ import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { getEnqueueModeIcon, getItemMdiIcon } from "./utils";
 import { useIntl } from "@components/i18n";
+import { MediaBrowserEntry } from "@types";
 
 export type MediaBrowserProps = {
-  entity_id: string;
+  mediaBrowserEntryArray: MediaBrowserEntry[];
   horizontalPadding?: number;
   maxHeight?: number;
   renderHeader?: () => preact.JSX.Element;
@@ -78,6 +82,16 @@ const styles = {
     marginTop: "8px",
     marginBottom: "16px",
   }),
+  mediaBrowserEntrySelector: css({
+    marginLeft: "auto",
+  }),
+  mediaItemHeaderMenuImage: css({
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginRight: 2,
+    marginLeft: -4,
+  }),
 };
 
 export type MediaBrowserItem = {
@@ -92,12 +106,15 @@ export type MediaBrowserItem = {
 };
 
 export const MediaBrowser = ({
-  entity_id,
+  mediaBrowserEntryArray,
   horizontalPadding,
   maxHeight,
   renderHeader,
 }: MediaBrowserProps) => {
   const { t } = useIntl();
+
+  const [selectedMediaBrowser, setSelectedMediaBrowser] =
+    useState<MediaBrowserEntry>(mediaBrowserEntryArray[0]);
 
   const [mediaBrowserItems, setMediaBrowserItems] = useState<
     MediaBrowserItem[]
@@ -106,6 +123,16 @@ export const MediaBrowser = ({
   const [isFetching, setIsFetching] = useState(false);
   const [chunkSize, setChunkSize] = useState(4);
   const [itemFilter, setItemFilter] = useState<string>("");
+
+  const selectMediaBrowserMenuItems: OverlayMenuItem[] = useMemo(() => {
+    return mediaBrowserEntryArray.map(mediaBrowserEntry => ({
+      label: mediaBrowserEntry.name ?? mediaBrowserEntry.entity_id,
+      selected: mediaBrowserEntry.entity_id === selectedMediaBrowser.entity_id,
+      onClick: () => {
+        setSelectedMediaBrowser(mediaBrowserEntry);
+      },
+    }));
+  }, [mediaBrowserEntryArray, selectedMediaBrowser.entity_id]);
 
   const items: MediaBrowserItem[][] = useMemo(() => {
     const result: MediaBrowserItem[][] = [];
@@ -124,8 +151,9 @@ export const MediaBrowser = ({
     // Group items by media_content_type
     filteredResults.forEach(item => {
       const isTrack =
-        item.media_content_type === MediaContentType.Tracks ||
-        item.media_class === MediaClass.Track;
+        (item.media_content_type === MediaContentType.Tracks ||
+          item.media_class === MediaClass.Track) &&
+        item.media_content_type !== "favorite";
       const type = isTrack && !(history.length === 0) ? "track" : "expandable";
       if (!groupedByType[type]) {
         groupedByType[type] = [];
@@ -161,7 +189,7 @@ export const MediaBrowser = ({
         const hass = getHass();
         const response = (await hass.callWS({
           type: "media_player/browse_media",
-          entity_id,
+          entity_id: selectedMediaBrowser.entity_id,
           ...(history.length > 0
             ? {
                 media_content_id: history[history.length - 1].media_content_id,
@@ -178,18 +206,19 @@ export const MediaBrowser = ({
         }
       } catch (error) {
         console.error("Error fetching media items:", error);
+        setMediaBrowserItems([]);
       }
       setIsFetching(false);
     };
 
     fetchMediaBrowserItems();
-  }, [entity_id, history]);
+  }, [history, selectedMediaBrowser]);
 
   const playItem = useCallback(
     (item: MediaBrowserItem, enqueue?: HaEnqueueMode) => {
       try {
         getHass().callService("media_player", "play_media", {
-          entity_id,
+          entity_id: selectedMediaBrowser.entity_id,
           media_content_type: item.media_content_type,
           media_content_id: item.media_content_id,
           enqueue,
@@ -198,7 +227,7 @@ export const MediaBrowser = ({
         console.error(
           "Error playing media item:",
           {
-            entity_id,
+            entity_id: selectedMediaBrowser.entity_id,
             media_content_type: item.media_content_type,
             media_content_id: item.media_content_id,
           },
@@ -206,7 +235,7 @@ export const MediaBrowser = ({
         );
       }
     },
-    [entity_id]
+    [selectedMediaBrowser.entity_id]
   );
 
   const onMediaBrowserItemClick = useCallback(
@@ -238,63 +267,74 @@ export const MediaBrowser = ({
     [isFetching]
   );
 
-  const getItemOverlayMenuItems = useCallback((item: MediaBrowserItem) => {
-    const menuItems: OverlayMenuItem[] = [];
-    if (item.can_play) {
-      menuItems.push({
-        label: t({
-          id: "MediaBrowser.media_item_menu.enqueue_mode.play",
-          defaultMessage: "Play",
-        }),
-        icon: getEnqueueModeIcon("play"),
-        onClick: () => playItem(item, "play"),
-      });
-      menuItems.push({
-        label: t({
-          id: "MediaBrowser.media_item_menu.enqueue_dropdown_label",
-          defaultMessage: "Enqueue",
-        }),
-        icon: getEnqueueModeIcon("next"),
-        children: [
-          {
-            label: t({
-              id: "MediaBrowser.media_item_menu.enqueue_mode.next",
-              defaultMessage: "Play Next",
-            }),
-            icon: getEnqueueModeIcon("next"),
-            onClick: () => playItem(item, "next"),
-          },
-          {
-            label: t({
-              id: "MediaBrowser.media_item_menu.enqueue_mode.replace",
-              defaultMessage: "Replace Queue",
-            }),
-            icon: getEnqueueModeIcon("replace"),
-            onClick: () => playItem(item, "replace"),
-          },
-          {
-            label: t({
-              id: "MediaBrowser.media_item_menu.enqueue_mode.add",
-              defaultMessage: "Add to Queue",
-            }),
-            icon: getEnqueueModeIcon("add"),
-            onClick: () => playItem(item, "add"),
-          },
-        ],
-      });
-    }
-    if (item.can_expand) {
-      menuItems.push({
-        label: t({
-          id: "MediaBrowser.media_item_menu.browse",
-          defaultMessage: "Browse",
-        }),
-        icon: "mdi:folder-outline",
-        onClick: () => onMediaBrowserItemClick(item),
-      });
-    }
-    return menuItems;
-  }, []);
+  const getItemOverlayMenuItems = useCallback(
+    (item: MediaBrowserItem, excludeExpandOptions = false) => {
+      const menuItems: OverlayMenuItem[] = [];
+      if (item.can_play) {
+        menuItems.push({
+          label: t({
+            id: "MediaBrowser.media_item_menu.enqueue_mode.play",
+            defaultMessage: "Play",
+          }),
+          icon: getEnqueueModeIcon("play"),
+          onClick: () => playItem(item),
+        });
+        menuItems.push({
+          label: t({
+            id: "MediaBrowser.media_item_menu.enqueue_dropdown_label",
+            defaultMessage: "Enqueue",
+          }),
+          icon: getEnqueueModeIcon("next"),
+          children: [
+            {
+              label: t({
+                id: "MediaBrowser.media_item_menu.enqueue_mode.next",
+                defaultMessage: "Play Next",
+              }),
+              icon: getEnqueueModeIcon("next"),
+              onClick: () => playItem(item, "next"),
+            },
+            {
+              label: t({
+                id: "MediaBrowser.media_item_menu.enqueue_mode.replace",
+                defaultMessage: "Replace Queue",
+              }),
+              icon: getEnqueueModeIcon("replace"),
+              onClick: () => playItem(item, "replace"),
+            },
+            {
+              label: t({
+                id: "MediaBrowser.media_item_menu.enqueue_mode.add",
+                defaultMessage: "Add to Queue",
+              }),
+              icon: getEnqueueModeIcon("add"),
+              onClick: () => playItem(item, "add"),
+            },
+          ],
+        });
+      }
+      if (item.can_expand && !excludeExpandOptions) {
+        menuItems.push({
+          label: t({
+            id: "MediaBrowser.media_item_menu.browse",
+            defaultMessage: "Browse",
+          }),
+          icon: "mdi:folder-outline",
+          onClick: () => onMediaBrowserItemClick(item),
+        });
+      }
+      return menuItems;
+    },
+    [selectedMediaBrowser]
+  );
+
+  const currentHistoryDropdownMenuItems: OverlayMenuItem[] = useMemo(
+    () =>
+      history[history.length - 1]
+        ? getItemOverlayMenuItems(history[history.length - 1], true)
+        : [],
+    [history]
+  );
 
   const renderTrack = (item: MediaBrowserItem) => {
     if (history.length === 0) return renderFolder(item);
@@ -314,7 +354,7 @@ export const MediaBrowser = ({
   };
 
   const renderFolder = (item: MediaBrowserItem) => {
-    if (!item.can_play) {
+    if (!item.can_play || (item.can_expand && history.length === 0)) {
       return (
         <MediaItem
           key={item.media_content_id + history.length}
@@ -379,24 +419,32 @@ export const MediaBrowser = ({
           <Fragment>
             {renderHeader && renderHeader()}
             <div css={styles.header}>
-              {history.length > 0 && (
+              {history.length > 0 || mediaBrowserEntryArray.length > 1 ? (
                 <Fragment>
                   <div css={styles.navigationBar}>
-                    <IconButton
-                      icon="mdi:arrow-left"
-                      size="x-small"
-                      onClick={goBack}
-                      disabled={history.length === 0}
-                    />
+                    {history.length > 0 ? (
+                      <IconButton
+                        icon="mdi:arrow-left"
+                        size="x-small"
+                        onClick={goBack}
+                        disabled={history.length === 0}
+                      />
+                    ) : (
+                      <Icon icon="mdi:home" size="x-small" />
+                    )}
                     <div css={styles.breadCrumbs}>
                       <button
                         css={styles.breadCrumbItem}
                         onClick={() => setHistory([])}
                       >
-                        {t({
-                          id: "MediaBrowser.breadcrumb_home",
-                          defaultMessage: "Home",
-                        })}
+                        {history.length === 0 ? (
+                          t({
+                            id: "MediaBrowser.breadcrumb_home",
+                            defaultMessage: "Home",
+                          })
+                        ) : (
+                          <Icon icon="mdi:home" size="x-small" />
+                        )}
                       </button>
                       {history.map((item, index) => (
                         <Fragment key={`breadcrumb-${index}-${item.title}`}>
@@ -410,9 +458,64 @@ export const MediaBrowser = ({
                         </Fragment>
                       ))}
                     </div>
+                    {mediaBrowserEntryArray.length > 1 &&
+                      history.length === 0 && (
+                        <OverlayMenu
+                          menuItems={selectMediaBrowserMenuItems}
+                          side="bottom"
+                          align="end"
+                          renderTrigger={triggerProps => (
+                            <Chip
+                              icon="mdi:import"
+                              size="small"
+                              invertedColors={true}
+                              border={true}
+                              css={styles.mediaBrowserEntrySelector}
+                              {...triggerProps}
+                            >
+                              {selectedMediaBrowser.name ??
+                                selectedMediaBrowser.entity_id}
+                              <Icon size="x-small" icon="mdi:chevron-down" />
+                            </Chip>
+                          )}
+                        />
+                      )}
+                    {currentHistoryDropdownMenuItems.length > 0 && (
+                      <OverlayMenu
+                        menuItems={currentHistoryDropdownMenuItems}
+                        side="bottom"
+                        align="end"
+                        renderTrigger={triggerProps => (
+                          <Chip
+                            size="small"
+                            invertedColors={true}
+                            border={true}
+                            css={styles.mediaBrowserEntrySelector}
+                            {...triggerProps}
+                          >
+                            {history[history.length - 1].thumbnail ? (
+                              <MediaImage
+                                css={styles.mediaItemHeaderMenuImage}
+                                imageUrl={history[history.length - 1].thumbnail}
+                                mdiIcon={getItemMdiIcon(
+                                  history[history.length - 1]
+                                )}
+                              />
+                            ) : (
+                              <Icon size="x-small" icon="mdi:play" />
+                            )}
+                            {t({
+                              id: "MediaBrowser.media_item_menu.enqueue_mode.play",
+                              defaultMessage: "Play",
+                            })}
+                            <Icon size="x-small" icon="mdi:chevron-down" />
+                          </Chip>
+                        )}
+                      />
+                    )}
                   </div>
                 </Fragment>
-              )}
+              ) : null}
             </div>
             {mediaBrowserItems.length > 3 && history.length > 0 && (
               <Input

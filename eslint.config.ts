@@ -38,13 +38,6 @@ export default tseslint.config(
       },
     },
     rules: {
-      // Enforce using aliases with no-restricted-imports instead
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: ["../*"],
-        },
-      ],
       "import/no-unresolved": "error",
       "react/react-in-jsx-scope": "off", // Not needed for Preact with automatic JSX runtime
       "import/export": "off",

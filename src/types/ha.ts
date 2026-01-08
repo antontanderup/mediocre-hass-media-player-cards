@@ -75,6 +75,15 @@ interface HaEntitiesPickerAttributes extends preact.JSX
   "allow-custom-entity"?: boolean;
 }
 
+interface HaButtonAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
+  size?: "small" | "medium";
+  variant?: "brand" | "neutral" | "danger" | "warning" | "success";
+  appearance?: "accent" | "filled" | "plain";
+  loading?: boolean;
+  disabled?: boolean;
+  onClick?: (e?: preact.JSX.TargetedMouseEvent<HTMLElement>) => void;
+}
+
 declare module "preact" {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
@@ -87,6 +96,7 @@ declare module "preact" {
       "ha-textfield": HaTextfieldAttributes;
       "ha-entity-picker": HaEntityPickerAttributes;
       "ha-entities-picker": HaEntitiesPickerAttributes;
+      "ha-button": HaButtonAttributes;
     }
   }
 }

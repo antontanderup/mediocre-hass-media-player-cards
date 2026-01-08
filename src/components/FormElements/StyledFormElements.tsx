@@ -18,23 +18,7 @@ const styles = {
     flexDirection: "column",
   }),
   button: css({
-    padding: "8px 16px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    backgroundColor: "var(--primary-color, #03a9f4)",
-    color: "white",
-    fontWeight: 500,
-    "&:hover": {
-      backgroundColor: "var(--primary-color-dark, #007ac1)",
-    },
     alignSelf: "flex-start",
-  }),
-  deleteButton: css({
-    backgroundColor: "var(--error-color, #ff5252)",
-    "&:hover": {
-      backgroundColor: "var(--error-color-dark, #c50b0b)",
-    },
   }),
   inputGroup: css({
     display: "flex",
@@ -44,7 +28,6 @@ const styles = {
   toggleContainer: css({
     display: "flex",
     alignItems: "center",
-    marginBottom: "16px",
   }),
   toggleLabel: css({
     marginLeft: "8px",
@@ -72,20 +55,30 @@ export const ButtonsContainer = (props: HTMLAttributes<HTMLDivElement>) => {
   return <div css={styles.buttonsContainer} {...props} />;
 };
 
-export const Button = (
-  props: HTMLAttributes<HTMLButtonElement> & {
-    type: "button" | "reset" | "submit" | undefined;
-  }
-) => {
-  return <button css={styles.button} {...props} />;
-};
-
-export const DeleteButton = (
-  props: HTMLAttributes<HTMLButtonElement> & {
-    type: "button" | "reset" | "submit" | undefined;
-  }
-) => {
-  return <button css={[styles.button, styles.deleteButton]} {...props} />;
+export const Button = ({
+  children,
+  size = "small",
+  variant = "brand",
+  appearance = "accent",
+  onClick,
+}: {
+  children: string;
+  size?: "small" | "medium";
+  variant?: "brand" | "neutral" | "danger" | "warning" | "success";
+  appearance?: "accent" | "filled" | "plain";
+  onClick?: () => void;
+}) => {
+  return (
+    <ha-button
+      variant={variant}
+      appearance={appearance}
+      size={size}
+      css={styles.button}
+      onClick={onClick}
+    >
+      {children}
+    </ha-button>
+  );
 };
 
 export const InputGroup = (props: HTMLAttributes<HTMLDivElement>) => {

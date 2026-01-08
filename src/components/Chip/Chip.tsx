@@ -20,6 +20,9 @@ const styles = {
     color: `var(--mmpc-chip-foreground, ${theme.colors.card})`,
     backgroundColor: `var(--mmpc-chip-background, ${theme.colors.onCard})`,
     "--icon-primary-color": `var(--mmpc-chip-foreground, ${theme.colors.card})`,
+    borderColor: `var(--mmpc-chip-border, ${theme.colors.onCardDivider})`,
+    borderStyle: "solid",
+    borderWidth: 0,
     marginRight: "5px",
     alignItems: "center",
     gap: "4px",
@@ -33,6 +36,21 @@ const styles = {
       pointerEvents: "none",
     },
   }),
+  rootInvertedColors: css({
+    color: `var(--mmpc-chip-background, ${theme.colors.onCard})`,
+    backgroundColor: `var(--mmpc-chip-foreground, ${theme.colors.card})`,
+    "--icon-primary-color": `var(--mmpc-chip-background, ${theme.colors.onCard})`,
+  }),
+  rootWithBorder: css({
+    borderWidth: "1px",
+  }),
+  rootSmall: css({
+    height: "24px",
+    fontSize: "12px",
+    lineHeight: "24px",
+    padding: "0 8px",
+    borderRadius: "12px",
+  }),
   rootLoading: css({
     opacity: 0.8,
   }),
@@ -42,10 +60,25 @@ export type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "ref"> & {
   loading?: boolean;
   icon?: string;
   iconPosition?: "left" | "right";
+  size?: "small" | "medium";
+  invertedColors?: boolean;
+  border?: boolean;
 };
 
 export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
-  ({ loading, icon, iconPosition = "left", children, ...buttonProps }, ref) => {
+  (
+    {
+      loading,
+      icon,
+      iconPosition = "left",
+      size = "medium",
+      invertedColors = false,
+      border = false,
+      children,
+      ...buttonProps
+    },
+    ref
+  ) => {
     const renderIcon = () => {
       if (loading) {
         return <Spinner size="x-small" />;
@@ -57,7 +90,13 @@ export const Chip = forwardRef<HTMLButtonElement, ChipProps>(
 
     return (
       <button
-        css={[styles.root, loading && styles.rootLoading]}
+        css={[
+          styles.root,
+          size === "small" && styles.rootSmall,
+          invertedColors && styles.rootInvertedColors,
+          border && styles.rootWithBorder,
+          loading && styles.rootLoading,
+        ]}
         {...buttonProps}
         ref={ref}
       >

@@ -20,6 +20,33 @@ export const mediaPlayerConfigEntity = type({
 
 export const mediaPlayerConfigEntityArray = mediaPlayerConfigEntity.array();
 
+const mediaBrowserEntry = type({
+  "name?": "string | null",
+  entity_id: type("string"),
+});
+const mediaBrowserLegacyEntry = type({
+  "enabled?": "boolean | null", // Enables media browser functionality
+  "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
+});
+
+const mediaBrowser = type("null")
+  .or(mediaBrowserLegacyEntry)
+  .or(mediaBrowserEntry.array());
+
+const customButton = type({
+  icon: "string > 0",
+  name: "string > 0",
+}).and(interactionConfigSchema);
+
+const customButtons = customButton.array();
+
+const search = type({
+  "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
+  "show_favorites?": type("boolean | null").or("undefined"), // Shows favorites no search query has been entered
+  "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
+  "media_types?": searchMediaTypeSchema.array(),
+}).or("undefined");
+
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
   "name?": "string | null",
@@ -27,27 +54,14 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "use_art_colors?": "boolean",
   "action?": interactionConfigSchema,
   "speaker_group?": {
-    "entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
+    "entity_id?": type("string").or("null").or("undefined"), // entity_id of the main speaker incase it's different from the entity_id of the media player
     entities: mediaPlayerConfigEntityArray, // entity_ids of the speakers that can be grouped with the main speaker
   },
-  "custom_buttons?": type({
-    icon: "string > 0",
-    name: "string > 0",
-  })
-    .and(interactionConfigSchema)
-    .array(),
-  "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
-  "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
-  "search?": {
-    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
-    "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
-    "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
-    "media_types?": searchMediaTypeSchema.array(),
-  },
-  "media_browser?": {
-    "enabled?": "boolean | null", // Enables media browser functionality
-    "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
-  },
+  "custom_buttons?": customButtons,
+  "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
+  "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
+  "search?": search,
+  "media_browser?": mediaBrowser,
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
@@ -70,27 +84,14 @@ export const MediocreMassiveMediaPlayerCardConfigSchema =
 
 export const MediocreMultiMediaPlayer = type({
   entity_id: "string",
-  "custom_buttons?": type({
-    icon: "string > 0",
-    name: "string > 0",
-  })
-    .and(interactionConfigSchema)
-    .array(),
+  "custom_buttons?": customButtons,
   "name?": "string | null",
-  "speaker_group_entity_id?": type("string").or("null"), // entity_id of the main speaker incase it's different from the entity_id of the media player
+  "speaker_group_entity_id?": type("string").or("null").or("undefined"), // entity_id of the main speaker incase it's different from the entity_id of the media player
   "can_be_grouped?": "boolean | null",
-  "ma_entity_id?": type("string").or("null"), // MusicAssistant entity_id (adds MA specific features (currently search))
-  "ma_favorite_button_entity_id?": type("string").or("null"), // MusicAssistant button entity to mark current song as favorite
-  "search?": {
-    "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
-    "show_favorites?": "boolean | null", // Shows favorites no search query has been entered
-    "entity_id?": type("string").or("null"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
-    "media_types?": searchMediaTypeSchema.array(),
-  },
-  "media_browser?": {
-    "enabled?": "boolean | null", // Enables media browser functionality
-    "entity_id?": type("string").or("null"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
-  },
+  "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
+  "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
+  "search?": search,
+  "media_browser?": mediaBrowser,
 });
 
 export const MediocreMultiMediaPlayerCardConfigSchema = type({
@@ -120,3 +121,9 @@ export type MediocreMultiMediaPlayerCardConfig =
   typeof MediocreMultiMediaPlayerCardConfigSchema.infer;
 export type MediocreMultiMediaPlayer = typeof MediocreMultiMediaPlayer.infer;
 export type MediaPlayerConfigEntity = typeof mediaPlayerConfigEntity.infer;
+export type MediaBrowserConfig = typeof mediaBrowser.infer;
+export type MediaBrowserEntry = typeof mediaBrowserEntry.infer;
+export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;
+export type CustomButton = typeof customButton.infer;
+export type CustomButtons = typeof customButtons.infer;
+export type SearchConfig = typeof search.infer;
