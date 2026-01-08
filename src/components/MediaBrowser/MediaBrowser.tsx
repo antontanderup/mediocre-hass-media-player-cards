@@ -115,7 +115,6 @@ export const MediaBrowser = ({
 
   const [selectedMediaBrowser, setSelectedMediaBrowser] =
     useState<MediaBrowserEntry>(mediaBrowserEntryArray[0]);
-  const { entity_id } = selectedMediaBrowser;
 
   const [mediaBrowserItems, setMediaBrowserItems] = useState<
     MediaBrowserItem[]
@@ -190,7 +189,7 @@ export const MediaBrowser = ({
         const hass = getHass();
         const response = (await hass.callWS({
           type: "media_player/browse_media",
-          entity_id,
+          entity_id: selectedMediaBrowser.entity_id,
           ...(history.length > 0
             ? {
                 media_content_id: history[history.length - 1].media_content_id,
@@ -213,13 +212,13 @@ export const MediaBrowser = ({
     };
 
     fetchMediaBrowserItems();
-  }, [entity_id, history, selectedMediaBrowser]);
+  }, [history, selectedMediaBrowser]);
 
   const playItem = useCallback(
     (item: MediaBrowserItem, enqueue?: HaEnqueueMode) => {
       try {
         getHass().callService("media_player", "play_media", {
-          entity_id,
+          entity_id: selectedMediaBrowser.entity_id,
           media_content_type: item.media_content_type,
           media_content_id: item.media_content_id,
           enqueue,
@@ -228,7 +227,7 @@ export const MediaBrowser = ({
         console.error(
           "Error playing media item:",
           {
-            entity_id,
+            entity_id: selectedMediaBrowser.entity_id,
             media_content_type: item.media_content_type,
             media_content_id: item.media_content_id,
           },
@@ -236,7 +235,7 @@ export const MediaBrowser = ({
         );
       }
     },
-    [entity_id]
+    [selectedMediaBrowser.entity_id]
   );
 
   const onMediaBrowserItemClick = useCallback(
@@ -326,7 +325,7 @@ export const MediaBrowser = ({
       }
       return menuItems;
     },
-    []
+    [selectedMediaBrowser]
   );
 
   const currentHistoryDropdownMenuItems: OverlayMenuItem[] = useMemo(
