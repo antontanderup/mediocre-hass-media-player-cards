@@ -12,7 +12,6 @@ export function EntityPicker({
   domains?: string[];
   required?: boolean;
 }) {
-  // The `Field` infers that it should have a `value` type of `string`
   const hass = useHass();
   const field = useFieldContext<string | undefined>();
   return (

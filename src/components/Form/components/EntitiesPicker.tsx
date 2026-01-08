@@ -11,7 +11,6 @@ export function EntitiesPicker({
   label: string;
   domains?: string[];
 }) {
-  // The `Field` infers that it should have a `value` type of `string`
   const hass = useHass();
   const field = useFieldContext<MediaPlayerConfigEntity[] | undefined>();
 

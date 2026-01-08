@@ -9,7 +9,6 @@ type MediaBrowserFields = {
   media_browser: MediaBrowserConfig;
 };
 
-// These default values are not used at runtime, but the keys are needed for mapping purposes.
 const defaultValues: MediaBrowserFields = {
   media_browser: [],
 };

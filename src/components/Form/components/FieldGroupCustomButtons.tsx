@@ -16,7 +16,6 @@ type CustomButtonsFields = {
   custom_buttons: CustomButtons;
 };
 
-// These default values are not used at runtime, but the keys are needed for mapping purposes.
 const defaultValues: CustomButtonsFields = {
   custom_buttons: [],
 };

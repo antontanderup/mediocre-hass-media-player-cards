@@ -6,7 +6,6 @@ type MaEntitiesFields = {
   ma_favorite_button_entity_id?: string | null;
 };
 
-// These default values are not used at runtime, but the keys are needed for mapping purposes.
 const defaultValues: MaEntitiesFields = {
   ma_entity_id: null,
   ma_favorite_button_entity_id: null,

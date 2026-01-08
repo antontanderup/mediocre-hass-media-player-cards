@@ -10,7 +10,6 @@ type SearchGroupFields = {
   ma_entity_id?: string | null;
 };
 
-// These default values are not used at runtime, but the keys are needed for mapping purposes.
 const defaultValues: SearchGroupFields = {
   search: {},
   ma_entity_id: null,
