@@ -15,7 +15,7 @@ export function parseColorToHsla(inputColor: string): HLSA | null {
     color[0],
     color[1] * 100,
     color[2] * 100,
-    // @ts-expect-error
+    // @ts-expect-error it's there don't worry
     color[3] !== undefined ? color[3] : 1,
   ];
 }
