@@ -19,7 +19,7 @@
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@tanstack/react-form": "^1.27.7",
-    "@tanstack/react-virtual": "^3.13.13",
+    "@tanstack/react-virtual": "^3.13.18",
     "@uidotdev/usehooks": "^2.4.1",
     "arktype": "^2.1.29",
     "chroma-js": "^3.2.0",
