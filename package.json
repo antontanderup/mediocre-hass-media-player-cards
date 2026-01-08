@@ -22,6 +22,7 @@
     "@tanstack/react-virtual": "^3.13.13",
     "@uidotdev/usehooks": "^2.4.1",
     "arktype": "^2.1.29",
+    "chroma-js": "^3.2.0",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.3",
     "preact": "^10.28.1"
@@ -30,6 +31,7 @@
     "@emotion/eslint-plugin": "^11.12.0",
     "@eslint/js": "^9.28.0",
     "@preact/preset-vite": "^2.10.2",
+    "@types/chroma-js": "^3.1.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
