@@ -1,5 +1,6 @@
 export * from "./actions";
 export * from "./cardConfigUtils";
+export * from "./colorUtils";
 export * from "./getAllMassPlayers";
 export * from "./getDeviceIcon";
 export * from "./getDidMediaPlayerUpdate";

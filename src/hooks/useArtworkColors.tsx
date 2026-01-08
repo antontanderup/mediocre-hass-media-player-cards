@@ -8,14 +8,16 @@ import {
   useState,
 } from "preact/hooks";
 import { usePlayer } from "@components";
-import { isDarkMode } from "@utils";
+import { getCssColorVariable, isDarkMode, parseColorToHsla } from "@utils";
 
 export function useArtworkColors() {
   const {
     attributes: { entity_picture, entity_picture_local },
   } = usePlayer();
+
   const albumArt = entity_picture_local || entity_picture;
   const albumArtRef = useRef<string | undefined>(null);
+
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
   // Track dark mode state
@@ -30,8 +32,11 @@ export function useArtworkColors() {
         if (albumArtRef.current !== albumArt) return;
         Vibrant.from(albumArt)
           .getPalette()
-          .then(setPalette)
+          .then(palette => {
+            setPalette(palette);
+          })
           .catch(e => {
+            setPalette(null);
             console.error("Error getting color with Vibrant:", e);
           });
       }, 800);
@@ -40,7 +45,6 @@ export function useArtworkColors() {
 
   // Reset average color when album art changes
   useEffect(() => {
-    setPalette(null);
     if (albumArt) {
       getColors();
     }
@@ -61,94 +65,137 @@ export function useArtworkColors() {
     }
   }, []);
 
-  const cssVariablesLight = useMemo(() => {
-    if (darkMode) return null;
-    if (!palette) return null;
-    const variant = palette.Vibrant ?? palette.Muted;
-    if (!variant) return null;
+  const extractHslFromCssVariable = useCallback((variableName: string) => {
+    const color = getCssColorVariable(variableName);
+    if (color) {
+      const hsla = parseColorToHsla(color);
+      if (!hsla) return null;
+      return {
+        h: hsla[0],
+        s: hsla[1],
+        l: hsla[2],
+        a: hsla[3] ?? 1,
+      };
+    }
+    return null;
+  }, []);
 
-    const primaryColor = { ...vibrantHslToHsl(variant.hsl), l: 50 };
-    const onPrimaryColor = getContrastingHsl(primaryColor);
-    const surfaceColor = { ...primaryColor, s: 4.35, l: 95.49 };
+  const userThemeHlsValues = useMemo(() => {
+    const cardBackgroundColor = extractHslFromCssVariable(
+      "--card-background-color"
+    );
+    const haDialogSurfaceBackground = extractHslFromCssVariable(
+      "--ha-dialog-surface-background"
+    ) ??
+      extractHslFromCssVariable("--mdc-theme-surface") ?? {
+        h: 0,
+        s: 0,
+        l: darkMode ? 0 : 100,
+        a: 1,
+      };
+    const primaryColor = extractHslFromCssVariable("--primary-color");
+    const secondaryBackgroundColor = extractHslFromCssVariable(
+      "--secondary-background-color"
+    );
+    const dividerColor = extractHslFromCssVariable("--divider-color");
+
+    return {
+      cardBackgroundColor,
+      haDialogSurfaceBackground,
+      primaryColor,
+      secondaryBackgroundColor,
+      dividerColor,
+    };
+  }, [darkMode, extractHslFromCssVariable]);
+
+  const cssVariablesLight = useMemo(() => {
+    if (darkMode || !palette) return null;
+
+    const artColor = palette.Vibrant;
+    const variant = palette.LightVibrant ?? palette.Vibrant;
+    const variantAlternative = palette.DarkVibrant ?? palette.Muted;
+    if (!variant || !variantAlternative || !artColor) return null;
+
+    const primaryVibrantHls = vibrantHslToHsl(variant.hsl);
+    const primaryColor = {
+      ...primaryVibrantHls,
+      s: userThemeHlsValues.primaryColor?.s ?? primaryVibrantHls.s,
+      l: userThemeHlsValues.primaryColor?.l ?? 50,
+    };
+    const surfaceColor = {
+      ...primaryColor,
+      s: userThemeHlsValues.cardBackgroundColor?.s ?? 4.35,
+      l: userThemeHlsValues.cardBackgroundColor?.l ?? 95.49,
+    };
 
     const onSurfaceColor = {
       ...getContrastingHsl(surfaceColor),
-      l: 15.29,
     };
-    const surfaceHigher = { ...surfaceColor, l: surfaceColor.l * 0.98 };
-    const onSurfaceHigher = getContrastingHsl(surfaceHigher);
-    const surfaceLower = { ...surfaceColor, l: surfaceColor.l * 1.1 };
-    const onSurfaceLower = getContrastingHsl(surfaceLower);
 
     return {
       artVars: {
-        "--art-color": `${hslToCss(vibrantHslToHsl(variant.hsl))}`,
-        "--art-on-art-color": `${variant.titleTextColor}`,
-        "--art-primary-color": `${hslToCss(primaryColor)}`,
-        "--art-on-primary-color": `${hslToCss(onPrimaryColor)}`,
+        "--art-color": `${hslToCss(vibrantHslToHsl(artColor.hsl))}`,
+        "--art-alternative-color": `${hslToCss(vibrantHslToHsl(variantAlternative.hsl))}`,
         "--art-surface-color": `${hslToCss(surfaceColor)}`,
-        "--art-on-surface-color": `${hslToCss(onSurfaceColor)}`,
-        "--art-surface-higher-color": `${hslToCss(surfaceHigher)}`,
-        "--art-on-surface-higher-color": `${hslToCss(onSurfaceHigher)}`,
-        "--art-surface-lower-color": `${hslToCss(surfaceLower)}`,
-        "--art-on-surface-lower-color": `${hslToCss(onSurfaceLower)}`,
       },
       haVars: {
         "--primary-color": `${hslToCss(primaryColor)}`,
         "--ha-card-background": `${hslToCss(surfaceColor)}`,
-        "--card-background-color": `${hslToCss(surfaceHigher)}`,
+        "--card-background-color": `${hslToCss(surfaceColor)}`,
         "--primary-text-color": `${hslToCss(onSurfaceColor)}`,
         "--secondary-text-color": `${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 1.1 })}`,
         "--icon-primary-color": `${hslToCss(onSurfaceColor)}`,
-        "--divider-color": `${hslToCss({ ...surfaceColor, l: 88 })}`,
-        "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 100 })}`,
-        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, l: 95 })}`,
+        "--divider-color": `${hslToCss({ ...surfaceColor, s: userThemeHlsValues.dividerColor?.s ?? surfaceColor.s, l: userThemeHlsValues.dividerColor?.l ?? 88, a: userThemeHlsValues.dividerColor?.a ?? 0.2 })}`,
+        "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 10 })}`,
+        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, s: userThemeHlsValues.secondaryBackgroundColor?.s ?? onSurfaceColor.s, l: userThemeHlsValues.secondaryBackgroundColor?.l ?? 95 })}`,
+        "--ha-dialog-surface-background": `${hslToCss({ ...userThemeHlsValues.haDialogSurfaceBackground, h: primaryColor.h, a: 1 })}`,
       },
     };
-  }, [palette, darkMode]);
+  }, [palette, darkMode, userThemeHlsValues]);
 
   const cssVariablesDark = useMemo(() => {
-    if (!darkMode) return null;
-    if (!palette) return null;
-    const variant = palette.Vibrant ?? palette.Muted;
-    if (!variant) return null;
+    if (!darkMode || !palette) return null;
 
-    const primaryColor = { ...vibrantHslToHsl(variant.hsl), l: 50 };
-    const onPrimaryColor = getContrastingHsl(primaryColor);
-    const surfaceColor = { ...primaryColor, s: 2.91, l: 20.2 };
+    const artColor = palette.Vibrant;
+    const variant = palette.DarkVibrant ?? palette.Vibrant;
+    const variantAlternative = palette.LightVibrant ?? palette.Muted;
+    if (!variant || !variantAlternative || !artColor) return null;
+
+    const primaryVibrantHls = vibrantHslToHsl(variant.hsl);
+    const primaryColor = {
+      ...primaryVibrantHls,
+      s: userThemeHlsValues.primaryColor?.s ?? primaryVibrantHls.s,
+      l: userThemeHlsValues.primaryColor?.l ?? 50,
+      a: userThemeHlsValues.primaryColor?.a ?? 1,
+    };
+    const surfaceColor = {
+      ...primaryColor,
+      s: userThemeHlsValues.cardBackgroundColor?.s ?? 2.91,
+      l: userThemeHlsValues.cardBackgroundColor?.l ?? 20.2,
+      a: userThemeHlsValues.cardBackgroundColor?.a ?? 1,
+    };
 
     const onSurfaceColor = {
       ...getContrastingHsl(surfaceColor),
-      l: 86.47,
     };
-    const surfaceHigher = { ...surfaceColor, l: surfaceColor.l * 1.02 };
-    const onSurfaceHigher = getContrastingHsl(surfaceHigher);
-    const surfaceLower = { ...surfaceColor, l: surfaceColor.l * 0.98 };
-    const onSurfaceLower = getContrastingHsl(surfaceLower);
 
     return {
       artVars: {
-        "--art-color": `${hslToCss(vibrantHslToHsl(variant.hsl))}`,
-        "--art-on-art-color": `${variant.titleTextColor}`,
-        "--art-primary-color": `${hslToCss(primaryColor)}`,
-        "--art-on-primary-color": `${hslToCss(onPrimaryColor)}`,
+        "--art-color": `${hslToCss(vibrantHslToHsl(artColor.hsl))}`,
+        "--art-alternative-color": `${hslToCss(vibrantHslToHsl(variantAlternative.hsl))}`,
         "--art-surface-color": `${hslToCss(surfaceColor)}`,
-        "--art-on-surface-color": `${hslToCss(onSurfaceColor)}`,
-        "--art-surface-higher-color": `${hslToCss(surfaceHigher)}`,
-        "--art-on-surface-higher-color": `${hslToCss(onSurfaceHigher)}`,
-        "--art-surface-lower-color": `${hslToCss(surfaceLower)}`,
-        "--art-on-surface-lower-color": `${hslToCss(onSurfaceLower)}`,
       },
       haVars: {
         "--primary-color": `${hslToCss(primaryColor)}`,
         "--ha-card-background": `${hslToCss(surfaceColor)}`,
-        "--card-background-color": `${hslToCss(surfaceHigher)}`,
+        "--card-background-color": `${hslToCss(surfaceColor)}`,
         "--primary-text-color": `${hslToCss(onSurfaceColor)}`,
         "--secondary-text-color": `${hslToCss({ ...onSurfaceColor, l: onSurfaceColor.l * 0.9 })}`,
         "--icon-primary-color": `${hslToCss(onSurfaceColor)}`,
-        "--divider-color": `${hslToCss({ ...surfaceColor, l: 25 })}`,
+        "--divider-color": `${hslToCss({ ...surfaceColor, s: userThemeHlsValues.dividerColor?.s ?? surfaceColor.s, l: userThemeHlsValues.dividerColor?.l ?? 25, a: userThemeHlsValues.dividerColor?.a ?? 0.2 })}`,
         "--clear-background-color": `${hslToCss({ ...surfaceColor, l: 0 })}`,
-        "--secondary-background-color": `${hslToCss({ ...onSurfaceColor, l: 19 })}`,
+        "--secondary-background-color": `${hslToCss({ ...surfaceColor, s: userThemeHlsValues.secondaryBackgroundColor?.s ?? onSurfaceColor.s, l: userThemeHlsValues.secondaryBackgroundColor?.l ?? 19 })}`,
+        "--ha-dialog-surface-background": `${hslToCss({ ...userThemeHlsValues.haDialogSurfaceBackground, h: primaryColor.h, a: 1 })}`,
       },
     };
   }, [palette, darkMode]);
@@ -182,7 +229,9 @@ const getContrastingHsl = ({
 }) => {
   // Rotate hue by 180 degrees
   const newHue = (h + 180) % 360;
-  return { h: newHue, s, l };
+  // Get opposite lightness
+  const newLightness = 100 - l;
+  return { h: newHue, s, l: newLightness };
 };
 
 const hslToCss = ({

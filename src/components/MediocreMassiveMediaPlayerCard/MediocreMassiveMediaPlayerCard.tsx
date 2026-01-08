@@ -11,6 +11,7 @@ import { useActionProps, useArtworkColors } from "@hooks";
 import { AlbumArt } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { isDarkMode } from "@utils";
 
 const styles = {
   root: css({
@@ -22,7 +23,7 @@ const styles = {
     "*": {
       boxSizing: "border-box",
     },
-    "--mmpc-surface-higher": theme.colors.card,
+    "--mmpc-surface-higher": `hsl(from ${theme.colors.card} h s calc(l ${isDarkMode() ? "+" : "-"} 5))`,
   }),
   rootPanelMode: css({
     width: "100%",
@@ -33,10 +34,21 @@ const styles = {
   }),
   rootPopupMode: css({
     "--mmpc-extra-horizontal-padding": "12px",
+    "--mmpc-surface-higher": `hsl(from ${theme.colors.dialog} h s calc(l ${isDarkMode() ? "+" : "-"}  5))`,
   }),
   rootMultiMode: css({
     width: "100%",
     height: "100%",
+  }),
+  card: css({
+    overflow: "hidden",
+  }),
+  artBackground: css({
+    background: `
+      radial-gradient( circle at bottom right, var(--art-alternative-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at top center, var(--art-alternative-color, transparent) -500%, transparent 80%),
+      radial-gradient( circle at bottom center, var(--art-alternative-color, transparent) -500%, transparent 40% ),
+      radial-gradient( circle at top left, var(--art-alternative-color, transparent) -500%, transparent 40% )`,
   }),
   wrap: css({
     display: "flex",
@@ -117,11 +129,19 @@ export const MediocreMassiveMediaPlayerCard = ({
         mode === "panel" && styles.rootPanelMode,
         mode === "popup" && styles.rootPopupMode,
         mode === "multi" && styles.rootMultiMode,
+        use_art_colors &&
+          mode !== "popup" &&
+          mode !== "multi" &&
+          styles.artBackground,
       ]}
-      style={{
-        ...(artVars ?? {}),
-        ...(haVars && use_art_colors ? haVars : {}),
-      }}
+      style={
+        mode !== "card"
+          ? {
+              ...(artVars ?? {}),
+              ...(haVars && use_art_colors ? haVars : {}),
+            }
+          : {}
+      }
     >
       <div
         css={[
@@ -149,7 +169,17 @@ export const MediocreMassiveMediaPlayerCard = ({
   );
 
   if (mode === "card") {
-    return <ha-card>{renderRoot()}</ha-card>;
+    return (
+      <ha-card
+        css={styles.card}
+        style={{
+          ...(artVars ?? {}),
+          ...(haVars && use_art_colors ? haVars : {}),
+        }}
+      >
+        {renderRoot()}
+      </ha-card>
+    );
   }
   return renderRoot();
 };

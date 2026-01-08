@@ -31,12 +31,12 @@ const styles = {
     borderRadius: "var(--ha-card-border-radius, 12px)",
     overflow: "hidden",
   }),
-  cardArtBackground: css({
+  artBackground: css({
     background: `
-      radial-gradient( circle at bottom right, var(--art-color, transparent) -500%, transparent 40% ),
-      radial-gradient( circle at top center, var(--art-color, transparent) -500%, transparent 40% ),
-      radial-gradient( circle at bottom center, var(--art-color, transparent) -500%, transparent 40% ),
-      radial-gradient( circle at top left, var(--art-color, transparent) -500%, transparent 40% )`,
+      radial-gradient( circle at bottom right, var(--art-alternative-color, transparent) -500%, transparent 30% ),
+      radial-gradient( circle at top center, var(--art-alternative-color, transparent) -500%, transparent 30% ),
+      radial-gradient( circle at bottom center, var(--art-alternative-color, transparent) -500%, transparent 30% ),
+      radial-gradient( circle at top left, var(--art-alternative-color, transparent) -500%, transparent 30% )`,
   }),
   cardContent: css({
     display: "flex",
@@ -200,14 +200,13 @@ export const MediocreMediaPlayerCard = ({
   }
 
   return (
-    <ha-card>
-      <div
-        css={[styles.card, use_art_colors && styles.cardArtBackground]}
-        style={{
-          ...(artVars ?? {}),
-          ...(haVars && use_art_colors ? haVars : {}),
-        }}
-      >
+    <ha-card
+      style={{
+        ...(artVars ?? {}),
+        ...(haVars && use_art_colors ? haVars : {}),
+      }}
+    >
+      <div css={[styles.card, use_art_colors && styles.artBackground]}>
         <div css={styles.cardContent} style={{ opacity: isOn ? 1 : 0.7 }}>
           <AlbumArt size={artSize} iconSize="large" {...artActionProps} />
           <div css={styles.cardColumn}>
