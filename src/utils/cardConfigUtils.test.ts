@@ -146,6 +146,8 @@ describe("cardConfigUtils", () => {
       expect(result).toEqual({
         ...fullConfig,
         media_browser: [{ entity_id: "media_player.browser" }],
+        lms_entity_id: null,
+        visibility: undefined,
       });
     });
   });
