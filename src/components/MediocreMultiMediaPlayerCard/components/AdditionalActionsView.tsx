@@ -11,8 +11,10 @@ import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import {
   getHass,
+  getIsLmsPlayer,
   getIsMassPlayer,
   getSourceIcon,
+  transferLmsQueue,
   transferMaQueue,
 } from "@utils";
 import { Fragment } from "preact/jsx-runtime";
@@ -48,8 +50,12 @@ export type AdditionalActionsViewProps = {
 
 export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
   ({ mediaPlayer, setSelectedPlayer }) => {
-    const { custom_buttons, ma_favorite_button_entity_id, ma_entity_id } =
-      mediaPlayer;
+    const {
+      custom_buttons,
+      ma_favorite_button_entity_id,
+      ma_entity_id,
+      lms_entity_id,
+    } = mediaPlayer;
 
     const {
       config: { media_players },
@@ -64,6 +70,11 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
     const isMainEntityMassPlayer = useMemo(
       () => getIsMassPlayer(player),
       [player, player?.attributes?.active_child]
+    );
+
+    const isMainEntityLmsPlayer = useMemo(
+      () => lms_entity_id && getIsLmsPlayer(player, lms_entity_id),
+      [player, lms_entity_id]
     );
 
     const transferQueue = useCallback(
@@ -100,6 +111,35 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
       isMainEntityMassPlayer,
       ma_entity_id,
       transferQueue,
+      media_players,
+      setSelectedPlayer,
+    ]);
+
+    const lmsTransferMenuItems: OverlayMenuItem[] = useMemo(() => {
+      if (!lms_entity_id || !isMainEntityLmsPlayer) return [];
+      const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
+        if (!mp.lms_entity_id) return null;
+        const state = hass.states[mp.entity_id];
+        if (
+          !state ||
+          state.state === "unavailable" ||
+          mp.entity_id === mediaPlayer.entity_id
+        )
+          return null;
+        return {
+          label: state.attributes.friendly_name || mp.entity_id,
+          onClick: () => {
+            if (!mp.lms_entity_id) return;
+            transferLmsQueue(lms_entity_id, mp.lms_entity_id);
+            setSelectedPlayer(mp);
+          },
+        };
+      });
+
+      return items.filter(item => item !== null) as OverlayMenuItem[];
+    }, [
+      isMainEntityLmsPlayer,
+      lms_entity_id,
       media_players,
       setSelectedPlayer,
     ]);
@@ -186,6 +226,20 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
                     />
                   )}
                 </Fragment>
+              )}
+              {lmsTransferMenuItems.length > 0 && (
+                <OverlayMenu
+                  menuItems={lmsTransferMenuItems}
+                  side="bottom"
+                  renderTrigger={triggerProps => (
+                    <Chip icon="mdi:transfer" {...triggerProps}>
+                      {t({
+                        id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
+                      })}
+                      <Icon size="x-small" icon="mdi:chevron-down" />
+                    </Chip>
+                  )}
+                />
               )}
               {sourceSelectMenuItems.length > 0 && player.attributes.source && (
                 <OverlayMenu

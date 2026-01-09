@@ -1,5 +1,11 @@
 import { CardContext, CardContextType } from "@components/CardContext";
-import { useCallback, useContext, useMemo, useState } from "preact/hooks";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import {
   CustomButton,
@@ -22,7 +28,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
 import { MassivePopUp } from "./components/MassivePopUp";
-import { getHasMediaBrowser, getHass } from "@utils";
+import { getAllSqueezeboxPlayers, getHasMediaBrowser, getHass } from "@utils";
 import { css } from "@emotion/react";
 import { MediaBrowserBar } from "./components/MediaBrowserBar";
 
@@ -238,6 +244,7 @@ export const MediocreMediaPlayerCard = ({
                     ma_favorite_button_entity_id={
                       ma_favorite_button_entity_id ?? undefined
                     }
+                    lms_entity_id={config.lms_entity_id ?? undefined}
                     renderTrigger={triggerProps => (
                       <IconButton
                         icon={"mdi:dots-vertical"}
