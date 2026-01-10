@@ -1,11 +1,5 @@
 import { CardContext, CardContextType } from "@components/CardContext";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "preact/hooks";
+import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import {
   CustomButton,
@@ -28,7 +22,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
 import { MassivePopUp } from "./components/MassivePopUp";
-import { getAllSqueezeboxPlayers, getHasMediaBrowser, getHass } from "@utils";
+import { getHasMediaBrowser, getHass } from "@utils";
 import { css } from "@emotion/react";
 import { MediaBrowserBar } from "./components/MediaBrowserBar";
 
