@@ -40,12 +40,20 @@ const customButton = type({
 
 const customButtons = customButton.array();
 
-const search = type({
+const searchLegacyEntry = type({
   "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
   "show_favorites?": type("boolean | null").or("undefined"), // Shows favorites no search query has been entered
   "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
   "media_types?": searchMediaTypeSchema.array(),
-}).or("undefined");
+});
+
+const searchEntry = type({
+  "name?": "string | null",
+  entity_id: type("string"),
+  "media_types?": searchMediaTypeSchema.array().or("undefined"),
+});
+
+const searchConfig = searchEntry.array().or(searchLegacyEntry).or("undefined");
 
 const commonMediocreMediaPlayerCardConfigSchema = type({
   type: "string",
@@ -61,7 +69,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
-  "search?": search,
+  "search?": searchConfig,
   "media_browser?": mediaBrowser,
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
@@ -92,7 +100,7 @@ export const MediocreMultiMediaPlayer = type({
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
-  "search?": search,
+  "search?": searchConfig,
   "media_browser?": mediaBrowser,
 });
 
@@ -128,4 +136,4 @@ export type MediaBrowserEntry = typeof mediaBrowserEntry.infer;
 export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;
 export type CustomButton = typeof customButton.infer;
 export type CustomButtons = typeof customButtons.infer;
-export type SearchConfig = typeof search.infer;
+export type SearchConfig = typeof searchConfig.infer;
