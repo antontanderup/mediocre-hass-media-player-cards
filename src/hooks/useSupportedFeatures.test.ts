@@ -113,26 +113,6 @@ describe("getSupportedFeatures", () => {
       expect(result.supportsShuffle).toBe(false);
     });
 
-    it("should return false when source is optical", () => {
-      const result = getSupportedFeatures("playing", {
-        ...baseAttributes,
-        shuffle: false,
-        source: "optical",
-        supported_features: 32768,
-      });
-      expect(result.supportsShuffle).toBe(false);
-    });
-
-    it("should return false when source is aux (case insensitive)", () => {
-      const result = getSupportedFeatures("playing", {
-        ...baseAttributes,
-        shuffle: false,
-        source: "AUX",
-        supported_features: 32768,
-      });
-      expect(result.supportsShuffle).toBe(false);
-    });
-
     it("should return false when supported_features is undefined", () => {
       const result = getSupportedFeatures("playing", {
         ...baseAttributes,
@@ -175,16 +155,6 @@ describe("getSupportedFeatures", () => {
       const result = getSupportedFeatures("off", {
         ...baseAttributes,
         repeat: "off",
-        supported_features: 262144,
-      });
-      expect(result.supportsRepeat).toBe(false);
-    });
-
-    it("should return false when source is optical", () => {
-      const result = getSupportedFeatures("playing", {
-        ...baseAttributes,
-        repeat: "off",
-        source: "optical",
         supported_features: 262144,
       });
       expect(result.supportsRepeat).toBe(false);
