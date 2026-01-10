@@ -20,6 +20,7 @@ import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMe
 import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
 import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
 import { FieldGroupSearch } from "@components/Form/components/FieldGroupSearch";
+import { getSearchEntryArray } from "@utils/getSearchEntryArray";
 
 export type MediocreMultiMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -66,6 +67,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         ...config,
         media_players: config.media_players.map(mp => ({
           ...mp,
+          search: getSearchEntryArray(mp.search, mp.entity_id),
           media_browser: mp?.media_browser
             ? Array.isArray(mp.media_browser)
               ? mp.media_browser
