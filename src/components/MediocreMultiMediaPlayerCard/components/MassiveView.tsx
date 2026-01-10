@@ -137,7 +137,10 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
 
     return (
       <div css={styles.root} style={{ height }}>
-        <div css={styles.massiveHeader}>
+        <div
+          css={styles.massiveHeader}
+          id="mmpc-multi-media-player-card-massive-view-header"
+        >
           <Icon size={"small"} icon={mdiIcon} />
           <span css={styles.title}>
             {mediaPlayer.name ?? friendlyName}
