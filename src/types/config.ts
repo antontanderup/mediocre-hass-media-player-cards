@@ -137,3 +137,5 @@ export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;
 export type CustomButton = typeof customButton.infer;
 export type CustomButtons = typeof customButtons.infer;
 export type SearchConfig = typeof searchConfig.infer;
+export type SearchLegacyEntry = typeof searchLegacyEntry.infer;
+export type SearchEntry = typeof searchEntry.infer;
