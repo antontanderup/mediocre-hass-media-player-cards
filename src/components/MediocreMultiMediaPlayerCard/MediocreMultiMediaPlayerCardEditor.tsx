@@ -264,6 +264,22 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         />
                       </SubForm>
                       <SubForm
+                        title="LMS Configuration (optional)"
+                        error={getSubformError(
+                          `media_players[${index}].lms_entity_id`
+                        )}
+                      >
+                        <form.AppField
+                          name={`media_players[${index}].lms_entity_id`}
+                          children={field => (
+                            <field.EntityPicker
+                              label="LMS Media Player Entity ID"
+                              domains={["media_player"]}
+                            />
+                          )}
+                        />
+                      </SubForm>
+                      <SubForm
                         title="Search Configuration (optional) (not for music assistant)"
                         error={getSubformError(
                           `media_players[${index}].search`

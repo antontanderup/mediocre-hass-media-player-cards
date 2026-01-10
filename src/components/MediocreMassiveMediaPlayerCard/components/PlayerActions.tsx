@@ -1,6 +1,12 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import { HaSearch, IconButton, MaMenu, MaSearch, usePlayer } from "@components";
+import {
+  AdditionalActionsMenu,
+  HaSearch,
+  IconButton,
+  MaSearch,
+  usePlayer,
+} from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -230,19 +236,22 @@ export const PlayerActions = () => {
           </Modal>
         </Fragment>
       ) : null}
-      {ma_entity_id && (
-        <MaMenu
-          ma_entity_id={ma_entity_id ?? undefined}
-          ma_favorite_button_entity_id={
-            ma_favorite_button_entity_id ?? undefined
-          }
-          side="top"
-          align="start"
-          renderTrigger={triggerProps => (
-            <IconButton icon="mdi:bookshelf" size="small" {...triggerProps} />
-          )}
-        />
-      )}
+
+      <AdditionalActionsMenu
+        ma_entity_id={ma_entity_id ?? undefined}
+        ma_favorite_button_entity_id={ma_favorite_button_entity_id ?? undefined}
+        lms_entity_id={config.lms_entity_id ?? undefined}
+        noSourceSelection
+        side="top"
+        align="center"
+        renderTrigger={triggerProps => (
+          <IconButton
+            icon={"mdi:dots-vertical"}
+            size="small"
+            {...triggerProps}
+          />
+        )}
+      />
       {hasSearch && (
         <IconButton
           size="small"

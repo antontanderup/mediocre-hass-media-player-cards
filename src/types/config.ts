@@ -60,6 +60,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "custom_buttons?": customButtons,
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
+  "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": search,
   "media_browser?": mediaBrowser,
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
@@ -90,6 +91,7 @@ export const MediocreMultiMediaPlayer = type({
   "can_be_grouped?": "boolean | null",
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
+  "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": search,
   "media_browser?": mediaBrowser,
 });

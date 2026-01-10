@@ -238,6 +238,7 @@ export const MediocreMediaPlayerCard = ({
                     ma_favorite_button_entity_id={
                       ma_favorite_button_entity_id ?? undefined
                     }
+                    lms_entity_id={config.lms_entity_id ?? undefined}
                     renderTrigger={triggerProps => (
                       <IconButton
                         icon={"mdi:dots-vertical"}

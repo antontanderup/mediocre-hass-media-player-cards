@@ -9,6 +9,7 @@ export type HomeAssistant = Omit<
 > & {
   hassUrl: (path: string) => string;
   selectedTheme?: { theme: string; dark: boolean } | null;
+  entities: { [entityId: string]: { entity_id: string; platform: string } };
   states: CCHHomeAssistant["states"] & {
     [key: `media_player.${string}`]: MediaPlayerEntity | undefined;
   };

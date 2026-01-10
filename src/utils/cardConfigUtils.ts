@@ -31,6 +31,7 @@ export const getDefaultValuesFromConfig = (
     : null,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
+  lms_entity_id: config?.lms_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
   options: {
     always_show_power_button:
@@ -76,6 +77,7 @@ export const getDefaultValuesFromMassiveConfig = (
     : null,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
+  lms_entity_id: config?.lms_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
   options: {
     always_show_power_button:
@@ -108,6 +110,8 @@ export const getSimpleConfigFromFormValues = (
   if (!config.ma_favorite_button_entity_id) {
     delete config.ma_favorite_button_entity_id;
   }
+
+  if (!config.lms_entity_id) delete config.lms_entity_id;
   if (!config.custom_buttons || config.custom_buttons.length === 0)
     delete config.custom_buttons;
 
@@ -191,6 +195,7 @@ export const getSimpleConfigFromMassiveFormValues = (
     delete config.ma_favorite_button_entity_id;
   }
 
+  if (!config.lms_entity_id) delete config.lms_entity_id;
   if (!config.custom_buttons || config.custom_buttons.length === 0)
     delete config.custom_buttons;
 

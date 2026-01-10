@@ -1,8 +1,11 @@
 import { useMemo, useCallback } from "preact/hooks";
 import {
   getAllMassPlayers,
+  getAllSqueezeboxPlayers,
   getHass,
+  getIsLmsPlayer,
   getIsMassPlayer,
+  transferLmsQueue,
   transferMaQueue,
 } from "@utils";
 import {
@@ -16,11 +19,15 @@ import { useIntl } from "@components/i18n";
 export type AdditionalActionsMenuProps = {
   ma_entity_id?: string;
   ma_favorite_button_entity_id?: string;
+  lms_entity_id?: string;
+  noSourceSelection?: boolean;
 } & Omit<OverlayMenuProps, "menuItems" | "children">;
 
 export const AdditionalActionsMenu = ({
   ma_entity_id,
   ma_favorite_button_entity_id,
+  lms_entity_id,
+  noSourceSelection,
   ...overlayMenuProps
 }: AdditionalActionsMenuProps) => {
   const { t } = useIntl();
@@ -28,6 +35,11 @@ export const AdditionalActionsMenu = ({
   const isMainEntityMassPlayer = useMemo(
     () => getIsMassPlayer(player),
     [player]
+  );
+
+  const isMainEntityLmsPlayer = useMemo(
+    () => lms_entity_id && getIsLmsPlayer(player, lms_entity_id),
+    [player, lms_entity_id]
   );
 
   const markSongAsFavorite = useCallback(() => {
@@ -77,8 +89,29 @@ export const AdditionalActionsMenu = ({
         });
       }
     }
+    if (lms_entity_id && isMainEntityLmsPlayer) {
+      const allLmsPlayers = getAllSqueezeboxPlayers().filter(
+        player =>
+          player.entity_id !== lms_entity_id && player.state !== "unavailable"
+      );
+      if (allLmsPlayers.length > 0) {
+        items.push({
+          label: t({
+            id: "AdditionalActionsMenu.transfer_queue",
+          }),
+          icon: "mdi:transfer",
+          children: allLmsPlayers.map(player => ({
+            label: player.attributes.friendly_name || player.entity_id,
+            onClick: () => {
+              transferLmsQueue(lms_entity_id, player.entity_id);
+            },
+          })),
+        });
+      }
+    }
 
     if (
+      !noSourceSelection &&
       player.attributes.source_list?.length &&
       player.attributes.source_list?.length > 0
     ) {
@@ -99,7 +132,15 @@ export const AdditionalActionsMenu = ({
       });
     }
     return items;
-  }, [ma_favorite_button_entity_id, markSongAsFavorite, transferQueue]);
+  }, [
+    ma_favorite_button_entity_id,
+    isMainEntityMassPlayer,
+    ma_entity_id,
+    lms_entity_id,
+    markSongAsFavorite,
+    transferQueue,
+    noSourceSelection,
+  ]);
 
   if (menuItems.length === 0) return null;
 
