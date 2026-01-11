@@ -196,7 +196,6 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
       <SubForm title="Search (optional)" error={getSubformError("search")}>
         <FieldGroupSearch
           form={form}
-          fallbackEntityId={config.entity_id}
           fields={{ search: "search", ma_entity_id: "ma_entity_id" }}
         />
       </SubForm>

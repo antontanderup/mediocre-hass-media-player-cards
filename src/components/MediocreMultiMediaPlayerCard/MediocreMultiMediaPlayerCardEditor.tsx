@@ -289,7 +289,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       >
                         <FieldGroupSearch
                           form={form}
-                          fallbackEntityId={mediaPlayer.entity_id}
                           fields={{
                             search: `media_players[${index}].search`,
                             ma_entity_id: `media_players[${index}].ma_entity_id`,
