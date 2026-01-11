@@ -4,6 +4,7 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import { MaSearch, HaSearch } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { getSearchEntryArray } from "@utils";
 
 const styles = {
   root: css({
@@ -24,13 +25,14 @@ export const Search = () => {
     if (ma_entity_id) {
       return <MaSearch maEntityId={ma_entity_id} horizontalPadding={12} />;
     }
-    if (search?.enabled) {
+    const searchArray = getSearchEntryArray(search, entity_id);
+    if (searchArray.length > 0) {
       return (
         <HaSearch
-          entityId={search.entity_id ?? entity_id}
-          showFavorites={search.show_favorites ?? false}
+          entityId={searchArray[0].entity_id}
+          showFavorites={true}
           horizontalPadding={12}
-          filterConfig={search.media_types}
+          filterConfig={searchArray[0].media_types}
         />
       );
     }
