@@ -43,6 +43,9 @@
     }
   },
   "Search": {
+    "search_provider": {
+      "title": "Søg med.."
+    },
     "input_placeholder": "Søg efter medier...",
     "categories": {
       "All": "Alt",
@@ -58,6 +61,7 @@
       "Radio": "Radio"
     },
     "enqueue_mode": {
+      "title": "Kø-tilstand",
       "play": "Afspil",
       "replace": "Erstat kø",
       "next": "Tilføj næste",

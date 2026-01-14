@@ -1,10 +1,9 @@
 import { useContext } from "preact/hooks";
 import type { MediocreMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
-import { MaSearch, HaSearch } from "@components";
+import { MaSearch, HaSearch, useSearchProviderMenu } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
-import { getSearchEntryArray } from "@utils";
 
 const styles = {
   root: css({
@@ -21,22 +20,32 @@ export const Search = () => {
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
   const { ma_entity_id, search, entity_id } = config;
 
+  const { selectedSearchProvider, searchProvidersMenu } = useSearchProviderMenu(
+    search,
+    entity_id,
+    ma_entity_id
+  );
+
   const renderSearch = () => {
-    if (ma_entity_id) {
-      return <MaSearch maEntityId={ma_entity_id} horizontalPadding={12} />;
-    }
-    const searchArray = getSearchEntryArray(search, entity_id);
-    if (searchArray.length > 0) {
+    if (!selectedSearchProvider) return null;
+    if (selectedSearchProvider.entity_id === ma_entity_id) {
       return (
-        <HaSearch
-          entityId={searchArray[0].entity_id}
-          showFavorites={true}
+        <MaSearch
+          maEntityId={ma_entity_id}
           horizontalPadding={12}
-          filterConfig={searchArray[0].media_types}
+          additionalOptions={searchProvidersMenu}
         />
       );
     }
-    return null;
+    return (
+      <HaSearch
+        entityId={selectedSearchProvider.entity_id}
+        showFavorites={true}
+        horizontalPadding={12}
+        filterConfig={selectedSearchProvider.media_types}
+        additionalOptions={searchProvidersMenu}
+      />
+    );
   };
 
   return <div css={styles.root}>{renderSearch()}</div>;
