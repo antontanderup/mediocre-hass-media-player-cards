@@ -11,7 +11,7 @@ export const useSearchProviderMenu = (
 ) => {
   const { t } = useIntl();
   const searchEntryArray = useMemo(() => {
-    let entries = getSearchEntryArray(search, fallbackEntityId);
+    const entries = getSearchEntryArray(search, fallbackEntityId);
     if (ma_entity_id) {
       return [
         ...entries,
