@@ -52,7 +52,13 @@ export const SearchView = memo<SearchViewProps>(
                   menuItems={searchProvidersMenu}
                   align="end"
                   renderTrigger={triggerProps => (
-                    <Chip invertedColors size="small" {...triggerProps}>
+                    <Chip
+                      icon="mdi:import"
+                      invertedColors
+                      border
+                      size="small"
+                      {...triggerProps}
+                    >
                       {selectedSearchProvider?.name ??
                         selectedSearchProvider?.entity_id}
                       <Icon icon="mdi:chevron-down" size="x-small" />
