@@ -19,7 +19,13 @@ export function selectActiveMultiMediaPlayer(
     config.media_players.find(player => player.entity_id === config.entity_id);
 
   const playerState = hass.states[player?.entity_id ?? config.entity_id]?.state;
-  if (player && (playerState === "playing" || playerState === "paused")) {
+  if (
+    player &&
+    getIsActivePlayer(
+      playerState,
+      config.options?.player_is_active_when ?? "playing"
+    )
+  ) {
     const groupState =
       hass.states[player?.speaker_group_entity_id || player.entity_id];
     if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
@@ -29,7 +35,12 @@ export function selectActiveMultiMediaPlayer(
 
   config.media_players.forEach(p => {
     const state = hass.states[p.entity_id] as MediaPlayerEntity;
-    if (state.state === "playing" || state.state === "paused") {
+    if (
+      getIsActivePlayer(
+        state.state,
+        config.options?.player_is_active_when ?? "playing"
+      )
+    ) {
       const groupState = hass.states[p.speaker_group_entity_id || p.entity_id];
       if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
         player = p;
@@ -39,3 +50,14 @@ export function selectActiveMultiMediaPlayer(
 
   return player;
 }
+
+const getIsActivePlayer = (
+  state: string,
+  activeLogic: "playing" | "playing_or_paused"
+) => {
+  if (activeLogic === "playing") {
+    return state === "playing";
+  } else {
+    return state === "playing" || state === "paused";
+  }
+};
