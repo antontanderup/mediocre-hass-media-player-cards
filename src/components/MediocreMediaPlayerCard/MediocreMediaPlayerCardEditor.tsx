@@ -101,6 +101,11 @@ export const MediocreMediaPlayerCardEditor: FC<
         )}
       />
 
+      <form.AppField
+        name="name"
+        children={field => <field.Text label="Name (optional)" />}
+      />
+
       <FormGroup
         css={css({ display: "flex", flexDirection: "row", gap: "16px" })}
       >
