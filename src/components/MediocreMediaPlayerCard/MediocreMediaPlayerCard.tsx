@@ -22,7 +22,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
 import { MassivePopUp } from "./components/MassivePopUp";
-import { getHasMediaBrowser, getHass } from "@utils";
+import { getHasMediaBrowser, getHass, getHasSearch } from "@utils";
 import { css } from "@emotion/react";
 import { MediaBrowserBar } from "./components/MediaBrowserBar";
 
@@ -106,8 +106,8 @@ export const MediocreMediaPlayerCard = ({
   } = config;
 
   const hasCustomButtons = custom_buttons && custom_buttons.length > 0;
-  const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
-  const hasSearch = (hasMaSearch || search?.enabled) && !isEmbeddedInMultiCard;
+  const hasSearch =
+    getHasSearch(search, ma_entity_id) && !isEmbeddedInMultiCard;
   const hasMediaBrowser =
     getHasMediaBrowser(media_browser) && !isEmbeddedInMultiCard;
 

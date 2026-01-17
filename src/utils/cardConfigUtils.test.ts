@@ -83,12 +83,7 @@ describe("cardConfigUtils", () => {
         entity_id: null,
         entities: [],
       });
-      expect(result.search).toEqual({
-        enabled: false,
-        show_favorites: false,
-        entity_id: null,
-        media_types: [],
-      });
+      expect(result.search).toEqual([]);
       expect(result.ma_entity_id).toBeNull();
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({
@@ -142,10 +137,17 @@ describe("cardConfigUtils", () => {
 
       const result = getDefaultValuesFromConfig(fullConfig);
 
-      // The new format converts media_browser to an array
+      // The new format converts media_browser to an array and search to an array
       expect(result).toEqual({
         ...fullConfig,
         media_browser: [{ entity_id: "media_player.browser" }],
+        search: [
+          {
+            name: "Search",
+            entity_id: "media_player.search",
+            media_types: [],
+          },
+        ],
         lms_entity_id: null,
         visibility: undefined,
       });
@@ -234,12 +236,7 @@ describe("cardConfigUtils", () => {
         entity_id: null,
         entities: [],
       });
-      expect(result.search).toEqual({
-        enabled: false,
-        show_favorites: false,
-        entity_id: null,
-        media_types: [],
-      });
+      expect(result.search).toEqual([]);
       expect(result.ma_entity_id).toBeNull();
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({

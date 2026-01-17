@@ -1,12 +1,6 @@
 import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import {
-  AdditionalActionsMenu,
-  HaSearch,
-  IconButton,
-  MaSearch,
-  usePlayer,
-} from "@components";
+import { AdditionalActionsMenu, IconButton, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -22,9 +16,11 @@ import {
   getHasMediaBrowser,
   getHasMediaBrowserEntryArray,
   getHass,
+  getHasSearch,
 } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 import { useIntl } from "@components/i18n";
+import { Search } from "./Search";
 
 const slideUpFadeIn = keyframes`
   from {
@@ -108,8 +104,7 @@ export const PlayerActions = () => {
   // Determine if the player is on
   const isOn = state !== "off" && state !== "unavailable";
 
-  const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
-  const hasSearch = hasMaSearch || search?.enabled;
+  const hasSearch = getHasSearch(search, ma_entity_id);
 
   const hasMediaBrowser = getHasMediaBrowser(media_browser);
 
@@ -191,21 +186,7 @@ export const PlayerActions = () => {
         onClose={() => setSelected(undefined)}
         padding="16px 0px 16px 0px"
       >
-        {ma_entity_id ? (
-          <MaSearch
-            maEntityId={ma_entity_id}
-            horizontalPadding={16}
-            searchBarPosition="bottom"
-          />
-        ) : (
-          <HaSearch
-            entityId={search?.entity_id ?? config.entity_id}
-            showFavorites={search?.show_favorites ?? false}
-            horizontalPadding={16}
-            filterConfig={search?.media_types}
-            searchBarPosition="bottom"
-          />
-        )}
+        <Search />
       </Modal>
       {!!speaker_group && (
         <IconButton

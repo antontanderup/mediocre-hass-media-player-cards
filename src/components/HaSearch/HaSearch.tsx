@@ -1,4 +1,4 @@
-import { Chip, Input } from "@components";
+import { Chip, IconButton, Input } from "@components";
 import { useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import { searchStyles } from "@components/MediaSearch";
@@ -7,8 +7,11 @@ import { useSearchQuery } from "./useSearchQuery";
 import { useMediaBrowser } from "./useMediaBrowser";
 import { HaMediaItemsList } from "./HaMediaItemsList";
 import { JSX } from "preact";
-import { Select } from "@components/Select";
 import { useIntl } from "@components/i18n";
+import {
+  OverlayMenu,
+  OverlayMenuItem,
+} from "@components/OverlayMenu/OverlayMenu";
 
 const filters: HaFilterConfig[] = [
   { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
@@ -22,6 +25,7 @@ export type HaSearchProps = {
   showFavorites: boolean;
   horizontalPadding?: number;
   filterConfig?: HaFilterConfig[];
+  additionalOptions?: OverlayMenuItem[];
   searchBarPosition?: "top" | "bottom";
   maxHeight?: number;
   renderHeader?: () => JSX.Element;
@@ -34,6 +38,7 @@ export const HaSearch = ({
   searchBarPosition = "top",
   maxHeight = 300,
   filterConfig = filters,
+  additionalOptions = [],
   renderHeader,
 }: HaSearchProps) => {
   const { t } = useIntl();
@@ -67,44 +72,66 @@ export const HaSearch = ({
             loading={loading}
             css={searchStyles.input}
           />
-          <Select
-            value={enqueueMode}
-            hideSelectedCopy
-            onChange={value => setEnqueueMode(value.value as HaEnqueueMode)}
-            options={[
+          <OverlayMenu
+            align="end"
+            side="bottom"
+            menuItems={[
+              ...additionalOptions,
+              {
+                type: "title",
+                label: t({
+                  id: "Search.enqueue_mode.title",
+                  defaultMessage: "Enqueue Mode",
+                }),
+              },
               {
                 label: t({
                   id: "Search.enqueue_mode.play",
                   defaultMessage: "Play",
                 }),
-                value: "play",
+                selected: enqueueMode === "play",
                 icon: getEnqueModeIcon("play"),
+                onClick: () => setEnqueueMode("play"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.replace",
                   defaultMessage: "Replace Queue",
                 }),
-                value: "replace",
+                selected: enqueueMode === "replace",
                 icon: getEnqueModeIcon("replace"),
+                onClick: () => setEnqueueMode("replace"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.next",
                   defaultMessage: "Add Next",
                 }),
-                value: "next",
+                selected: enqueueMode === "next",
                 icon: getEnqueModeIcon("next"),
+                onClick: () => setEnqueueMode("next"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.add",
                   defaultMessage: "Add to Queue",
                 }),
-                value: "add",
+                selected: enqueueMode === "add",
                 icon: getEnqueModeIcon("add"),
+                onClick: () => setEnqueueMode("add"),
               },
             ]}
+            renderTrigger={triggerProps => (
+              <IconButton
+                size="x-small"
+                icon={
+                  !additionalOptions || additionalOptions.length === 0
+                    ? getEnqueModeIcon(enqueueMode)
+                    : "mdi:cog"
+                }
+                {...triggerProps}
+              />
+            )}
           />
         </div>
         <div css={searchStyles.filterContainer}>{renderFilterChips()}</div>
