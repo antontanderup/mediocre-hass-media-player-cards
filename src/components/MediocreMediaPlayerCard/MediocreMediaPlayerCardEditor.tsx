@@ -90,6 +90,7 @@ export const MediocreMediaPlayerCardEditor: FC<
 
   return (
     <form.AppForm>
+
       <form.AppField
         name="entity_id"
         children={field => (
@@ -98,6 +99,13 @@ export const MediocreMediaPlayerCardEditor: FC<
             required
             domains={["media_player"]}
           />
+        )}
+      />
+
+      <form.AppField
+        name="name"
+        children={field => (
+          <field.Text label="Card Name (optional)" />
         )}
       />
 
