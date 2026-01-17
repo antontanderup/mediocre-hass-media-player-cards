@@ -37,7 +37,14 @@ export const PlaybackControls = () => {
     supportsShuffle,
     supportsRepeat,
     supportsTogglePlayPause,
+    supportsStop,
   } = useSupportedFeatures();
+
+  const stop = useCallback(() => {
+    getHass().callService("media_player", "media_stop", {
+      entity_id: config.entity_id,
+    });
+  }, [config]);
 
   const togglePlayback = useCallback(() => {
     getHass().callService("media_player", "media_play_pause", {
@@ -89,13 +96,15 @@ export const PlaybackControls = () => {
           icon={"mdi:skip-previous"}
         />
       )}
-      {supportsTogglePlayPause && (
+      {supportsTogglePlayPause ? (
         <IconButton
           size="x-large"
           onClick={togglePlayback}
           icon={playing ? "mdi:pause-circle" : "mdi:play-circle"}
         />
-      )}
+      ) : supportsStop ? (
+        <IconButton size="x-large" onClick={stop} icon={"mdi:stop"} />
+      ) : null}
       {supportNextTrack && (
         <IconButton size="large" onClick={nextTrack} icon={"mdi:skip-next"} />
       )}

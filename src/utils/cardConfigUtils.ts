@@ -12,6 +12,7 @@ export const getDefaultValuesFromConfig = (
 ): MediocreMediaPlayerCardConfig => ({
   type: config.type ?? `custom:mediocre-media-player-card`,
   entity_id: config?.entity_id ?? "",
+  name: config?.name ?? null,
   use_art_colors: config?.use_art_colors ?? false,
   tap_opens_popup: config?.tap_opens_popup ?? false,
   action: config?.action ?? {},
@@ -90,6 +91,8 @@ export const getSimpleConfigFromFormValues = (
 ): MediocreMediaPlayerCardConfig => {
   const config: MediocreMediaPlayerCardConfig = { ...formValues };
 
+  // Always preserve the name field (can be string or null)
+
   // Remove falsy or empty values
   if (!config.use_art_colors) delete config.use_art_colors;
   if (!config.tap_opens_popup) delete config.tap_opens_popup;
@@ -151,6 +154,7 @@ export const getSimpleConfigFromFormValues = (
   if (Array.isArray(config.search) && config.search.length === 0) {
     delete config.search;
   }
+  // Do NOT delete config.name, even if falsy/null
 
   return config;
 };

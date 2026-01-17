@@ -140,6 +140,7 @@ describe("cardConfigUtils", () => {
       // The new format converts media_browser to an array and search to an array
       expect(result).toEqual({
         ...fullConfig,
+        name: null,
         media_browser: [{ entity_id: "media_player.browser" }],
         search: [
           {
