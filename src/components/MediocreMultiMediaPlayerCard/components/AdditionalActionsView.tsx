@@ -127,7 +127,7 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
         )
           return null;
         return {
-          label: state.attributes.friendly_name || mp.entity_id,
+          label: mp.name || state.attributes.friendly_name || mp.entity_id,
           onClick: () => {
             if (!mp.lms_entity_id) return;
             transferLmsQueue(lms_entity_id, mp.lms_entity_id);
