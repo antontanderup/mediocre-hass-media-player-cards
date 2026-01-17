@@ -2,6 +2,7 @@ import {
   MediocreMediaPlayerCardConfig,
   MediocreMassiveMediaPlayerCardConfig,
 } from "@types";
+import { getSearchEntryArray } from "./getSearchEntryArray";
 
 /**
  * Creates default values from a regular media player card config
@@ -19,12 +20,7 @@ export const getDefaultValuesFromConfig = (
     entity_id: config?.speaker_group?.entity_id ?? null,
     entities: config?.speaker_group?.entities ?? [],
   },
-  search: {
-    enabled: config?.search?.enabled ?? false,
-    show_favorites: config?.search?.show_favorites ?? false,
-    entity_id: config?.search?.entity_id ?? null,
-    media_types: config?.search?.media_types ?? [],
-  },
+  search: getSearchEntryArray(config.search, config.entity_id),
   media_browser: config?.media_browser
     ? Array.isArray(config.media_browser)
       ? config.media_browser
@@ -65,12 +61,7 @@ export const getDefaultValuesFromMassiveConfig = (
     entity_id: config?.speaker_group?.entity_id ?? null,
     entities: config?.speaker_group?.entities ?? [],
   },
-  search: {
-    enabled: config?.search?.enabled ?? false,
-    show_favorites: config?.search?.show_favorites ?? false,
-    entity_id: config?.search?.entity_id ?? null,
-    media_types: config?.search?.media_types ?? [],
-  },
+  search: getSearchEntryArray(config.search, config.entity_id),
   media_browser: config?.media_browser
     ? Array.isArray(config.media_browser)
       ? config.media_browser
@@ -131,24 +122,6 @@ export const getSimpleConfigFromFormValues = (
     delete config.speaker_group;
   }
 
-  if (config.search?.entity_id === null) {
-    delete config.search.entity_id;
-  }
-
-  if (config.search?.media_types?.length === 0) {
-    delete config.search.media_types;
-  }
-
-  // Handle search - remove if all search properties are falsy
-  if (
-    !config.search?.enabled &&
-    !config.search?.show_favorites &&
-    !config.search?.entity_id &&
-    !config.search?.media_types
-  ) {
-    delete config.search;
-  }
-
   if (config.options?.always_show_power_button === false) {
     delete config.options.always_show_power_button;
   }
@@ -176,6 +149,11 @@ export const getSimpleConfigFromFormValues = (
   // Always preserve grid_options and visibility as theyr'e Home Assistant configurations
   // that we should not mess with
 
+  // Normalize search to array format
+  config.search = getSearchEntryArray(config.search, config.entity_id);
+  if (Array.isArray(config.search) && config.search.length === 0) {
+    delete config.search;
+  }
   // Do NOT delete config.name, even if falsy/null
 
   return config;
@@ -217,24 +195,6 @@ export const getSimpleConfigFromMassiveFormValues = (
     delete config.speaker_group;
   }
 
-  if (config.search?.entity_id === null) {
-    delete config.search.entity_id;
-  }
-
-  if (config.search?.media_types?.length === 0) {
-    delete config.search.media_types;
-  }
-
-  // Handle search - remove if all search properties are falsy
-  if (
-    !config.search?.enabled &&
-    !config.search?.show_favorites &&
-    !config.search?.entity_id &&
-    !config.search?.media_types
-  ) {
-    delete config.search;
-  }
-
   if (config.options?.always_show_power_button === false) {
     delete config.options.always_show_power_button;
   }
@@ -251,6 +211,12 @@ export const getSimpleConfigFromMassiveFormValues = (
 
   // Always preserve grid_options and visibility as theyr'e Home Assistant configurations
   // that we should not mess with
+
+  // Normalize search to array format
+  config.search = getSearchEntryArray(config.search, config.entity_id);
+  if (Array.isArray(config.search) && config.search.length === 0) {
+    delete config.search;
+  }
 
   return config;
 };

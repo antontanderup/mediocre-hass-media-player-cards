@@ -2,13 +2,19 @@ import { Icon } from "@components/Icon";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
 
-export type OverlayMenuItem = {
-  label: string;
-  icon?: string; // mdi:icon string
-  selected?: boolean;
-  onClick?: () => void;
-  children?: OverlayMenuItem[];
-};
+export type OverlayMenuItem =
+  | {
+      type?: "item" | undefined;
+      label: string;
+      icon?: string; // mdi:icon string
+      selected?: boolean;
+      onClick?: () => void;
+      children?: OverlayMenuItem[];
+    }
+  | {
+      type: "title";
+      label: string;
+    };
 
 export type OverlayMenuProps = {
   menuItems: OverlayMenuItem[];
@@ -54,6 +60,12 @@ const styles = {
   itemChevron: css({
     marginLeft: "auto",
   }),
+  itemTitle: css({
+    padding: "8px 14px 4px 14px",
+    fontSize: 13,
+    fontWeight: "bold",
+    color: theme.colors.onDialogMuted,
+  }),
 };
 
 import {
@@ -75,6 +87,13 @@ export const OverlayMenu = ({
     hasChildren: boolean,
     index: number
   ) => {
+    if (item?.type === "title") {
+      return (
+        <span key={item.label + index} css={styles.itemTitle}>
+          {item.label}
+        </span>
+      );
+    }
     return (
       <button
         key={item.label + index}
@@ -103,7 +122,9 @@ export const OverlayMenu = ({
 
   const renderMenuItems = (items: OverlayMenuItem[], parentLevel = 0) => {
     return items.map((item, index) => {
-      const hasChildren = !!(item.children && item.children.length > 0);
+      const hasChildren =
+        (!item.type || item.type === "item") &&
+        !!(item.children && item.children.length > 0);
       if (hasChildren) {
         return (
           <OverlayPopover

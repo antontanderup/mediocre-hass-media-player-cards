@@ -1,9 +1,16 @@
 import type { MediocreMultiMediaPlayer } from "@types";
-import { MaSearch, HaSearch } from "@components";
+import {
+  MaSearch,
+  HaSearch,
+  useSearchProviderMenu,
+  Chip,
+  Icon,
+} from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
 import { memo } from "preact/compat";
+import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
 
 const styles = {
   root: css({
@@ -23,11 +30,13 @@ export type SearchViewProps = {
 
 export const SearchView = memo<SearchViewProps>(
   ({ mediaPlayer: { ma_entity_id, search, entity_id }, height }) => {
+    const { selectedSearchProvider, searchProvidersMenu } =
+      useSearchProviderMenu(search, entity_id, ma_entity_id);
     const { t } = useIntl();
     const renderHeader = () => (
       <ViewHeader
         title={
-          ma_entity_id
+          selectedSearchProvider?.entity_id === ma_entity_id
             ? t({
                 id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
               })
@@ -36,11 +45,35 @@ export const SearchView = memo<SearchViewProps>(
               })
         }
         css={styles.header}
+        renderAction={
+          searchProvidersMenu.length > 1
+            ? () => (
+                <OverlayMenu
+                  menuItems={searchProvidersMenu}
+                  align="end"
+                  renderTrigger={triggerProps => (
+                    <Chip
+                      icon="mdi:import"
+                      invertedColors
+                      border
+                      size="small"
+                      {...triggerProps}
+                    >
+                      {selectedSearchProvider?.name ??
+                        selectedSearchProvider?.entity_id}
+                      <Icon icon="mdi:chevron-down" size="x-small" />
+                    </Chip>
+                  )}
+                />
+              )
+            : undefined
+        }
       />
     );
 
     const renderSearch = () => {
-      if (ma_entity_id) {
+      if (!selectedSearchProvider) return null;
+      if (selectedSearchProvider.entity_id === ma_entity_id) {
         return (
           <MaSearch
             renderHeader={renderHeader}
@@ -50,19 +83,17 @@ export const SearchView = memo<SearchViewProps>(
           />
         );
       }
-      if (search?.enabled) {
-        return (
-          <HaSearch
-            renderHeader={renderHeader}
-            entityId={search.entity_id ?? entity_id}
-            showFavorites={search.show_favorites ?? false}
-            horizontalPadding={16}
-            filterConfig={search.media_types}
-            maxHeight={height}
-          />
-        );
-      }
-      return null;
+
+      return (
+        <HaSearch
+          renderHeader={renderHeader}
+          entityId={selectedSearchProvider.entity_id}
+          showFavorites={true}
+          horizontalPadding={16}
+          filterConfig={selectedSearchProvider.media_types}
+          maxHeight={height}
+        />
+      );
     };
 
     return (

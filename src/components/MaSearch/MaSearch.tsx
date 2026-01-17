@@ -1,4 +1,4 @@
-import { Chip, Input } from "@components";
+import { Chip, IconButton, Input } from "@components";
 import { useState } from "preact/hooks";
 import { useDebounce } from "@uidotdev/usehooks";
 import { searchStyles } from "@components/MediaSearch";
@@ -8,12 +8,16 @@ import { useFavorites } from "./useFavorites";
 import { filters } from "./constants";
 import { MaMediaItemsList } from "./MaMediaItemsList";
 import { JSX } from "preact/jsx-runtime";
-import { Select } from "@components/Select";
 import { useIntl } from "@components/i18n";
+import {
+  OverlayMenu,
+  OverlayMenuItem,
+} from "@components/OverlayMenu/OverlayMenu";
 
 export type MaSearchProps = {
   maEntityId: string;
   horizontalPadding?: number;
+  additionalOptions?: OverlayMenuItem[];
   searchBarPosition?: "top" | "bottom";
   maxHeight?: number;
   renderHeader?: () => JSX.Element;
@@ -23,6 +27,7 @@ export const MaSearch = ({
   maEntityId,
   horizontalPadding,
   searchBarPosition = "top",
+  additionalOptions = [],
   maxHeight = 300,
   renderHeader,
 }: MaSearchProps) => {
@@ -51,52 +56,75 @@ export const MaSearch = ({
             loading={loading}
             css={searchStyles.input}
           />
-          <Select
-            value={enqueueMode}
-            hideSelectedCopy
-            onChange={value => setEnqueueMode(value.value as MaEnqueueMode)}
-            options={[
+          <OverlayMenu
+            align="end"
+            side="bottom"
+            menuItems={[
+              ...additionalOptions,
+              {
+                type: "title",
+                label: t({
+                  id: "Search.enqueue_mode.title",
+                  defaultMessage: "Enqueue Mode",
+                }),
+              },
               {
                 label: t({
                   id: "Search.enqueue_mode.play",
                   defaultMessage: "Play",
                 }),
-                value: "play",
+                selected: enqueueMode === "play",
                 icon: getEnqueModeIcon("play"),
+                onClick: () => setEnqueueMode("play"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.replace",
                   defaultMessage: "Replace Queue",
                 }),
-                value: "replace",
+                selected: enqueueMode === "replace",
                 icon: getEnqueModeIcon("replace"),
+                onClick: () => setEnqueueMode("replace"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.next",
                   defaultMessage: "Add Next",
                 }),
-                value: "next",
+                selected: enqueueMode === "next",
                 icon: getEnqueModeIcon("next"),
+                onClick: () => setEnqueueMode("next"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.replace_next",
                   defaultMessage: "Replace Next",
                 }),
-                value: "replace_next",
+                selected: enqueueMode === "replace_next",
                 icon: getEnqueModeIcon("replace_next"),
+                onClick: () => setEnqueueMode("replace_next"),
               },
               {
                 label: t({
                   id: "Search.enqueue_mode.add",
                   defaultMessage: "Add to Queue",
                 }),
-                value: "add",
+                selected: enqueueMode === "add",
                 icon: getEnqueModeIcon("add"),
+                onClick: () => setEnqueueMode("add"),
               },
             ]}
+            renderTrigger={triggerProps => (
+              <IconButton
+                size="x-small"
+                icon={
+                  !additionalOptions || additionalOptions.length === 0
+                    ? getEnqueModeIcon(enqueueMode)
+                    : "mdi:cog"
+                }
+                {...triggerProps}
+              />
+            )}
           />
         </div>
         <div css={searchStyles.filterContainer}>{renderFilterChips()}</div>

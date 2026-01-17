@@ -67,10 +67,10 @@ class MediocreMultiMediaPlayerCardWrapper extends CardWrapper<MediocreMultiMedia
 
     return {
       entity_id: mediaPlayers[0] ?? "",
+      mode: "card",
       media_players: [
         {
           entity_id: mediaPlayers[0] ?? "",
-          mode: "card",
         },
       ],
     };

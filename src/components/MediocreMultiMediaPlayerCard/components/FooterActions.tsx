@@ -11,7 +11,7 @@ import { NavigationRoute } from "@components/MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps } from "@hooks";
 import { memo } from "preact/compat";
-import { getHasMediaBrowser } from "@utils";
+import { getHasMediaBrowser, getHasSearch } from "@utils";
 
 const styles = {
   root: css({
@@ -47,8 +47,7 @@ export const FooterActions = memo<FooterActionsProps>(
     const { entity_id, ma_entity_id, search, custom_buttons, media_browser } =
       mediaPlayer;
 
-    const hasMaSearch = ma_entity_id && ma_entity_id.length > 0;
-    const hasSearch = hasMaSearch || search?.enabled;
+    const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
 
     return (

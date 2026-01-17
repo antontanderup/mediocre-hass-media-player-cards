@@ -43,6 +43,9 @@
     }
   },
   "Search": {
+    "search_provider": {
+      "title": "Search using.."
+    },
     "input_placeholder": "Search for media...",
     "categories": {
       "All": "All",
@@ -58,6 +61,7 @@
       "Radio": "Radio"
     },
     "enqueue_mode": {
+      "title": "Enqueue Mode",
       "play": "Play",
       "replace": "Replace Queue",
       "next": "Add Next",
