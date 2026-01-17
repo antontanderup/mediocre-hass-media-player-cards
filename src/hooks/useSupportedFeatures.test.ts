@@ -229,7 +229,10 @@ describe("getSupportedFeatures", () => {
     });
 
     it("should work with different repeat values if stop or togglePlayPause is supported", () => {
-      const baseFeatures = { ...baseAttributes, supported_features: 262144 | 4096 };
+      const baseFeatures = {
+        ...baseAttributes,
+        supported_features: 262144 | 4096,
+      };
       expect(
         getSupportedFeatures("playing", { ...baseFeatures, repeat: "one" })
           .supportsRepeat
