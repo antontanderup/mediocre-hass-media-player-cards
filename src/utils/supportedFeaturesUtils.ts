@@ -13,18 +13,19 @@ interface SupportedFeatures {
   supportsShuffle: boolean;
   supportsRepeat: boolean;
   supportsTogglePlayPause: boolean;
+  supportsStop: boolean;
 }
 
 /**
  * Determines all supported features based on player state and attributes
  */
+
 export function getSupportedFeatures(
   state: string,
   attributes: MediaPlayerAttributes
 ): SupportedFeatures {
   const { shuffle, repeat, supported_features: supportedFeatures } = attributes;
   const isOff = state === "off";
-
   const supportPreviousTrack =
     !isOff &&
     supportedFeatures !== undefined &&
@@ -35,23 +36,32 @@ export function getSupportedFeatures(
     supportedFeatures !== undefined &&
     (supportedFeatures | 32) === supportedFeatures;
 
+  const supportsTogglePlayPause =
+    !isOff &&
+    supportedFeatures !== undefined &&
+    ((supportedFeatures & 1) === 1 || (supportedFeatures & 16384) === 16384);
+
+  const supportsStop =
+    !isOff &&
+    supportedFeatures !== undefined &&
+    (supportedFeatures & 4096) === 4096;
+
+  const canProbablyNotShuffleAndRepeat =
+    !supportsStop && !supportsTogglePlayPause;
+
   const supportsShuffle =
     !isOff &&
+    !canProbablyNotShuffleAndRepeat &&
     shuffle !== undefined &&
     supportedFeatures !== undefined &&
     (supportedFeatures & 32768) === 32768;
 
   const supportsRepeat =
     !isOff &&
+    !canProbablyNotShuffleAndRepeat &&
     repeat !== undefined &&
     supportedFeatures !== undefined &&
     (supportedFeatures & 262144) === 262144;
-
-  const supportsTogglePlayPause =
-    !isOff &&
-    supportedFeatures !== undefined &&
-    ((supportedFeatures & 4096) === 4096 ||
-      (supportedFeatures & 16384) === 16384);
 
   return {
     supportPreviousTrack,
@@ -59,5 +69,6 @@ export function getSupportedFeatures(
     supportsShuffle,
     supportsRepeat,
     supportsTogglePlayPause,
+    supportsStop,
   };
 }
