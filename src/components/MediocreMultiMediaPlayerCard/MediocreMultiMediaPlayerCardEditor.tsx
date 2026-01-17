@@ -11,6 +11,7 @@ import {
   SubForm,
   FormSelect,
   Button,
+  Label,
 } from "@components";
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
@@ -388,6 +389,31 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
             )}
           />
+          <form.Field name="options.player_is_active_when">
+            {field => (
+              <div
+                css={css({
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 4,
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                })}
+              >
+                <Label>Consider player active when:</Label>
+                <FormSelect
+                  options={[
+                    { name: "Playing", value: "playing" },
+                    { name: "Playing or Paused", value: "playing_or_paused" },
+                  ]}
+                  onSelected={value =>
+                    field.handleChange(value as "playing" | "playing_or_paused")
+                  }
+                  selected={field.state.value || "playing"}
+                />
+              </div>
+            )}
+          </form.Field>
         </FormGroup>
       </SubForm>
     </form.AppForm>
