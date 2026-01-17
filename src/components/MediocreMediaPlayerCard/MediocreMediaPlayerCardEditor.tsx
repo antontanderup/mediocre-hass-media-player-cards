@@ -103,7 +103,7 @@ export const MediocreMediaPlayerCardEditor: FC<
 
       <form.AppField
         name="name"
-        children={field => <field.Text label="Card Name (optional)" />}
+        children={field => <field.Text label="Name (optional)" />}
       />
 
       <FormGroup
