@@ -147,6 +147,7 @@ export const MediocreMediaPlayerCard = ({
     !supportedFeatures.supportNextTrack &&
     !supportedFeatures.supportPreviousTrack &&
     !supportedFeatures.supportsShuffle &&
+    !supportedFeatures.supportsStop &&
     !supportedFeatures.supportsRepeat;
 
   // Determine if the player is on
