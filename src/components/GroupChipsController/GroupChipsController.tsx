@@ -95,9 +95,22 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
       });
   }, [hass.states, speaker_group, showGrouped]);
 
+  const joinSpeaker = useCallback(
+    async (speakerId: string) => {
+      const existingMembers = (
+        mainEntity?.attributes?.group_members || []
+      ).filter((id: string) => id !== mainEntityId);
+      await hass.callService("media_player", "join", {
+        entity_id: mainEntityId,
+        group_members: [speakerId, ...existingMembers],
+      });
+    },
+    [hass, mainEntityId, mainEntity]
+  );
+
   // Handle joining/unjoining a speaker to/from the group
   const handleToggleGroup = useCallback(
-    async (speakerId: string, isGrouped: boolean) => {
+    async (speakerId: string, isGrouped: boolean, retries = 0) => {
       if (playersLoading.includes(speakerId)) return;
       setPlayersLoading(prev => [...prev, speakerId]);
       try {
@@ -114,17 +127,20 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
               entity_id: speakerId,
             });
           }
-          await hass.callService("media_player", "join", {
-            entity_id: mainEntityId,
-            group_members: [speakerId],
-          });
+          await joinSpeaker(speakerId);
         }
       } catch (e) {
         console.error(e);
+        if (retries < 1) {
+          setTimeout(
+            () => handleToggleGroup(speakerId, isGrouped, retries + 1),
+            1000
+          );
+        }
       }
       setPlayersLoading(prev => prev.filter(id => id !== speakerId));
     },
-    [mainEntityId, playersLoading]
+    [mainEntityId, playersLoading, hass]
   );
 
   return (
