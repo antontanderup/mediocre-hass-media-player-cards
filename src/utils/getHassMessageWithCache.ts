@@ -1,7 +1,6 @@
 import { getHass } from "./getHass";
 import type { MessageBase } from "home-assistant-js-websocket";
 
-
 type HassCacheEntry<T = unknown> = {
   value: T;
   timestamp: number;

@@ -1,13 +1,19 @@
-import { getHassMessageWithCache, clearHassMessageCache, getHassMessageCache } from "./getHassMessageWithCache";
+import {
+  getHassMessageWithCache,
+  clearHassMessageCache,
+  getHassMessageCache,
+} from "./getHassMessageWithCache";
 
 // Mock getHass and hass.connection.sendMessagePromise
 let callCounter = 0;
 jest.mock("./getHass", () => ({
   getHass: () => ({
     connection: {
-      sendMessagePromise: jest.fn(async (msg) => {
+      sendMessagePromise: jest.fn(async msg => {
         callCounter++;
-        return { result: `response-for-${JSON.stringify(msg)}-call-${callCounter}` };
+        return {
+          result: `response-for-${JSON.stringify(msg)}-call-${callCounter}`,
+        };
       }),
     },
   }),
@@ -32,7 +38,9 @@ describe("getHassMessageWithCache", () => {
   it("respects forceRefresh option", async () => {
     const message = { type: "refresh", bar: 2 };
     const result1 = await getHassMessageWithCache(message);
-    const result2 = await getHassMessageWithCache(message, { forceRefresh: true });
+    const result2 = await getHassMessageWithCache(message, {
+      forceRefresh: true,
+    });
     expect(result1).not.toEqual(result2);
   });
 

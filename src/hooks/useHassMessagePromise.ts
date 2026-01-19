@@ -18,12 +18,22 @@ export function useHassMessagePromise<T = unknown>(
 
   // Internal fetch for initial load and cache-aware updates
   const fetch = useCallback(
-    async (overrideOptions?: { forceRefresh?: boolean; staleTime?: number; enabled?: boolean }) => {
-      if (!message || options?.enabled === false || overrideOptions?.enabled === false || loading) return;
+    async (overrideOptions?: {
+      forceRefresh?: boolean;
+      staleTime?: number;
+      enabled?: boolean;
+    }) => {
+      if (
+        !message ||
+        options?.enabled === false ||
+        overrideOptions?.enabled === false ||
+        loading
+      )
+        return;
       setLoading(true);
       setError(null);
       try {
-        const result = await getHassMessageWithCache<{ response?: T}>(
+        const result = await getHassMessageWithCache<{ response?: T }>(
           message,
           { ...options, ...overrideOptions }
         );

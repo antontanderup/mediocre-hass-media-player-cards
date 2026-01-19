@@ -3,6 +3,7 @@ import { Spinner } from "@components/Spinner";
 import { fadeIn } from "@constants";
 import { css, keyframes } from "@emotion/react";
 import { getHass } from "@utils";
+import { memo } from "preact/compat";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 const fadeInOut = keyframes({
@@ -67,97 +68,93 @@ export type MediaImageProps = {
   className?: string;
 };
 
-export const MediaImage = ({
-  imageUrl,
-  mdiIcon,
-  loading,
-  done,
-  className,
-}: MediaImageProps) => {
-  const [error, setError] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [image, setImage] = useState<HTMLImageElement | null>(null);
-  const latestImageUrl = useRef<string | null | undefined>(null);
+export const MediaImage = memo<MediaImageProps>(
+  ({ imageUrl, mdiIcon, loading, done, className }: MediaImageProps) => {
+    const [error, setError] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+    const [image, setImage] = useState<HTMLImageElement | null>(null);
+    const latestImageUrl = useRef<string | null | undefined>(null);
 
-  useEffect(() => {
-    if (latestImageUrl.current === imageUrl) {
-      return;
-    }
-    latestImageUrl.current = imageUrl;
-    getImage(imageUrl);
-  }, [imageUrl]);
+    useEffect(() => {
+      if (latestImageUrl.current === imageUrl) {
+        return;
+      }
+      latestImageUrl.current = imageUrl;
+      getImage(imageUrl);
+    }, [imageUrl]);
 
-  const getImage = useCallback((url?: string | null, retries = 0) => {
-    if (!url) {
-      setLoaded(false);
-      setError(false);
+    const getImage = useCallback((url?: string | null, retries = 0) => {
+      if (!url) {
+        setLoaded(false);
+        setError(false);
+        setImage(null);
+        return null;
+      }
       setImage(null);
-      return null;
-    }
-    setImage(null);
-    const img = new Image();
-    img.onerror = () => {
-      if (latestImageUrl.current !== url) {
-        return;
-      }
-      if (retries === 0) {
-        // Retry once
-        getImage(url, 1);
-        return;
-      }
-      setError(true);
-    };
-    img.onloadstart = () => {
-      if (latestImageUrl.current !== url) {
-        return;
-      }
+      const img = new Image();
+      img.onerror = () => {
+        if (latestImageUrl.current !== url) {
+          return;
+        }
+        if (retries === 0) {
+          // Retry once
+          getImage(url, 1);
+          return;
+        }
+        setError(true);
+      };
+      img.onloadstart = () => {
+        if (latestImageUrl.current !== url) {
+          return;
+        }
 
-      setLoaded(false);
-      setError(false);
-    };
-    img.onload = () => {
-      if (latestImageUrl.current !== url) {
-        return;
-      }
+        setLoaded(false);
+        setError(false);
+      };
+      img.onload = () => {
+        if (latestImageUrl.current !== url) {
+          return;
+        }
 
-      setLoaded(true);
-    };
+        setLoaded(true);
+      };
 
-    img.src = getHass().hassUrl(url);
-    setImage(img);
-  }, []);
+      img.src = getHass().hassUrl(url);
+      setImage(img);
+    }, []);
 
-  return (
-    <div css={styles.root} className={className}>
-      {image?.src && !error && (
-        <img
-          src={image?.src}
-          css={[styles.image, loaded && styles.imageLoaded]}
-          alt=""
-        />
-      )}
-      {!image?.src && mdiIcon && !error && (
-        <Icon
-          icon={mdiIcon}
-          size="medium"
-          css={[styles.icon, styles.iconNoBackground]}
-        />
-      )}
-      {!!error && !mdiIcon && (
-        <Icon
-          icon="mdi:image-broken-variant"
-          size="medium"
-          css={[styles.icon, styles.iconNoBackground]}
-        />
-      )}
-      {loading && <Spinner css={styles.icon} size="x-small" />}
-      {!loading && done && (
-        <Icon
-          icon="mdi:check"
-          size="x-small"
-          css={[styles.icon, styles.done]}
-        />
-      )}
-    </div>
-  );
-};
+    return (
+      <div css={styles.root} className={className}>
+        {image?.src && !error && (
+          <img
+            src={image?.src}
+            css={[styles.image, loaded && styles.imageLoaded]}
+            alt=""
+          />
+        )}
+        {!image?.src && mdiIcon && !error && (
+          <Icon
+            icon={mdiIcon}
+            size="medium"
+            css={[styles.icon, styles.iconNoBackground]}
+          />
+        )}
+        {!!error && !mdiIcon && (
+          <Icon
+            icon="mdi:image-broken-variant"
+            size="medium"
+            css={[styles.icon, styles.iconNoBackground]}
+          />
+        )}
+        {loading && <Spinner css={styles.icon} size="x-small" />}
+        {!loading && done && (
+          <Icon
+            icon="mdi:check"
+            size="x-small"
+            css={[styles.icon, styles.done]}
+          />
+        )}
+      </div>
+    );
+  }
+);

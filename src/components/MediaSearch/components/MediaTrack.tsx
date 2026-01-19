@@ -8,6 +8,7 @@ import {
 } from "preact";
 import { forwardRef } from "preact/compat";
 import { isDarkMode } from "@utils";
+import { IconButton } from "@components";
 
 const styles = {
   root: css({
@@ -58,6 +59,15 @@ const styles = {
     width: 50,
     height: 50,
   }),
+  buttons: css({
+    display: "flex",
+    gap: "8px",
+    marginRight: "8px",
+    opacity: 0.7,
+    ":hover &": {
+      opacity: 1,
+    },
+  }),
 };
 
 export type MediaTrackProps = Omit<
@@ -67,10 +77,11 @@ export type MediaTrackProps = Omit<
   imageUrl?: string | null;
   title: string;
   artist?: string;
+  buttons?: { icon: string; onClick: () => void; disabled?: boolean }[];
 };
 
 export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
-  ({ imageUrl, title, artist, onClick, ...buttonProps }, ref) => {
+  ({ imageUrl, title, artist, onClick, buttons = [], ...buttonProps }, ref) => {
     const [loading, setLoading] = useState(false);
     const [done, setDone] = useState(false);
     const handleOnClick: DOMAttributes<HTMLButtonElement>["onClick"] =
@@ -114,6 +125,27 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
           <div css={styles.trackName}>{title}</div>
           {!!artist && <div css={styles.trackArtist}>{artist}</div>}
         </div>
+        {buttons.length > 0 && (
+          <div css={styles.buttons}>
+            {buttons.map((button, index) => (
+              <IconButton
+                key={index + button.icon}
+                disabled={button.disabled}
+                icon={button.icon}
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (button.disabled) {
+                    return;
+                  }
+                  button.onClick();
+                }}
+                type="button"
+                size={"x-small"}
+              />
+            ))}
+          </div>
+        )}
       </button>
     );
   }
