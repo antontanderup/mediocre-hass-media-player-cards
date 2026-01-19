@@ -1,6 +1,6 @@
-import { useContext } from "preact/hooks";
+import { useContext, useMemo } from "preact/hooks";
 import { css } from "@emotion/react";
-import { IconButton } from "@components";
+import { IconButton, usePlayer } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
   InteractionConfig,
@@ -11,7 +11,13 @@ import { NavigationRoute } from "@components/MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps } from "@hooks";
 import { memo } from "preact/compat";
-import { getHasMediaBrowser, getHasSearch } from "@utils";
+import {
+  getCanDisplayLmsQueue,
+  getHasMediaBrowser,
+  getHass,
+  getHasSearch,
+  getIsLmsPlayer,
+} from "@utils";
 
 const styles = {
   root: css({
@@ -44,11 +50,25 @@ export const FooterActions = memo<FooterActionsProps>(
         CardContext
       );
 
-    const { entity_id, ma_entity_id, search, custom_buttons, media_browser } =
-      mediaPlayer;
+    const {
+      entity_id,
+      ma_entity_id,
+      search,
+      custom_buttons,
+      media_browser,
+      lms_entity_id,
+    } = mediaPlayer;
 
     const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
+    const player = usePlayer();
+    const hasQueue = useMemo(
+      () =>
+        lms_entity_id &&
+        getIsLmsPlayer(player, lms_entity_id) &&
+        getCanDisplayLmsQueue(),
+      [player, lms_entity_id]
+    );
 
     return (
       <div css={styles.root}>
@@ -72,6 +92,14 @@ export const FooterActions = memo<FooterActionsProps>(
             icon={"mdi:folder-music"}
             onClick={() => setNavigationRoute("media-browser")}
             selected={navigationRoute === "media-browser"}
+          />
+        )}
+        {hasQueue && (
+          <IconButton
+            size="small"
+            icon={"mdi:playlist-music"}
+            onClick={() => setNavigationRoute("queue")}
+            selected={navigationRoute === "queue"}
           />
         )}
         {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (

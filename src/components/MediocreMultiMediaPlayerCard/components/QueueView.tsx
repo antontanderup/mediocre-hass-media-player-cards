@@ -2,9 +2,9 @@ import type { MediocreMultiMediaPlayer } from "@types";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
-import { memo, useMemo, useCallback, Fragment } from "preact/compat";
+import { memo, useMemo, useCallback } from "preact/compat";
 import { usePlayer } from "@components/PlayerContext";
-import { getIsLmsPlayer } from "@utils";
+import { getCanDisplayLmsQueue, getIsLmsPlayer } from "@utils";
 import { QueueItem, useSqueezeboxQueue } from "@hooks";
 import { VirtualList } from "@components/VirtualList";
 import { MediaGrid, MediaTrack } from "@components/MediaSearch";
@@ -41,7 +41,7 @@ export const QueueView = memo<QueueViewProps>(
 
     const { queue, loading, refetch, error } = useSqueezeboxQueue(
       lms_entity_id ?? "",
-      !!isMainEntityLmsPlayer
+      !!isMainEntityLmsPlayer && getCanDisplayLmsQueue()
     );
 
     const renderHeader = () => (
@@ -83,7 +83,13 @@ export const QueueView = memo<QueueViewProps>(
           data={queue}
           renderHeader={renderHeader}
           keyExtractor={item => item.id + item.playlistIndex}
-          renderEmpty={loading ? () => <Spinner /> : undefined}
+          renderEmpty={
+            loading
+              ? () => <Spinner />
+              : error
+                ? () => <div>{error}</div>
+                : undefined
+          }
           renderItem={renderItem}
         />
       </div>

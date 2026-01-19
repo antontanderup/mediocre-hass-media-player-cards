@@ -168,6 +168,7 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
       sourceSelectMenuItems.length > 0;
 
     const { t } = useIntl();
+
     return (
       <div css={styles.root}>
         {custom_buttons && custom_buttons.length > 0 && (
