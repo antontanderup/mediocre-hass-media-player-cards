@@ -41,8 +41,12 @@ export function useHassMessagePromise<T = unknown>(
         setLoading(false);
         setError(null);
         return result;
-      } catch (e: any) {
-        setError(e?.message || "Unknown error");
+      } catch (e: unknown | { message?: string }) {
+        setError(
+          e && typeof e === "object" && "message" in e
+            ? (e as Error).message
+            : "Unknown error"
+        );
         setLoading(false);
         setData(null);
         return null;
@@ -56,7 +60,6 @@ export function useHassMessagePromise<T = unknown>(
 
   useEffect(() => {
     if (message && options?.enabled !== false) fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(message), options?.staleTime, options?.enabled]);
 
   return useMemo(

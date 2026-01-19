@@ -14,7 +14,6 @@ import { memo } from "preact/compat";
 import {
   getCanDisplayLmsQueue,
   getHasMediaBrowser,
-  getHass,
   getHasSearch,
   getIsLmsPlayer,
 } from "@utils";
