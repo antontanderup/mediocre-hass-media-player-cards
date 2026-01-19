@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { getHass } from "@utils";
+import { getHassMessageWithCache } from "@utils/getHassMessageWithCache";
 import {
   MaFilterType,
   MaMediaItem,
@@ -61,17 +62,19 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
         },
         return_response: true,
       };
-
-      const hass = getHass();
       try {
-        const res = await hass.connection.sendMessagePromise(message);
-        const response = res as { response: { items: MaMediaItem[] } };
-        if (!response.response) {
+        const res = await getHassMessageWithCache<{
+          response: { items: MaMediaItem[] };
+        }>(
+          message,
+          { staleTime: 120000 } // 2 minutes
+        );
+        if (!res.response) {
           return;
         }
         // @ts-expect-error we must trust the response here
         newResults[mediaTypeResponseKeyMap[mediaType]] =
-          response.response.items ?? [];
+          res.response.items ?? [];
       } catch (e) {
         console.error("Error fetching favorites:", mediaType, e);
         return Promise.reject(e);
