@@ -237,5 +237,8 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
     }
   }, [queue, player.title]);
 
-  return useMemo(() => ({ queue, loading, error }), [queue, loading, error]);
+  return useMemo(
+    () => ({ queue, loading, error, refetch }),
+    [queue, loading, error, refetch]
+  );
 };

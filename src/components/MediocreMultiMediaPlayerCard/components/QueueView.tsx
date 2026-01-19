@@ -2,13 +2,13 @@ import type { MediocreMultiMediaPlayer } from "@types";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
-import { memo, useMemo, useCallback } from "preact/compat";
+import { memo, useMemo, useCallback, Fragment } from "preact/compat";
 import { usePlayer } from "@components/PlayerContext";
 import { getIsLmsPlayer } from "@utils";
 import { QueueItem, useSqueezeboxQueue } from "@hooks";
 import { VirtualList } from "@components/VirtualList";
 import { MediaGrid, MediaTrack } from "@components/MediaSearch";
-import { Spinner } from "@components";
+import { IconButton, Spinner } from "@components";
 import { theme } from "@constants";
 
 const styles = {
@@ -38,22 +38,38 @@ export const QueueView = memo<QueueViewProps>(
       [player, lms_entity_id]
     );
     const { t } = useIntl();
-    const renderHeader = () => (
-      <ViewHeader
-        title={t({
-          id: "MediocreMultiMediaPlayerCard.QueueView.browse_media_title",
-          defaultMessage: "Player Queue",
-        })}
-        css={styles.header}
-      />
-    );
 
-    const { queue, loading, error } = useSqueezeboxQueue(
+    const { queue, loading, refetch, error } = useSqueezeboxQueue(
       lms_entity_id ?? "",
       !!isMainEntityLmsPlayer
     );
 
-    const renderItem = useCallback((item: QueueItem, index: number) => {
+    const renderHeader = () => (
+      <ViewHeader
+        title={t({
+          id: "MediocreMultiMediaPlayerCard.QueueView.up_next",
+          defaultMessage: "Up Next",
+        })}
+        subtitle={t({
+          id: "MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle",
+          defaultMessage: "Current playback queue",
+        })}
+        css={styles.header}
+        renderAction={() => (
+          <IconButton
+            icon="mdi:refresh"
+            onClick={refetch}
+            size="x-small"
+            disabled={loading}
+          />
+        )}
+      />
+    );
+
+    const renderItem = useCallback((item: QueueItem) => {
+      if (item.isPlaying && queue.length < 1) {
+        return null;
+      }
       return <QueueListItem item={item} />;
     }, []);
 
