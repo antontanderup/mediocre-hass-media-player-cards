@@ -21,6 +21,10 @@
       "media_player_actions_subtitle": "Ekstra valgmuligheder til din medieafspiller.",
       "mark_as_favorite": "Marker som favorit",
       "transfer_queue": "Overfør kø"
+    },
+    "QueueView": {
+      "up_next": "Næste i kø",
+      "up_next_subtitle": "Nuværende afspilningskø"
     }
   },
   "MediocreMediaPlayerCard": {

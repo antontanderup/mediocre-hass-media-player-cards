@@ -21,6 +21,10 @@
       "media_player_actions_subtitle": "Additional controls for your media player.",
       "mark_as_favorite": "Mark as Favorite",
       "transfer_queue": "Transfer Queue"
+    },
+    "QueueView": {
+      "up_next": "Up Next",
+      "up_next_subtitle": "Current playback queue"
     }
   },
   "MediocreMediaPlayerCard": {
