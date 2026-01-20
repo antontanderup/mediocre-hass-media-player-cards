@@ -27,8 +27,7 @@ const styles = {
 
 export const Queue: FC<QueueProps> = ({
   height,
-  // @ts-expect-error not yet implementd
-  ma_entity_id,
+  // ma_entity_id,
   lms_entity_id,
   renderHeader,
 }) => {
