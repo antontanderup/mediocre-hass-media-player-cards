@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from "preact/hooks";
+import { useCallback, useContext, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
 import {
   AdditionalActionsMenu,
@@ -10,7 +10,7 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
 import { SpeakerGrouping } from "./SpeakerGrouping";
-import { useActionProps } from "@hooks";
+import { useActionProps, useCanDisplayQueue } from "@hooks";
 import {
   MediocreMassiveMediaPlayerCardConfig,
   InteractionConfig,
@@ -18,12 +18,10 @@ import {
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
 import {
-  getCanDisplayLmsQueue,
   getHasMediaBrowser,
   getHasMediaBrowserEntryArray,
   getHass,
   getHasSearch,
-  getIsLmsPlayer,
 } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 import { useIntl } from "@components/i18n";
@@ -116,13 +114,7 @@ export const PlayerActions = () => {
 
   const hasMediaBrowser = getHasMediaBrowser(media_browser);
 
-  const hasQueue = useMemo(
-    () =>
-      lms_entity_id &&
-      getIsLmsPlayer(player, lms_entity_id) &&
-      getCanDisplayLmsQueue(),
-    [player, lms_entity_id]
-  );
+  const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
 
   const [selected, setSelected] = useState<
     | "volume"

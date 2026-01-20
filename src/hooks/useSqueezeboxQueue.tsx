@@ -9,21 +9,7 @@ import {
 import { useHassMessagePromise } from "./useHassMessagePromise";
 import { usePlayer } from "@components";
 import { getHass } from "@utils";
-
-export type QueueItem = {
-  id: string;
-  title: string;
-  artist?: string;
-  album?: string;
-  artworkUrl?: string;
-  playlistIndex: number;
-  isPlaying: boolean;
-  isFirst: boolean;
-  isLast: boolean;
-  moveItem: (toIndex: number) => Promise<void>;
-  skipToItem: () => Promise<void>;
-  deleteItem: () => Promise<void>;
-};
+import { QueueItem } from "@types";
 
 type SqueezeboxPlaylistItem = {
   id: string;

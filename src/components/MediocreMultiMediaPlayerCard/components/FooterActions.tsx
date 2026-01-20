@@ -1,6 +1,6 @@
-import { useContext, useMemo } from "preact/hooks";
+import { useContext } from "preact/hooks";
 import { css } from "@emotion/react";
-import { IconButton, usePlayer } from "@components";
+import { IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
   InteractionConfig,
@@ -9,14 +9,9 @@ import {
 } from "@types";
 import { NavigationRoute } from "@components/MediocreMultiMediaPlayerCard";
 import { theme } from "@constants";
-import { useActionProps } from "@hooks";
+import { useActionProps, useCanDisplayQueue } from "@hooks";
 import { memo } from "preact/compat";
-import {
-  getCanDisplayLmsQueue,
-  getHasMediaBrowser,
-  getHasSearch,
-  getIsLmsPlayer,
-} from "@utils";
+import { getHasMediaBrowser, getHasSearch } from "@utils";
 
 const styles = {
   root: css({
@@ -60,14 +55,7 @@ export const FooterActions = memo<FooterActionsProps>(
 
     const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
-    const player = usePlayer();
-    const hasQueue = useMemo(
-      () =>
-        lms_entity_id &&
-        getIsLmsPlayer(player, lms_entity_id) &&
-        getCanDisplayLmsQueue(),
-      [player, lms_entity_id]
-    );
+    const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
 
     return (
       <div css={styles.root}>
