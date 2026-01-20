@@ -27,6 +27,7 @@ import { useHass } from "@components/HassContext";
 import { theme } from "@constants";
 import { MassiveViewView } from "./components/MassiveView";
 import { AdditionalActionsView } from "./components/AdditionalActionsView";
+import { QueueView } from "./components/QueueView";
 
 export type NavigationRoute =
   | "search"
@@ -34,6 +35,7 @@ export type NavigationRoute =
   | "massive"
   | "speaker-grouping"
   | "custom-buttons"
+  | "queue"
   | "speaker-overview";
 
 const styles = {
@@ -183,6 +185,12 @@ export const MediocreMultiMediaPlayerCard = () => {
                 <SpeakerGrouping
                   mediaPlayer={selectedPlayer}
                   setSelectedPlayer={setSelectedPlayer}
+                />
+              )}
+              {navigationRoute === "queue" && contentHeight && (
+                <QueueView
+                  mediaPlayer={selectedPlayer}
+                  height={contentHeight}
                 />
               )}
               {navigationRoute === "massive" && contentHeight && (

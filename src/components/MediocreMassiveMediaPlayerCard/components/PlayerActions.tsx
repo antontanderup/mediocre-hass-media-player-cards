@@ -1,6 +1,11 @@
-import { useCallback, useContext, useState } from "preact/hooks";
+import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { css, keyframes } from "@emotion/react";
-import { AdditionalActionsMenu, IconButton, usePlayer } from "@components";
+import {
+  AdditionalActionsMenu,
+  IconButton,
+  Queue,
+  usePlayer,
+} from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { Fragment, ReactNode } from "preact/compat";
 import { VolumeController, VolumeTrigger } from "./VolumeController";
@@ -13,10 +18,12 @@ import {
 import { CustomButtons } from "./CustomButtons";
 import { theme } from "@constants";
 import {
+  getCanDisplayLmsQueue,
   getHasMediaBrowser,
   getHasMediaBrowserEntryArray,
   getHass,
   getHasSearch,
+  getIsLmsPlayer,
 } from "@utils";
 import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 import { useIntl } from "@components/i18n";
@@ -96,11 +103,12 @@ export const PlayerActions = () => {
     search,
     media_browser,
     ma_favorite_button_entity_id,
+    lms_entity_id,
     options: { always_show_power_button: alwaysShowPowerButton } = {},
   } = config;
 
-  const { state } = usePlayer();
-
+  const player = usePlayer();
+  const { state } = player;
   // Determine if the player is on
   const isOn = state !== "off" && state !== "unavailable";
 
@@ -108,12 +116,21 @@ export const PlayerActions = () => {
 
   const hasMediaBrowser = getHasMediaBrowser(media_browser);
 
+  const hasQueue = useMemo(
+    () =>
+      lms_entity_id &&
+      getIsLmsPlayer(player, lms_entity_id) &&
+      getCanDisplayLmsQueue(),
+    [player, lms_entity_id]
+  );
+
   const [selected, setSelected] = useState<
     | "volume"
     | "speaker-grouping"
     | "custom-buttons"
     | "search"
     | "media-browser"
+    | "queue"
     | undefined
   >();
 
@@ -125,6 +142,7 @@ export const PlayerActions = () => {
         | "custom-buttons"
         | "media-browser"
         | "search"
+        | "queue"
     ) => {
       setSelected(selected === key ? undefined : key);
     },
@@ -176,6 +194,17 @@ export const PlayerActions = () => {
           )}
           horizontalPadding={16}
         />
+      </Modal>
+      <Modal
+        title={t({
+          id: "MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title",
+          defaultMessage: "Up Next",
+        })}
+        isOpen={selected === "queue"}
+        onClose={() => setSelected(undefined)}
+        padding="6px 16px"
+      >
+        <Queue lms_entity_id={lms_entity_id} ma_entity_id={ma_entity_id} />
       </Modal>
       <Modal
         title={t({
@@ -245,6 +274,13 @@ export const PlayerActions = () => {
           size="small"
           icon={"mdi:folder-music"}
           onClick={() => toggleSelected("media-browser")}
+        />
+      )}
+      {hasQueue && (
+        <IconButton
+          size="small"
+          icon={"mdi:playlist-music"}
+          onClick={() => toggleSelected("queue")}
         />
       )}
       {(!isOn || alwaysShowPowerButton) && (

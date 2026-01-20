@@ -1,6 +1,7 @@
 export * from "./CustomButtons";
 export * from "./PlaybackControls";
 export * from "./PlayerActions";
+export * from "./QueueView";
 export * from "./Search";
 export * from "./SpeakerGrouping";
 export * from "./Title";

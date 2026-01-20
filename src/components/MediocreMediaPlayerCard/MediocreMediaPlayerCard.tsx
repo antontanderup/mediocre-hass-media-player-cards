@@ -7,6 +7,7 @@ import {
   MetaInfo,
   PlaybackControls,
   PlayerInfo,
+  QueueView,
   Search,
   SpeakerGrouping,
 } from "./components";
@@ -22,7 +23,13 @@ import { Fragment } from "preact/jsx-runtime";
 import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
 import { InteractionConfig } from "@types";
 import { MassivePopUp } from "./components/MassivePopUp";
-import { getHasMediaBrowser, getHass, getHasSearch } from "@utils";
+import {
+  getCanDisplayLmsQueue,
+  getHasMediaBrowser,
+  getHass,
+  getHasSearch,
+  getIsLmsPlayer,
+} from "@utils";
 import { css } from "@emotion/react";
 import { MediaBrowserBar } from "./components/MediaBrowserBar";
 
@@ -94,6 +101,7 @@ export const MediocreMediaPlayerCard = ({
     use_art_colors,
     ma_entity_id,
     ma_favorite_button_entity_id,
+    lms_entity_id,
     search,
     media_browser,
     speaker_group,
@@ -118,10 +126,20 @@ export const MediocreMediaPlayerCard = ({
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showMediaBrowser, setShowMediaBrowser] = useState(false);
+  const [showQueue, setShowQueue] = useState(false);
 
   const { artVars, haVars } = useArtworkColors();
 
-  const { state, subtitle } = usePlayer();
+  const player = usePlayer();
+  const { state, subtitle } = player;
+
+  const hasQueue = useMemo(
+    () =>
+      lms_entity_id &&
+      getIsLmsPlayer(player, lms_entity_id) &&
+      getCanDisplayLmsQueue(),
+    [player, lms_entity_id]
+  );
 
   const hass = useHass();
 
@@ -263,6 +281,13 @@ export const MediocreMediaPlayerCard = ({
                     icon={"mdi:magnify"}
                   />
                 )}
+                {hasQueue && (
+                  <IconButton
+                    size="x-small"
+                    onClick={() => setShowQueue(!showQueue)}
+                    icon={"mdi:playlist-music"}
+                  />
+                )}
               </div>
             </div>
             <div
@@ -309,6 +334,7 @@ export const MediocreMediaPlayerCard = ({
         {showCustomButtons && <CustomButtons />}
         {showSearch && <Search />}
         {showMediaBrowser && <MediaBrowserBar />}
+        {showQueue && <QueueView />}
         {isPopupVisible && (
           <MassivePopUp
             visible={isPopupVisible}

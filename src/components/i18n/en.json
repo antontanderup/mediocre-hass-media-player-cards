@@ -21,6 +21,10 @@
       "media_player_actions_subtitle": "Additional controls for your media player.",
       "mark_as_favorite": "Mark as Favorite",
       "transfer_queue": "Transfer Queue"
+    },
+    "QueueView": {
+      "up_next": "Up Next",
+      "up_next_subtitle": "Current playback queue"
     }
   },
   "MediocreMediaPlayerCard": {
@@ -28,6 +32,9 @@
       "grouped_speakers_title": "Grouped speakers",
       "link_volume_title": "Link volume",
       "add_speakers_title": "Add speakers to group"
+    },
+    "QueueView": {
+      "up_next": "Up Next"
     }
   },
   "MediocreMassiveMediaPlayerCard": {
@@ -36,7 +43,8 @@
       "speaker_grouping_modal_title": "Speaker Grouping",
       "media_browser_modal_title": "Media Browser",
       "search_modal_title": "Search",
-      "shortcuts_modal_title": "Shortcuts"
+      "shortcuts_modal_title": "Shortcuts",
+      "queue_view_modal_title": "Up Next"
     },
     "SpeakerGrouping": {
       "link_volume": "Link volume"

@@ -63,7 +63,9 @@ const styles = {
     padding: 8,
   }),
   rootDisabled: css({
+    cursor: "not-allowed",
     color: "var(--disabled-text-color, #999)",
+    opacity: 0.5,
   }),
   rootXxsmall: css({
     padding: 0,

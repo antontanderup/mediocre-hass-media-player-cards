@@ -46,6 +46,7 @@ export type VirtualListProps<T> = {
   renderItem: (item: T, index: number) => ComponentChildren;
   renderHeader?: () => ComponentChildren;
   renderEmpty?: () => ComponentChildren;
+  keyExtractor?: (item: T, index: number) => number | string | bigint;
   estimateSize?: number;
   overscan?: number;
   maxHeight?: number;
@@ -59,6 +60,7 @@ export const VirtualList = <T,>({
   renderItem,
   renderHeader,
   renderEmpty,
+  keyExtractor,
   estimateSize = 80,
   maxHeight = 300,
   overscan = 5,
@@ -85,6 +87,10 @@ export const VirtualList = <T,>({
     count: items.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => estimateSize,
+    getItemKey:
+      keyExtractor && data.length > 0
+        ? index => keyExtractor(data[index], index)
+        : undefined,
     overscan,
   });
 

@@ -13,9 +13,10 @@ import { Fragment } from "preact/jsx-runtime";
 import { useIntl } from "@components/i18n";
 
 export type HaMediaItemsListProps = Omit<
-  VirtualListProps<HaMediaItem>,
-  "renderItem"
+  VirtualListProps<HaMediaListItem>,
+  "renderItem" | "data"
 > & {
+  data: HaMediaItem[];
   onItemClick: (item: HaMediaItem) => void | Promise<void>;
   onHeaderClick?: (mediaType: string) => void;
   filterConfig: HaFilterConfig[];

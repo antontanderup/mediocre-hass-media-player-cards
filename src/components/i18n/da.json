@@ -21,6 +21,10 @@
       "media_player_actions_subtitle": "Ekstra valgmuligheder til din medieafspiller.",
       "mark_as_favorite": "Marker som favorit",
       "transfer_queue": "Overfør kø"
+    },
+    "QueueView": {
+      "up_next": "Næste i kø",
+      "up_next_subtitle": "Nuværende afspilningskø"
     }
   },
   "MediocreMediaPlayerCard": {
@@ -28,6 +32,9 @@
       "grouped_speakers_title": "Synk. medieafspillere",
       "link_volume_title": "Synk. lydstyrke",
       "add_speakers_title": "Tilføj medieafspillere til gruppe"
+    },
+    "QueueView": {
+      "up_next": "Næste i kø"
     }
   },
   "MediocreMassiveMediaPlayerCard": {
@@ -36,7 +43,8 @@
       "speaker_grouping_modal_title": "Synk. medieafspillere",
       "media_browser_modal_title": "Gennemse medier",
       "search_modal_title": "Søg",
-      "shortcuts_modal_title": "Genveje"
+      "shortcuts_modal_title": "Genveje",
+      "queue_view_modal_title": "Næste i kø"
     },
     "SpeakerGrouping": {
       "link_volume": "Synk. lydstyrke"
