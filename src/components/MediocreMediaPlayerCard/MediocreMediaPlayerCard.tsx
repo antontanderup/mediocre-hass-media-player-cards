@@ -20,16 +20,15 @@ import {
 } from "@components";
 import { VolumeSlider, VolumeTrigger } from "./components/VolumeSlider";
 import { Fragment } from "preact/jsx-runtime";
-import { useSupportedFeatures, useActionProps, useArtworkColors } from "@hooks";
+import {
+  useSupportedFeatures,
+  useActionProps,
+  useArtworkColors,
+  useCanDisplayQueue,
+} from "@hooks";
 import { InteractionConfig } from "@types";
 import { MassivePopUp } from "./components/MassivePopUp";
-import {
-  getCanDisplayLmsQueue,
-  getHasMediaBrowser,
-  getHass,
-  getHasSearch,
-  getIsLmsPlayer,
-} from "@utils";
+import { getHasMediaBrowser, getHass, getHasSearch } from "@utils";
 import { css } from "@emotion/react";
 import { MediaBrowserBar } from "./components/MediaBrowserBar";
 
@@ -133,13 +132,7 @@ export const MediocreMediaPlayerCard = ({
   const player = usePlayer();
   const { state, subtitle } = player;
 
-  const hasQueue = useMemo(
-    () =>
-      lms_entity_id &&
-      getIsLmsPlayer(player, lms_entity_id) &&
-      getCanDisplayLmsQueue(),
-    [player, lms_entity_id]
-  );
+  const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
 
   const hass = useHass();
 

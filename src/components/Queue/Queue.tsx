@@ -7,8 +7,14 @@ import {
 } from "@components";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
-import { QueueItem, useSqueezeboxQueue } from "@hooks";
-import { getCanDisplayLmsQueue, getIsLmsPlayer } from "@utils";
+import { useMassQueue, useSqueezeboxQueue } from "@hooks";
+import { QueueItem } from "@types";
+import {
+  getCanDisplayLmsQueue,
+  getCanDisplayMAQueue,
+  getIsLmsPlayer,
+  getIsMassPlayer,
+} from "@utils";
 import type { ComponentChildren } from "preact";
 import { FC, useMemo, useCallback, memo } from "preact/compat";
 
@@ -27,20 +33,46 @@ const styles = {
 
 export const Queue: FC<QueueProps> = ({
   height,
-  // ma_entity_id,
+  ma_entity_id,
   lms_entity_id,
   renderHeader,
 }) => {
   const player = usePlayer();
+
   const isMainEntityLmsPlayer = useMemo(
     () => lms_entity_id && getIsLmsPlayer(player, lms_entity_id),
     [player, lms_entity_id]
   );
 
-  const { queue, loading, refetch, error } = useSqueezeboxQueue(
+  const isMainEntityMAPlayer = useMemo(
+    () => getIsMassPlayer(player),
+    [player] // MA player check can be added here in the future
+  );
+
+  const {
+    queue: lmsQueue,
+    loading: lmsLoading,
+    refetch: lmsRefetch,
+    error: lmsError,
+  } = useSqueezeboxQueue(
     lms_entity_id ?? "",
     !!isMainEntityLmsPlayer && getCanDisplayLmsQueue()
   );
+
+  const {
+    queue: maQueue,
+    loading: maLoading,
+    refetch: maRefetch,
+    error: maError,
+  } = useMassQueue(
+    ma_entity_id ?? "",
+    !!isMainEntityMAPlayer && getCanDisplayMAQueue()
+  );
+
+  const queue = isMainEntityLmsPlayer ? lmsQueue : maQueue;
+  const loading = isMainEntityLmsPlayer ? lmsLoading : maLoading;
+  const refetch = isMainEntityLmsPlayer ? lmsRefetch : maRefetch;
+  const error = isMainEntityLmsPlayer ? lmsError : maError;
 
   const renderItem = useCallback((item: QueueItem) => {
     if (item.isPlaying && queue.length < 1) {
@@ -81,12 +113,26 @@ const QueueListItem = memo<{ item: QueueItem }>(({ item }) => {
         buttons={[
           { onClick: item.deleteItem, icon: "mdi:delete" },
           {
-            onClick: () => item.moveItem(item.playlistIndex - 1),
+            onClick: () => {
+              if (item.moveItem) {
+                return item.moveItem(item.playlistIndex - 1);
+              }
+              if (item.moveItemUp) {
+                return item.moveItemUp();
+              }
+            },
             disabled: item.isFirst,
             icon: "mdi:arrow-up-bold-outline",
           },
           {
-            onClick: () => item.moveItem(item.playlistIndex + 1),
+            onClick: () => {
+              if (item.moveItem) {
+                return item.moveItem(item.playlistIndex + 1);
+              }
+              if (item.moveItemDown) {
+                return item.moveItemDown();
+              }
+            },
             disabled: item.isLast,
             icon: "mdi:arrow-down-bold-outline",
           },

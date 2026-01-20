@@ -4,6 +4,7 @@ export * from "./colorUtils";
 export * from "./getAllMassPlayers";
 export * from "./getAllSqueezeboxPlayers";
 export * from "./getCanDisplayLmsQueue";
+export * from "./getCanDisplayMAQueue";
 export * from "./getDeviceIcon";
 export * from "./getDidMediaPlayerUpdate";
 export * from "./getHasMediaBrowser";
