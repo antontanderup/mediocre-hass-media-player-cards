@@ -197,7 +197,7 @@ export const PlayerActions = () => {
       </Modal>
       <Modal
         title={t({
-          id: "MediocreMassiveMediaPlayerCard.PlayerActions.queue_modal_title",
+          id: "MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title",
           defaultMessage: "Up Next",
         })}
         isOpen={selected === "queue"}
