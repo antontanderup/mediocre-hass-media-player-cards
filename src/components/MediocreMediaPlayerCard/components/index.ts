@@ -4,6 +4,7 @@ export * from "./MediaBrowserBar";
 export * from "./MetaInfo";
 export * from "./PlaybackControls";
 export * from "./PlayerInfo";
+export * from "./QueueView";
 export * from "./Search";
 export * from "./SpeakerGrouping";
 export * from "./VolumeSlider";
