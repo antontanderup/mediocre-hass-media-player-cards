@@ -25,15 +25,22 @@
 
 ## 📸 Screenshots
 
-### LMS Integration
-![LMS queue transfer](https://github.com/user-attachments/assets/3ff26200-4e37-4d28-bbeb-249e016d84df)
-![LMS queue display](https://github.com/user-attachments/assets/02bfd0b0-9e0e-4c29-bf3d-f90e7228dd2e)
+### Queue Management
+![Queue display](https://github.com/user-attachments/assets/56664397-dacf-4c1d-a6d3-e472a3be6309)
 
-### Music Assistant Queue
-![MA queue display](https://github.com/user-attachments/assets/f0587495-6ae9-463e-b3e5-41f328b25199)
+### Improved Artwork Colors
+<img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/821dcfc3-b071-44d0-ad12-922d49ff0e82" />
+<img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/063e71b6-7ece-4dfb-8725-58eafb34c087" />
+<img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/4f828f77-e1a9-48cc-943d-a696b68b18cd" />
+<img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/1b873587-5a1c-4485-8f22-d8d815b5d591" />
+<img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/ee201c8e-37d2-4461-ad72-2460063b1132" />
+<img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/27d559e0-103d-49a8-8170-2d21bb862c20" />
 
-### Improved UI
-![Multi card](https://github.com/user-attachments/assets/81c07474-0bf6-4065-bec9-6fb598f2b028)
+
+
+
+
+
 
 ---
 
