@@ -91,6 +91,7 @@ A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for 
 - [Search functionality](./docs/README_SEARCH.md)
 - [Custom Styles](./docs/README_STYLING.md)
 - [Queue Management](./docs/README_QUEUE_MANAGEMENT.md)
+- [LMS Features](./docs//README_LMS.md)
 
 ## Troubleshooting
 
