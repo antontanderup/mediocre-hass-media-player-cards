@@ -52,20 +52,15 @@ media_players:
 
 ### Each item in `media_players`:
 
-| Option                         | Type    | Description                                                      |
-| ------------------------------ | ------- | ---------------------------------------------------------------- |
-| `entity_id`                    | string  | The entity ID of the media player                                |
-| `custom_buttons`               | array   | List of custom buttons (icon, name, and action config)           |
-| `name`                         | string  | Custom name for the player                                       |
-| `speaker_group_entity_id`      | string  | Entity ID of the main speaker if different from the media player |
-| `can_be_grouped`               | boolean | Whether this player can be grouped                               |
-| `ma_entity_id`                 | string  | Music Assistant entity id (adds search)                          |
-| `ma_favorite_button_entity_id` | string  | Music Assistant favorite button entity                           |
-| `search`                       | object  | Search configuration (see below)                                 |
-| `search.enabled`               | boolean | Enables Home Assistant search_media functionality                |
-| `search.show_favorites`        | boolean | Shows favorites when no search query has been entered            |
-| `search.entity_id`             | string  | Entity ID to search on (optional, falls back to card entity_id)  |
-| `search.media_types`           | array   | List of supported media types for search                         |
-| `media_browser`                | object  | Media browser configuration (see below)                          |
-| `media_browser.enabled`        | boolean | Enables built in media browser                                   |
-| `media_browser.entity_id`      | string  | Entity ID to browse (optional, falls back to card entity_id)     |
+| Option                         | Type    | Description                                                                                         |
+| ------------------------------ | ------- | --------------------------------------------------------------------------------------------------- |
+| `entity_id`                    | string  | The entity ID of the media player                                                                   |
+| `custom_buttons`               | array   | List of custom buttons (icon, name, and action config)                                              |
+| `name`                         | string  | Custom name for the player                                                                          |
+| `speaker_group_entity_id`      | string  | Entity ID of the main speaker if different from the media player                                    |
+| `can_be_grouped`               | boolean | Whether this player can be grouped                                                                  |
+| `ma_entity_id`                 | string  | Music Assistant entity id (adds search and queue management when paired with hass_queue)            |
+| `ma_favorite_button_entity_id` | string  | Music Assistant favorite button entity                                                              |
+| `lms_entity_id`                | string  | LMS (lyrion) entity id. Adds queue transfer and queue management when paired with lyrion_cli.       |
+| `search`                       | array   | List of objects (entity_id, name and media_types). Enables search ui using the search_media action. |
+| `media_browser`                | array   | List of objects (entity_id and name). Enables a built in media browser.                             |
