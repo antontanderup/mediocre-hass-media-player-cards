@@ -2,6 +2,9 @@
 
 The Mediocre Media Player Cards support queue management for compatible media player integrations. This allows you to view, reorder, and remove items from the playback queue directly within the card UI.
 
+<img width="407" height="834" alt="image" src="https://github.com/user-attachments/assets/56664397-dacf-4c1d-a6d3-e472a3be6309" />
+
+
 ## Supported Integrations
 
 - **Music Assistant (MA):**
