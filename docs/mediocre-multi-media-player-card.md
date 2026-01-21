@@ -39,15 +39,16 @@ media_players:
 
 ## Options
 
-| Option                                   | Type          | Default  | Description                                                                |
-| ---------------------------------------- | ------------- | -------- | -------------------------------------------------------------------------- |
-| `type`                                   | string        | Required | Lovelace card type (should be `"custom:mediocre-multi-media-player-card"`) |
-| `mode`                                   | string        | Required | Display mode: `card` or `panel`                                            |
-| `height`                                 | number/string |          | Height of the card (px or any CSS unit)                                    |
-| `entity_id`                              | string        | Required | Entity id of the initially selected media player                           |
-| `use_art_colors`                         | boolean       |          | Use artwork colors for the card                                            |
-| `media_players`                          | array         | Required | List of media player configs (see below)                                   |
-| `options.transparent_background_on_home` | boolean       |          | Makes the background transparent when showing the massive player           |
+| Option                                   | Type          | Default  | Description                                                                       |
+| ---------------------------------------- | ------------- | -------- | --------------------------------------------------------------------------------- |
+| `type`                                   | string        | Required | Lovelace card type (should be `"custom:mediocre-multi-media-player-card"`)        |
+| `mode`                                   | string        | Required | Display mode: `card` or `panel`                                                   |
+| `height`                                 | number/string |          | Height of the card (px or any CSS unit)                                           |
+| `entity_id`                              | string        | Required | Entity id of the initially selected media player                                  |
+| `use_art_colors`                         | boolean       |          | Use artwork colors for the card                                                   |
+| `media_players`                          | array         | Required | List of media player configs (see below)                                          |
+| `options.transparent_background_on_home` | boolean       |          | Makes the background transparent when showing the massive player                  |
+| `options.player_is_active_when`          | string        |          | When to consider a media player as active (`'playing'` or `'playing_or_paused'`). |
 
 ### Each item in `media_players`:
 
