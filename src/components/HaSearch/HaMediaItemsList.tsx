@@ -11,6 +11,7 @@ import { MediaTrack } from "@components";
 import { useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { useIntl } from "@components/i18n";
+import { getItemMdiIcon } from "@components/MediaBrowser/utils";
 
 export type HaMediaItemsListProps = Omit<
   VirtualListProps<HaMediaListItem>,
@@ -52,13 +53,20 @@ export const HaMediaItemsList = ({
   const { t } = useIntl();
   const [chunkSize, setChunkSize] = useState(4);
 
-  const items: HaMediaListItem[] = useMemo(() => {
+  const {
+    items,
+    hasNoArtwork,
+  }: { items: HaMediaListItem[]; hasNoArtwork: boolean } = useMemo(() => {
+    let hasNoArtwork = true;
     const result: HaMediaListItem[] = [];
     const groupedByType: Record<string, HaMediaItem[]> = {};
 
     // Group items by media_content_type
     data.forEach(item => {
       const type = item.media_content_type;
+      if (typeof item.thumbnail === "string") {
+        hasNoArtwork = false;
+      }
       if (!groupedByType[type]) {
         groupedByType[type] = [];
       }
@@ -99,7 +107,7 @@ export const HaMediaItemsList = ({
       }
     });
 
-    return result;
+    return { items: result, hasNoArtwork };
   }, [data, chunkSize]);
 
   const renderItem = (item: HaMediaListItem) => {
@@ -136,12 +144,14 @@ export const HaMediaItemsList = ({
         };
         return (
           <MediaGrid numberOfColumns={chunkSize}>
-            {mediaItem.media_class === "track" &&
-            mediaItem.media_content_type !== "favorite" ? (
+            {(mediaItem.media_class === "track" &&
+              mediaItem.media_content_type !== "favorite") ||
+            hasNoArtwork ? (
               <MediaTrack
                 key={mediaItem.media_content_id}
                 imageUrl={mediaItem.thumbnail}
                 title={mediaItem.title}
+                mdiIcon={getItemMdiIcon(mediaItem)}
                 onClick={handleClick}
               />
             ) : (
@@ -149,6 +159,7 @@ export const HaMediaItemsList = ({
                 key={mediaItem.media_content_id}
                 imageUrl={mediaItem.thumbnail}
                 name={mediaItem.title}
+                mdiIcon={getItemMdiIcon(mediaItem)}
                 onClick={handleClick}
               />
             )}
@@ -164,12 +175,14 @@ export const HaMediaItemsList = ({
                 await onItemClick(mediaItem);
               };
 
-              return mediaItem.media_class === "track" &&
-                mediaItem.media_content_type !== "favorite" ? (
+              return (mediaItem.media_class === "track" &&
+                mediaItem.media_content_type !== "favorite") ||
+                hasNoArtwork ? (
                 <MediaTrack
                   key={mediaItem.media_content_id}
                   imageUrl={mediaItem.thumbnail}
                   title={mediaItem.title}
+                  mdiIcon={getItemMdiIcon(mediaItem)}
                   onClick={handleClick}
                 />
               ) : (
@@ -177,6 +190,7 @@ export const HaMediaItemsList = ({
                   key={mediaItem.media_content_id}
                   imageUrl={mediaItem.thumbnail}
                   name={mediaItem.title}
+                  mdiIcon={getItemMdiIcon(mediaItem)}
                   onClick={handleClick}
                 />
               );

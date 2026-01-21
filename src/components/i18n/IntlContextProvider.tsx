@@ -3,6 +3,7 @@ import en from "./en.json";
 import da from "./da.json";
 import pt from "./pt.json";
 import de from "./de.json";
+import nl from "./nl.json";
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import { memo } from "preact/compat";
 
@@ -30,13 +31,14 @@ function flattenMessages(
   );
 }
 
-const translatedLocales = ["en", "da", "pt", "de"];
+const translatedLocales = ["en", "da", "pt", "de", "nl"];
 
 export const messages = {
   en,
   da,
   pt,
   de,
+  nl,
 };
 
 export type IntlContextType = {

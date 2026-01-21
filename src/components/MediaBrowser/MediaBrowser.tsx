@@ -134,7 +134,11 @@ export const MediaBrowser = ({
     }));
   }, [mediaBrowserEntryArray, selectedMediaBrowser.entity_id]);
 
-  const items: MediaBrowserItem[][] = useMemo(() => {
+  const {
+    items,
+    hasNoArtwork,
+  }: { items: MediaBrowserItem[][]; hasNoArtwork: boolean } = useMemo(() => {
+    let hasNoArtwork = true;
     const result: MediaBrowserItem[][] = [];
     const groupedByType: Record<"track" | "expandable", MediaBrowserItem[]> = {
       track: [],
@@ -150,6 +154,9 @@ export const MediaBrowser = ({
 
     // Group items by media_content_type
     filteredResults.forEach(item => {
+      if (typeof item.thumbnail === "string") {
+        hasNoArtwork = false;
+      }
       const isTrack =
         (item.media_content_type === MediaContentType.Tracks ||
           item.media_class === MediaClass.Track) &&
@@ -178,7 +185,7 @@ export const MediaBrowser = ({
       }
     });
 
-    return result;
+    return { items: result, hasNoArtwork };
   }, [mediaBrowserItems, chunkSize, itemFilter]);
 
   useEffect(() => {
@@ -346,6 +353,7 @@ export const MediaBrowser = ({
             key={item.media_content_id + history.length}
             title={item.title}
             imageUrl={item.thumbnail}
+            mdiIcon={getItemMdiIcon(item)}
             {...triggerProps}
           />
         )}
@@ -385,6 +393,9 @@ export const MediaBrowser = ({
     return (
       <MediaGrid numberOfColumns={chunkSize}>
         {item.map(mediaItem => {
+          if (hasNoArtwork) {
+            return renderTrack(mediaItem);
+          }
           return (item[0].media_class === MediaClass.Track ||
             item[0].media_content_type === MediaContentType.Track) &&
             mediaItem.media_content_type !== "favorite"
