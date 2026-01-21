@@ -1,0 +1,93 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Mediaspelers koppelen",
+      "join_subtitle": "Geselecteerde spelergroep.",
+      "link_volume": "Volume koppelen",
+      "player_focus_title": "Spelerfocus",
+      "player_focus_subtitle": "Wijzig welke speler je bedient."
+    },
+    "MediaBrowserView": { "browse_media_title": "Media bladeren" },
+    "SearchView": {
+      "search_in_ma_title": "Zoeken in Music Assistant",
+      "search_title": "Zoeken"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Snelkoppelingen",
+      "shortcuts_subtitle": "Snelle toegang tot je favoriete acties.",
+      "media_player_actions_title": "Mediaspeleracties",
+      "media_player_actions_subtitle": "Extra bedieningselementen voor je mediaspeler.",
+      "mark_as_favorite": "Markeren als favoriet",
+      "transfer_queue": "Wachtrij overzetten"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Gegroepeerde luidsprekers",
+      "link_volume_title": "Volume koppelen",
+      "add_speakers_title": "Luidsprekers toevoegen aan groep"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Volume",
+      "speaker_grouping_modal_title": "Luidsprekergroepering",
+      "media_browser_modal_title": "Mediabrowser",
+      "search_modal_title": "Zoeken",
+      "shortcuts_modal_title": "Snelkoppelingen"
+    },
+    "SpeakerGrouping": { "link_volume": "Volume koppelen" }
+  },
+  "Search": {
+    "input_placeholder": "Zoeken naar media...",
+    "categories": {
+      "All": "Alles",
+      "Favorites": "Favorieten",
+      "Favorite": "Favoriet",
+      "Artists": "Artiesten",
+      "Albums": "Albums",
+      "Tracks": "Nummers",
+      "Playlists": "Afspeellijsten",
+      "Podcasts": "Podcasts",
+      "Audiobooks": "Luisterboeken",
+      "Genres": "Genres",
+      "Radio": "Radio"
+    },
+    "enqueue_mode": {
+      "play": "Afspelen",
+      "replace": "Wachtrij vervangen",
+      "next": "Als volgende toevoegen",
+      "replace_next": "Volgende vervangen",
+      "add": "Aan wachtrij toevoegen"
+    },
+    "no_results": "Geen resultaten gevonden."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Home",
+    "filter_placeholder": "Resultaten filteren...",
+    "empty_text": "Geen media-items beschikbaar.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "In wachtrij",
+      "enqueue_mode": {
+        "play": "Afspelen",
+        "next": "Speel volgende af",
+        "replace": "Wachtrij vervangen",
+        "add": "Aan wachtrij toevoegen"
+      },
+      "browse": "Bladeren"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Markeren als favoriet",
+    "transfer_queue": "Wachtrij overzetten",
+    "select_source": "Bron selecteren"
+  },
+  "player_states": {
+    "Off": "Uit",
+    "Idle": "Inactief",
+    "Playing": "Afspelen",
+    "Paused": "Gepauzeerd",
+    "Stopped": "Gestopt",
+    "Unavailable": "Niet beschikbaar"
+  }
+}
