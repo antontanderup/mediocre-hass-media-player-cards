@@ -90,6 +90,7 @@ A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for 
 - [Universal Media Player integration](./docs/README_UMP.md)
 - [Search functionality](./docs/README_SEARCH.md)
 - [Custom Styles](./docs/README_STYLING.md)
+- [Queue Management](./docs/README_QUEUE_MANAGEMENT.md)
 
 ## Troubleshooting
 
