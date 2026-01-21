@@ -132,7 +132,9 @@ export const MediocreMediaPlayerCard = ({
   const player = usePlayer();
   const { state, subtitle } = player;
 
-  const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
+  const hasQueue =
+    useCanDisplayQueue({ ma_entity_id, lms_entity_id }) &&
+    !isEmbeddedInMultiCard;
 
   const hass = useHass();
 

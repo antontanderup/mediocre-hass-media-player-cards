@@ -77,11 +77,15 @@ export type MediaTrackProps = Omit<
   imageUrl?: string | null;
   title: string;
   artist?: string;
+  mdiIcon?: string | null;
   buttons?: { icon: string; onClick: () => void; disabled?: boolean }[];
 };
 
 export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
-  ({ imageUrl, title, artist, onClick, buttons = [], ...buttonProps }, ref) => {
+  (
+    { imageUrl, title, artist, mdiIcon, onClick, buttons = [], ...buttonProps },
+    ref
+  ) => {
     const [loading, setLoading] = useState(false);
     const [done, setDone] = useState(false);
     const handleOnClick: DOMAttributes<HTMLButtonElement>["onClick"] =
@@ -119,6 +123,7 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
           css={styles.mediaImage}
           imageUrl={imageUrl}
           loading={loading}
+          mdiIcon={mdiIcon}
           done={done}
         />
         <div css={styles.trackInfo}>
