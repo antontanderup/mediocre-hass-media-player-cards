@@ -22,7 +22,7 @@ The Mediocre Media Player Cards support queue management for compatible media pl
    ma_entity_id: media_player.living_room_ma
    ```
 
-   Ensure the [mass_queue integration](https://github.com/music-assistant/ma-queue) is installed and configured in Home Assistant.
+   Ensure the [mass_queue integration](https://github.com/droans/mass_queue) is installed and configured in Home Assistant.
 
 2. **LMS (Lyrion) Example:*
 
