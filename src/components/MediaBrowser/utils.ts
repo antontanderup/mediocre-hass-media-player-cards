@@ -17,7 +17,7 @@ export const getEnqueueModeIcon = (enqueueMode: HaEnqueueMode) => {
   }
 };
 
-export const getItemMdiIcon = (item: MediaBrowserItem) => {
+export const getItemMdiIcon = (item: Partial<MediaBrowserItem>) => {
   if (item.thumbnail) return null;
   // this function is a little silly because it seems like there's no real standard way to declare these
   switch (item.media_content_type) {
