@@ -8,7 +8,7 @@ import {
 } from "preact";
 import { forwardRef } from "preact/compat";
 import { isDarkMode } from "@utils";
-import { IconButton } from "@components";
+import { ButtonSize, IconButton } from "@components";
 
 const styles = {
   root: css({
@@ -18,14 +18,15 @@ const styles = {
     textAlign: "left",
     gridTemplateColumns: "50px 1fr auto",
     alignItems: "center",
-    gap: "12px",
-    padding: "8px 12px",
+    gap: 10,
+    padding: "8px 8px",
     borderRadius: "8px",
     gridColumn: "1/-1",
     background: "rgba(255, 255, 255, 0.05)",
     "&:hover": {
       background: "rgba(255, 255, 255, 0.1)",
     },
+    containerType: "inline-size",
   }),
   rootLight: css({
     background: "rgba(0, 0, 0, 0.05)",
@@ -58,14 +59,25 @@ const styles = {
   mediaImage: css({
     width: 50,
     height: 50,
+    borderRadius: 6,
   }),
   buttons: css({
     display: "flex",
-    gap: "8px",
+    gap: "2px",
     marginRight: "8px",
     opacity: 0.7,
     ":hover &": {
       opacity: 1,
+    },
+  }),
+  buttonPriority2: css({
+    "@container (max-width: 300px)": {
+      display: "none",
+    },
+  }),
+  buttonPriority3: css({
+    "@container (max-width: 350px)": {
+      display: "none",
     },
   }),
 };
@@ -78,12 +90,28 @@ export type MediaTrackProps = Omit<
   title: string;
   artist?: string;
   mdiIcon?: string | null;
-  buttons?: { icon: string; onClick: () => void; disabled?: boolean }[];
+  buttonIconSize?: ButtonSize;
+  buttons?: {
+    icon: string;
+    onClick: () => void;
+    disabled?: boolean;
+    priority?: 1 | 2 | 3;
+    size?: ButtonSize;
+  }[];
 };
 
 export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
   (
-    { imageUrl, title, artist, mdiIcon, onClick, buttons = [], ...buttonProps },
+    {
+      imageUrl,
+      title,
+      artist,
+      mdiIcon,
+      buttonIconSize = "x-small",
+      onClick,
+      buttons = [],
+      ...buttonProps
+    },
     ref
   ) => {
     const [loading, setLoading] = useState(false);
@@ -134,6 +162,13 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
           <div css={styles.buttons}>
             {buttons.map((button, index) => (
               <IconButton
+                css={[
+                  button.priority === 3
+                    ? styles.buttonPriority3
+                    : button.priority === 2
+                      ? styles.buttonPriority2
+                      : undefined,
+                ]}
                 key={index + button.icon}
                 disabled={button.disabled}
                 icon={button.icon}
@@ -146,7 +181,7 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
                   button.onClick();
                 }}
                 type="button"
-                size={"x-small"}
+                size={button.size ?? buttonIconSize}
               />
             ))}
           </div>

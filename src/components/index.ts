@@ -27,6 +27,7 @@ export * from "./Select";
 export * from "./Slider";
 export * from "./Spinner";
 export * from "./SubForm";
+export * from "./TinyMediaPlayer";
 export * from "./VirtualList";
 export * from "./VolumeSlider";
 export * from "./i18n";

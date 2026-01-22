@@ -15,6 +15,7 @@ import {
   Icon,
   IconButton,
   PlayerContextProvider,
+  TinyMediaPlayer,
   useHass,
 } from "@components";
 import { css } from "@emotion/react";
@@ -69,7 +70,7 @@ const styles = {
   }),
   playerChips: css({
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     flexWrap: "wrap",
     gap: "6px 2px",
   }),
@@ -162,60 +163,7 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           key={player.entity_id}
           entityId={player.entity_id}
         >
-          {({ player: { state } }) => {
-            return (
-              <Chip
-                css={[
-                  styles.chipPlayer,
-                  player.state === "off" && styles.chipPlayerOff,
-                ]}
-                onClick={() => player.selectPlayer()}
-              >
-                <AlbumArt
-                  size={22}
-                  iconSize="x-small"
-                  css={styles.chipPlayerArtwork}
-                  onClick={player.selectPlayer}
-                />
-                {`${player.name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup - 1}` : ""}`}
-                {state === "playing" || state === "paused" ? (
-                  <IconButton
-                    size="x-small"
-                    onClick={e => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      getHass().callService(
-                        "media_player",
-                        "media_play_pause",
-                        {
-                          entity_id: player.entity_id,
-                        }
-                      );
-                    }}
-                    icon={
-                      state === "playing"
-                        ? "mdi:pause-circle-outline"
-                        : "mdi:play-circle-outline"
-                    }
-                  />
-                ) : state === "off" || state === "idle" ? (
-                  <IconButton
-                    size="x-small"
-                    onClick={e => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      getHass().callService("media_player", "toggle", {
-                        entity_id: player.entity_id,
-                      });
-                    }}
-                    icon="mdi:power"
-                  />
-                ) : (
-                  <Icon size="x-small" icon="mdi:circle-small" />
-                )}
-              </Chip>
-            );
-          }}
+          <TinyMediaPlayer onClick={player.selectPlayer} name={player.name} />
         </PlayerContextProvider>
       );
     };
