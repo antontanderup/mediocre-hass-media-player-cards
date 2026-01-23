@@ -218,10 +218,8 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
 
   useEffect(() => {
     if (!data) return;
-    if (player.title !== queue[0]?.title) {
-      refetch();
-    }
-  }, [queue, player.title]);
+    refetch();
+  }, [player.title]);
 
   return useMemo(
     () => ({ queue, loading, error, refetch }),
