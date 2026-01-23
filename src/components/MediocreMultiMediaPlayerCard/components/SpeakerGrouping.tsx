@@ -159,7 +159,10 @@ export const SpeakerGrouping = memo<SpeakerGroupingProps>(
           key={player.entity_id}
           entityId={player.entity_id}
         >
-          <TinyMediaPlayer onClick={player.selectPlayer} name={player.name} />
+          <TinyMediaPlayer
+            onClick={player.selectPlayer}
+            name={`${player.name}${player.numPlayersInGroup > 1 ? ` +${player.numPlayersInGroup - 1}` : ""}`}
+          />
         </PlayerContextProvider>
       );
     };
