@@ -9,6 +9,7 @@ import {
 import { forwardRef } from "preact/compat";
 import { isDarkMode } from "@utils";
 import { ButtonSize, IconButton } from "@components";
+import { theme } from "@constants";
 
 const styles = {
   root: css({
@@ -20,7 +21,7 @@ const styles = {
     alignItems: "center",
     gap: 10,
     padding: "8px 8px",
-    borderRadius: "8px",
+    borderRadius: `max(${theme.sizes.cardBorderRadius}, 12px)`,
     gridColumn: "1/-1",
     background: "rgba(255, 255, 255, 0.05)",
     "&:hover": {
@@ -59,16 +60,21 @@ const styles = {
   mediaImage: css({
     width: 50,
     height: 50,
-    borderRadius: 6,
+    borderRadius: "var(--ha-border-radius-md, 8px)",
   }),
   buttons: css({
     display: "flex",
-    gap: "2px",
+    gap: 6,
     marginRight: "8px",
+    alignItems: "center",
     opacity: 0.7,
     ":hover &": {
       opacity: 1,
     },
+  }),
+  button: css({
+    display: "flex",
+    flexShrink: 0,
   }),
   buttonPriority2: css({
     "@container (max-width: 300px)": {
@@ -163,6 +169,7 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
             {buttons.map((button, index) => (
               <IconButton
                 css={[
+                  styles.button,
                   button.priority === 3
                     ? styles.buttonPriority3
                     : button.priority === 2

@@ -98,8 +98,10 @@ const styles = {
 
 export const MediocreMassiveMediaPlayerCard = ({
   className,
+  onClick,
 }: {
   className?: string;
+  onClick?: () => void;
 }) => {
   const { config, rootElement } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
@@ -119,6 +121,9 @@ export const MediocreMassiveMediaPlayerCard = ({
       ...artAction,
       entity: config.entity_id,
     },
+    overrideCallback: !!onClick ? {
+      onTap: onClick,
+    } : undefined,
   });
 
   const renderRoot = () => (

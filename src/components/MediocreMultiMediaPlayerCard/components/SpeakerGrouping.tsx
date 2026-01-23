@@ -6,13 +6,10 @@ import type {
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import {
-  AlbumArt,
   CardContext,
   CardContextType,
-  Chip,
   GroupChipsController,
   GroupVolumeController,
-  Icon,
   IconButton,
   PlayerContextProvider,
   TinyMediaPlayer,
@@ -21,7 +18,6 @@ import {
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { ViewHeader } from "./ViewHeader";
-import { getHass } from "@utils";
 import { Fragment } from "preact/jsx-runtime";
 import { memo } from "preact/compat";
 

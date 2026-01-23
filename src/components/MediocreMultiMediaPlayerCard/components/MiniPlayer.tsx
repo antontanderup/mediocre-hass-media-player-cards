@@ -11,10 +11,13 @@ import {
   MediocreMediaPlayerCardConfig,
 } from "@types";
 import { memo } from "preact/compat";
-import { useContext, useMemo } from "preact/hooks";
+import { useCallback, useContext, useMemo } from "preact/hooks";
+import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
 
 export type MiniPlayerProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
+  setNavigationRoute: (route: NavigationRoute) => void;
+  navigationRoute: NavigationRoute;
 };
 
 const styles = {
@@ -24,7 +27,7 @@ const styles = {
   }),
 };
 
-export const MiniPlayer = memo<MiniPlayerProps>(({ mediaPlayer }) => {
+export const MiniPlayer = memo<MiniPlayerProps>(({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -65,10 +68,17 @@ export const MiniPlayer = memo<MiniPlayerProps>(({ mediaPlayer }) => {
     };
   }, [mediaPlayer]);
 
+  const handleOnClick = useCallback(() => {
+    if (navigationRoute === "speaker-grouping") {
+      return setNavigationRoute("massive");
+    } 
+    return setNavigationRoute("speaker-grouping");
+  }, [setNavigationRoute, navigationRoute]);
+
   return (
     <div css={styles.root}>
       <CardContextProvider rootElement={rootElement} config={cardConfig}>
-        <MediocreMediaPlayerCard isEmbeddedInMultiCard />
+        <MediocreMediaPlayerCard isEmbeddedInMultiCard onClick={handleOnClick} />
       </CardContextProvider>
     </div>
   );

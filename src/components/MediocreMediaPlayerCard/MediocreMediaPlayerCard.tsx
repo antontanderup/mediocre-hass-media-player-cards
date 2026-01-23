@@ -31,10 +31,11 @@ import { MassivePopUp } from "./components/MassivePopUp";
 import { getHasMediaBrowser, getHass, getHasSearch } from "@utils";
 import { css } from "@emotion/react";
 import { MediaBrowserBar } from "./components/MediaBrowserBar";
+import { theme } from "@constants";
 
 const styles = {
   card: css({
-    borderRadius: "var(--ha-card-border-radius, 12px)",
+    borderRadius: theme.sizes.cardBorderRadius,
     overflow: "hidden",
   }),
   artBackground: css({
@@ -85,10 +86,12 @@ const styles = {
 
 export type MediocreMediaPlayerCardProps = {
   isEmbeddedInMultiCard?: boolean;
+  onClick?: () => void;
 };
 
 export const MediocreMediaPlayerCard = ({
   isEmbeddedInMultiCard,
+  onClick,
 }: MediocreMediaPlayerCardProps) => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
@@ -197,7 +200,9 @@ export const MediocreMediaPlayerCard = ({
             setIsPopupVisible(true);
           },
         }
-      : {},
+      : !!onClick
+        ? { onTap: onClick }
+        : undefined,
   });
 
   const togglePower = useCallback(() => {
