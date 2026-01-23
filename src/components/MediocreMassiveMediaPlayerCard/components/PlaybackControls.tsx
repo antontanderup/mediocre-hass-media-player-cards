@@ -16,7 +16,6 @@ const styles = {
 };
 
 export const PlaybackControls = () => {
-
   const {
     attributes: { shuffle, repeat },
     state,

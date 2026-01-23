@@ -74,7 +74,12 @@ export type MassiveViewViewProps = {
 };
 
 export const MassiveViewView = memo<MassiveViewViewProps>(
-  ({ mediaPlayer, height, setNavigationRoute, navigationRoute }: MassiveViewViewProps) => {
+  ({
+    mediaPlayer,
+    height,
+    setNavigationRoute,
+    navigationRoute,
+  }: MassiveViewViewProps) => {
     const hass = useHass();
 
     const { rootElement, config } =
@@ -165,7 +170,10 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
           />
         </div>
         <CardContextProvider rootElement={rootElement} config={massiveConfig}>
-          <MediocreMassiveMediaPlayerCard css={styles.massive} onClick={handleOnClick} />
+          <MediocreMassiveMediaPlayerCard
+            css={styles.massive}
+            onClick={handleOnClick}
+          />
         </CardContextProvider>
         <div css={styles.volumeRoot}>
           <IconButton

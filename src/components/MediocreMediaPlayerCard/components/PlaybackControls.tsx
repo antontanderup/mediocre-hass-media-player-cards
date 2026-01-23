@@ -1,7 +1,4 @@
-import {
-  IconButton,
-  usePlayer,
-} from "@components";
+import { IconButton, usePlayer } from "@components";
 import { useSupportedFeatures } from "@hooks";
 import { css } from "@emotion/react";
 import { usePlayerActions } from "@hooks/usePlayerActions";
@@ -32,7 +29,6 @@ const styles = {
 };
 
 export const PlaybackControls = () => {
-
   const {
     attributes: { shuffle, repeat },
     state,

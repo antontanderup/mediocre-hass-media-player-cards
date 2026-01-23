@@ -27,59 +27,64 @@ const styles = {
   }),
 };
 
-export const MiniPlayer = memo<MiniPlayerProps>(({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
-  const { rootElement, config } =
-    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
-      CardContext
+export const MiniPlayer = memo<MiniPlayerProps>(
+  ({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
+    const { rootElement, config } =
+      useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+        CardContext
+      );
+
+    const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
+      const { custom_buttons: _custom_buttons, ...rest } = mediaPlayer;
+      const speakerGroupEntities = config.media_players
+        .filter(player => player.can_be_grouped)
+        .map(player => {
+          if (player.name) {
+            return {
+              name: player.name,
+              entity: player.speaker_group_entity_id ?? player.entity_id,
+            };
+          } else {
+            return player.speaker_group_entity_id ?? player.entity_id;
+          }
+        });
+      return {
+        type: "custom:mediocre-media-player-card",
+        use_art_colors: config.use_art_colors,
+        speaker_group:
+          speakerGroupEntities.length > 0
+            ? {
+                entity_id:
+                  mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
+                entities: speakerGroupEntities,
+              }
+            : undefined,
+        options: {
+          show_volume_step_buttons:
+            config.options?.show_volume_step_buttons ?? false,
+          use_volume_up_down_for_step_buttons:
+            config.options?.use_volume_up_down_for_step_buttons ?? false,
+        },
+        ...rest,
+      };
+    }, [mediaPlayer]);
+
+    const handleOnClick = useCallback(() => {
+      if (navigationRoute === "speaker-grouping") {
+        return setNavigationRoute("massive");
+      }
+      return setNavigationRoute("speaker-grouping");
+    }, [setNavigationRoute, navigationRoute]);
+
+    return (
+      <div css={styles.root}>
+        <CardContextProvider rootElement={rootElement} config={cardConfig}>
+          <MediocreMediaPlayerCard
+            isEmbeddedInMultiCard
+            onClick={handleOnClick}
+          />
+        </CardContextProvider>
+      </div>
     );
-
-  const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
-    const { custom_buttons: _custom_buttons, ...rest } = mediaPlayer;
-    const speakerGroupEntities = config.media_players
-      .filter(player => player.can_be_grouped)
-      .map(player => {
-        if (player.name) {
-          return {
-            name: player.name,
-            entity: player.speaker_group_entity_id ?? player.entity_id,
-          };
-        } else {
-          return player.speaker_group_entity_id ?? player.entity_id;
-        }
-      });
-    return {
-      type: "custom:mediocre-media-player-card",
-      use_art_colors: config.use_art_colors,
-      speaker_group:
-        speakerGroupEntities.length > 0
-          ? {
-              entity_id:
-                mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
-              entities: speakerGroupEntities,
-            }
-          : undefined,
-      options: {
-        show_volume_step_buttons:
-          config.options?.show_volume_step_buttons ?? false,
-        use_volume_up_down_for_step_buttons:
-          config.options?.use_volume_up_down_for_step_buttons ?? false,
-      },
-      ...rest,
-    };
-  }, [mediaPlayer]);
-
-  const handleOnClick = useCallback(() => {
-    if (navigationRoute === "speaker-grouping") {
-      return setNavigationRoute("massive");
-    } 
-    return setNavigationRoute("speaker-grouping");
-  }, [setNavigationRoute, navigationRoute]);
-
-  return (
-    <div css={styles.root}>
-      <CardContextProvider rootElement={rootElement} config={cardConfig}>
-        <MediocreMediaPlayerCard isEmbeddedInMultiCard onClick={handleOnClick} />
-      </CardContextProvider>
-    </div>
-  );
-});
+  }
+);

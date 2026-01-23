@@ -121,9 +121,11 @@ export const MediocreMassiveMediaPlayerCard = ({
       ...artAction,
       entity: config.entity_id,
     },
-    overrideCallback: !!onClick ? {
-      onTap: onClick,
-    } : undefined,
+    overrideCallback: !!onClick
+      ? {
+          onTap: onClick,
+        }
+      : undefined,
   });
 
   const renderRoot = () => (

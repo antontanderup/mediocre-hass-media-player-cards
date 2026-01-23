@@ -33,7 +33,7 @@ export const TinyMediaPlayer = (props: TinyMediaPlayerProps) => {
         icon: "mdi:power",
         onClick: playerActions.togglePower,
         priority: 1,
-        size: "x-small"
+        size: "x-small",
       });
       return buttons;
     }
