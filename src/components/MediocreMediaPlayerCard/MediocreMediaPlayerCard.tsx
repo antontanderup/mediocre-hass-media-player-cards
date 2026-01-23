@@ -200,7 +200,7 @@ export const MediocreMediaPlayerCard = ({
             setIsPopupVisible(true);
           },
         }
-      : !!onClick
+      : onClick
         ? { onTap: onClick }
         : undefined,
   });

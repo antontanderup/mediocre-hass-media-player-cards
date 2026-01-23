@@ -121,7 +121,7 @@ export const MediocreMassiveMediaPlayerCard = ({
       ...artAction,
       entity: config.entity_id,
     },
-    overrideCallback: !!onClick
+    overrideCallback: onClick
       ? {
           onTap: onClick,
         }
