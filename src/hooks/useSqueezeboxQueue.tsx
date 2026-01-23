@@ -143,7 +143,7 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
       if (data?.playlist_loop) {
         const playlistItems: QueueItem[] = [];
         const currentIndex = Number(data.playlist_cur_index) || -1;
-        const newQueue: QueueItem[] = data.playlist_loop.map((item, index) => ({
+        let newQueue: QueueItem[] = data.playlist_loop.map((item, index) => ({
           id: item.id,
           title: item.title,
           artist: "-",
@@ -156,6 +156,10 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
           skipToItem: () => skipToItem(item["playlist index"]),
           deleteItem: () => deleteItem(item["playlist index"]),
         }));
+        newQueue = newQueue
+          .slice(newQueue.findIndex(i => !i.isPlaying))
+          .filter(item => !item.isPlaying);
+
         if (queue.length === 0) {
           setQueue(newQueue);
         }
