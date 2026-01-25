@@ -1,7 +1,7 @@
 import { Icon, IconSize, usePlayer } from "@components";
 import { fadeIn, theme } from "@constants";
 import { css } from "@emotion/react";
-import { getDeviceIcon } from "@utils";
+import { getDeviceIcon, getSourceIcon } from "@utils";
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { getHass } from "@utils";
@@ -197,33 +197,4 @@ export const AlbumArt = ({
       {renderLongPressIndicator && renderLongPressIndicator()}
     </button>
   );
-};
-
-const getSourceIcon = ({ source }: { source: string }) => {
-  switch (source?.toLowerCase()) {
-    case "spotify":
-      return "mdi:spotify";
-    case "airplay":
-      return "mdi:cast-audio-variant";
-    case "bluetooth":
-      return "mdi:bluetooth";
-    case "net radio":
-      return "mdi:radio";
-    case "server":
-      return "mdi:server";
-    case "usb":
-      return "mdi:usb";
-    case "aux":
-      return "mdi:audio-input-rca";
-    case "hdmi":
-      return "mdi:hdmi-port";
-    case "tv":
-      return "mdi:television";
-    case "tuner":
-      return "mdi:radio-tower";
-    case "optical":
-      return "mdi:audio-input-stereo-minijack";
-    default:
-      return "mdi:music";
-  }
 };

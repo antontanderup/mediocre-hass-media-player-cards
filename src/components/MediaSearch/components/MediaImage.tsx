@@ -139,9 +139,9 @@ export const MediaImage = memo<MediaImageProps>(
             css={[styles.icon, styles.iconNoBackground]}
           />
         )}
-        {!!error && !mdiIcon && (
+        {!!error && (
           <Icon
-            icon="mdi:image-broken-variant"
+            icon={mdiIcon ?? "mdi:image-broken-variant"}
             size="medium"
             css={[styles.icon, styles.iconNoBackground]}
           />

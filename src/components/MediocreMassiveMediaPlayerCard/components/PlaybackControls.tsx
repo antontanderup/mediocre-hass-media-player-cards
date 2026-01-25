@@ -1,10 +1,7 @@
-import { useCallback, useContext } from "preact/hooks";
 import { IconButton, usePlayer } from "@components";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { useSupportedFeatures } from "@hooks";
-import { MediocreMassiveMediaPlayerCardConfig } from "@types";
-import { getHass } from "@utils";
 import { css } from "@emotion/react";
+import { usePlayerActions } from "@hooks/usePlayerActions";
 
 const styles = {
   root: css({
@@ -19,11 +16,6 @@ const styles = {
 };
 
 export const PlaybackControls = () => {
-  const { config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
-      CardContext
-    );
-
   const {
     attributes: { shuffle, repeat },
     state,
@@ -40,45 +32,14 @@ export const PlaybackControls = () => {
     supportsStop,
   } = useSupportedFeatures();
 
-  const stop = useCallback(() => {
-    getHass().callService("media_player", "media_stop", {
-      entity_id: config.entity_id,
-    });
-  }, [config]);
-
-  const togglePlayback = useCallback(() => {
-    getHass().callService("media_player", "media_play_pause", {
-      entity_id: config.entity_id,
-    });
-  }, [config]);
-
-  const nextTrack = useCallback(() => {
-    getHass().callService("media_player", "media_next_track", {
-      entity_id: config.entity_id,
-    });
-  }, [config]);
-
-  const previousTrack = useCallback(() => {
-    getHass().callService("media_player", "media_previous_track", {
-      entity_id: config.entity_id,
-    });
-  }, [config]);
-
-  const toggleShuffle = useCallback(() => {
-    getHass().callService("media_player", "shuffle_set", {
-      entity_id: config.entity_id,
-      shuffle: !shuffle,
-    });
-  }, [shuffle, config]);
-
-  const toggleRepeat = useCallback(() => {
-    const newRepeat =
-      repeat === "off" ? "one" : repeat === "one" ? "all" : "off";
-    getHass().callService("media_player", "repeat_set", {
-      entity_id: config.entity_id,
-      repeat: newRepeat,
-    });
-  }, [repeat, config]);
+  const {
+    togglePlayback,
+    toggleRepeat,
+    toggleShuffle,
+    previousTrack,
+    nextTrack,
+    stop,
+  } = usePlayerActions();
 
   return (
     <div css={styles.root}>

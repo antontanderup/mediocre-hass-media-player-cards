@@ -14,6 +14,7 @@ import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMedia
 import {
   Icon,
   IconButton,
+  NavigationRoute,
   useHass,
   usePlayer,
   VolumeSlider,
@@ -68,10 +69,17 @@ const styles = {
 export type MassiveViewViewProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
   height: number;
+  setNavigationRoute: (route: NavigationRoute) => void;
+  navigationRoute: NavigationRoute;
 };
 
 export const MassiveViewView = memo<MassiveViewViewProps>(
-  ({ mediaPlayer, height }: MassiveViewViewProps) => {
+  ({
+    mediaPlayer,
+    height,
+    setNavigationRoute,
+    navigationRoute,
+  }: MassiveViewViewProps) => {
     const hass = useHass();
 
     const { rootElement, config } =
@@ -127,6 +135,13 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
       });
     }, [entity_id]);
 
+    const handleOnClick = useCallback(() => {
+      if (navigationRoute === "speaker-grouping") {
+        return setNavigationRoute("massive");
+      }
+      return setNavigationRoute("speaker-grouping");
+    }, [setNavigationRoute, navigationRoute]);
+
     const massiveConfig: MediocreMassiveMediaPlayerCardConfig = useMemo(() => {
       return {
         ...mediaPlayer,
@@ -155,7 +170,10 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
           />
         </div>
         <CardContextProvider rootElement={rootElement} config={massiveConfig}>
-          <MediocreMassiveMediaPlayerCard css={styles.massive} />
+          <MediocreMassiveMediaPlayerCard
+            css={styles.massive}
+            onClick={handleOnClick}
+          />
         </CardContextProvider>
         <div css={styles.volumeRoot}>
           <IconButton

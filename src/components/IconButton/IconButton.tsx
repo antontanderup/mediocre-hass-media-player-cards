@@ -38,6 +38,7 @@ const styles = {
     transition: "background-color 0.2s",
     padding: 4,
     minWidth: "var(--mmpc-icon-button-size)",
+    minHeight: "var(--mmpc-icon-button-size)",
     aspectRatio: "1",
     color: theme.colors.onCard,
     touchAction: "manipulation", // iOS fixes for stuck hover states

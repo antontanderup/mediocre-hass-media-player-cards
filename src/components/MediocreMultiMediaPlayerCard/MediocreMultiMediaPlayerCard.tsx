@@ -50,7 +50,12 @@ const styles = {
   }),
   rootPanel: css({
     height: "100%",
-    maxHeight: "calc(100vh - var(--header-height, 16px))", // This is for panel mode TODO: add config to make a fixed height if not on panel
+    maxHeight: "calc(100vh - var(--header-height, 16px))",
+    // Below is needed because panel mode enforces 0px border radius for some reason
+    "--ha-card-border-radius": `max(${theme.sizes.cardBorderRadius}, 12px)`,
+    "*": {
+      "--ha-card-border-radius": "inherit !important",
+    },
   }),
   rootCard: css({
     height: 780,
@@ -69,7 +74,7 @@ const styles = {
   }),
   contentAreaCard: css({
     margin: "0 0 12px 0",
-    borderRadius: "var(--ha-card-border-radius, 12px)",
+    borderRadius: theme.sizes.cardBorderRadius,
   }),
   contentAreaMassiveTransparent: css({
     backgroundColor: "transparent",
@@ -84,11 +89,9 @@ const styles = {
     gap: 12,
     display: "flex",
     flexDirection: "column",
-    "--ha-card-border-radius": "max(var(--ha-card-border-radius, 12px), 12px)",
   }),
   footerCard: css({
     padding: 0,
-    "--ha-card-border-radius": "var(--ha-card-border-radius, 12px)",
   }),
 };
 
@@ -197,6 +200,8 @@ export const MediocreMultiMediaPlayerCard = () => {
                 <MassiveViewView
                   mediaPlayer={selectedPlayer}
                   height={contentHeight}
+                  setNavigationRoute={setNavigationRoute}
+                  navigationRoute={navigationRoute}
                 />
               )}
               {navigationRoute === "custom-buttons" && (
@@ -211,7 +216,13 @@ export const MediocreMultiMediaPlayerCard = () => {
             >
               {navigationRoute !== "massive" &&
                 cardHeight &&
-                cardHeight > 500 && <MiniPlayer mediaPlayer={selectedPlayer} />}
+                cardHeight > 500 && (
+                  <MiniPlayer
+                    mediaPlayer={selectedPlayer}
+                    setNavigationRoute={setNavigationRoute}
+                    navigationRoute={navigationRoute}
+                  />
+                )}
               <FooterActions
                 mediaPlayer={selectedPlayer}
                 setNavigationRoute={setNavigationRoute}
