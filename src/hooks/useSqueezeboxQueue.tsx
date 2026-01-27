@@ -142,7 +142,9 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
     debounceInfoTimeout.current = setTimeout(async () => {
       if (data?.playlist_loop) {
         const playlistItems: QueueItem[] = [];
-        const currentIndex = Number(data.playlist_cur_index) || -1;
+        const currentIndex = data.playlist_cur_index
+          ? Number(data.playlist_cur_index)
+          : -1;
         let newQueue: QueueItem[] = data.playlist_loop.map((item, index) => ({
           id: item.id,
           title: item.title,
