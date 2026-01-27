@@ -93,7 +93,7 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
       })
     ).toEqual({
       title: "Song Title",
-      subtitle: "Album - Artist",
+      subtitle: "Album • Artist",
     });
   });
 
@@ -123,7 +123,7 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
       })
     ).toEqual({
       title: "Song Title",
-      subtitle: "Album - ",
+      subtitle: "Album • ",
     });
   });
 
@@ -140,7 +140,7 @@ describe("getMediaPlayerTitleAndSubtitle", () => {
       })
     ).toEqual({
       title: "Episode Title",
-      subtitle: "Series Title - S3E5",
+      subtitle: "Series Title • S3E5",
     });
   });
 });

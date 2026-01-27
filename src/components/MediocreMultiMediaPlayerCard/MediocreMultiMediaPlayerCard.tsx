@@ -44,13 +44,24 @@ const styles = {
     minHeight: 0,
     gridTemplateRows: "1fr auto",
     gridTemplateColumns: "1fr",
+    rowGap: 12,
     "*, *:before, *:after": {
       boxSizing: "border-box",
     },
   }),
+  rootDesktop: css({
+    gridTemplateColumns: "1fr 1fr",
+    gridTemplateRows: "1fr auto", // Make first row stretch, second row auto-sized for footer
+    gridTemplateAreas: `
+      "massive content"
+      "massive footer"
+    `,
+    columnGap: 12,
+  }),
   rootPanel: css({
     height: "100%",
-    maxHeight: "calc(100vh - var(--header-height, 16px))",
+    padding: 12,
+    maxHeight: "calc(100vh - 24px - var(--header-height, 16px))",
     // Below is needed because panel mode enforces 0px border radius for some reason
     "--ha-card-border-radius": `max(${theme.sizes.cardBorderRadius}, 12px)`,
     "*": {
@@ -66,14 +77,18 @@ const styles = {
     minHeight: 0,
     backgroundColor: theme.colors.card,
     borderRadius: 12,
-    margin: 12,
     marginBottom: 0,
     borderWidth: "var(--ha-card-border-width, 1px)",
     borderColor: "var(--ha-card-border-color,var(--divider-color,#e0e0e0))",
     borderStyle: "var(--ha-card-border-style, solid)",
   }),
+  contentAreaDesktop: css({
+    gridArea: "content",
+  }),
+  contentAreaDesktopMassive: css({
+    gridArea: "massive",
+  }),
   contentAreaCard: css({
-    margin: "0 0 12px 0",
     borderRadius: theme.sizes.cardBorderRadius,
   }),
   contentAreaMassiveTransparent: css({
@@ -85,10 +100,12 @@ const styles = {
   }),
   footer: css({
     alignSelf: "end",
-    padding: 12,
     gap: 12,
     display: "flex",
     flexDirection: "column",
+  }),
+  footerDesktop: css({
+    gridArea: "footer",
   }),
   footerCard: css({
     padding: 0,
@@ -131,9 +148,18 @@ export const MediocreMultiMediaPlayerCard = () => {
   const [navigationRoute, setNavigationRoute] =
     useState<NavigationRoute>("massive");
 
-  const [cardSizeRef, { height: cardHeight }] = useMeasure<HTMLDivElement>();
+  const [cardSizeRef, { height: cardHeight, width: cardWidth }] =
+    useMeasure<HTMLDivElement>();
   const [contentSizeRef, { height: contentHeight }] =
     useMeasure<HTMLDivElement>();
+
+  const desktopMode = cardWidth ? cardWidth > 800 : false;
+
+  useEffect(() => {
+    if (desktopMode && navigationRoute === "massive") {
+      setNavigationRoute("speaker-grouping");
+    }
+  }, [desktopMode]);
 
   const handleCardClick = useCallback(() => {
     lastInteractionRef.current = Date.now();
@@ -153,14 +179,37 @@ export const MediocreMultiMediaPlayerCard = () => {
               styles.root,
               config.mode === "panel" && styles.rootPanel,
               config.mode === "card" && styles.rootCard,
+              desktopMode && styles.rootDesktop,
             ]}
             style={config.height ? { height: config.height } : {}}
             ref={cardSizeRef}
             onClick={handleCardClick}
           >
+            {desktopMode ? (
+              <div
+                css={[
+                  styles.contentArea,
+                  styles.contentAreaDesktopMassive,
+                  config.mode === "card" && styles.contentAreaCard,
+                  config.options?.transparent_background_on_home &&
+                    styles.contentAreaMassiveTransparent,
+                  config.mode === "panel" &&
+                    config.options?.transparent_background_on_home &&
+                    styles.contentAreaMassiveTransparent,
+                ]}
+                ref={contentSizeRef}
+              >
+                <MassiveViewView
+                  mediaPlayer={selectedPlayer}
+                  setNavigationRoute={setNavigationRoute}
+                  navigationRoute={navigationRoute}
+                />
+              </div>
+            ) : null}
             <div
               css={[
                 styles.contentArea,
+                desktopMode && styles.contentAreaDesktop,
                 config.mode === "card" && styles.contentAreaCard,
                 navigationRoute === "massive" &&
                   config.options?.transparent_background_on_home &&
@@ -196,10 +245,9 @@ export const MediocreMultiMediaPlayerCard = () => {
                   height={contentHeight}
                 />
               )}
-              {navigationRoute === "massive" && contentHeight && (
+              {navigationRoute === "massive" && (
                 <MassiveViewView
                   mediaPlayer={selectedPlayer}
-                  height={contentHeight}
                   setNavigationRoute={setNavigationRoute}
                   navigationRoute={navigationRoute}
                 />
@@ -212,9 +260,14 @@ export const MediocreMultiMediaPlayerCard = () => {
               )}
             </div>
             <div
-              css={[styles.footer, config.mode === "card" && styles.footerCard]}
+              css={[
+                styles.footer,
+                desktopMode && styles.footerDesktop,
+                config.mode === "card" && styles.footerCard,
+              ]}
             >
-              {navigationRoute !== "massive" &&
+              {!desktopMode &&
+                navigationRoute !== "massive" &&
                 cardHeight &&
                 cardHeight > 500 && (
                   <MiniPlayer
@@ -227,6 +280,7 @@ export const MediocreMultiMediaPlayerCard = () => {
                 mediaPlayer={selectedPlayer}
                 setNavigationRoute={setNavigationRoute}
                 navigationRoute={navigationRoute}
+                desktopMode={desktopMode}
               />
             </div>
           </ArtworkColorWrap>

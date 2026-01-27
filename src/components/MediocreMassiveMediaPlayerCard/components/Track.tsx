@@ -12,6 +12,7 @@ const styles = {
   root: css({
     paddingLeft: "var(--mmpc-extra-horizontal-padding, 0px)",
     paddingRight: "var(--mmpc-extra-horizontal-padding, 0px)",
+    width: "100%",
   }),
   timeWrap: css({
     display: "flex",

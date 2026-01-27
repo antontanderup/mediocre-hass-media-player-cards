@@ -10,6 +10,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-around",
     width: "100%",
+    maxWidth: "480px",
     paddingLeft: "var(--mmpc-extra-horizontal-padding, 0px)",
     paddingRight: "var(--mmpc-extra-horizontal-padding, 0px)",
   }),
