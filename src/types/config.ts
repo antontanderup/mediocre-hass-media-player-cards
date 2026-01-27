@@ -112,7 +112,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   "use_art_colors?": "boolean",
   media_players: MediocreMultiMediaPlayer.array(),
   "options?": {
-    "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active (only relevant in panel mode)
+    "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active.
     "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
     "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
     "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.

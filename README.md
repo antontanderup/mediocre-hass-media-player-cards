@@ -6,9 +6,7 @@
 [![Chat on Oase](<https://img.shields.io/badge/Chat-Oase-lightblue?color=rgb(74%20196%20169)>)](https://oase.app/oase/8414e128-52fe-42c7-b7c8-789fd0930a3e/join/cfdc211d-eb53-4cef-af62-2d1c4642a180)
 [![BuyMeACoffee](https://raw.githubusercontent.com/pachadotdev/buymeacoffee-badges/main/bmc-yellow.svg)](https://www.buymeacoffee.com/antontadamsen)
 
-Media player cards for Home Assistant that let you group speakers, add custom action buttons, browse and search for music and more. A visual editor is available for all media player card configuration options.
-
-> **Note:** This is a pretty new project, so you might encounter some bugs. If you do, please do report them.
+Media player cards for Home Assistant that let you group speakers, add custom action buttons, browse, search for music, manage your queue and more. A visual editor is available for all media player card configuration options.
 
 ## Installation
 
@@ -90,6 +88,9 @@ A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for 
 - [Universal Media Player integration](./docs/README_UMP.md)
 - [Search functionality](./docs/README_SEARCH.md)
 - [Custom Styles](./docs/README_STYLING.md)
+- [Queue Management](./docs/README_QUEUE_MANAGEMENT.md)
+- [LMS Features](./docs//README_LMS.md)
+- [Music Assistant features](./docs/README_MA.md)
 
 ## Troubleshooting
 

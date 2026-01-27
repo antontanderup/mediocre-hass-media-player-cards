@@ -42,16 +42,11 @@ speaker_group:
 | `speaker_group.entity_id`            | string  |          | Entity ID of the main speaker if different from the media player                                        |
 | `speaker_group.entities`             | array   |          | List of entity IDs that can be grouped with the main speaker                                            |
 | `custom_buttons`                     | array   |          | List of custom buttons (icon, name, and action config)                                                  |
-| `ma_entity_id`                       | string  |          | Music Assistant entity id (adds search)                                                                 |
+| `ma_entity_id`                       | string  |          | Music Assistant entity id (adds search and queue management when paired with hass_queue)                |
 | `ma_favorite_button_entity_id`       | string  |          | Music Assistant favorite button entity (shows a heart-plus button to mark the current song as favorite) |
-| `search`                             | object  |          | Search configuration                                                                                    |
-| `search.enabled`                     | boolean |          | Enables Home Assistant search_media functionality                                                       |
-| `search.show_favorites`              | boolean |          | Shows favorites when no search query has been entered                                                   |
-| `search.entity_id`                   | string  |          | Entity ID to search on (optional, falls back to card entity_id)                                         |
-| `search.media_types`                 | array   |          | List of supported media types for search                                                                |
-| `media_browser`                      | object  |          | Media browser configuration                                                                             |
-| `media_browser.enabled`              | boolean |          | Enables media browser functionality                                                                     |
-| `media_browser.entity_id`            | string  |          | Entity ID of the media browser to use (optional, falls back to card entity_id)                          |
+| `lms_entity_id`                      | string  |          | LMS (lyrion) entity id. Adds queue transfer and queue management when paired with lyrion_cli.           |
+| `search`                             | array   |          | List of objects (entity_id, name and media_types). Enables search ui using the search_media action.     |
+| `media_browser`                      | array   |          | List of objects (entity_id and name). Enables a built in media browser.                                 |
 | `options`                            | object  |          | Additional display options                                                                              |
 | `options.always_show_power_button`   | boolean |          | Always show the power button, even if the media player is on                                            |
 | `options.always_show_custom_buttons` | boolean |          | Always show custom buttons panel expanded                                                               |
