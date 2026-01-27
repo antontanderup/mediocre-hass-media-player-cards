@@ -35,10 +35,11 @@ export type FooterActionsProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
+  desktopMode?: boolean;
 };
 
 export const FooterActions = memo<FooterActionsProps>(
-  ({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
+  ({ mediaPlayer, setNavigationRoute, navigationRoute, desktopMode }) => {
     const { rootElement } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
@@ -59,12 +60,14 @@ export const FooterActions = memo<FooterActionsProps>(
 
     return (
       <div css={styles.root}>
-        <IconButton
-          size="small"
-          icon={"mdi:home"}
-          onClick={() => setNavigationRoute("massive")}
-          selected={navigationRoute === "massive"}
-        />
+        {!desktopMode && (
+          <IconButton
+            size="small"
+            icon={"mdi:home"}
+            onClick={() => setNavigationRoute("massive")}
+            selected={navigationRoute === "massive"}
+          />
+        )}
         {hasSearch && (
           <IconButton
             size="small"

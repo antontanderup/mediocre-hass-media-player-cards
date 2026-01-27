@@ -7,6 +7,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    width: "100%",
     gap: "8px",
     textAlign: "center",
     color: theme.colors.onDialog,

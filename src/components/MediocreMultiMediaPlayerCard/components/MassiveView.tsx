@@ -31,6 +31,7 @@ const styles = {
     gap: 24,
     gridTemplateRows: "auto 1fr auto",
     gridTemplateColumns: "1fr",
+    height: "100%",
   }),
   massive: css({
     overflow: "hidden",
@@ -68,7 +69,6 @@ const styles = {
 
 export type MassiveViewViewProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
-  height: number;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
 };
@@ -76,7 +76,6 @@ export type MassiveViewViewProps = {
 export const MassiveViewView = memo<MassiveViewViewProps>(
   ({
     mediaPlayer,
-    height,
     setNavigationRoute,
     navigationRoute,
   }: MassiveViewViewProps) => {
@@ -147,11 +146,12 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
         ...mediaPlayer,
         mode: "multi",
         type: "custom:mediocre-massive-media-player-card",
+        use_art_colors: config.use_art_colors,
       };
-    }, [mediaPlayer]);
+    }, [mediaPlayer, config.use_art_colors]);
 
     return (
-      <div css={styles.root} style={{ height }}>
+      <div css={styles.root}>
         <div
           css={styles.massiveHeader}
           id="mmpc-multi-media-player-card-massive-view-header"

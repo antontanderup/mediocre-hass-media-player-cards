@@ -50,7 +50,6 @@ export const MiniPlayer = memo<MiniPlayerProps>(
         });
       return {
         type: "custom:mediocre-media-player-card",
-        use_art_colors: config.use_art_colors,
         speaker_group:
           speakerGroupEntities.length > 0
             ? {
@@ -66,8 +65,9 @@ export const MiniPlayer = memo<MiniPlayerProps>(
             config.options?.use_volume_up_down_for_step_buttons ?? false,
         },
         ...rest,
+        use_art_colors: config.use_art_colors,
       };
-    }, [mediaPlayer]);
+    }, [mediaPlayer, config.use_art_colors]);
 
     const handleOnClick = useCallback(() => {
       if (navigationRoute === "speaker-grouping") {

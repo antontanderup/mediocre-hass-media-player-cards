@@ -18,7 +18,7 @@ export const TinyMediaPlayer = (props: TinyMediaPlayerProps) => {
     return player.attributes.friendly_name || player.entity_id;
   }, [props.name, player.attributes.friendly_name, player.entity_id]);
 
-  const currentItemTitle = `${player.title}${player.subtitle ? ` - ${player.subtitle}` : ""}`;
+  const currentItemTitle = `${player.title}${player.subtitle ? ` • ${player.subtitle}` : ""}`;
 
   const albumArt =
     player.attributes.entity_picture_local || player.attributes.entity_picture;
