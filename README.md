@@ -107,7 +107,7 @@ Special thanks to the following projects and their authors for inspiration, idea
 - [mini-media-player](https://github.com/kalkih/mini-media-player)
 - [bubble card](https://github.com/Clooos/Bubble-Card)
 - [mushroom cards](https://github.com/piitaya/lovelace-mushroom)
-- [hass-queue](https://github.com/droans/hass-queue)
+- [mass-queue](https://github.com/droans/mass_queue)
 - [lyrion-cli](https://github.com/peteS-UK/lyrion_cli)
 - [music assistant](https://github.com/music-assistant/support)
 - [lyrion music server](https://github.com/lms-community/slimserver)
