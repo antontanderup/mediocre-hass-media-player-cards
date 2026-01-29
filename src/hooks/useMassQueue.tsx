@@ -27,7 +27,6 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
         service: "get_queue_items",
         service_data: {
           entity: entity_id,
-          limit_before: 0,
         },
         return_response: true,
       },
@@ -64,6 +63,8 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
         entity: entity_id,
         queue_item_id,
       });
+      // Small delay to allow backend to process the move (else it will return the old order)
+      await new Promise(resolve => setTimeout(resolve, 100));
       refetch();
     },
     [entity_id, refetch]
@@ -75,6 +76,8 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
         entity: entity_id,
         queue_item_id,
       });
+      // Small delay to allow backend to process the move (else it will return the old order)
+      await new Promise(resolve => setTimeout(resolve, 100));
       refetch();
     },
     [entity_id, refetch]
@@ -107,10 +110,8 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
 
   useEffect(() => {
     if (!data) return;
-    if (player.title !== queue[0]?.title) {
-      refetch();
-    }
-  }, [queue, player.title]);
+    refetch();
+  }, [player.title]);
 
   return useMemo(
     () => ({ queue, loading, error, refetch }),

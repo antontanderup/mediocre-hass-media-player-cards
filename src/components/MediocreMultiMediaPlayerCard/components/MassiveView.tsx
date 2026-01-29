@@ -14,6 +14,7 @@ import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMedia
 import {
   Icon,
   IconButton,
+  NavigationRoute,
   useHass,
   usePlayer,
   VolumeSlider,
@@ -30,6 +31,7 @@ const styles = {
     gap: 24,
     gridTemplateRows: "auto 1fr auto",
     gridTemplateColumns: "1fr",
+    height: "100%",
   }),
   massive: css({
     overflow: "hidden",
@@ -67,11 +69,16 @@ const styles = {
 
 export type MassiveViewViewProps = {
   mediaPlayer: MediocreMultiMediaPlayer;
-  height: number;
+  setNavigationRoute: (route: NavigationRoute) => void;
+  navigationRoute: NavigationRoute;
 };
 
 export const MassiveViewView = memo<MassiveViewViewProps>(
-  ({ mediaPlayer, height }: MassiveViewViewProps) => {
+  ({
+    mediaPlayer,
+    setNavigationRoute,
+    navigationRoute,
+  }: MassiveViewViewProps) => {
     const hass = useHass();
 
     const { rootElement, config } =
@@ -127,16 +134,24 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
       });
     }, [entity_id]);
 
+    const handleOnClick = useCallback(() => {
+      if (navigationRoute === "speaker-grouping") {
+        return setNavigationRoute("massive");
+      }
+      return setNavigationRoute("speaker-grouping");
+    }, [setNavigationRoute, navigationRoute]);
+
     const massiveConfig: MediocreMassiveMediaPlayerCardConfig = useMemo(() => {
       return {
         ...mediaPlayer,
         mode: "multi",
         type: "custom:mediocre-massive-media-player-card",
+        use_art_colors: config.use_art_colors,
       };
-    }, [mediaPlayer]);
+    }, [mediaPlayer, config.use_art_colors]);
 
     return (
-      <div css={styles.root} style={{ height }}>
+      <div css={styles.root}>
         <div
           css={styles.massiveHeader}
           id="mmpc-multi-media-player-card-massive-view-header"
@@ -155,7 +170,10 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
           />
         </div>
         <CardContextProvider rootElement={rootElement} config={massiveConfig}>
-          <MediocreMassiveMediaPlayerCard css={styles.massive} />
+          <MediocreMassiveMediaPlayerCard
+            css={styles.massive}
+            onClick={handleOnClick}
+          />
         </CardContextProvider>
         <div css={styles.volumeRoot}>
           <IconButton

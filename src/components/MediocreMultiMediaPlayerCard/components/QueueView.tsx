@@ -12,8 +12,7 @@ const styles = {
     overflowY: "auto",
   }),
   header: css({
-    padding: 16,
-    paddingBottom: 12,
+    padding: "12px 16px 12px 16px",
   }),
   itemPlaying: css({
     border: `1px solid ${theme.colors.onCardDivider}`,

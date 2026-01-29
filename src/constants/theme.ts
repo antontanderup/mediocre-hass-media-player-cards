@@ -13,4 +13,8 @@ export const theme = {
     onCardDivider:
       "var(--mmpc-on-card-divider, var(--divider-color, rgba(0, 0, 0, 0.12)))",
   },
+  sizes: {
+    cardBorderRadius:
+      "var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px))",
+  },
 };

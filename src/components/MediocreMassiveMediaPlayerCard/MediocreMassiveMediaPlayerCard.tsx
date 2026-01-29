@@ -55,20 +55,19 @@ const styles = {
     flex: 1,
     flexDirection: "column",
     gap: "16px",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     paddingTop: "16px",
     paddingBottom: "16px",
     height: "100%",
   }),
   wrapPanelMode: css({
-    width: "90%",
-    maxWidth: "400px",
+    width: "100%",
+    maxWidth: "480px",
     padding: "16px",
   }),
   wrapMultiMode: css({
     width: "100%",
-    maxWidth: "600px",
     padding: 0,
   }),
   wrapPopupMode: css({
@@ -80,26 +79,14 @@ const styles = {
     width: "100%",
     padding: "16px",
   }),
-  controlsWrapper: css({
-    display: "flex",
-    flexDirection: "column",
-    maxHeight: "300px",
-    minHeight: "280px",
-    width: "100%",
-    height: "100%",
-    justifyContent: "space-between",
-  }),
-  controlsWrapperMulti: css({
-    maxHeight: 210,
-    minHeight: 200,
-    justifyContent: "space-evenly",
-  }),
 };
 
 export const MediocreMassiveMediaPlayerCard = ({
   className,
+  onClick,
 }: {
   className?: string;
+  onClick?: () => void;
 }) => {
   const { config, rootElement } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
@@ -119,6 +106,11 @@ export const MediocreMassiveMediaPlayerCard = ({
       ...artAction,
       entity: config.entity_id,
     },
+    overrideCallback: onClick
+      ? {
+          onTap: onClick,
+        }
+      : undefined,
   });
 
   const renderRoot = () => (
@@ -153,17 +145,10 @@ export const MediocreMassiveMediaPlayerCard = ({
         ]}
       >
         <AlbumArt iconSize="x-large" borderRadius={8} {...artActionProps} />
-        <div
-          css={[
-            styles.controlsWrapper,
-            mode === "multi" && styles.controlsWrapperMulti,
-          ]}
-        >
-          <Title />
-          <Track />
-          <PlaybackControls />
-          {mode !== "multi" && <PlayerActions />}
-        </div>
+        <Title />
+        <Track />
+        <PlaybackControls />
+        {mode !== "multi" && <PlayerActions />}
       </div>
     </div>
   );

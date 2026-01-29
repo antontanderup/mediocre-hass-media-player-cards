@@ -28,7 +28,8 @@ export function selectActiveMultiMediaPlayer(
   ) {
     const groupState =
       hass.states[player?.speaker_group_entity_id || player.entity_id];
-    if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
+    const members = groupState?.attributes?.group_members;
+    if (!members?.length || members[0] === groupState.entity_id) {
       return player;
     }
   }
@@ -42,7 +43,8 @@ export function selectActiveMultiMediaPlayer(
       )
     ) {
       const groupState = hass.states[p.speaker_group_entity_id || p.entity_id];
-      if (groupState.attributes.group_members?.[0] === groupState.entity_id) {
+      const members = groupState?.attributes?.group_members;
+      if (!members?.length || members[0] === groupState.entity_id) {
         player = p;
       }
     }

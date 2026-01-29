@@ -142,8 +142,10 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
     debounceInfoTimeout.current = setTimeout(async () => {
       if (data?.playlist_loop) {
         const playlistItems: QueueItem[] = [];
-        const currentIndex = Number(data.playlist_cur_index) || -1;
-        const newQueue: QueueItem[] = data.playlist_loop.map((item, index) => ({
+        const currentIndex = data.playlist_cur_index
+          ? Number(data.playlist_cur_index)
+          : -1;
+        let newQueue: QueueItem[] = data.playlist_loop.map((item, index) => ({
           id: item.id,
           title: item.title,
           artist: "-",
@@ -156,6 +158,10 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
           skipToItem: () => skipToItem(item["playlist index"]),
           deleteItem: () => deleteItem(item["playlist index"]),
         }));
+        newQueue = newQueue
+          .slice(newQueue.findIndex(i => !i.isPlaying))
+          .filter(item => !item.isPlaying);
+
         if (queue.length === 0) {
           setQueue(newQueue);
         }
@@ -218,10 +224,8 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
 
   useEffect(() => {
     if (!data) return;
-    if (player.title !== queue[0]?.title) {
-      refetch();
-    }
-  }, [queue, player.title]);
+    refetch();
+  }, [player.title]);
 
   return useMemo(
     () => ({ queue, loading, error, refetch }),

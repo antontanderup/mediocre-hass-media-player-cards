@@ -68,9 +68,9 @@ export function getMediaPlayerTitleAndSubtitle(player: MediaPlayerEntity): {
     if (season || episode) {
       seasonEpisode = `S${season ?? ""}${episode ? `E${episode}` : ""}`;
     }
-    subtitle = `${seriesTitle}${seasonEpisode ? ` - ${seasonEpisode}` : ""}`;
+    subtitle = `${seriesTitle}${seasonEpisode ? ` • ${seasonEpisode}` : ""}`;
   } else if (!!albumName || !!artist) {
-    subtitle = `${!!albumName && albumName !== title ? `${albumName} - ` : ""}${artist ?? ""}`;
+    subtitle = `${!!albumName && albumName !== title ? `${albumName} • ` : ""}${artist ?? ""}`;
   }
 
   return { title: title as string, subtitle };

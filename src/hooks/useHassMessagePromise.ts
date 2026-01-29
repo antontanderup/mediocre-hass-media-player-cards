@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState, useMemo } from "preact/hooks";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+} from "preact/hooks";
 import type { MessageBase } from "home-assistant-js-websocket";
 import { getHassMessageWithCache } from "@utils/getHassMessageWithCache";
 
@@ -16,6 +22,9 @@ export function useHassMessagePromise<T = unknown>(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Ref to track the latest message key
+  const latestMessageKeyRef = useRef<string>("");
+
   // Internal fetch for initial load and cache-aware updates
   const fetch = useCallback(
     async (overrideOptions?: {
@@ -26,10 +35,11 @@ export function useHassMessagePromise<T = unknown>(
       if (
         !message ||
         options?.enabled === false ||
-        overrideOptions?.enabled === false ||
-        loading
+        overrideOptions?.enabled === false
       )
         return;
+      const messageKey = JSON.stringify(message);
+      latestMessageKeyRef.current = messageKey;
       setLoading(true);
       setError(null);
       try {
@@ -37,18 +47,23 @@ export function useHassMessagePromise<T = unknown>(
           message,
           { ...options, ...overrideOptions }
         );
-        setData(result?.response ?? null);
-        setLoading(false);
-        setError(null);
+        // Only update state if this is the latest message
+        if (latestMessageKeyRef.current === messageKey) {
+          setData(result?.response ?? null);
+          setLoading(false);
+          setError(null);
+        }
         return result;
       } catch (e: unknown | { message?: string }) {
-        setError(
-          e && typeof e === "object" && "message" in e
-            ? (e as Error).message
-            : "Unknown error"
-        );
-        setLoading(false);
-        setData(null);
+        if (latestMessageKeyRef.current === messageKey) {
+          setError(
+            e && typeof e === "object" && "message" in e
+              ? (e as Error).message
+              : "Unknown error"
+          );
+          setLoading(false);
+          setData(null);
+        }
         return null;
       }
     },

@@ -12,8 +12,7 @@ const styles = {
     overflowY: "auto",
   }),
   header: css({
-    padding: 16,
-    paddingBottom: 0,
+    padding: "12px 16px 12px 16px",
   }),
 };
 
