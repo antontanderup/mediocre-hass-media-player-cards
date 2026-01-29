@@ -100,6 +100,20 @@ If you run into issues:
 2. Verify your configuration syntax
 3. Look for errors in your browser's developer console
 
+## Thank You
+
+Special thanks to the following projects and their authors for inspiration, ideas, or direct/indirect contributions:
+
+- [mini-media-player](https://github.com/kalkih/mini-media-player)
+- [bubble card](https://github.com/Clooos/Bubble-Card)
+- [mushroom cards](https://github.com/piitaya/lovelace-mushroom)
+- [hass-queue](https://github.com/droans/hass-queue)
+- [lyrion-cli](https://github.com/peteS-UK/lyrion_cli)
+- [music assistant](https://github.com/music-assistant/support)
+- [lyrion music server](https://github.com/lms-community/slimserver)
+
+Your work and creativity have helped make this project better!
+
 ## Development
 
 These cards are built with Preact wrapped in web components. For local development:
