@@ -21,7 +21,8 @@
 	- Thanks to @jjanssen95 for contributing Dutch translations!
 
 - **Bug Fixes & Improvements**
-	- Many small fixes and UI improvements throughout the cards
+    - Multi now takes up 2 columns if wide enough, providing a more tablet/desktop friendly ui.
+	- Many small fixes and UI improvements throughout the cards.
 
 ## 📸 Screenshots
 
@@ -35,12 +36,6 @@
 <img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/1b873587-5a1c-4485-8f22-d8d815b5d591" />
 <img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/ee201c8e-37d2-4461-ad72-2460063b1132" />
 <img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/27d559e0-103d-49a8-8170-2d21bb862c20" />
-
-
-
-
-
-
 
 ---
 
