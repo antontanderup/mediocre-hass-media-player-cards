@@ -29,6 +29,9 @@
 ### Queue Management
 ![Queue display](https://github.com/user-attachments/assets/56664397-dacf-4c1d-a6d3-e472a3be6309)
 
+### Tablet friendly multi card
+<img width="1015" height="743" alt="image" src="https://github.com/user-attachments/assets/9d736cc9-d918-4d13-af61-0b17494b51da" />
+
 ### Improved Artwork Colors
 <img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/821dcfc3-b071-44d0-ad12-922d49ff0e82" />
 <img width="447" height="139" alt="image" src="https://github.com/user-attachments/assets/063e71b6-7ece-4dfb-8725-58eafb34c087" />
