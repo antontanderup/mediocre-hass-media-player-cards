@@ -7,11 +7,27 @@ const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
 });
 
-const searchMediaTypeSchema = type({
+const searchMediaTypeSchemaLegacy = type({
   "icon?": "string",
   "name?": "string",
-  media_type: "string",
-});
+  "media_type": "string",
+})
+
+export const searchFilter = type({
+  "icon?": "string",
+  "name?": "string",
+}).and(
+  type({
+    media_content_type: "string",
+  })
+    .or({
+      media_filter_class: "string",
+    })
+    .or({
+      media_content_type: "string",
+      media_filter_class: "string",
+    })
+);
 
 export const mediaPlayerConfigEntity = type({
   entity: "string",
@@ -44,13 +60,14 @@ const searchLegacyEntry = type({
   "enabled?": "boolean | null", // Enables regular Home Assistant search_media functionality
   "show_favorites?": type("boolean | null").or("undefined"), // Shows favorites no search query has been entered
   "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media player to search on (optional will fall back to the entity_id of the card)
-  "media_types?": searchMediaTypeSchema.array(),
+  "media_types?": searchMediaTypeSchemaLegacy.array().or("undefined"),
 });
 
 const searchEntry = type({
   "name?": "string | null",
   entity_id: type("string"),
-  "media_types?": searchMediaTypeSchema.array().or("undefined"),
+  "media_types?": searchMediaTypeSchemaLegacy.array().or("undefined"),
+  "filters?": searchFilter.array().or("undefined"),
 });
 
 const searchConfig = searchEntry.array().or(searchLegacyEntry).or("undefined");
@@ -121,7 +138,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
 });
 
-export type SearchMediaType = typeof searchMediaTypeSchema.infer;
+export type SearchMediaType = typeof searchMediaTypeSchemaLegacy.infer;
 export type CommonMediocreMediaPlayerCardConfig =
   typeof commonMediocreMediaPlayerCardConfigSchema.infer;
 export type MediocreMediaPlayerCardConfig =
