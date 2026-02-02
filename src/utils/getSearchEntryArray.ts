@@ -15,7 +15,7 @@ export function getSearchEntryArray(
   if (!searchConfig) return [];
   if (Array.isArray(searchConfig)) {
     // Already new format
-    return searchConfig.map((entry) =>  {
+    return searchConfig.map(entry => {
       if (entry.media_types) {
         return {
           ...entry,

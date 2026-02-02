@@ -1,17 +1,15 @@
-  it("returns filters if present, regardless of media_types", () => {
-    const entry: SearchEntry = {
-      entity_id: "media_player.living_room",
-      media_types: [
-        { media_type: "music" },
-      ],
-      filters: [
-        { media_content_type: "audiobook", icon: "mdi:book", name: "Audiobooks" },
-      ],
-    };
-    expect(getSearchFilters(entry)).toEqual([
+it("returns filters if present, regardless of media_types", () => {
+  const entry: SearchEntry = {
+    entity_id: "media_player.living_room",
+    media_types: [{ media_type: "music" }],
+    filters: [
       { media_content_type: "audiobook", icon: "mdi:book", name: "Audiobooks" },
-    ]);
-  });
+    ],
+  };
+  expect(getSearchFilters(entry)).toEqual([
+    { media_content_type: "audiobook", icon: "mdi:book", name: "Audiobooks" },
+  ]);
+});
 import { getSearchFilters } from "./getSearchFilters";
 import { SearchEntry } from "../types/config";
 

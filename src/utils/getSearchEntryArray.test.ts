@@ -27,9 +27,7 @@ describe("getSearchEntryArray", () => {
         name: "Test Player",
         entity_id: "media_player.test",
         media_types: undefined,
-        filters: [
-          { media_content_type: "music" },
-        ],
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -55,9 +53,7 @@ describe("getSearchEntryArray", () => {
         name: "Search",
         entity_id: "media_player.test",
         media_types: undefined,
-        filters: [
-          { media_content_type: "music" },
-        ],
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -77,9 +73,7 @@ describe("getSearchEntryArray", () => {
         name: "Search",
         entity_id: "media_player.test",
         media_types: undefined,
-        filters: [
-          { media_content_type: "music" },
-        ],
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -98,9 +92,7 @@ describe("getSearchEntryArray", () => {
         name: "Search",
         entity_id: "media_player.legacy",
         media_types: undefined,
-        filters: [
-          { media_content_type: "music" },
-        ],
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -123,9 +115,7 @@ describe("getSearchEntryArray", () => {
         name: "Legacy Player",
         entity_id: "media_player.legacy",
         media_types: undefined,
-        filters: [
-          { media_content_type: "music" },
-        ],
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });

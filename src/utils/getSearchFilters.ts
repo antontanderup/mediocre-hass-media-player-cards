@@ -5,7 +5,9 @@ import { SearchEntry, searchFilter } from "@types";
  * Each media_type is mapped to a filter with media_content_type.
  * If no media_types are present, returns undefined.
  */
-export function getSearchFilters(entry: SearchEntry): Array<typeof searchFilter.infer> | undefined {
+export function getSearchFilters(
+  entry: SearchEntry
+): Array<typeof searchFilter.infer> | undefined {
   if (entry.filters && entry.filters.length > 0) {
     return entry.filters;
   }

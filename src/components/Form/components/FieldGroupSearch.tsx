@@ -5,6 +5,7 @@ import { EntityPicker, FormGroup } from "@components/FormElements";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import { useHass } from "@components/HassContext";
 import { SubForm } from "@components/SubForm";
+import { FieldGroupSearchFilters } from "./FieldGroupSearchFilters";
 
 type SearchGroupFields = {
   search: SearchConfig;
@@ -70,20 +71,12 @@ export const FieldGroupSearch = withFieldGroup({
                           />
                         )}
                       />
-                      {searchEntry.entity_id && (
-                        <group.Field name={`search[${index}].media_types`}>
-                          {field => (
-                            <HaSearchMediaTypesEditor
-                              entityId={searchEntry.entity_id}
-                              hass={hass}
-                              mediaTypes={field.state.value ?? []}
-                              onChange={value => {
-                                field.handleChange(value ?? []);
-                              }}
-                            />
-                          )}
-                        </group.Field>
-                      )}
+                      <FieldGroupSearchFilters
+                        form={group}
+                        fields={{
+                          filters: `search[${index}].filters` as never,
+                        }} // todo this casting is stupid
+                      />
                     </FormGroup>
                   </SubForm>
                 );

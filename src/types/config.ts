@@ -10,8 +10,8 @@ const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
 const searchMediaTypeSchemaLegacy = type({
   "icon?": "string",
   "name?": "string",
-  "media_type": "string",
-})
+  media_type: "string",
+});
 
 export const searchFilter = type({
   "icon?": "string",
