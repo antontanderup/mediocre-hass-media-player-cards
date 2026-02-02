@@ -37,6 +37,7 @@ export interface HaMediaItem {
   media_class: HaMediaClass;
   media_content_id?: string;
   media_content_type: HaContentType;
+  children_media_class?: HaMediaClass;
   title: string;
   can_play: boolean;
   can_expand: boolean;

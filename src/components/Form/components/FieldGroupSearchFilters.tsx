@@ -2,7 +2,11 @@ import { searchFilter } from "@types";
 import { withFieldGroup } from "../hooks/useAppForm";
 import { Fragment } from "preact/jsx-runtime";
 import { SubForm } from "@components/SubForm";
-import { FormGroup } from "@components/FormElements";
+import { Button, FormGroup } from "@components/FormElements";
+import { useCallback } from "preact/hooks";
+import { HaMediaItem } from "@components/HaSearch/types";
+import { getHass } from "@utils";
+import { css } from "@emotion/react";
 
 // Type for a single SearchFilter item
 export type SearchFilter = typeof searchFilter.infer;
@@ -14,10 +18,62 @@ const defaultValues: SearchFilterGroupFields = {
   filters: [],
 };
 
+const styles = {
+  buttons: css({
+    display: "flex",
+    flexDirection: "row",
+    gap: "8px",
+  }),
+};
+
 export const FieldGroupSearchFilters = withFieldGroup({
   defaultValues,
-  props: {},
-  render: function Render({ group }) {
+  props: {
+    entity_id: "string",
+  },
+  render: function Render({ group, entity_id }) {
+    const getFiltersFromMediaBrowser = useCallback(async () => {
+      const hass = getHass();
+      // Fetch media types from the media browser API
+      const message = {
+        type: "call_service",
+        domain: "media_player",
+        service: "browse_media",
+        service_data: {
+          entity_id: entity_id,
+        },
+        return_response: true,
+      };
+
+      try {
+        const response = (await hass.connection.sendMessagePromise(
+          message
+        )) as {
+          response: { [key: string]: { children: HaMediaItem[] } };
+        };
+        if (!response) return [];
+        return (
+          response.response[entity_id]?.children
+            .filter(
+              item =>
+                !item.media_content_id ||
+                (item.media_content_id &&
+                  !item.media_content_id.startsWith("media-source"))
+            )
+            .map(item => {
+              return {
+                name: item.title,
+                media_content_type: item.media_content_type,
+                media_filter_class: item.children_media_class,
+                icon: getItemMdiIcon(item),
+              };
+            }) || []
+        );
+      } catch (error) {
+        return [];
+      }
+    }, [entity_id]);
+
     return (
       <group.Field name="filters" mode="array">
         {filtersField => (
@@ -77,16 +133,52 @@ export const FieldGroupSearchFilters = withFieldGroup({
                   </FormGroup>
                 </SubForm>
               ))}
-            <button
-              type="button"
-              onClick={() => filtersField.pushValue({} as SearchFilter)}
-              style={{ marginTop: 8 }}
-            >
-              Add Filter
-            </button>
+            <div css={styles.buttons}>
+              <Button
+                variant="neutral"
+                onClick={() => filtersField.pushValue({} as SearchFilter)}
+              >
+                Add filter
+              </Button>
+              <Button
+                variant="neutral"
+                onClick={async () => {
+                  const filters = await getFiltersFromMediaBrowser();
+                  if (filters.length === 0) return;
+                  filters.forEach(filter => {
+                    filtersField.pushValue(filter);
+                  });
+                }}
+              >
+                Generate
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => filtersField.setValue([])}
+              >
+                Clear
+              </Button>
+            </div>
           </Fragment>
         )}
       </group.Field>
     );
   },
 });
+
+const getItemMdiIcon = (item: HaMediaItem) => {
+  if (item.thumbnail) return item.thumbnail;
+
+  switch (item.media_class) {
+    case "album":
+      return "mdi:album";
+    case "artist":
+      return "mdi:account-music";
+    case "track":
+      return "mdi:music-note";
+    case "playlist":
+      return "mdi:playlist-music";
+    default:
+      return "mdi:folder-music";
+  }
+};

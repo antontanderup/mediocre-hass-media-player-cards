@@ -73,6 +73,7 @@ export const FieldGroupSearch = withFieldGroup({
                       />
                       <FieldGroupSearchFilters
                         form={group}
+                        entity_id={searchEntry.entity_id ?? ""}
                         fields={{
                           filters: `search[${index}].filters` as never,
                         }} // todo this casting is stupid
