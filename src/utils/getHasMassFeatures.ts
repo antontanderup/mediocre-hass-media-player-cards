@@ -3,10 +3,7 @@ import { getHass } from "./getHass";
 import { getIsMassPlayer } from "./getIsMassPlayer";
 
 /**
- * Returns true if entity_id and ma_entity_id are identical, otherwise false.
- * @param entity_id The entity ID to check.
- * @param ma_entity_id The MA entity ID to compare against.
- * @returns True if both IDs are identical, false otherwise.
+ * Returns true if we are confident that the user wants to use Mass Player features.
  */
 export function getHasMassFeatures(
   entity_id: string,
