@@ -65,7 +65,8 @@ const searchLegacyEntry = type({
 
 const searchEntry = type({
   "name?": "string | null",
-  entity_id: type("string"),
+  entity_id: type("string"), // entity_id of the media player to search from
+  "target_entity_id?": type("string").or("undefined"), // entity_id of the media player to play on (optional will fall back to the entity_id)
   "media_types?": searchMediaTypeSchemaLegacy.array().or("undefined"),
   "filters?": searchFilter.array().or("undefined"),
 });

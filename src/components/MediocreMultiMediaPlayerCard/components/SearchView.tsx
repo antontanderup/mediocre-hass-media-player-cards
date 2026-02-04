@@ -11,6 +11,7 @@ import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
 import { memo } from "preact/compat";
 import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
+import { getSearchFilters } from "@utils/getSearchFilters";
 
 const styles = {
   root: css({
@@ -89,7 +90,8 @@ export const SearchView = memo<SearchViewProps>(
           entityId={selectedSearchProvider.entity_id}
           showFavorites={true}
           horizontalPadding={16}
-          filterConfig={selectedSearchProvider.media_types}
+          filterConfig={getSearchFilters(selectedSearchProvider)}
+          targetEntityId={selectedSearchProvider.target_entity_id}
           maxHeight={height}
         />
       );

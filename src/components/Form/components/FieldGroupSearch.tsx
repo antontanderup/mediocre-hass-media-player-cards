@@ -71,6 +71,17 @@ export const FieldGroupSearch = withFieldGroup({
                           />
                         )}
                       />
+                      <group.AppField
+                        name={`search[${index}].target_entity_id`}
+                        children={field => (
+                          <field.EntityPicker
+                            label={
+                              "Media Player Entity ID to play on (optional)"
+                            }
+                            domains={["media_player"]}
+                          />
+                        )}
+                      />
                       <FieldGroupSearchFilters
                         form={group}
                         entity_id={searchEntry.entity_id ?? ""}
