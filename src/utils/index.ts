@@ -7,6 +7,7 @@ export * from "./getCanDisplayLmsQueue";
 export * from "./getCanDisplayMAQueue";
 export * from "./getDeviceIcon";
 export * from "./getDidMediaPlayerUpdate";
+export * from "./getHasMassFeatures";
 export * from "./getHasMediaBrowser";
 export * from "./getHasSearch";
 export * from "./getHass";

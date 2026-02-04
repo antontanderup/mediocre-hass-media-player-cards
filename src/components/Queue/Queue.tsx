@@ -13,7 +13,7 @@ import {
   getCanDisplayLmsQueue,
   getCanDisplayMAQueue,
   getIsLmsPlayer,
-  getIsMassPlayer,
+  getHasMassFeatures,
 } from "@utils";
 import type { ComponentChildren } from "preact";
 import { FC, useMemo, useCallback, memo } from "preact/compat";
@@ -45,8 +45,8 @@ export const Queue: FC<QueueProps> = ({
   );
 
   const isMainEntityMAPlayer = useMemo(
-    () => getIsMassPlayer(player),
-    [player] // MA player check can be added here in the future
+    () => getHasMassFeatures(player.entity_id, ma_entity_id ?? undefined),
+    [player, ma_entity_id]
   );
 
   const {
