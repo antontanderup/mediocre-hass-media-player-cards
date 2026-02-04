@@ -3,7 +3,7 @@ import {
   getCanDisplayLmsQueue,
   getCanDisplayMAQueue,
   getIsLmsPlayer,
-  getIsMassPlayer,
+  getHasMassFeatures,
 } from "@utils";
 import { useMemo } from "preact/hooks";
 
@@ -23,7 +23,9 @@ export const useCanDisplayQueue = ({
       getCanDisplayLmsQueue();
 
     const canDisplayMAQueue =
-      ma_entity_id && getIsMassPlayer(player) && getCanDisplayMAQueue();
+      ma_entity_id &&
+      getHasMassFeatures(player.entity_id, ma_entity_id) &&
+      getCanDisplayMAQueue();
 
     return !!canDisplayLMSQueue || !!canDisplayMAQueue;
   }, [player, lms_entity_id, ma_entity_id]);

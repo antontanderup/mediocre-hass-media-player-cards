@@ -9,14 +9,7 @@ import { Chip, Icon, useHass, usePlayer } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
-import {
-  getHass,
-  getIsLmsPlayer,
-  getIsMassPlayer,
-  getSourceIcon,
-  transferLmsQueue,
-  transferMaQueue,
-} from "@utils";
+
 import { Fragment } from "preact/jsx-runtime";
 import {
   OverlayMenu,
@@ -24,6 +17,14 @@ import {
 } from "@components/OverlayMenu/OverlayMenu";
 import { memo } from "preact/compat";
 import { useIntl } from "@components/i18n";
+import {
+  getHasMassFeatures,
+  getHass,
+  getIsLmsPlayer,
+  getSourceIcon,
+  transferLmsQueue,
+  transferMaQueue,
+} from "@utils";
 
 const styles = {
   root: css({
@@ -68,8 +69,8 @@ export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
 
     const player = usePlayer();
     const isMainEntityMassPlayer = useMemo(
-      () => getIsMassPlayer(player),
-      [player, player?.attributes?.active_child]
+      () => getHasMassFeatures(player.entity_id, ma_entity_id),
+      [player, player?.attributes?.active_child, ma_entity_id]
     );
 
     const isMainEntityLmsPlayer = useMemo(

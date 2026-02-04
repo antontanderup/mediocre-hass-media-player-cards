@@ -4,9 +4,10 @@ import {
   getAllSqueezeboxPlayers,
   getHass,
   getIsLmsPlayer,
-  getIsMassPlayer,
+  getHasMassFeatures,
   transferLmsQueue,
   transferMaQueue,
+  getIsMassPlayer,
 } from "@utils";
 import {
   OverlayMenu,
@@ -33,8 +34,8 @@ export const AdditionalActionsMenu = ({
   const { t } = useIntl();
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(
-    () => getIsMassPlayer(player),
-    [player]
+    () => getHasMassFeatures(player?.entity_id, ma_entity_id),
+    [player, ma_entity_id]
   );
 
   const isMainEntityLmsPlayer = useMemo(
