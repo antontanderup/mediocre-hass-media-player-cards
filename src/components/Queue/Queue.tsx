@@ -22,7 +22,11 @@ type QueueProps = {
   height?: number;
   ma_entity_id?: string | null;
   lms_entity_id?: string | null;
-  renderHeader?: (refetch: () => void, loading: boolean, clearQueue: () => void) => ComponentChildren;
+  renderHeader?: (
+    refetch: () => void,
+    loading: boolean,
+    clearQueue: () => void
+  ) => ComponentChildren;
 };
 
 const styles = {
@@ -89,7 +93,9 @@ export const Queue: FC<QueueProps> = ({
       maxHeight={height}
       data={queue}
       renderHeader={
-        renderHeader ? () => renderHeader(refetch, loading, clearQueue) : undefined
+        renderHeader
+          ? () => renderHeader(refetch, loading, clearQueue)
+          : undefined
       }
       keyExtractor={item => item.id + item.playlistIndex}
       renderEmpty={

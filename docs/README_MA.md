@@ -17,6 +17,7 @@ ma_entity_id: media_player.living_room_ma
 ## Features
 
 ### 1. Queue Management (Requires mass_queue)
+
 - If the [mass_queue integration](https://github.com/music-assistant/ma-queue) is installed, you can:
   - View the current queue
   - Reorder tracks (move up/down)
@@ -24,9 +25,11 @@ ma_entity_id: media_player.living_room_ma
   - Skip to any item in the queue
 
 ### 2. Search
+
 - By simply configuring `ma_entity_id` search will work. No further configuration is needed.
 
 ### 3. Search and Media Browser
+
 - By configuring `media_browser` options, you can:
   - Browse your MA media library and start playback directly from the card
 
