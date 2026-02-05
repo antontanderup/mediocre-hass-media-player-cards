@@ -83,6 +83,13 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
     [entity_id, refetch]
   );
 
+  const clearQueue = useCallback(async () => {
+    await getHass().callService("media_player", "clear_playlist", {
+      entity_id,
+    });
+    refetch();
+  }, [entity_id, refetch]);
+
   const queue = useMemo<QueueItem[]>(() => {
     const items =
       data?.[entity_id]?.map((item, index, array) => ({
@@ -114,7 +121,7 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
   }, [player.title]);
 
   return useMemo(
-    () => ({ queue, loading, error, refetch }),
-    [queue, loading, error, refetch]
+    () => ({ queue, loading, error, refetch, clearQueue }),
+    [queue, loading, error, refetch, clearQueue]
   );
 };

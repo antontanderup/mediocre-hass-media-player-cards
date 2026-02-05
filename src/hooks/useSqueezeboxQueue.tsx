@@ -132,6 +132,13 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
     [entity_id, refetch]
   );
 
+  const clearQueue = useCallback(async () => {
+    await getHass().callService("media_player", "clear_playlist", {
+      entity_id,
+    });
+    refetch();
+  }, [entity_id, refetch]);
+
   const [queue, setQueue] = useState<QueueItem[]>([]);
 
   const debounceInfoTimeout = useRef<NodeJS.Timeout | undefined>();
@@ -228,7 +235,7 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
   }, [player.title]);
 
   return useMemo(
-    () => ({ queue, loading, error, refetch }),
-    [queue, loading, error, refetch]
+    () => ({ queue, loading, error, refetch, clearQueue }),
+    [queue, loading, error, refetch, clearQueue]
   );
 };
