@@ -22,7 +22,7 @@ type QueueProps = {
   height?: number;
   ma_entity_id?: string | null;
   lms_entity_id?: string | null;
-  renderHeader?: (refetch: () => void, loading: boolean) => ComponentChildren;
+  renderHeader?: (refetch: () => void, loading: boolean, clearQueue: () => void) => ComponentChildren;
 };
 
 const styles = {
@@ -54,6 +54,7 @@ export const Queue: FC<QueueProps> = ({
     loading: lmsLoading,
     refetch: lmsRefetch,
     error: lmsError,
+    clearQueue: lmsClearQueue,
   } = useSqueezeboxQueue(
     lms_entity_id ?? "",
     !!isMainEntityLmsPlayer && getCanDisplayLmsQueue()
@@ -64,6 +65,7 @@ export const Queue: FC<QueueProps> = ({
     loading: maLoading,
     refetch: maRefetch,
     error: maError,
+    clearQueue: maClearQueue,
   } = useMassQueue(
     ma_entity_id ?? "",
     !!isMainEntityMAPlayer && getCanDisplayMAQueue()
@@ -73,6 +75,7 @@ export const Queue: FC<QueueProps> = ({
   const loading = isMainEntityLmsPlayer ? lmsLoading : maLoading;
   const refetch = isMainEntityLmsPlayer ? lmsRefetch : maRefetch;
   const error = isMainEntityLmsPlayer ? lmsError : maError;
+  const clearQueue = isMainEntityLmsPlayer ? lmsClearQueue : maClearQueue;
 
   const renderItem = useCallback((item: QueueItem) => {
     if (item.isPlaying && queue.length < 1) {
@@ -86,7 +89,7 @@ export const Queue: FC<QueueProps> = ({
       maxHeight={height}
       data={queue}
       renderHeader={
-        renderHeader ? () => renderHeader(refetch, loading) : undefined
+        renderHeader ? () => renderHeader(refetch, loading, clearQueue) : undefined
       }
       keyExtractor={item => item.id + item.playlistIndex}
       renderEmpty={
