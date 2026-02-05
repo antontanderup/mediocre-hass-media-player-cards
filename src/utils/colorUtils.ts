@@ -10,14 +10,19 @@ export function parseColorToRgb(color: string): RGBA | null {
 }
 
 export function parseColorToHsla(inputColor: string): HLSA | null {
-  const color = chroma(inputColor).hsl();
-  return [
-    color[0],
-    color[1] * 100,
-    color[2] * 100,
-    // @ts-expect-error it's there don't worry
-    color[3] !== undefined ? color[3] : 1,
-  ];
+  try {
+    const color = chroma(inputColor).hsl();
+    return [
+      color[0],
+      color[1] * 100,
+      color[2] * 100,
+      // @ts-expect-error it's there don't worry
+      color[3] !== undefined ? color[3] : 1,
+    ];
+  } catch (e) {
+    console.error("Error parsing color to HLSA:", e);
+    return null;
+  }
 }
 
 // Helper to calculate brightness
