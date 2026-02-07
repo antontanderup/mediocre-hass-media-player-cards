@@ -114,6 +114,7 @@ export const commonMediaPlayerCardSchema = type({
   type: "string",
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   "use_art_colors?": "boolean",
+  "disable_player_focus_switching?": "boolean",
   media_players: MediocreMultiMediaPlayer.array(),
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
