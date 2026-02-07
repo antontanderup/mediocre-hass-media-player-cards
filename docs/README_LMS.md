@@ -17,10 +17,12 @@ lms_entity_id: media_player.living_room_lms
 ## Features
 
 ### 1. Queue Transfer Between Players
+
 - When `lms_entity_id` is configured, the card provides a UI to transfer the active queue between different LMS media players.
 - This makes it easy to move playback from one room to another.
 
 ### 2. Queue Management (Requires lyrion_cli)
+
 - If the [lyrion_cli integration](https://github.com/peteS-UK/lyrion_cli) is installed, you can:
   - View the current queue
   - Reorder tracks (move up/down)
@@ -28,6 +30,7 @@ lms_entity_id: media_player.living_room_lms
   - Skip to any item in the queue
 
 ### 3. Search and Media Browser
+
 - By configuring the `search` and `media_browser` options, you can:
   - Search your LMS library for music, playlists, and more
   - Browse your LMS media library and start playback directly from the card
@@ -47,4 +50,3 @@ search:
 media_browser:
   - entity_id: media_player.living_room_lms
 ```
-
