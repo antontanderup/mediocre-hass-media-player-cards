@@ -59,6 +59,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         return {
           type: "custom:mediocre-multi-media-player-card",
           entity_id: "",
+          size: "large",
           mode: "card",
           use_art_colors: true,
           media_players: [],
@@ -173,22 +174,22 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           name="use_art_colors"
           children={field => <field.Toggle label="Use album art colors." />}
         />
-        <form.Field name="mode">
-          {field => (
-            <FormSelect
-              options={[
-                { name: "Panel", value: "panel" },
-                { name: "Card", value: "card" },
-              ]}
-              onSelected={value =>
-                field.handleChange(
-                  value as MediocreMultiMediaPlayerCardConfig["mode"]
-                )
-              }
-              selected={config.mode || "panel"}
-            />
-          )}
-        </form.Field>
+        {config.size === "large" && (
+          <form.Field name="mode">
+            {field => (
+              <FormSelect
+                options={[
+                  { name: "Panel", value: "panel" },
+                  { name: "Card", value: "card" },
+                ]}
+                onSelected={value =>
+                  field.handleChange(value as "panel" | "card")
+                }
+                selected={config.mode || "panel"}
+              />
+            )}
+          </form.Field>
+        )}
       </FormGroup>
       <SubForm title="Media Players" error={getSubformError("media_players")}>
         <form.Field name="media_players" mode="array">
