@@ -102,6 +102,7 @@ export const MediocreMultiMediaPlayer = type({
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
+  "action?": interactionConfigSchema,
 });
 
 export const commonMediaPlayerCardOptions = type({
@@ -113,9 +114,9 @@ export const commonMediaPlayerCardOptions = type({
 export const commonMediaPlayerCardSchema = type({
   type: "string",
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
+  media_players: MediocreMultiMediaPlayer.array(),
   "use_art_colors?": "boolean",
   "disable_player_focus_switching?": "boolean",
-  media_players: MediocreMultiMediaPlayer.array(),
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
 });

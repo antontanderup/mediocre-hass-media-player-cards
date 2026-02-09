@@ -174,6 +174,20 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           name="use_art_colors"
           children={field => <field.Toggle label="Use album art colors." />}
         />
+        <form.Field name="size">
+          {field => (
+            <FormSelect
+              options={[
+                { name: "Large", value: "large" },
+                { name: "Compact", value: "compact" },
+              ]}
+              onSelected={value =>
+                field.handleChange(value as "large" | "compact")
+              }
+              selected={config.size || "large"}
+            />
+          )}
+        </form.Field>
         {config.size === "large" && (
           <form.Field name="mode">
             {field => (
