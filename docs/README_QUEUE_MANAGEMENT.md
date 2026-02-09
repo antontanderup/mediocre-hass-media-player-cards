@@ -4,7 +4,6 @@ The Mediocre Media Player Cards support queue management for compatible media pl
 
 <img width="407" height="834" alt="image" src="https://github.com/user-attachments/assets/56664397-dacf-4c1d-a6d3-e472a3be6309" />
 
-
 ## Supported Integrations
 
 - **Music Assistant (MA):**
@@ -27,7 +26,7 @@ The Mediocre Media Player Cards support queue management for compatible media pl
 
    Ensure the [mass_queue integration](https://github.com/droans/mass_queue) is installed and configured in Home Assistant.
 
-2. **LMS (Lyrion) Example:*
+2. **LMS (Lyrion) Example:**
 
    ```yaml
    type: "custom:mediocre-media-player-card"
@@ -35,7 +34,7 @@ The Mediocre Media Player Cards support queue management for compatible media pl
    lms_entity_id: media_player.living_room_lms
    ```
 
-  Make sure you are have the [lyrion_cli integration](https://github.com/peteS-UK/lyrion_cli) installed and configured.
+Make sure you are have the [lyrion_cli integration](https://github.com/peteS-UK/lyrion_cli) installed and configured.
 
 ## Features
 
@@ -48,4 +47,3 @@ The Mediocre Media Player Cards support queue management for compatible media pl
 
 - Queue management is only available for supported integrations (Music Assistant with mass_queue, or LMS via Lyrion cli).
 - If both `ma_entity_id` and `lms_entity_id` are configured and you're using Universal Media Player the card will automatically detect which player is active and display that queue.
-

@@ -6,7 +6,6 @@ The Mediocre Media Player Cards support search functionality when used with a Mu
 
 ## Configuration Example
 
-
 Here is an example configuration to enable search with Music Assistant:
 
 ```yaml

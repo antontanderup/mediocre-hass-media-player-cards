@@ -19,13 +19,15 @@ const styles = {
     color: theme.colors.onCard,
     padding: 0,
     margin: 0,
+    marginRight: "auto",
   }),
   titleRow: css({
     padding: 12,
     paddingBottom: 8,
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    gap: 8,
+    justifyContent: "flex-end",
   }),
 };
 
@@ -36,7 +38,7 @@ export const QueueView = () => {
   const { t } = useIntl();
 
   const renderHeader = useCallback(
-    (refetch: () => void, loading: boolean) => (
+    (refetch: () => void, loading: boolean, clearQueue: () => void) => (
       <div css={styles.titleRow}>
         <h3 css={styles.title}>
           {t({
@@ -44,6 +46,12 @@ export const QueueView = () => {
             defaultMessage: "Up Next",
           })}
         </h3>
+        <IconButton
+          icon="mdi:delete-sweep"
+          onClick={clearQueue}
+          size="x-small"
+          disabled={loading}
+        />
         <IconButton
           icon="mdi:refresh"
           onClick={refetch}
