@@ -26,7 +26,7 @@ The Mediocre Media Player Cards support queue management for compatible media pl
 
    Ensure the [mass_queue integration](https://github.com/droans/mass_queue) is installed and configured in Home Assistant.
 
-2. \*_LMS (Lyrion) Example:_
+2. **LMS (Lyrion) Example:**
 
    ```yaml
    type: "custom:mediocre-media-player-card"
