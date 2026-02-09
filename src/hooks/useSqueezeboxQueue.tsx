@@ -9,53 +9,13 @@ import {
 import { useHassMessagePromise } from "./useHassMessagePromise";
 import { usePlayer } from "@components";
 import { getHass } from "@utils";
-import { QueueItem } from "@types";
-
-type SqueezeboxPlaylistItem = {
-  id: string;
-  title: string;
-  "playlist index": number;
-};
-
-type SqueezeboxStatusResponse = {
-  player_ip?: string;
-  playlist_cur_index?: number;
-  playlist_loop?: SqueezeboxPlaylistItem[];
-  [key: string]: unknown;
-};
-
-type SqueezeboxSongInfoLoopItem = {
-  id?: string;
-  title?: string;
-  artist?: string;
-  coverid?: string;
-  duration?: number;
-  coverart?: string;
-  album?: string;
-  modificationTime?: string;
-  type?: string;
-  bitrate?: string;
-  remote?: number;
-  year?: string;
-  addedTime?: string;
-  artwork_url?: string;
-  lastUpdated?: string;
-  live_edge?: string;
-  artwork_track_id?: string;
-};
-
-type SqueezeboxSonginfoResponse = {
-  response: {
-    songinfo_loop?: SqueezeboxSongInfoLoopItem[];
-  };
-  [key: string]: unknown;
-};
-
-type SqueezeboxServerStatusResponse = {
-  ip?: string;
-  httpport?: string;
-  [key: string]: unknown;
-};
+import {
+  QueueItem,
+  SqueezeboxServerStatusResponse,
+  SqueezeboxStatusResponse,
+  SqueezeboxSonginfoResponse,
+  SqueezeboxSongInfoLoopItem,
+} from "@types";
 
 export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
   const player = usePlayer();
@@ -175,21 +135,22 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
 
         for (const item of newQueue) {
           let queueItem: QueueItem = item;
-          const squeezeboxSongInfo =
-            await getHassMessageWithCache<SqueezeboxSonginfoResponse>(
-              {
-                type: "call_service",
-                domain: "lyrion_cli",
-                service: "query",
-                service_data: {
-                  command: "songinfo",
-                  entity_id,
-                  parameters: [0, 100, `track_id:${item.id}`],
-                },
-                return_response: true,
+          const squeezeboxSongInfo = await getHassMessageWithCache<{
+            response?: SqueezeboxSonginfoResponse;
+          }>(
+            {
+              type: "call_service",
+              domain: "lyrion_cli",
+              service: "query",
+              service_data: {
+                command: "songinfo",
+                entity_id,
+                parameters: [0, 100, `track_id:${item.id}`],
               },
-              { staleTime: 86400000 } // 24 hours
-            );
+              return_response: true,
+            },
+            { staleTime: 86400000 } // 24 hours
+          );
           if (
             squeezeboxSongInfo.response &&
             squeezeboxSongInfo.response.songinfo_loop &&
