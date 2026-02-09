@@ -24,7 +24,7 @@
     "arktype": "^2.1.29",
     "chroma-js": "^3.2.0",
     "custom-card-helpers": "^1.9.0",
-    "node-vibrant": "^4.0.3",
+    "node-vibrant": "^4.0.4",
     "preact": "^10.28.3"
   },
   "devDependencies": {
