@@ -197,7 +197,6 @@ export const MediocreMultiMediaPlayerCard = () => {
                     config.options?.transparent_background_on_home &&
                     styles.contentAreaMassiveTransparent,
                 ]}
-                ref={contentSizeRef}
               >
                 <MassiveViewView
                   mediaPlayer={selectedPlayer}
