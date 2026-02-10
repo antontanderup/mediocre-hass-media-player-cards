@@ -4,6 +4,7 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import { MaSearch, HaSearch, useSearchProviderMenu } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { getSearchFilters } from "@utils/getSearchFilters";
 
 const styles = {
   root: css({
@@ -42,7 +43,8 @@ export const Search = () => {
         entityId={selectedSearchProvider.entity_id}
         showFavorites={true}
         horizontalPadding={12}
-        filterConfig={selectedSearchProvider.media_types}
+        filterConfig={getSearchFilters(selectedSearchProvider)}
+        targetEntityId={selectedSearchProvider.target_entity_id}
         additionalOptions={searchProvidersMenu}
       />
     );

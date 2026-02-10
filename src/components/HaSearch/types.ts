@@ -5,7 +5,8 @@ export type HaMediaClass =
   | "track"
   | "playlist"
   | "music"
-  | "podcast";
+  | "podcast"
+  | string;
 
 // Filter types (includes "all" in addition to HaMediaClass)
 export type HaFilterType = "all" | HaContentType;
@@ -23,7 +24,8 @@ export type HaEnqueueMode = "add" | "next" | "play" | "replace";
 
 // Filter configuration type
 export interface HaFilterConfig {
-  media_type: HaFilterType;
+  media_content_type?: HaFilterType;
+  media_filter_class?: HaMediaClass;
   name?: string;
   icon?: string;
 }
@@ -37,6 +39,7 @@ export interface HaMediaItem {
   media_class: HaMediaClass;
   media_content_id?: string;
   media_content_type: HaContentType;
+  children_media_class?: HaMediaClass;
   title: string;
   can_play: boolean;
   can_expand: boolean;

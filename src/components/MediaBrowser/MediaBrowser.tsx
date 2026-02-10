@@ -188,6 +188,7 @@ export const MediaBrowser = ({
     return { items: result, hasNoArtwork };
   }, [mediaBrowserItems, chunkSize, itemFilter]);
 
+  console.log("Rendered MediaBrowser with items:", items);
   useEffect(() => {
     setItemFilter("");
     const fetchMediaBrowserItems = async () => {

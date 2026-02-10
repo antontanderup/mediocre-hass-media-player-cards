@@ -1,4 +1,4 @@
-import { HaEnqueueMode } from "@components/HaSearch/types";
+import { HaEnqueueMode, HaMediaItem } from "@components/HaSearch/types";
 import { MediaBrowserItem } from "./MediaBrowser";
 import { MediaClass, MediaContentType } from "./types";
 
@@ -17,7 +17,9 @@ export const getEnqueueModeIcon = (enqueueMode: HaEnqueueMode) => {
   }
 };
 
-export const getItemMdiIcon = (item: Partial<MediaBrowserItem>) => {
+export const getItemMdiIcon = (
+  item: Partial<MediaBrowserItem> | Partial<HaMediaItem>
+) => {
   if (item.thumbnail) return null;
   // this function is a little silly because it seems like there's no real standard way to declare these
   switch (item.media_content_type) {

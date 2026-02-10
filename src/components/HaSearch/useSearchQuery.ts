@@ -8,14 +8,14 @@ import {
 import { getHass } from "@utils";
 import {
   HaEnqueueMode,
-  HaFilterType,
+  HaFilterConfig,
   HaMediaItem,
   HaSearchResponse,
 } from "./types";
 
 export const useSearchQuery = (
   debounceQuery: string,
-  filter: HaFilterType,
+  filter: HaFilterConfig | null,
   targetEntity: string
 ) => {
   const [results, setResults] = useState<HaSearchResponse | null>(null);
@@ -25,7 +25,7 @@ export const useSearchQuery = (
 
   useEffect(() => {
     if (debounceQuery === "") return;
-    const thisQuery = debounceQuery + (filter ?? "all");
+    const thisQuery = debounceQuery + (filter ? JSON.stringify(filter) : "all");
     latestQuery.current = thisQuery;
 
     const message = {
@@ -35,7 +35,10 @@ export const useSearchQuery = (
       service_data: {
         search_query: debounceQuery,
         entity_id: targetEntity,
-        media_content_type: filter === "all" ? undefined : filter,
+        media_content_type: !filter ? undefined : filter.media_content_type,
+        media_filter_classes: !filter
+          ? ["album", "artist", "track", "playlist", "podcast", "directory"]
+          : [filter.media_filter_class],
       },
       return_response: true,
     };

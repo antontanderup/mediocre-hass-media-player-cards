@@ -14,14 +14,35 @@ import {
 } from "@components/OverlayMenu/OverlayMenu";
 
 const filters: HaFilterConfig[] = [
-  { media_type: "artists", name: "Artists", icon: "mdi:account-music" },
-  { media_type: "albums", name: "Albums", icon: "mdi:album" },
-  { media_type: "tracks", name: "Tracks", icon: "mdi:music-note" },
-  { media_type: "playlists", name: "Playlists", icon: "mdi:playlist-music" },
+  {
+    media_content_type: "artists",
+    media_filter_class: "artist",
+    name: "Artists",
+    icon: "mdi:account-music",
+  },
+  {
+    media_content_type: "albums",
+    media_filter_class: "album",
+    name: "Albums",
+    icon: "mdi:album",
+  },
+  {
+    media_content_type: "tracks",
+    media_filter_class: "track",
+    name: "Tracks",
+    icon: "mdi:music-note",
+  },
+  {
+    media_content_type: "playlists",
+    media_filter_class: "playlist",
+    name: "Playlists",
+    icon: "mdi:playlist-music",
+  },
 ];
 
 export type HaSearchProps = {
   entityId: string;
+  targetEntityId?: string;
   showFavorites: boolean;
   horizontalPadding?: number;
   filterConfig?: HaFilterConfig[];
@@ -33,6 +54,7 @@ export type HaSearchProps = {
 
 export const HaSearch = ({
   entityId,
+  targetEntityId,
   showFavorites,
   horizontalPadding,
   searchBarPosition = "top",
@@ -45,18 +67,21 @@ export const HaSearch = ({
   const [query, setQuery] = useState("");
   const [enqueueMode, setEnqueueMode] = useState<HaEnqueueMode>("replace");
   const debouncedQuery = useDebounce(query, 600);
-  const [activeFilter, setActiveFilter] = useState<HaFilterType>("all");
+  const [activeFilter, setActiveFilter] = useState<HaFilterConfig | undefined>(
+    undefined
+  );
 
   const { results, loading, error, playItem } = useSearchQuery(
     debouncedQuery,
-    activeFilter,
+    activeFilter ?? null,
     entityId
   );
 
   const { mediaBrowserItems } = useMediaBrowser(
     entityId,
-    activeFilter === "all" ? "favorites" : activeFilter,
-    ((activeFilter === "all" && showFavorites) || activeFilter !== "all") &&
+    activeFilter === undefined ? "favorites" : activeFilter.media_content_type,
+    ((activeFilter === undefined && showFavorites) ||
+      activeFilter !== undefined) &&
       query === ""
   );
 
@@ -141,26 +166,35 @@ export const HaSearch = ({
 
   const renderFilterChips = () => {
     return [
-      { media_type: "all", name: "All", icon: "mdi:all-inclusive" },
+      { media_content_type: "all", name: "All", icon: "mdi:all-inclusive" },
       ...filterConfig,
-    ].map(filter => (
-      <Chip
-        css={searchStyles.chip}
-        style={{
-          "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
-          opacity: activeFilter === filter.media_type ? 1 : 0.6,
-          fontWeight: activeFilter === filter.media_type ? "bold" : "normal",
-        }}
-        key={filter.media_type}
-        onClick={() => setActiveFilter(filter.media_type)}
-        icon={filter.icon}
-      >
-        {t({
-          id: `Search.categories.${filter.name}`,
-          defaultMessage: filter.name,
-        })}
-      </Chip>
-    ));
+    ].map(filter => {
+      const isActive =
+        activeFilter === filter ||
+        (!activeFilter && filter.media_content_type === "all");
+      return (
+        <Chip
+          css={searchStyles.chip}
+          style={{
+            "--mmpc-chip-horizontal-margin": `${horizontalPadding}px`,
+            opacity: isActive ? 1 : 0.6,
+            fontWeight: isActive ? "bold" : "normal",
+          }}
+          key={JSON.stringify(filter)}
+          onClick={() =>
+            setActiveFilter(
+              filter.media_content_type === "all" ? undefined : filter
+            )
+          }
+          icon={filter.icon}
+        >
+          {t({
+            id: `Search.categories.${filter.name}`,
+            defaultMessage: filter.name,
+          })}
+        </Chip>
+      );
+    });
   };
 
   return (
@@ -178,8 +212,10 @@ export const HaSearch = ({
             : results
         }
         error={error}
-        hideEmpty={query === "" && activeFilter === "all" && !showFavorites}
-        onItemClick={item => playItem(item, entityId, enqueueMode)}
+        hideEmpty={query === "" && !activeFilter && !showFavorites}
+        onItemClick={item =>
+          playItem(item, targetEntityId ?? entityId, enqueueMode)
+        }
         style={{
           "--mmpc-search-padding": `${horizontalPadding}px`,
         }}
