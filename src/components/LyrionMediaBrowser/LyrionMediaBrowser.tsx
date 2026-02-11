@@ -18,9 +18,9 @@ import { Fragment } from "preact/jsx-runtime";
 import { MediaSectionTitle } from "@components/MediaSearch";
 import { useIntl } from "@components/i18n";
 import type { LyrionBrowserItem } from "@types";
+import { CATEGORIES } from "./constants";
 import {
   type BrowserRow,
-  CATEGORIES,
   useLyrionMediaBrowserData,
 } from "./useLyrionMediaBrowserData";
 
