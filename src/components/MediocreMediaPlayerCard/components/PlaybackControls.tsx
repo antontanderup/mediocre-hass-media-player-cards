@@ -58,6 +58,7 @@ export const PlaybackControls = () => {
     <div css={styles.root}>
       {!!supportsShuffle && (
         <IconButton
+          id="mmpc_playback_control_shuffle"
           css={[
             styles.shuffleButton,
             ...(!shuffle ? [styles.buttonMuted] : []),
@@ -69,6 +70,7 @@ export const PlaybackControls = () => {
       )}
       {!!supportPreviousTrack && (
         <IconButton
+          id="mmpc_playback_control_previous"
           size="small"
           onClick={previousTrack}
           icon={"mdi:skip-previous"}
@@ -76,18 +78,20 @@ export const PlaybackControls = () => {
       )}
       {supportsTogglePlayPause ? (
         <IconButton
+          id="mmpc_playback_control_play_pause"
           size="medium"
           onClick={togglePlayback}
           icon={playing ? "mdi:pause-circle" : "mdi:play-circle"}
         />
       ) : supportsStop ? (
-        <IconButton size="medium" onClick={stop} icon={"mdi:stop"} />
+        <IconButton id="mmpc_playback_control_stop" size="medium" onClick={stop} icon={"mdi:stop"} />
       ) : null}
       {!!supportNextTrack && (
-        <IconButton size="small" onClick={nextTrack} icon={"mdi:skip-next"} />
+        <IconButton id="mmpc_playback_control_next" size="small" onClick={nextTrack} icon={"mdi:skip-next"} />
       )}
       {!!supportsRepeat && (
         <IconButton
+          id="mmpc_playback_control_repeat"
           css={[
             styles.repeatButton,
             ...(repeat === "off" ? [styles.buttonMuted] : []),
