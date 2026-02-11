@@ -83,7 +83,10 @@ function transformResponseToItems(
   }
 
   // Tracks (titles_loop, tracks_loop from search, or playlisttracks_loop)
-  const tracks = response.titles_loop || response.tracks_loop || response.playlisttracks_loop;
+  const tracks =
+    response.titles_loop ||
+    response.tracks_loop ||
+    response.playlisttracks_loop;
   if (tracks) {
     return tracks.map(track => ({
       id: track.id,
@@ -93,7 +96,10 @@ function transformResponseToItems(
       can_play: true,
       can_expand: false,
       artworkTrackId: track.artwork_track_id || track.id,
-      thumbnail: buildArtworkUrl(serverData, track.artwork_track_id || track.id),
+      thumbnail: buildArtworkUrl(
+        serverData,
+        track.artwork_track_id || track.id
+      ),
       duration: track.duration,
     }));
   }
@@ -138,7 +144,8 @@ function transformResponseToItems(
     return response.loop_loop
       .filter(item => item.type !== "search") // Search items handled separately
       .map(favorite => {
-        const rawTitle = favorite.line1 || favorite.name || favorite.title || "Unknown";
+        const rawTitle =
+          favorite.line1 || favorite.name || favorite.title || "Unknown";
         const subtitle = favorite.artist || favorite.line2;
 
         // If no structured subtitle, try to extract "by Artist" from title
@@ -209,7 +216,8 @@ function transformSearchResponseToItems(
     items.push(
       ...response.albums_loop.map(album => {
         const id = album.album_id || album.id;
-        const coverId = album.artwork || album.coverid || album.artwork_track_id || id;
+        const coverId =
+          album.artwork || album.coverid || album.artwork_track_id || id;
         return {
           id,
           title: album.album,
@@ -300,7 +308,9 @@ export function useLyrionBrowse({
   // Extract search item id from loop_loop (used by apps like Spotty)
   const searchItemId = useMemo(() => {
     if (!data?.loop_loop) return undefined;
-    const searchItem = data.loop_loop.find((item: { type?: string }) => item.type === "search");
+    const searchItem = data.loop_loop.find(
+      (item: { type?: string }) => item.type === "search"
+    );
     return searchItem?.id;
   }, [data]);
 

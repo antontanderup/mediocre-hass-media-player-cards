@@ -62,7 +62,7 @@ export function buildBrowseParams(
   }
 
   // Check if we're inside an app (any history entry has type "app")
-  const appEntry = history.find((h) => h.type === "app");
+  const appEntry = history.find(h => h.type === "app");
   if (appEntry) {
     const appParams = ["items", startIndex.toString(), "100"];
 
@@ -80,10 +80,10 @@ export function buildBrowseParams(
 
   // For nested navigation, find relevant filter entries from history
   let command = current.command;
-  const playlistEntry = history.find((h) => h.type === "playlist");
-  const genreEntry = history.find((h) => h.type === "genre");
-  const artistEntry = history.find((h) => h.type === "artist");
-  const albumEntry = history.find((h) => h.type === "album");
+  const playlistEntry = history.find(h => h.type === "playlist");
+  const genreEntry = history.find(h => h.type === "genre");
+  const artistEntry = history.find(h => h.type === "artist");
+  const albumEntry = history.find(h => h.type === "album");
 
   // Playlists special case
   if (playlistEntry && current.command === "titles") {

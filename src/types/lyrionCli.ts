@@ -148,7 +148,14 @@ export type LyrionBrowseResponse = {
 export type LyrionBrowserItem = {
   id: string;
   title: string;
-  type: "artist" | "album" | "track" | "genre" | "playlist" | "category" | "app";
+  type:
+    | "artist"
+    | "album"
+    | "track"
+    | "genre"
+    | "playlist"
+    | "category"
+    | "app";
   can_play: boolean;
   can_expand: boolean;
   thumbnail?: string;

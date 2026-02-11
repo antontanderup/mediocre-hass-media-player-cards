@@ -44,13 +44,13 @@ export const useLyrionMediaBrowserData = ({
   const committedFilter = history[history.length - 1].filter;
   const [chunkSize, setChunkSize] = useState(4);
   const [startIndex, setStartIndex] = useState(0);
-  const [accumulatedItems, setAccumulatedItems] = useState<
-    LyrionBrowserItem[]
-  >([]);
+  const [accumulatedItems, setAccumulatedItems] = useState<LyrionBrowserItem[]>(
+    []
+  );
   const appSearchItemIdRef = useRef<string | undefined>();
 
   // Stable key that changes only on navigation, not on filter typing
-  const navKey = navHistory.map((h) => h.id).join("/");
+  const navKey = navHistory.map(h => h.id).join("/");
 
   // Local input state — updates immediately for responsive typing.
   // Debounced value syncs to history filter to trigger queries.
@@ -58,7 +58,7 @@ export const useLyrionMediaBrowserData = ({
   const debouncedInputValue = useDebounce(inputValue, 350);
 
   const commitFilter = useCallback((filter: string) => {
-    setHistory((prev) => {
+    setHistory(prev => {
       const updated = [...prev];
       updated[updated.length - 1] = {
         ...updated[updated.length - 1],
@@ -125,7 +125,7 @@ export const useLyrionMediaBrowserData = ({
 
   // Capture app search item id when browsing app root
   useEffect(() => {
-    const appEntry = navHistory.find((h) => h.type === "app");
+    const appEntry = navHistory.find(h => h.type === "app");
     if (!appEntry) {
       appSearchItemIdRef.current = undefined;
     } else if (searchItemId) {
@@ -147,7 +147,7 @@ export const useLyrionMediaBrowserData = ({
         setAccumulatedItems(rawItems);
       } else {
         // Subsequent pages, append items
-        setAccumulatedItems((prev) => [...prev, ...rawItems]);
+        setAccumulatedItems(prev => [...prev, ...rawItems]);
       }
     }
   }, [rawItems, startIndex]);
@@ -156,7 +156,7 @@ export const useLyrionMediaBrowserData = ({
   const isHomeScreen = navHistory.length === 0;
   const categoryItems: LyrionBrowserItem[] = useMemo(
     () =>
-      CATEGORIES.map((cat) => ({
+      CATEGORIES.map(cat => ({
         id: cat.id,
         title: cat.title,
         type: "category" as const,
@@ -175,7 +175,7 @@ export const useLyrionMediaBrowserData = ({
     if (navHistory.length === 0) return true;
     const current = navHistory[navHistory.length - 1];
     if (current.command === "favorites") return false;
-    const appEntry = navHistory.find((h) => h.type === "app");
+    const appEntry = navHistory.find(h => h.type === "app");
     if (appEntry && !appSearchItemIdRef.current && !searchItemId) return false;
     return true;
   }, [navKey, searchItemId]);
@@ -190,14 +190,13 @@ export const useLyrionMediaBrowserData = ({
     }
   }, [loading, hasMore, accumulatedItems.length]);
 
-
   // Group items into rows for grid rendering
   const { items, hasNoArtwork } = useMemo(() => {
     let hasNoArtwork = true;
     const result: BrowserRow[] = [];
 
     // Check artwork across all items
-    displayItems.forEach((item) => {
+    displayItems.forEach(item => {
       if (typeof item.thumbnail === "string") hasNoArtwork = false;
     });
 
@@ -212,19 +211,19 @@ export const useLyrionMediaBrowserData = ({
         {
           title: "Artists",
           categoryId: "artists",
-          items: displayItems.filter((i) => i.type === "artist"),
+          items: displayItems.filter(i => i.type === "artist"),
           isTrack: false,
         },
         {
           title: "Albums",
           categoryId: "albums",
-          items: displayItems.filter((i) => i.type === "album"),
+          items: displayItems.filter(i => i.type === "album"),
           isTrack: false,
         },
         {
           title: "Tracks",
           categoryId: "tracks",
-          items: displayItems.filter((i) => i.type === "track"),
+          items: displayItems.filter(i => i.type === "track"),
           isTrack: true,
         },
       ];
@@ -239,7 +238,7 @@ export const useLyrionMediaBrowserData = ({
         });
         const limited = section.items.slice(0, maxPerSection);
         if (section.isTrack) {
-          limited.forEach((item) => result.push([item]));
+          limited.forEach(item => result.push([item]));
         } else {
           for (let i = 0; i < limited.length; i += chunkSize) {
             result.push(limited.slice(i, i + chunkSize));
@@ -248,22 +247,20 @@ export const useLyrionMediaBrowserData = ({
       }
     } else {
       // Standard grouping: expandable items in grid rows, tracks individually
-      const groupedByType: Record<
-        "track" | "expandable",
-        LyrionBrowserItem[]
-      > = {
-        track: [],
-        expandable: [],
-      };
+      const groupedByType: Record<"track" | "expandable", LyrionBrowserItem[]> =
+        {
+          track: [],
+          expandable: [],
+        };
 
-      displayItems.forEach((item) => {
+      displayItems.forEach(item => {
         const isTrack = item.type === "track" && !isShowingCategories;
         groupedByType[isTrack ? "track" : "expandable"].push(item);
       });
 
       Object.entries(groupedByType).forEach(([mediaType, items]) => {
         if (mediaType === "track" && !isShowingCategories) {
-          items.forEach((item) => result.push([item]));
+          items.forEach(item => result.push([item]));
         } else {
           for (let i = 0; i < items.length; i += chunkSize) {
             result.push(items.slice(i, i + chunkSize));
@@ -281,7 +278,7 @@ export const useLyrionMediaBrowserData = ({
       if (enqueue === "next") action = "inserttracks";
       else if (enqueue === "add") action = "addtracks";
 
-      const appEntry = navHistory.find((h) => h.type === "app");
+      const appEntry = navHistory.find(h => h.type === "app");
 
       try {
         if (appEntry) {
@@ -320,7 +317,7 @@ export const useLyrionMediaBrowserData = ({
       if (item.type === "category") {
         const categoryId = item.id as LyrionCategoryType;
         const mapping = CATEGORY_COMMANDS[categoryId];
-        setHistory((prev) => [
+        setHistory(prev => [
           prev[0],
           {
             id: categoryId,
@@ -336,7 +333,7 @@ export const useLyrionMediaBrowserData = ({
 
       // App selection (from apps list)
       if (item.type === "app") {
-        setHistory((prev) => [
+        setHistory(prev => [
           ...prev,
           {
             id: item.id,
@@ -351,9 +348,9 @@ export const useLyrionMediaBrowserData = ({
       }
 
       // Check if we're browsing within an app
-      const appEntry = navHistory.find((h) => h.type === "app");
+      const appEntry = navHistory.find(h => h.type === "app");
       if (appEntry && item.can_expand) {
-        setHistory((prev) => [
+        setHistory(prev => [
           ...prev,
           {
             id: item.id,
@@ -387,7 +384,7 @@ export const useLyrionMediaBrowserData = ({
             return;
         }
 
-        setHistory((prev) => [
+        setHistory(prev => [
           ...prev,
           {
             id: item.id,
@@ -405,20 +402,20 @@ export const useLyrionMediaBrowserData = ({
 
   const goBack = useCallback(() => {
     if (loading || navHistory.length === 0) return;
-    setHistory((prev) => prev.slice(0, -1));
+    setHistory(prev => prev.slice(0, -1));
   }, [navHistory.length, loading]);
 
   const goToIndex = useCallback(
     (navIndex: number) => {
       if (loading) return;
       // +2: one for home entry, one because slice end is exclusive
-      setHistory((prev) => prev.slice(0, navIndex + 2));
+      setHistory(prev => prev.slice(0, navIndex + 2));
     },
     [loading]
   );
 
   const goHome = useCallback(() => {
-    setHistory((prev) => [prev[0]]);
+    setHistory(prev => [prev[0]]);
   }, []);
 
   const getItemOverlayMenuItems = useCallback(
@@ -503,9 +500,9 @@ export const useLyrionMediaBrowserData = ({
 
   const navigateToSearchCategory = useCallback(
     (categoryId: LyrionCategoryType) => {
-      const cat = CATEGORIES.find((c) => c.id === categoryId)!;
+      const cat = CATEGORIES.find(c => c.id === categoryId)!;
       const mapping = CATEGORY_COMMANDS[categoryId];
-      setHistory((prev) => [
+      setHistory(prev => [
         prev[0],
         {
           id: categoryId,
@@ -541,6 +538,6 @@ export const useLyrionMediaBrowserData = ({
     getItemOverlayMenuItems,
     currentHistoryDropdownMenuItems,
     navigateToSearchCategory,
-    filteredItems:displayItems,
+    filteredItems: displayItems,
   };
 };

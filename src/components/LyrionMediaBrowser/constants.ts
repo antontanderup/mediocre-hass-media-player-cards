@@ -1,7 +1,4 @@
-import type {
-  LyrionNavigationItem,
-  LyrionCategoryType,
-} from "@types";
+import type { LyrionNavigationItem, LyrionCategoryType } from "@types";
 
 export type BrowserHistoryEntry = LyrionNavigationItem & { filter: string };
 

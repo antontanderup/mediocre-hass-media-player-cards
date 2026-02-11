@@ -10,9 +10,7 @@ import {
   VirtualList,
 } from "@components";
 import { IconButton } from "@components/IconButton";
-import {
-  OverlayMenu,
-} from "@components/OverlayMenu/OverlayMenu";
+import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
 import { css } from "@emotion/react";
 import { Fragment } from "preact/jsx-runtime";
 import { MediaSectionTitle } from "@components/MediaSearch";
@@ -80,6 +78,9 @@ const styles = {
     marginTop: "8px",
     marginBottom: "16px",
   }),
+  headerPlayMenu: css({
+    marginLeft: "auto",
+  }),
   mediaItemHeaderMenuImage: css({
     width: 16,
     height: 16,
@@ -107,7 +108,7 @@ function getItemIcon(item: LyrionBrowserItem): string | null {
     case "playlist":
       return "mdi:playlist-music";
     case "category":
-      return CATEGORIES.find((c) => c.id === item.id)?.icon ?? "mdi:folder";
+      return CATEGORIES.find(c => c.id === item.id)?.icon ?? "mdi:folder";
     case "app":
       return "mdi:application";
     default:
@@ -151,7 +152,7 @@ export const LyrionMediaBrowser = ({
     return (
       <OverlayMenu
         menuItems={getItemOverlayMenuItems(item)}
-        renderTrigger={(triggerProps) => (
+        renderTrigger={triggerProps => (
           <MediaTrack
             key={item.id + navHistory.length}
             title={item.title}
@@ -181,7 +182,7 @@ export const LyrionMediaBrowser = ({
     return (
       <OverlayMenu
         menuItems={getItemOverlayMenuItems(item)}
-        renderTrigger={(triggerProps) => (
+        renderTrigger={triggerProps => (
           <MediaItem
             key={item.id + navHistory.length}
             name={item.title}
@@ -207,7 +208,7 @@ export const LyrionMediaBrowser = ({
     }
     return (
       <MediaGrid numberOfColumns={chunkSize}>
-        {row.map((mediaItem) => {
+        {row.map(mediaItem => {
           if (hasNoArtwork) {
             return renderTrack(mediaItem);
           }
@@ -254,10 +255,7 @@ export const LyrionMediaBrowser = ({
                       disabled={navHistory.length === 0}
                     />
                     <div css={styles.breadCrumbs}>
-                      <button
-                        css={styles.breadCrumbItem}
-                        onClick={goHome}
-                      >
+                      <button css={styles.breadCrumbItem} onClick={goHome}>
                         <Icon icon="mdi:home" size="x-small" />
                       </button>
                       {navHistory.map((item, index) => (
@@ -277,11 +275,12 @@ export const LyrionMediaBrowser = ({
                         menuItems={currentHistoryDropdownMenuItems}
                         side="bottom"
                         align="end"
-                        renderTrigger={(triggerProps) => (
+                        renderTrigger={triggerProps => (
                           <Chip
                             size="small"
                             invertedColors={true}
                             border={true}
+                            css={styles.headerPlayMenu}
                             {...triggerProps}
                           >
                             <Icon size="x-small" icon="mdi:play" />

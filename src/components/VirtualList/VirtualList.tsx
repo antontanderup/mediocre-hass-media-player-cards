@@ -112,8 +112,7 @@ export const VirtualList = <T,>({
       const clientHeight = element.clientHeight;
 
       // Calculate scroll percentage
-      const scrollPercentage =
-        (scrollTop + clientHeight) / scrollHeight;
+      const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
 
       // If scrolled past threshold and haven't called yet
       if (scrollPercentage >= onEndReachedThreshold) {
