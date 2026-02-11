@@ -97,10 +97,6 @@ function buildBrowseParams(
     if (command === "favorites") {
       // For lyrion_cli, pass "items" as first parameter
       const favoriteParams = ["items", "0", "100", "want_url:1"];
-      console.log("Building favorites params:", {
-        command: "favorites",
-        parameters: favoriteParams,
-      });
       return { command: "favorites", parameters: favoriteParams };
     }
 
@@ -323,13 +319,7 @@ export const useLyrionMediaBrowserData = ({
   useEffect(() => {
     setStartIndex(0);
     setAccumulatedItems([]);
-  }, [navKey]);
-
-  // Reset pagination when filter changes
-  useEffect(() => {
-    setStartIndex(0);
-    setAccumulatedItems([]);
-  }, [committedFilter]);
+  }, [navKey, committedFilter]);
 
   // Accumulate items when new data is fetched
   useEffect(() => {
@@ -382,8 +372,6 @@ export const useLyrionMediaBrowserData = ({
     }
   }, [loading, hasMore, accumulatedItems.length]);
 
-  // Use displayItems directly (filtering is now done via CLI search)
-  const filteredItems = displayItems;
 
   // Group items into rows for grid rendering
   const { items, hasNoArtwork } = useMemo(() => {
@@ -391,7 +379,7 @@ export const useLyrionMediaBrowserData = ({
     const result: BrowserRow[] = [];
 
     // Check artwork across all items
-    filteredItems.forEach((item) => {
+    displayItems.forEach((item) => {
       if (typeof item.thumbnail === "string") hasNoArtwork = false;
     });
 
@@ -406,19 +394,19 @@ export const useLyrionMediaBrowserData = ({
         {
           title: "Artists",
           categoryId: "artists",
-          items: filteredItems.filter((i) => i.type === "artist"),
+          items: displayItems.filter((i) => i.type === "artist"),
           isTrack: false,
         },
         {
           title: "Albums",
           categoryId: "albums",
-          items: filteredItems.filter((i) => i.type === "album"),
+          items: displayItems.filter((i) => i.type === "album"),
           isTrack: false,
         },
         {
           title: "Tracks",
           categoryId: "tracks",
-          items: filteredItems.filter((i) => i.type === "track"),
+          items: displayItems.filter((i) => i.type === "track"),
           isTrack: true,
         },
       ];
@@ -450,7 +438,7 @@ export const useLyrionMediaBrowserData = ({
         expandable: [],
       };
 
-      filteredItems.forEach((item) => {
+      displayItems.forEach((item) => {
         const isTrack = item.type === "track" && !isShowingCategories;
         groupedByType[isTrack ? "track" : "expandable"].push(item);
       });
@@ -467,7 +455,7 @@ export const useLyrionMediaBrowserData = ({
     }
 
     return { items: result, hasNoArtwork };
-  }, [filteredItems, chunkSize, isShowingCategories, isGlobalSearch]);
+  }, [displayItems, chunkSize, isShowingCategories, isGlobalSearch]);
 
   const playItem = useCallback(
     (item: LyrionBrowserItem, enqueue?: HaEnqueueMode) => {
@@ -735,6 +723,6 @@ export const useLyrionMediaBrowserData = ({
     getItemOverlayMenuItems,
     currentHistoryDropdownMenuItems,
     navigateToSearchCategory,
-    filteredItems,
+    filteredItems:displayItems,
   };
 };
