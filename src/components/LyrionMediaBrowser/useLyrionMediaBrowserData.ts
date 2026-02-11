@@ -11,7 +11,7 @@ import {
   useRef,
   useState,
 } from "preact/hooks";
-import { useLyrionBrowse } from "@hooks/useLyrionBrowse";
+import { useLyrionBrowse } from "./useLyrionBrowse";
 import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
 import type {
   LyrionBrowserItem,

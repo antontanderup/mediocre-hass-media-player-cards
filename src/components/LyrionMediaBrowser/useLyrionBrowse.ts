@@ -1,5 +1,5 @@
 import { useMemo } from "preact/hooks";
-import { useHassMessagePromise } from "./useHassMessagePromise";
+import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
 import type {
   LyrionBrowseResponse,
   LyrionBrowserItem,
@@ -287,16 +287,6 @@ export function useLyrionBrowse({
       }
     );
 
-
-    console.log("Apps debug:", {
-      command,
-      parameters,
-      enabled: enabled && !!serverData,
-      serverData: !!serverData,
-      data,
-      error,
-    });
-
   const items = useMemo(
     () =>
       command === "search"
@@ -310,7 +300,7 @@ export function useLyrionBrowse({
   // Extract search item id from loop_loop (used by apps like Spotty)
   const searchItemId = useMemo(() => {
     if (!data?.loop_loop) return undefined;
-    const searchItem = data.loop_loop.find(item => item.type === "search");
+    const searchItem = data.loop_loop.find((item: { type?: string }) => item.type === "search");
     return searchItem?.id;
   }, [data]);
 
