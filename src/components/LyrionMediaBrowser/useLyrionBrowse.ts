@@ -179,85 +179,6 @@ function transformResponseToItems(
   return [];
 }
 
-/**
- * Transform LMS global search response, which returns multiple loops at once
- */
-function transformSearchResponseToItems(
-  response: LyrionBrowseResponse | null,
-  serverData: SqueezeboxServerStatusResponse | null
-): LyrionBrowserItem[] {
-  if (!response) return [];
-  const items: LyrionBrowserItem[] = [];
-  const baseUrl = getServerBaseUrl(serverData);
-
-  // Artists (contributors_loop from search — uses contributor_id, contributor)
-  const artists = response.contributors_loop || response.artists_loop;
-  if (artists) {
-    items.push(
-      ...artists.map(artist => {
-        const id = artist.contributor_id || artist.id;
-        const name = artist.contributor || artist.artist;
-        return {
-          id,
-          title: name,
-          type: "artist" as const,
-          can_play: true,
-          can_expand: true,
-          thumbnail: baseUrl
-            ? `${baseUrl}/imageproxy/mai/artist/${id}/image_300x300_f`
-            : undefined,
-        };
-      })
-    );
-  }
-
-  // Albums (search uses album_id and artwork instead of id/artwork_track_id)
-  if (response.albums_loop) {
-    items.push(
-      ...response.albums_loop.map(album => {
-        const id = album.album_id || album.id;
-        const coverId =
-          album.artwork || album.coverid || album.artwork_track_id || id;
-        return {
-          id,
-          title: album.album,
-          subtitle: album.artist,
-          type: "album" as const,
-          can_play: true,
-          can_expand: true,
-          artworkTrackId: coverId,
-          thumbnail: buildArtworkUrl(serverData, coverId),
-        };
-      })
-    );
-  }
-
-  // Tracks (tracks_loop from search command — uses track_id, track, coverid)
-  const tracks = response.tracks_loop || response.titles_loop;
-  if (tracks) {
-    items.push(
-      ...tracks.map(track => {
-        const id = track.track_id || track.id;
-        const title = track.track || track.title;
-        const coverId = track.coverid || track.artwork_track_id || id;
-        return {
-          id,
-          title,
-          subtitle: track.artist,
-          type: "track" as const,
-          can_play: true,
-          can_expand: false,
-          artworkTrackId: coverId,
-          thumbnail: buildArtworkUrl(serverData, coverId),
-          duration: track.duration,
-        };
-      })
-    );
-  }
-
-  return items;
-}
-
 export type UseLyrionBrowseParams = {
   entity_id: string;
   command: string;
@@ -296,11 +217,8 @@ export function useLyrionBrowse({
     );
 
   const items = useMemo(
-    () =>
-      command === "search"
-        ? transformSearchResponseToItems(data, serverData)
-        : transformResponseToItems(data, serverData),
-    [data, serverData, command]
+    () => transformResponseToItems(data, serverData),
+    [data, serverData]
   );
 
   const totalCount = data?.count ?? 0;

@@ -12,12 +12,9 @@ export function buildBrowseParams(
   command: string;
   parameters: string[];
 } {
+  // Global search is handled by useLyrionGlobalSearch
   if (history.length === 0) {
-    if (!searchTerm) return { command: "", parameters: [] };
-    return {
-      command: "search",
-      parameters: ["0", "100", `term:${searchTerm}`, "extended:1"],
-    };
+    return { command: "", parameters: [] };
   }
 
   const current = history[history.length - 1];
@@ -25,7 +22,7 @@ export function buildBrowseParams(
 
   // For root categories, just use the command
   if (history.length === 1) {
-    let command = current.command;
+    const command = current.command;
 
     // Favorites special case - use "favorites" command with "items" as parameter
     if (command === "favorites") {

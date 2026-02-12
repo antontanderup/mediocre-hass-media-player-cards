@@ -3,6 +3,7 @@ import { css, keyframes } from "@emotion/react";
 import {
   AdditionalActionsMenu,
   IconButton,
+  MediaBrowser,
   Queue,
   usePlayer,
 } from "@components";
@@ -23,7 +24,6 @@ import {
   getHass,
   getHasSearch,
 } from "@utils";
-import { MediaBrowser } from "@components/MediaBrowser/MediaBrowser";
 import { useIntl } from "@components/i18n";
 import { Search } from "./Search";
 
@@ -185,6 +185,7 @@ export const PlayerActions = () => {
             entity_id
           )}
           horizontalPadding={16}
+          lmsEntityId={lms_entity_id}
         />
       </Modal>
       <Modal

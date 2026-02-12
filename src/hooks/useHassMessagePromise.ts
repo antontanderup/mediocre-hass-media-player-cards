@@ -18,11 +18,23 @@ export function useHassMessagePromise<T = unknown>(
   message: MessageBase | null,
   options?: { forceRefresh?: boolean; staleTime?: number; enabled?: boolean }
 ) {
-  const [data, setData] = useState<T | null>(null);
+  // Store data keyed to the message that produced it so stale results
+  // from a previous query are never exposed to consumers.
+  const [keyedData, setKeyedData] = useState<{
+    key: string;
+    value: T | null;
+  }>({ key: "", value: null });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Ref to track the latest message key
+  const messageKey = useMemo(
+    () => (message ? JSON.stringify(message) : ""),
+    [message]
+  );
+  const data = keyedData.key === messageKey ? keyedData.value : null;
+
+  // Ref to track the latest message key (for race-condition guard in async fetch)
   const latestMessageKeyRef = useRef<string>("");
 
   // Internal fetch for initial load and cache-aware updates
@@ -49,7 +61,7 @@ export function useHassMessagePromise<T = unknown>(
         );
         // Only update state if this is the latest message
         if (latestMessageKeyRef.current === messageKey) {
-          setData(result?.response ?? null);
+          setKeyedData({ key: messageKey, value: result?.response ?? null });
           setLoading(false);
           setError(null);
         }
@@ -62,7 +74,7 @@ export function useHassMessagePromise<T = unknown>(
               : "Unknown error"
           );
           setLoading(false);
-          setData(null);
+          setKeyedData({ key: messageKey, value: null });
         }
         return null;
       }

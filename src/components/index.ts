@@ -7,6 +7,7 @@ export * from "./FormElements";
 export * from "./GlanceGuard";
 export * from "./GroupChipsController";
 export * from "./GroupVolumeController";
+export * from "./HaMediaBrowser";
 export * from "./HaSearch";
 export * from "./HassContext";
 export * from "./Icon";

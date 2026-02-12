@@ -18,7 +18,7 @@ const styles = {
 export const MediaBrowserBar = () => {
   const { config } =
     useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { media_browser, entity_id } = config;
+  const { media_browser, entity_id, lms_entity_id } = config;
 
   if (getHasMediaBrowser(media_browser) === false) {
     return null;
@@ -31,6 +31,7 @@ export const MediaBrowserBar = () => {
           media_browser,
           entity_id
         )}
+        lmsEntityId={lms_entity_id}
         horizontalPadding={12}
       />
     </div>

@@ -5,7 +5,6 @@ import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
 import { memo } from "preact/compat";
 import { getHasMediaBrowserEntryArray } from "@utils";
-import { LyrionMediaBrowser } from "@components//LyrionMediaBrowser";
 
 const styles = {
   root: css({
@@ -36,24 +35,16 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(
 
     return (
       <div css={styles.root} style={{ maxHeight: height }}>
-        {lms_entity_id ? (
-          <LyrionMediaBrowser
-            entity_id={lms_entity_id}
-            horizontalPadding={16}
-            renderHeader={renderHeader}
-            maxHeight={height}
-          />
-        ) : (
-          <MediaBrowser
-            mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
-              media_browser,
-              entity_id
-            )}
-            horizontalPadding={16}
-            renderHeader={renderHeader}
-            maxHeight={height}
-          />
-        )}
+        <MediaBrowser
+          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
+            media_browser,
+            entity_id
+          )}
+          lmsEntityId={lms_entity_id}
+          horizontalPadding={16}
+          renderHeader={renderHeader}
+          maxHeight={height}
+        />
       </div>
     );
   }

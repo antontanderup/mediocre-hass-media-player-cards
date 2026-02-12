@@ -10,12 +10,15 @@ import {
   VirtualList,
 } from "@components";
 import { IconButton } from "@components/IconButton";
-import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
+import {
+  OverlayMenu,
+  OverlayMenuItem,
+} from "@components/OverlayMenu/OverlayMenu";
 import { css } from "@emotion/react";
 import { Fragment } from "preact/jsx-runtime";
 import { MediaSectionTitle } from "@components/MediaSearch";
 import { useIntl } from "@components/i18n";
-import type { LyrionBrowserItem } from "@types";
+import type { LyrionBrowserItem, MediaBrowserEntry } from "@types";
 import { CATEGORIES } from "./constants";
 import {
   type BrowserRow,
@@ -23,7 +26,8 @@ import {
 } from "./useLyrionMediaBrowserData";
 
 export type LyrionMediaBrowserProps = {
-  entity_id: string;
+  selectMediaBrowserMenuItems?: OverlayMenuItem[];
+  selectedMediaBrowser: MediaBrowserEntry;
   horizontalPadding?: number;
   maxHeight?: number;
   renderHeader?: () => preact.JSX.Element;
@@ -88,6 +92,9 @@ const styles = {
     marginRight: 2,
     marginLeft: -4,
   }),
+  mediaBrowserEntrySelector: css({
+    marginLeft: "auto",
+  }),
 };
 
 /**
@@ -117,7 +124,8 @@ function getItemIcon(item: LyrionBrowserItem): string | null {
 }
 
 export const LyrionMediaBrowser = ({
-  entity_id,
+  selectedMediaBrowser,
+  selectMediaBrowserMenuItems,
   horizontalPadding,
   maxHeight,
   renderHeader,
@@ -145,10 +153,21 @@ export const LyrionMediaBrowser = ({
     currentHistoryDropdownMenuItems,
     navigateToSearchCategory,
     filteredItems,
-  } = useLyrionMediaBrowserData({ entity_id });
+  } = useLyrionMediaBrowserData({ entity_id: selectedMediaBrowser.entity_id });
 
   const renderTrack = (item: LyrionBrowserItem) => {
     if (isShowingCategories) return renderFolder(item);
+    if (!item.can_play && item.can_expand)
+      return (
+        <MediaTrack
+          key={item.id + navHistory.length}
+          title={item.title}
+          artist={item.subtitle}
+          imageUrl={item.thumbnail}
+          mdiIcon={getItemIcon(item)}
+          onClick={() => onItemClick(item)}
+        />
+      );
     return (
       <OverlayMenu
         menuItems={getItemOverlayMenuItems(item)}
@@ -245,18 +264,29 @@ export const LyrionMediaBrowser = ({
           <Fragment>
             {renderHeader && renderHeader()}
             <div css={styles.header}>
-              {navHistory.length > 0 && (
+              {(navHistory.length > 0 || !!selectMediaBrowserMenuItems) && (
                 <Fragment>
                   <div css={styles.navigationBar}>
-                    <IconButton
-                      icon="mdi:arrow-left"
-                      size="x-small"
-                      onClick={goBack}
-                      disabled={navHistory.length === 0}
-                    />
+                    {navHistory.length > 0 ? (
+                      <IconButton
+                        icon="mdi:arrow-left"
+                        size="x-small"
+                        onClick={goBack}
+                        disabled={navHistory.length === 0}
+                      />
+                    ) : (
+                      <Icon icon="mdi:home" size="x-small" />
+                    )}
                     <div css={styles.breadCrumbs}>
                       <button css={styles.breadCrumbItem} onClick={goHome}>
-                        <Icon icon="mdi:home" size="x-small" />
+                        {navHistory.length === 0 ? (
+                          t({
+                            id: "MediaBrowser.breadcrumb_home",
+                            defaultMessage: "Home",
+                          })
+                        ) : (
+                          <Icon icon="mdi:home" size="x-small" />
+                        )}
                       </button>
                       {navHistory.map((item, index) => (
                         <Fragment key={`breadcrumb-${index}-${item.title}`}>
@@ -270,6 +300,27 @@ export const LyrionMediaBrowser = ({
                         </Fragment>
                       ))}
                     </div>
+                    {selectMediaBrowserMenuItems && navHistory.length === 0 && (
+                      <OverlayMenu
+                        menuItems={selectMediaBrowserMenuItems}
+                        side="bottom"
+                        align="end"
+                        renderTrigger={triggerProps => (
+                          <Chip
+                            icon="mdi:import"
+                            size="small"
+                            invertedColors={true}
+                            border={true}
+                            css={styles.mediaBrowserEntrySelector}
+                            {...triggerProps}
+                          >
+                            {selectedMediaBrowser.name ??
+                              selectedMediaBrowser.entity_id}
+                            <Icon size="x-small" icon="mdi:chevron-down" />
+                          </Chip>
+                        )}
+                      />
+                    )}
                     {currentHistoryDropdownMenuItems.length > 0 && (
                       <OverlayMenu
                         menuItems={currentHistoryDropdownMenuItems}

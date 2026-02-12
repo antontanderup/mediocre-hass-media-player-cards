@@ -1,5 +1,4 @@
 import { HaEnqueueMode } from "@components/HaSearch/types";
-import { getEnqueueModeIcon } from "@components/MediaBrowser/utils";
 import { useIntl } from "@components/i18n";
 import type { OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -12,6 +11,7 @@ import {
   useState,
 } from "preact/hooks";
 import { useLyrionBrowse } from "./useLyrionBrowse";
+import { useLyrionGlobalSearch } from "./useLyrionGlobalSearch";
 import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
 import type {
   LyrionBrowserItem,
@@ -25,6 +25,7 @@ import {
   HOME_ENTRY,
 } from "./constants";
 import { buildBrowseParams, buildPlaylistSearchTerm } from "./utils";
+import { getEnqueueModeIcon } from "@components/HaMediaBrowser";
 
 export type BrowserRow =
   | LyrionBrowserItem[]
@@ -97,6 +98,22 @@ export const useLyrionMediaBrowserData = ({
       }
     );
 
+  // Detect global search before hook calls (hooks must be unconditional)
+  const isHomeScreen = navHistory.length === 0;
+  const isGlobalSearch = isHomeScreen && !!committedFilter;
+
+  // Global search: parallel category-specific queries with full metadata
+  const {
+    items: globalSearchItems,
+    loading: globalSearchLoading,
+    totalCount: globalSearchTotalCount,
+  } = useLyrionGlobalSearch({
+    entity_id,
+    searchTerm: committedFilter,
+    serverData,
+    enabled: isGlobalSearch,
+  });
+
   // Build browse parameters from navigation history
   const { command, parameters } = useMemo(
     () =>
@@ -109,18 +126,18 @@ export const useLyrionMediaBrowserData = ({
     [navKey, startIndex, committedFilter]
   );
 
-  // Fetch browse data
+  // Fetch browse data (disabled during global search)
   const {
     items: rawItems,
-    loading,
-    totalCount,
+    loading: browseLoading,
+    totalCount: browseTotalCount,
     searchItemId,
   } = useLyrionBrowse({
     entity_id,
     command,
     parameters,
     serverData,
-    enabled: navHistory.length > 0 || !!committedFilter,
+    enabled: !isGlobalSearch && (navHistory.length > 0 || !!committedFilter),
   });
 
   // Capture app search item id when browsing app root
@@ -139,21 +156,23 @@ export const useLyrionMediaBrowserData = ({
     setAccumulatedItems([]);
   }, [navKey, committedFilter]);
 
-  // Accumulate items when new data is fetched
+  // Accumulate items when new data is fetched (not used for global search)
   useEffect(() => {
+    if (isGlobalSearch) return;
     if (rawItems.length > 0) {
       if (startIndex === 0) {
-        // First page, replace items
         setAccumulatedItems(rawItems);
       } else {
-        // Subsequent pages, append items
         setAccumulatedItems(prev => [...prev, ...rawItems]);
       }
     }
-  }, [rawItems, startIndex]);
+  }, [rawItems, startIndex, isGlobalSearch]);
+
+  // Derived loading/totalCount based on active search mode
+  const loading = isGlobalSearch ? globalSearchLoading : browseLoading;
+  const totalCount = isGlobalSearch ? globalSearchTotalCount : browseTotalCount;
 
   // Show categories on home screen
-  const isHomeScreen = navHistory.length === 0;
   const categoryItems: LyrionBrowserItem[] = useMemo(
     () =>
       CATEGORIES.map(cat => ({
@@ -167,8 +186,11 @@ export const useLyrionMediaBrowserData = ({
   );
 
   const isShowingCategories = isHomeScreen && !committedFilter;
-  const isGlobalSearch = isHomeScreen && !!committedFilter;
-  const displayItems = isShowingCategories ? categoryItems : accumulatedItems;
+  const displayItems = isShowingCategories
+    ? categoryItems
+    : isGlobalSearch
+      ? globalSearchItems
+      : accumulatedItems;
 
   // Determine if the current route supports search
   const isSearchable = useMemo(() => {
@@ -180,8 +202,11 @@ export const useLyrionMediaBrowserData = ({
     return true;
   }, [navKey, searchItemId]);
 
-  // Check if there are more items to load
-  const hasMore = accumulatedItems.length < totalCount && !isShowingCategories;
+  // Check if there are more items to load (global search uses section headers to navigate)
+  const hasMore =
+    !isGlobalSearch &&
+    accumulatedItems.length < totalCount &&
+    !isShowingCategories;
 
   // Load more items
   const loadMore = useCallback(() => {
@@ -225,6 +250,12 @@ export const useLyrionMediaBrowserData = ({
           categoryId: "tracks",
           items: displayItems.filter(i => i.type === "track"),
           isTrack: true,
+        },
+        {
+          title: "Playlists",
+          categoryId: "playlists",
+          items: displayItems.filter(i => i.type === "playlist"),
+          isTrack: false,
         },
       ];
 
@@ -415,6 +446,7 @@ export const useLyrionMediaBrowserData = ({
   );
 
   const goHome = useCallback(() => {
+    setInputValue("");
     setHistory(prev => [prev[0]]);
   }, []);
 
