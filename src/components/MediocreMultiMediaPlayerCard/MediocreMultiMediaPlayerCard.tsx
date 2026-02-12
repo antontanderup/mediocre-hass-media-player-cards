@@ -146,7 +146,7 @@ export const MediocreMultiMediaPlayerCard = () => {
   }, [hass, config, selectedPlayer]);
 
   const [navigationRoute, setNavigationRoute] =
-    useState<NavigationRoute>("massive");
+    useState<NavigationRoute>(config.default_tab ?? "massive");
 
   const [cardSizeRef, { height: cardHeight, width: cardWidth }] =
     useMeasure<HTMLDivElement>();
@@ -157,7 +157,7 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   useEffect(() => {
     if (desktopMode && navigationRoute === "massive") {
-      setNavigationRoute("speaker-grouping");
+      setNavigationRoute(config.default_tab ?? "speaker-grouping");
     }
   }, [desktopMode]);
 

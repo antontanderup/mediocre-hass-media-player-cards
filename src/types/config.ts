@@ -110,6 +110,8 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   "use_art_colors?": "boolean",
+  "default_tab?":
+    "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
   media_players: MediocreMultiMediaPlayer.array(),
   "options?": {
     "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active.

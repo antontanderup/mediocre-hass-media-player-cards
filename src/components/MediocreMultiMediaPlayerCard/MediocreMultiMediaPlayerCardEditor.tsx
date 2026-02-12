@@ -190,6 +190,39 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           )}
         </form.Field>
       </FormGroup>
+      <FormGroup>
+        <form.Field name="default_tab">
+          {field => (
+            <div
+              css={css({
+                display: "flex",
+                flexDirection: "row",
+                gap: 4,
+                alignItems: "center",
+                justifyContent: "space-between",
+              })}
+            >
+              <Label>Default tab:</Label>
+              <FormSelect
+                options={[
+                  { name: "Home", value: "massive" },
+                  { name: "Search", value: "search" },
+                  { name: "Media Browser", value: "media-browser" },
+                  { name: "Queue", value: "queue" },
+                  { name: "Custom Buttons", value: "custom-buttons" },
+                  { name: "Speaker Grouping", value: "speaker-grouping" },
+                ]}
+                onSelected={value =>
+                  field.handleChange(
+                    value as MediocreMultiMediaPlayerCardConfig["default_tab"]
+                  )
+                }
+                selected={field.state.value || "massive"}
+              />
+            </div>
+          )}
+        </form.Field>
+      </FormGroup>
       <SubForm title="Media Players" error={getSubformError("media_players")}>
         <form.Field name="media_players" mode="array">
           {field => {
