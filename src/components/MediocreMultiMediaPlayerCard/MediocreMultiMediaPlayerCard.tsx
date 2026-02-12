@@ -145,8 +145,9 @@ export const MediocreMultiMediaPlayerCard = () => {
     }
   }, [hass, config, selectedPlayer]);
 
-  const [navigationRoute, setNavigationRoute] =
-    useState<NavigationRoute>(config.default_tab ?? "massive");
+  const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>(
+    config.default_tab ?? "massive"
+  );
 
   const [cardSizeRef, { height: cardHeight, width: cardWidth }] =
     useMeasure<HTMLDivElement>();
