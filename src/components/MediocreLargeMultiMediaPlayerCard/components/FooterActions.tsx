@@ -7,7 +7,7 @@ import {
   MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
-import { NavigationRoute } from "@components/MediocreMultiMediaPlayerCard";
+import { NavigationRoute } from "@components/MediocreLargeMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps, useCanDisplayQueue } from "@hooks";
 import { memo } from "preact/compat";

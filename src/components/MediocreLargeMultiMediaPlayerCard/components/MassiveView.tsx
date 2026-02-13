@@ -14,7 +14,6 @@ import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMedia
 import {
   Icon,
   IconButton,
-  NavigationRoute,
   useHass,
   usePlayer,
   VolumeSlider,
@@ -23,6 +22,7 @@ import { getDeviceIcon, getHass, getVolumeIcon } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 import { memo } from "preact/compat";
+import { NavigationRoute } from "../MediocreLargeMultiMediaPlayerCard";
 
 const styles = {
   root: css({

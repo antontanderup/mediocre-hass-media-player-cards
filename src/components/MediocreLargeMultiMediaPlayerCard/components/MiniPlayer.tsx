@@ -12,7 +12,7 @@ import {
 } from "@types";
 import { memo } from "preact/compat";
 import { useCallback, useContext, useMemo } from "preact/hooks";
-import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
+import { NavigationRoute } from "../MediocreLargeMultiMediaPlayerCard";
 
 export type MiniPlayerProps = {
   mediaPlayer: MediocreMultiMediaPlayer;

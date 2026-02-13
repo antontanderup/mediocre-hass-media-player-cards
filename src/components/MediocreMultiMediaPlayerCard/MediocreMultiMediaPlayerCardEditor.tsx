@@ -59,22 +59,39 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         return {
           type: "custom:mediocre-multi-media-player-card",
           entity_id: "",
+          size: "large",
           mode: "card",
           use_art_colors: true,
           media_players: [],
         };
       }
+
+      const mediaPlayers = config.media_players.map(mp => ({
+        ...mp,
+        search: getSearchEntryArray(mp.search, mp.entity_id),
+        media_browser: mp?.media_browser
+          ? Array.isArray(mp.media_browser)
+            ? mp.media_browser
+            : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }]
+          : [],
+      }));
+
+      const isLarge = config.size === "large" || !config.size;
+      if (isLarge) {
+        const largeConfig = config as MediocreMultiMediaPlayerCardConfig & {
+          size: "large";
+        };
+        return {
+          ...largeConfig,
+          size: "large",
+          media_players: mediaPlayers,
+        };
+      }
+
       return {
         ...config,
-        media_players: config.media_players.map(mp => ({
-          ...mp,
-          search: getSearchEntryArray(mp.search, mp.entity_id),
-          media_browser: mp?.media_browser
-            ? Array.isArray(mp.media_browser)
-              ? mp.media_browser
-              : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }]
-            : [],
-        })),
+        size: "compact",
+        media_players: mediaPlayers,
       };
     },
     []
@@ -173,22 +190,36 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           name="use_art_colors"
           children={field => <field.Toggle label="Use album art colors." />}
         />
-        <form.Field name="mode">
+        <form.Field name="size">
           {field => (
             <FormSelect
               options={[
-                { name: "Panel", value: "panel" },
-                { name: "Card", value: "card" },
+                { name: "Large", value: "large" },
+                { name: "Compact", value: "compact" },
               ]}
               onSelected={value =>
-                field.handleChange(
-                  value as MediocreMultiMediaPlayerCardConfig["mode"]
-                )
+                field.handleChange(value as "large" | "compact")
               }
-              selected={config.mode || "panel"}
+              selected={config.size || "large"}
             />
           )}
         </form.Field>
+        {config.size === "large" && (
+          <form.Field name="mode">
+            {field => (
+              <FormSelect
+                options={[
+                  { name: "Panel", value: "panel" },
+                  { name: "Card", value: "card" },
+                ]}
+                onSelected={value =>
+                  field.handleChange(value as "panel" | "card")
+                }
+                selected={config.mode || "panel"}
+              />
+            )}
+          </form.Field>
+        )}
       </FormGroup>
       <SubForm title="Media Players" error={getSubformError("media_players")}>
         <form.Field name="media_players" mode="array">
