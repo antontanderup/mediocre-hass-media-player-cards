@@ -116,6 +116,8 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
     "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
     "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
     "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
+    "default_tab?":
+      "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
   },
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
