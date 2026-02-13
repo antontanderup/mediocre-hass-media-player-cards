@@ -10,7 +10,6 @@ import { Fragment } from "preact/jsx-runtime";
 import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
 import {
-  MediocreMediaPlayerCardConfig,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
@@ -42,7 +41,7 @@ export const VolumeSlider = () => {
       entity_id,
       is_volume_muted: !volumeMuted,
     });
-  }, [volumeMuted]);
+  }, [entity_id, volumeMuted]);
 
   const VolumeIcon = useMemo(
     () => getVolumeIcon(volume, volumeMuted),

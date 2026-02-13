@@ -1,6 +1,3 @@
-import { useContext } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "@types";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { IconButton, Queue, useIntl } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";

@@ -1,17 +1,14 @@
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import {
   useContext,
   useState,
   useEffect,
-  useRef,
   useCallback,
   useMemo,
 } from "preact/hooks";
-import { selectActiveMultiMediaPlayer } from "@utils/selectActiveMultiMediaPlayer";
 import {
   ArtworkColorWrap,
   MediaBrowserView,
@@ -19,12 +16,9 @@ import {
   SearchView,
   SpeakerGrouping,
 } from "./components";
-import { Fragment } from "preact/jsx-runtime";
 import { useMeasure } from "@uidotdev/usehooks";
 import { css } from "@emotion/react";
 import { FooterActions } from "./components/FooterActions";
-import { PlayerContextProvider } from "@components/PlayerContext";
-import { useHass } from "@components/HassContext";
 import { theme } from "@constants";
 import { MassiveViewView } from "./components/MassiveView";
 import { AdditionalActionsView } from "./components/AdditionalActionsView";
