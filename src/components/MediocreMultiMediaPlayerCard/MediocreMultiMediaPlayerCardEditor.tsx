@@ -130,6 +130,8 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
     },
   });
 
+  const size = useStore(form.store, state => state.values.size);
+
   const formErrorMap = useStore(form.store, state => state.errorMap);
   const getSubformError = useCallback(
     (fieldName: string) => {
@@ -200,11 +202,17 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               onSelected={value =>
                 field.handleChange(value as "large" | "compact")
               }
-              selected={config.size || "large"}
+              selected={field.state.value || "large"}
             />
           )}
         </form.Field>
-        {config.size === "large" && (
+        {size === "compact" && (
+          <form.AppField
+            name="tap_opens_popup"
+            children={field => <field.Toggle label="Tap opens popup." />}
+          />
+        )}
+        {size === "large" && (
           <form.Field name="mode">
             {field => (
               <FormSelect
@@ -215,7 +223,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                 onSelected={value =>
                   field.handleChange(value as "panel" | "card")
                 }
-                selected={config.mode || "panel"}
+                selected={field.state.value || "panel"}
               />
             )}
           </form.Field>
@@ -399,16 +407,85 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       </SubForm>
       <SubForm title="Advanced" error={getSubformError("height")}>
         <FormGroup>
-          <form.AppField
-            name="height"
-            children={field => <field.Text label="Height" />}
-          />
-          <form.AppField
-            name="options.transparent_background_on_home"
-            children={field => (
-              <field.Toggle label="Hide the card background on the home tab (massive player)" />
-            )}
-          />
+          {size === "large" && (
+            <Fragment>
+              <form.AppField
+                name="height"
+                children={field => <field.Text label="Height" />}
+              />
+              <form.AppField
+                name="options.transparent_background_on_home"
+                children={field => (
+                  <field.Toggle label="Hide the card background on the home tab (massive player)" />
+                )}
+              />
+              <form.Field name="options.default_tab">
+                {field => (
+                  <div
+                    css={css({
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 4,
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    })}
+                  >
+                    <Label>Default tab:</Label>
+                    <FormSelect
+                      options={[
+                        { name: "Home", value: "massive" },
+                        { name: "Search", value: "search" },
+                        { name: "Media Browser", value: "media-browser" },
+                        { name: "Queue", value: "queue" },
+                        { name: "Custom Buttons", value: "custom-buttons" },
+                        { name: "Speaker Grouping", value: "speaker-grouping" },
+                      ]}
+                      onSelected={value =>
+                        field.handleChange(
+                          value as
+                          | "massive"
+                          | "search"
+                          | "media-browser"
+                          | "speaker-grouping"
+                          | "custom-buttons"
+                          | "queue"
+                        )
+                      }
+                      selected={field.state.value || "massive"}
+                    />
+                  </div>
+                )}
+              </form.Field>
+            </Fragment>
+          )}
+          {size === "compact" && (
+            <Fragment>
+              <form.AppField
+                name="options.always_show_power_button"
+                children={field => (
+                  <field.Toggle label="Always show power button." />
+                )}
+              />
+              <form.AppField
+                name="options.always_show_custom_buttons"
+                children={field => (
+                  <field.Toggle label="Always show custom buttons panel below card" />
+                )}
+              />
+              <form.AppField
+                name="options.hide_when_off"
+                children={field => (
+                  <field.Toggle label="Hide when media player is off" />
+                )}
+              />
+              <form.AppField
+                name="options.hide_when_group_child"
+                children={field => (
+                  <field.Toggle label="Hide when media player is a group child" />
+                )}
+              />
+            </Fragment>
+          )}
           <form.AppField
             name="options.show_volume_step_buttons"
             children={field => (
@@ -442,43 +519,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                     field.handleChange(value as "playing" | "playing_or_paused")
                   }
                   selected={field.state.value || "playing"}
-                />
-              </div>
-            )}
-          </form.Field>
-          <form.Field name="options.default_tab">
-            {field => (
-              <div
-                css={css({
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 4,
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                })}
-              >
-                <Label>Default tab:</Label>
-                <FormSelect
-                  options={[
-                    { name: "Home", value: "massive" },
-                    { name: "Search", value: "search" },
-                    { name: "Media Browser", value: "media-browser" },
-                    { name: "Queue", value: "queue" },
-                    { name: "Custom Buttons", value: "custom-buttons" },
-                    { name: "Speaker Grouping", value: "speaker-grouping" },
-                  ]}
-                  onSelected={value =>
-                    field.handleChange(
-                      value as
-                        | "massive"
-                        | "search"
-                        | "media-browser"
-                        | "speaker-grouping"
-                        | "custom-buttons"
-                        | "queue"
-                    )
-                  }
-                  selected={field.state.value || "massive"}
                 />
               </div>
             )}
