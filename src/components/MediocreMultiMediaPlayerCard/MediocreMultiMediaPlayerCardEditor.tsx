@@ -78,12 +78,14 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
 
       const isLarge = config.size === "large" || !config.size;
       if (isLarge) {
-        const largeConfig = config as MediocreMultiMediaPlayerCardConfig & { size: "large" }
+        const largeConfig = config as MediocreMultiMediaPlayerCardConfig & {
+          size: "large";
+        };
         return {
           ...largeConfig,
           size: "large",
           media_players: mediaPlayers,
-        }
+        };
       }
 
       return {
@@ -468,12 +470,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                   onSelected={value =>
                     field.handleChange(
                       value as
-                      | "massive"
-                      | "search"
-                      | "media-browser"
-                      | "speaker-grouping"
-                      | "custom-buttons"
-                      | "queue"
+                        | "massive"
+                        | "search"
+                        | "media-browser"
+                        | "speaker-grouping"
+                        | "custom-buttons"
+                        | "queue"
                     )
                   }
                   selected={field.state.value || "massive"}

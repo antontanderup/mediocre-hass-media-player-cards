@@ -9,9 +9,7 @@ import {
 import { Fragment } from "preact/jsx-runtime";
 import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
-import {
-  MediocreMultiMediaPlayerCardConfig,
-} from "@types";
+import { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
