@@ -147,7 +147,6 @@ function transformResponseToItems(
         const rawTitle =
           favorite.line1 || favorite.name || favorite.title || "Unknown";
         const subtitle = favorite.artist || favorite.line2;
-
         // If no structured subtitle, try to extract "by Artist" from title
         let title = rawTitle;
         let extractedSubtitle = subtitle;
@@ -158,10 +157,10 @@ function transformResponseToItems(
             extractedSubtitle = rawTitle.substring(byIndex + 4);
           }
         }
-
         return {
           id: favorite.id,
           title,
+          url: favorite.url,
           subtitle: extractedSubtitle,
           type: "playlist" as const,
           can_play: favorite.isaudio === 1,

@@ -310,7 +310,7 @@ export const useLyrionMediaBrowserData = ({
       else if (enqueue === "add") action = "addtracks";
 
       const appEntry = navHistory.find(h => h.type === "app");
-
+      const isFavorite = navHistory.find(h => h.command === "favorites");
       try {
         if (appEntry) {
           // App items: use app command with playlist action
@@ -323,6 +323,18 @@ export const useLyrionMediaBrowserData = ({
           getHass().callService("lyrion_cli", "method", {
             entity_id,
             command: appEntry.command,
+            parameters: ["playlist", appAction, `item_id:${item.id}`],
+          });
+        } else if (isFavorite) {
+          const appAction =
+            action === "loadtracks"
+              ? "play"
+              : action === "inserttracks"
+                ? "insert"
+                : "add";
+          getHass().callService("lyrion_cli", "method", {
+            entity_id,
+            command: "favorites",
             parameters: ["playlist", appAction, `item_id:${item.id}`],
           });
         } else {

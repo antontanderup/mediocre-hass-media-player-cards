@@ -118,6 +118,7 @@ export type LyrionFavorite = {
   artist?: string;
   line1?: string;
   line2?: string;
+  url?: string;
 };
 
 export type LyrionApp = {
@@ -158,6 +159,7 @@ export type LyrionBrowserItem = {
     | "app";
   can_play: boolean;
   can_expand: boolean;
+  url?: string;
   thumbnail?: string;
   subtitle?: string;
   artworkTrackId?: string;
