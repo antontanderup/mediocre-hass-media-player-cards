@@ -146,7 +146,7 @@ export const MediocreMultiMediaPlayerCard = () => {
   }, [hass, config, selectedPlayer]);
 
   const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>(
-    config.default_tab ?? "massive"
+    config.options?.default_tab ?? "massive"
   );
 
   const [cardSizeRef, { height: cardHeight, width: cardWidth }] =
@@ -158,7 +158,7 @@ export const MediocreMultiMediaPlayerCard = () => {
 
   useEffect(() => {
     if (desktopMode && navigationRoute === "massive") {
-      setNavigationRoute(config.default_tab ?? "speaker-grouping");
+      setNavigationRoute(config.options?.default_tab ?? "speaker-grouping");
     }
   }, [desktopMode]);
 
@@ -193,10 +193,10 @@ export const MediocreMultiMediaPlayerCard = () => {
                   styles.contentAreaDesktopMassive,
                   config.mode === "card" && styles.contentAreaCard,
                   config.options?.transparent_background_on_home &&
-                    styles.contentAreaMassiveTransparent,
+                  styles.contentAreaMassiveTransparent,
                   config.mode === "panel" &&
-                    config.options?.transparent_background_on_home &&
-                    styles.contentAreaMassiveTransparent,
+                  config.options?.transparent_background_on_home &&
+                  styles.contentAreaMassiveTransparent,
                 ]}
                 ref={contentSizeRef}
               >
@@ -213,12 +213,12 @@ export const MediocreMultiMediaPlayerCard = () => {
                 desktopMode && styles.contentAreaDesktop,
                 config.mode === "card" && styles.contentAreaCard,
                 navigationRoute === "massive" &&
-                  config.options?.transparent_background_on_home &&
-                  styles.contentAreaMassiveTransparent,
+                config.options?.transparent_background_on_home &&
+                styles.contentAreaMassiveTransparent,
                 navigationRoute === "massive" &&
-                  config.mode === "panel" &&
-                  config.options?.transparent_background_on_home &&
-                  styles.contentAreaMassiveTransparent,
+                config.mode === "panel" &&
+                config.options?.transparent_background_on_home &&
+                styles.contentAreaMassiveTransparent,
               ]}
               ref={contentSizeRef}
             >

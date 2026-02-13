@@ -110,14 +110,14 @@ export const MediocreMultiMediaPlayerCardConfigSchema = type({
   "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   "use_art_colors?": "boolean",
-  "default_tab?":
-    "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
   media_players: MediocreMultiMediaPlayer.array(),
   "options?": {
     "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active.
     "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
     "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
     "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
+    "default_tab?":
+      "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
   },
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
