@@ -18,22 +18,22 @@
   "dependencies": {
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
-    "@tanstack/react-form": "^1.27.7",
+    "@tanstack/react-form": "^1.28.0",
     "@tanstack/react-virtual": "^3.13.18",
     "@uidotdev/usehooks": "^2.4.1",
     "arktype": "^2.1.29",
     "chroma-js": "^3.2.0",
     "custom-card-helpers": "^1.9.0",
-    "node-vibrant": "^4.0.3",
-    "preact": "^10.28.2"
+    "node-vibrant": "^4.0.4",
+    "preact": "^10.28.3"
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",
     "@eslint/js": "^9.28.0",
-    "@preact/preset-vite": "^2.10.2",
+    "@preact/preset-vite": "^2.10.3",
     "@types/chroma-js": "^3.1.2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.0.10",
+    "@types/node": "^25.2.2",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
     "eslint": "^9.39.2",

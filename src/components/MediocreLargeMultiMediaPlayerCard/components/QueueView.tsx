@@ -17,6 +17,12 @@ const styles = {
   itemPlaying: css({
     border: `1px solid ${theme.colors.onCardDivider}`,
   }),
+  headerActions: css({
+    display: "flex",
+    gap: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  }),
 };
 
 export type QueueViewProps = {
@@ -29,7 +35,7 @@ export const QueueView = memo<QueueViewProps>(
     const { t } = useIntl();
 
     const renderHeader = useCallback(
-      (refetch: () => void, loading: boolean) => (
+      (refetch: () => void, loading: boolean, clearQueue: () => void) => (
         <ViewHeader
           title={t({
             id: "MediocreMultiMediaPlayerCard.QueueView.up_next",
@@ -41,12 +47,20 @@ export const QueueView = memo<QueueViewProps>(
           })}
           css={styles.header}
           renderAction={() => (
-            <IconButton
-              icon="mdi:refresh"
-              onClick={refetch}
-              size="x-small"
-              disabled={loading}
-            />
+            <div css={styles.headerActions}>
+              <IconButton
+                icon="mdi:delete-sweep"
+                onClick={clearQueue}
+                size="x-small"
+                disabled={loading}
+              />
+              <IconButton
+                icon="mdi:refresh"
+                onClick={refetch}
+                size="x-small"
+                disabled={loading}
+              />
+            </div>
           )}
         />
       ),

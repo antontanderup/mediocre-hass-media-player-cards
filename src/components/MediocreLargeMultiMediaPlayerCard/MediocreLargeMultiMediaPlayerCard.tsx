@@ -9,6 +9,7 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
 } from "preact/hooks";
 import { selectActiveMultiMediaPlayer } from "@utils/selectActiveMultiMediaPlayer";
 import {
@@ -122,8 +123,17 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
   const { selectedPlayer, setSelectedPlayer, setLastInteraction } =
     useSelectedPlayer();
 
-  const [navigationRoute, setNavigationRoute] =
-    useState<NavigationRoute>("massive");
+  const defaultNavigationRoute = useMemo(
+    () =>
+      config.size === "large"
+        ? (config.options?.default_tab ?? "massive")
+        : "massive",
+    [config]
+  );
+
+  const [navigationRoute, setNavigationRoute] = useState<NavigationRoute>(
+    defaultNavigationRoute
+  );
 
   const [cardSizeRef, { height: cardHeight, width: cardWidth }] =
     useMeasure<HTMLDivElement>();
@@ -134,9 +144,13 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
 
   useEffect(() => {
     if (desktopMode && navigationRoute === "massive") {
-      setNavigationRoute("speaker-grouping");
+      setNavigationRoute(
+        defaultNavigationRoute !== "massive"
+          ? defaultNavigationRoute
+          : "speaker-grouping"
+      );
     }
-  }, [desktopMode]);
+  }, [desktopMode, defaultNavigationRoute]);
 
   const handleCardClick = useCallback(() => {
     setLastInteraction();
@@ -165,10 +179,10 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
             styles.contentAreaDesktopMassive,
             config.mode === "card" && styles.contentAreaCard,
             config.options?.transparent_background_on_home &&
-              styles.contentAreaMassiveTransparent,
+            styles.contentAreaMassiveTransparent,
             config.mode === "panel" &&
-              config.options?.transparent_background_on_home &&
-              styles.contentAreaMassiveTransparent,
+            config.options?.transparent_background_on_home &&
+            styles.contentAreaMassiveTransparent,
           ]}
           ref={contentSizeRef}
         >
@@ -185,12 +199,12 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
           desktopMode && styles.contentAreaDesktop,
           config.mode === "card" && styles.contentAreaCard,
           navigationRoute === "massive" &&
-            config.options?.transparent_background_on_home &&
-            styles.contentAreaMassiveTransparent,
+          config.options?.transparent_background_on_home &&
+          styles.contentAreaMassiveTransparent,
           navigationRoute === "massive" &&
-            config.mode === "panel" &&
-            config.options?.transparent_background_on_home &&
-            styles.contentAreaMassiveTransparent,
+          config.mode === "panel" &&
+          config.options?.transparent_background_on_home &&
+          styles.contentAreaMassiveTransparent,
         ]}
         ref={contentSizeRef}
       >
