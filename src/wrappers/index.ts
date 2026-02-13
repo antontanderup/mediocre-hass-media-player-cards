@@ -1,2 +1,2 @@
-export * from "./CardEditorWrapper";
-export * from "./CardWrapper";
+export * from "./defineCard";
+export * from "./defineCardEditor";

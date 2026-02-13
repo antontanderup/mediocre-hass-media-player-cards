@@ -1,12 +1,8 @@
 import { MediocreMediaPlayerCardEditor } from "@components";
 import { MediocreMediaPlayerCardConfig } from "@types";
-import { CardEditorWrapper } from "@wrappers";
+import { defineCardEditor } from "@wrappers";
 
-class MediocreMediaPlayerCardEditorWrapper extends CardEditorWrapper<MediocreMediaPlayerCardConfig> {
-  Card = MediocreMediaPlayerCardEditor;
-}
-
-customElements.define(
+defineCardEditor<MediocreMediaPlayerCardConfig>(
   import.meta.env.VITE_MEDIA_PLAYER_CARD_EDITOR,
-  MediocreMediaPlayerCardEditorWrapper
+  MediocreMediaPlayerCardEditor
 );
