@@ -65,17 +65,31 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           media_players: [],
         };
       }
+
+      const mediaPlayers = config.media_players.map(mp => ({
+        ...mp,
+        search: getSearchEntryArray(mp.search, mp.entity_id),
+        media_browser: mp?.media_browser
+          ? Array.isArray(mp.media_browser)
+            ? mp.media_browser
+            : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }]
+          : [],
+      }));
+
+      const isLarge = config.size === "large" || !config.size;
+      if (isLarge) {
+        const largeConfig = config as MediocreMultiMediaPlayerCardConfig & { size: "large" }
+        return {
+          ...largeConfig,
+          size: "large",
+          media_players: mediaPlayers,
+        }
+      }
+
       return {
         ...config,
-        media_players: config.media_players.map(mp => ({
-          ...mp,
-          search: getSearchEntryArray(mp.search, mp.entity_id),
-          media_browser: mp?.media_browser
-            ? Array.isArray(mp.media_browser)
-              ? mp.media_browser
-              : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }]
-            : [],
-        })),
+        size: "compact",
+        media_players: mediaPlayers,
       };
     },
     []
@@ -454,12 +468,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                   onSelected={value =>
                     field.handleChange(
                       value as
-                        | "massive"
-                        | "search"
-                        | "media-browser"
-                        | "speaker-grouping"
-                        | "custom-buttons"
-                        | "queue"
+                      | "massive"
+                      | "search"
+                      | "media-browser"
+                      | "speaker-grouping"
+                      | "custom-buttons"
+                      | "queue"
                     )
                   }
                   selected={field.state.value || "massive"}
