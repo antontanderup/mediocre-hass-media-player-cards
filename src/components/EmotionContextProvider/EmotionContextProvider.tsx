@@ -2,8 +2,6 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { JSX } from "preact";
 import { useState } from "preact/hooks";
-import "preact/debug";
-import "preact/devtools";
 import { memo } from "preact/compat";
 
 export type EmotionContextProviderProps = {
