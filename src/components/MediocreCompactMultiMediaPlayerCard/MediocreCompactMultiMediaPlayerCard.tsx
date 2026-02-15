@@ -118,7 +118,6 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     if (!selectedPlayer || config.size !== "compact") {
       return {};
     }
-
     return {
       ma_entity_id: selectedPlayer.ma_entity_id,
       ma_favorite_button_entity_id: selectedPlayer.ma_favorite_button_entity_id,
@@ -214,7 +213,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     rootElement,
     actionConfig: {
       ...artAction,
-      entity: config.entity_id,
+      entity: entity_id,
     },
     overrideCallback: tap_opens_popup
       ? {
