@@ -2,6 +2,7 @@ import { useContext } from "preact/hooks";
 import type { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { MaSearch, HaSearch, useSearchProviderMenu } from "@components";
+import { getSearchFilters } from "@utils/getSearchFilters";
 
 export const Search = () => {
   const { config } =
@@ -32,7 +33,8 @@ export const Search = () => {
       entityId={selectedSearchProvider.entity_id}
       showFavorites={true}
       horizontalPadding={16}
-      filterConfig={selectedSearchProvider.media_types}
+      filterConfig={getSearchFilters(selectedSearchProvider)}
+      targetEntityId={selectedSearchProvider.target_entity_id}
       additionalOptions={searchProvidersMenu}
       searchBarPosition="bottom"
     />

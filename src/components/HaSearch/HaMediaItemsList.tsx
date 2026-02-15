@@ -19,7 +19,7 @@ export type HaMediaItemsListProps = Omit<
 > & {
   data: HaMediaItem[];
   onItemClick: (item: HaMediaItem) => void | Promise<void>;
-  onHeaderClick?: (mediaType: string) => void;
+  onHeaderClick?: (filter: HaFilterConfig) => void;
   filterConfig: HaFilterConfig[];
   loading?: boolean;
   hideEmpty: boolean;
@@ -29,7 +29,7 @@ export type HaMediaItemsListProps = Omit<
 type HaMediaListItem =
   | {
       type: "header";
-      mediaType: string; // placed between items of different media_types
+      mediaContentType: string; // placed between items of different media_types
     }
   | {
       type: "item"; // if item has media_class: track
@@ -79,7 +79,7 @@ export const HaMediaItemsList = ({
       if (Object.keys(groupedByType).length > 1) {
         result.push({
           type: "header",
-          mediaType,
+          mediaContentType: mediaType,
         });
       }
 
@@ -115,17 +115,18 @@ export const HaMediaItemsList = ({
       case "header": {
         const filterConfigItem = filterConfig.find(
           config =>
-            config.media_type === item.mediaType ||
-            config.media_type.slice(0, -1) === item.mediaType
+            config.media_content_type === item.mediaContentType ||
+            config.media_content_type?.slice(0, -1) === item.mediaContentType
         );
         const name =
           filterConfigItem?.name ??
-          item.mediaType.charAt(0).toUpperCase() + item.mediaType.slice(1);
+          item.mediaContentType.charAt(0).toUpperCase() +
+            item.mediaContentType.slice(1);
         return (
           <MediaSectionTitle
             onClick={
               filterConfigItem
-                ? () => onHeaderClick?.(filterConfigItem.media_type)
+                ? () => onHeaderClick?.(filterConfigItem)
                 : undefined
             }
           >

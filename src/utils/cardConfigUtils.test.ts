@@ -146,7 +146,8 @@ describe("cardConfigUtils", () => {
           {
             name: "Search",
             entity_id: "media_player.search",
-            media_types: [],
+            media_types: undefined,
+            filters: undefined,
           },
         ],
         lms_entity_id: null,

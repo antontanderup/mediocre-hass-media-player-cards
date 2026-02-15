@@ -1,5 +1,6 @@
 import { SearchConfig, SearchEntry, SearchLegacyEntry } from "@types";
 import { getHass } from "./getHass";
+import { getSearchFilters } from "./getSearchFilters";
 
 /**
  * Converts a SearchConfig (array or legacy entry) to a SearchEntry[] for unified handling.
@@ -14,7 +15,16 @@ export function getSearchEntryArray(
   if (!searchConfig) return [];
   if (Array.isArray(searchConfig)) {
     // Already new format
-    return searchConfig;
+    return searchConfig.map(entry => {
+      if (entry.media_types) {
+        return {
+          ...entry,
+          media_types: undefined,
+          filters: getSearchFilters(entry),
+        };
+      }
+      return entry;
+    });
   }
   // Legacy format
   const legacy = searchConfig as SearchLegacyEntry;
@@ -32,7 +42,11 @@ export function getSearchEntryArray(
     {
       name: friendlyName ?? "Search",
       entity_id: resolvedEntityId,
-      media_types: legacy.media_types,
+      media_types: undefined,
+      filters: getSearchFilters({
+        entity_id: resolvedEntityId,
+        media_types: legacy.media_types,
+      }),
     },
   ];
 }

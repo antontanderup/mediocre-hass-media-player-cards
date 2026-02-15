@@ -16,13 +16,20 @@ describe("getSearchEntryArray", () => {
     );
   });
 
-  it("returns array as-is for new format", () => {
+  it("returns array as-is for new format, but adds filters if media_types present and removes media_types", () => {
     const entry: SearchEntry = {
       name: "Test Player",
       entity_id: "media_player.test",
       media_types: [{ media_type: "music" }],
     };
-    expect(getSearchEntryArray([entry], "media_player.test")).toEqual([entry]);
+    expect(getSearchEntryArray([entry], "media_player.test")).toEqual([
+      {
+        name: "Test Player",
+        entity_id: "media_player.test",
+        media_types: undefined,
+        filters: [{ media_content_type: "music" }],
+      },
+    ]);
   });
 
   it("returns empty array for legacy entry not enabled", () => {
@@ -45,7 +52,8 @@ describe("getSearchEntryArray", () => {
       {
         name: "Search",
         entity_id: "media_player.test",
-        media_types: [{ media_type: "music" }],
+        media_types: undefined,
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -64,7 +72,8 @@ describe("getSearchEntryArray", () => {
       {
         name: "Search",
         entity_id: "media_player.test",
-        media_types: [{ media_type: "music" }],
+        media_types: undefined,
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -82,7 +91,8 @@ describe("getSearchEntryArray", () => {
       {
         name: "Search",
         entity_id: "media_player.legacy",
-        media_types: [{ media_type: "music" }],
+        media_types: undefined,
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
@@ -104,7 +114,8 @@ describe("getSearchEntryArray", () => {
       {
         name: "Legacy Player",
         entity_id: "media_player.legacy",
-        media_types: [{ media_type: "music" }],
+        media_types: undefined,
+        filters: [{ media_content_type: "music" }],
       },
     ]);
   });
