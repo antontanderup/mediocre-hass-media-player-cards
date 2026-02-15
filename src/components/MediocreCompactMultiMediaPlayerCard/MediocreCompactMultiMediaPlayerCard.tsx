@@ -98,7 +98,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
-  const { selectedPlayer } = useSelectedPlayer();
+  const { selectedPlayer, setLastInteraction } = useSelectedPlayer();
   const {
     ma_entity_id,
     ma_favorite_button_entity_id,
@@ -247,7 +247,10 @@ export const MediocreCompactMultiMediaPlayerCard = ({
         ...(haVars && use_art_colors ? haVars : {}),
       }}
     >
-      <div css={[styles.card, use_art_colors && styles.artBackground]}>
+      <div
+        css={[styles.card, use_art_colors && styles.artBackground]}
+        onClick={setLastInteraction}
+      >
         <div css={styles.cardContent} style={{ opacity: isOn ? 1 : 0.7 }}>
           <AlbumArt size={artSize} iconSize="large" {...artActionProps} />
           <div css={styles.cardColumn}>
@@ -333,7 +336,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                     setSliderVisible={setShowVolumeSlider}
                   />
                 )}
-                {!!isOn && hasGroupingFeature && (
+                {hasGroupingFeature && (
                   <IconButton
                     size="x-small"
                     onClick={toggleGrouping}

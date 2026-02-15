@@ -443,12 +443,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       onSelected={value =>
                         field.handleChange(
                           value as
-                          | "massive"
-                          | "search"
-                          | "media-browser"
-                          | "speaker-grouping"
-                          | "custom-buttons"
-                          | "queue"
+                            | "massive"
+                            | "search"
+                            | "media-browser"
+                            | "speaker-grouping"
+                            | "custom-buttons"
+                            | "queue"
                         )
                       }
                       selected={field.state.value || "massive"}
