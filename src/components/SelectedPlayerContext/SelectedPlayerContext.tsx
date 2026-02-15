@@ -43,6 +43,7 @@ export const SelectedPlayerProvider = ({
 
   // Update selectedPlayer when hass or config changes, unless card was interacted with in last 2 minutes
   useEffect(() => {
+    if (config.disable_player_focus_switching) return;
     const now = Date.now();
     if (
       lastInteractionRef.current &&
@@ -58,7 +59,6 @@ export const SelectedPlayerProvider = ({
     if (newSelectedPlayer?.entity_id !== selectedPlayer?.entity_id) {
       setSelectedPlayer(newSelectedPlayer);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hass, config, selectedPlayer]);
 
   const setLastInteraction = useCallback(() => {
