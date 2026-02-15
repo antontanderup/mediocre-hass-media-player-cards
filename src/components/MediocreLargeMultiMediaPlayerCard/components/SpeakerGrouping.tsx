@@ -226,18 +226,22 @@ export const SpeakerGrouping = memo(() => {
           </div>
         </Fragment>
       )}
-      <ViewHeader
-        title={t({
-          id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title",
-        })}
-        subtitle={t({
-          id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle",
-        })}
-        css={styles.horizontalPadding}
-      />
-      <div css={[styles.playerChips, styles.horizontalPadding]}>
-        {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
-      </div>
+      {!config.disable_player_focus_switching && (
+        <Fragment>
+          <ViewHeader
+            title={t({
+              id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_title",
+            })}
+            subtitle={t({
+              id: "MediocreMultiMediaPlayerCard.SpeakerGrouping.player_focus_subtitle",
+            })}
+            css={styles.horizontalPadding}
+          />
+          <div css={[styles.playerChips, styles.horizontalPadding]}>
+            {enrichedEntities.length > 0 && enrichedEntities.map(renderPlayer)}
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 });
