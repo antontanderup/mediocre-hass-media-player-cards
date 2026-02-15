@@ -74,10 +74,7 @@ export type MassiveViewViewProps = {
 };
 
 export const MassiveViewView = memo<MassiveViewViewProps>(
-  ({
-    setNavigationRoute,
-    navigationRoute,
-  }: MassiveViewViewProps) => {
+  ({ setNavigationRoute, navigationRoute }: MassiveViewViewProps) => {
     const hass = useHass();
     const { selectedPlayer } = useSelectedPlayer();
 

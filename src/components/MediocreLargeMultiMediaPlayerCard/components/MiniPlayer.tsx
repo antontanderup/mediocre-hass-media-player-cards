@@ -56,10 +56,10 @@ export const MiniPlayer = memo<MiniPlayerProps>(
         speaker_group:
           speakerGroupEntities.length > 0
             ? {
-              entity_id:
-                mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
-              entities: speakerGroupEntities,
-            }
+                entity_id:
+                  mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
+                entities: speakerGroupEntities,
+              }
             : undefined,
         options: {
           show_volume_step_buttons:

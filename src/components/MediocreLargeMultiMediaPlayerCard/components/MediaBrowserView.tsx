@@ -21,33 +21,31 @@ export type MediaBrowserViewProps = {
   height: number;
 };
 
-export const MediaBrowserView = memo<MediaBrowserViewProps>(
-  ({ height }) => {
-    const { t } = useIntl();
-    const { selectedPlayer } = useSelectedPlayer();
-    const { entity_id, media_browser } = selectedPlayer!;
+export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
+  const { t } = useIntl();
+  const { selectedPlayer } = useSelectedPlayer();
+  const { entity_id, media_browser } = selectedPlayer!;
 
-    const renderHeader = () => (
-      <ViewHeader
-        title={t({
-          id: "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title",
-        })}
-        css={styles.header}
+  const renderHeader = () => (
+    <ViewHeader
+      title={t({
+        id: "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title",
+      })}
+      css={styles.header}
+    />
+  );
+
+  return (
+    <div css={styles.root} style={{ maxHeight: height }}>
+      <MediaBrowser
+        mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
+          media_browser,
+          entity_id
+        )}
+        horizontalPadding={16}
+        renderHeader={renderHeader}
+        maxHeight={height}
       />
-    );
-
-    return (
-      <div css={styles.root} style={{ maxHeight: height }}>
-        <MediaBrowser
-          mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
-            media_browser,
-            entity_id
-          )}
-          horizontalPadding={16}
-          renderHeader={renderHeader}
-          maxHeight={height}
-        />
-      </div>
-    );
-  }
-);
+    </div>
+  );
+});

@@ -170,10 +170,10 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
             styles.contentAreaDesktopMassive,
             config.mode === "card" && styles.contentAreaCard,
             config.options?.transparent_background_on_home &&
-            styles.contentAreaMassiveTransparent,
+              styles.contentAreaMassiveTransparent,
             config.mode === "panel" &&
-            config.options?.transparent_background_on_home &&
-            styles.contentAreaMassiveTransparent,
+              config.options?.transparent_background_on_home &&
+              styles.contentAreaMassiveTransparent,
           ]}
           ref={contentSizeRef}
         >
@@ -189,12 +189,12 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
           desktopMode && styles.contentAreaDesktop,
           config.mode === "card" && styles.contentAreaCard,
           navigationRoute === "massive" &&
-          config.options?.transparent_background_on_home &&
-          styles.contentAreaMassiveTransparent,
+            config.options?.transparent_background_on_home &&
+            styles.contentAreaMassiveTransparent,
           navigationRoute === "massive" &&
-          config.mode === "panel" &&
-          config.options?.transparent_background_on_home &&
-          styles.contentAreaMassiveTransparent,
+            config.mode === "panel" &&
+            config.options?.transparent_background_on_home &&
+            styles.contentAreaMassiveTransparent,
         ]}
         ref={contentSizeRef}
       >

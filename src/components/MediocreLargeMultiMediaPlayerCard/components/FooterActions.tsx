@@ -2,10 +2,7 @@ import { useContext } from "preact/hooks";
 import { css } from "@emotion/react";
 import { IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
-import {
-  InteractionConfig,
-  MediocreMultiMediaPlayerCardConfig,
-} from "@types";
+import { InteractionConfig, MediocreMultiMediaPlayerCardConfig } from "@types";
 import { NavigationRoute } from "@components/MediocreLargeMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps, useCanDisplayQueue } from "@hooks";

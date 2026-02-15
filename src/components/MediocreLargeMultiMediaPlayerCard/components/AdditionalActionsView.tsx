@@ -1,7 +1,5 @@
 import { useCallback, useContext, useMemo } from "preact/hooks";
-import type {
-  MediocreMultiMediaPlayerCardConfig,
-} from "@types";
+import type { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
 import { Chip, Icon, useHass, usePlayer } from "@components";
