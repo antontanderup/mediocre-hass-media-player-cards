@@ -15,7 +15,6 @@ import { css, keyframes } from "@emotion/react";
 import { useActionProps } from "@hooks";
 import {
   MediocreMassiveMediaPlayerCardConfig,
-  MediocreMediaPlayerCardConfig,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import {
