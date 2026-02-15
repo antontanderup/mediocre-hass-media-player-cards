@@ -6,7 +6,6 @@ import {
 import { MediocreMediaPlayerCard } from "@components/MediocreMediaPlayerCard";
 import { css } from "@emotion/react";
 import {
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
   MediocreMediaPlayerCardConfig,
 } from "@types";

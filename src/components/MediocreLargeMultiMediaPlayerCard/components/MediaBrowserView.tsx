@@ -1,4 +1,3 @@
-import type { MediocreMultiMediaPlayer } from "@types";
 import { MediaBrowser } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";

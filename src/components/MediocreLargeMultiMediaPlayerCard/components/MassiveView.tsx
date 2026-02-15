@@ -1,6 +1,5 @@
 import type {
   MediocreMassiveMediaPlayerCardConfig,
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { css } from "@emotion/react";

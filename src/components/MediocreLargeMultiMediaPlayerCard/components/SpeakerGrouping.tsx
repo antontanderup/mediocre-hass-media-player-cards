@@ -2,7 +2,6 @@ import { useContext, useMemo, useState } from "preact/hooks";
 import { useIntl } from "@components/i18n";
 import type {
   MediaPlayerEntity,
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import {
