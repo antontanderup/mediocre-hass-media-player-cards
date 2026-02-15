@@ -1,10 +1,10 @@
-import type { MediocreMultiMediaPlayer } from "@types";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
 import { memo, useCallback } from "preact/compat";
 import { IconButton, Queue } from "@components";
 import { theme } from "@constants";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -26,13 +26,14 @@ const styles = {
 };
 
 export type QueueViewProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   height: number;
 };
 
 export const QueueView = memo<QueueViewProps>(
-  ({ mediaPlayer: { lms_entity_id, ma_entity_id }, height }) => {
+  ({ height }) => {
     const { t } = useIntl();
+    const { selectedPlayer } = useSelectedPlayer();
+    const { lms_entity_id, ma_entity_id } = selectedPlayer!;
 
     const renderHeader = useCallback(
       (refetch: () => void, loading: boolean, clearQueue: () => void) => (

@@ -4,7 +4,6 @@ import { IconButton } from "@components";
 import { CardContext, CardContextType } from "@components/CardContext";
 import {
   InteractionConfig,
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { NavigationRoute } from "@components/MediocreLargeMultiMediaPlayerCard";
@@ -12,6 +11,7 @@ import { theme } from "@constants";
 import { useActionProps, useCanDisplayQueue } from "@hooks";
 import { memo } from "preact/compat";
 import { getHasMediaBrowser, getHasSearch } from "@utils";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -32,18 +32,18 @@ const styles = {
 };
 
 export type FooterActionsProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
   desktopMode?: boolean;
 };
 
 export const FooterActions = memo<FooterActionsProps>(
-  ({ mediaPlayer, setNavigationRoute, navigationRoute, desktopMode }) => {
+  ({ setNavigationRoute, navigationRoute, desktopMode }) => {
     const { rootElement } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
       );
+    const { selectedPlayer } = useSelectedPlayer();
 
     const {
       entity_id,
@@ -52,7 +52,7 @@ export const FooterActions = memo<FooterActionsProps>(
       custom_buttons,
       media_browser,
       lms_entity_id,
-    } = mediaPlayer;
+    } = selectedPlayer!;
 
     const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);

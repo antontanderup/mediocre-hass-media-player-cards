@@ -23,6 +23,7 @@ import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 import { memo } from "preact/compat";
 import { NavigationRoute } from "../MediocreLargeMultiMediaPlayerCard";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -68,18 +69,19 @@ const styles = {
 };
 
 export type MassiveViewViewProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
 };
 
 export const MassiveViewView = memo<MassiveViewViewProps>(
   ({
-    mediaPlayer,
     setNavigationRoute,
     navigationRoute,
   }: MassiveViewViewProps) => {
     const hass = useHass();
+    const { selectedPlayer } = useSelectedPlayer();
+
+    const mediaPlayer = selectedPlayer!;
 
     const { rootElement, config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(

@@ -5,6 +5,7 @@ import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
 import { memo } from "preact/compat";
 import { getHasMediaBrowserEntryArray } from "@utils";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -17,13 +18,15 @@ const styles = {
 };
 
 export type MediaBrowserViewProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   height: number;
 };
 
 export const MediaBrowserView = memo<MediaBrowserViewProps>(
-  ({ mediaPlayer: { entity_id, media_browser }, height }) => {
+  ({ height }) => {
     const { t } = useIntl();
+    const { selectedPlayer } = useSelectedPlayer();
+    const { entity_id, media_browser } = selectedPlayer!;
+
     const renderHeader = () => (
       <ViewHeader
         title={t({

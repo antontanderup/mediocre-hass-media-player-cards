@@ -1,4 +1,3 @@
-import type { MediocreMultiMediaPlayer } from "@types";
 import {
   MaSearch,
   HaSearch,
@@ -11,6 +10,7 @@ import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
 import { memo } from "preact/compat";
 import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -23,48 +23,51 @@ const styles = {
 };
 
 export type SearchViewProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   height: number;
 };
 
 export const SearchView = memo<SearchViewProps>(
-  ({ mediaPlayer: { ma_entity_id, search, entity_id }, height }) => {
+  ({ height }) => {
+    const { selectedPlayer } = useSelectedPlayer();
+    const { ma_entity_id, search, entity_id } = selectedPlayer!;
     const { selectedSearchProvider, searchProvidersMenu } =
       useSearchProviderMenu(search, entity_id, ma_entity_id);
+
     const { t } = useIntl();
+
     const renderHeader = () => (
       <ViewHeader
         title={
           selectedSearchProvider?.entity_id === ma_entity_id
             ? t({
-                id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
-              })
+              id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
+            })
             : t({
-                id: "MediocreMultiMediaPlayerCard.SearchView.search_title",
-              })
+              id: "MediocreMultiMediaPlayerCard.SearchView.search_title",
+            })
         }
         css={styles.header}
         renderAction={
           searchProvidersMenu.length > 1
             ? () => (
-                <OverlayMenu
-                  menuItems={searchProvidersMenu}
-                  align="end"
-                  renderTrigger={triggerProps => (
-                    <Chip
-                      icon="mdi:import"
-                      invertedColors
-                      border
-                      size="small"
-                      {...triggerProps}
-                    >
-                      {selectedSearchProvider?.name ??
-                        selectedSearchProvider?.entity_id}
-                      <Icon icon="mdi:chevron-down" size="x-small" />
-                    </Chip>
-                  )}
-                />
-              )
+              <OverlayMenu
+                menuItems={searchProvidersMenu}
+                align="end"
+                renderTrigger={triggerProps => (
+                  <Chip
+                    icon="mdi:import"
+                    invertedColors
+                    border
+                    size="small"
+                    {...triggerProps}
+                  >
+                    {selectedSearchProvider?.name ??
+                      selectedSearchProvider?.entity_id}
+                    <Icon icon="mdi:chevron-down" size="x-small" />
+                  </Chip>
+                )}
+              />
+            )
             : undefined
         }
       />

@@ -13,9 +13,9 @@ import {
 import { memo } from "preact/compat";
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import { NavigationRoute } from "../MediocreLargeMultiMediaPlayerCard";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 export type MiniPlayerProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
 };
@@ -28,11 +28,14 @@ const styles = {
 };
 
 export const MiniPlayer = memo<MiniPlayerProps>(
-  ({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
+  ({ setNavigationRoute, navigationRoute }) => {
     const { rootElement, config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
       );
+
+    const { selectedPlayer } = useSelectedPlayer();
+    const mediaPlayer = selectedPlayer!;
 
     const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
       const { custom_buttons: _custom_buttons, ...rest } = mediaPlayer;
@@ -53,10 +56,10 @@ export const MiniPlayer = memo<MiniPlayerProps>(
         speaker_group:
           speakerGroupEntities.length > 0
             ? {
-                entity_id:
-                  mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
-                entities: speakerGroupEntities,
-              }
+              entity_id:
+                mediaPlayer.speaker_group_entity_id || mediaPlayer.entity_id,
+              entities: speakerGroupEntities,
+            }
             : undefined,
         options: {
           show_volume_step_buttons:

@@ -1,6 +1,5 @@
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import type {
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
 } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
@@ -25,6 +24,7 @@ import {
   transferLmsQueue,
   transferMaQueue,
 } from "@utils";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -44,230 +44,211 @@ const styles = {
   }),
 };
 
-export type AdditionalActionsViewProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
-  setSelectedPlayer: (player: MediocreMultiMediaPlayer) => void;
-};
+export type AdditionalActionsViewProps = {};
 
-export const AdditionalActionsView = memo<AdditionalActionsViewProps>(
-  ({ mediaPlayer, setSelectedPlayer }) => {
-    const {
-      custom_buttons,
-      ma_favorite_button_entity_id,
-      ma_entity_id,
-      lms_entity_id,
-    } = mediaPlayer;
+export const AdditionalActionsView = memo<AdditionalActionsViewProps>(() => {
+  const { selectedPlayer, setSelectedPlayer } = useSelectedPlayer();
 
-    const {
-      config: { media_players },
-    } =
-      useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
-        CardContext
-      );
+  const {
+    custom_buttons,
+    ma_favorite_button_entity_id,
+    ma_entity_id,
+    entity_id,
+    lms_entity_id,
+  } = selectedPlayer!;
 
-    const hass = useHass();
-
-    const player = usePlayer();
-    const isMainEntityMassPlayer = useMemo(
-      () => getHasMassFeatures(player.entity_id, ma_entity_id),
-      [player, player?.attributes?.active_child, ma_entity_id]
+  const {
+    config: { media_players },
+  } =
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+      CardContext
     );
 
-    const isMainEntityLmsPlayer = useMemo(
-      () => lms_entity_id && getIsLmsPlayer(player, lms_entity_id),
-      [player, lms_entity_id]
-    );
+  const hass = useHass();
 
-    const transferQueue = useCallback(
-      (targetEntity: string) => {
-        if (!ma_entity_id) return;
-        transferMaQueue(ma_entity_id, targetEntity);
-      },
-      [ma_entity_id]
-    );
+  const player = usePlayer();
+  const isMainEntityMassPlayer = useMemo(
+    () => getHasMassFeatures(player.entity_id, ma_entity_id),
+    [player, player?.attributes?.active_child, ma_entity_id]
+  );
 
-    const maTransferMenuItems: OverlayMenuItem[] = useMemo(() => {
-      if (!ma_entity_id || !isMainEntityMassPlayer) return [];
-      const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
-        if (!mp.ma_entity_id) return null;
-        const state = hass.states[mp.entity_id];
-        if (
-          !state ||
-          state.state === "unavailable" ||
-          mp.entity_id === mediaPlayer.entity_id
-        )
-          return null;
-        return {
-          label: state.attributes.friendly_name || mp.entity_id,
-          onClick: () => {
-            if (!mp.ma_entity_id) return;
-            transferQueue(mp.ma_entity_id);
-            setSelectedPlayer(mp);
-          },
-        };
-      });
+  const isMainEntityLmsPlayer = useMemo(
+    () => lms_entity_id && getIsLmsPlayer(player, lms_entity_id),
+    [player, lms_entity_id]
+  );
 
-      return items.filter(item => item !== null) as OverlayMenuItem[];
-    }, [
-      isMainEntityMassPlayer,
-      ma_entity_id,
-      transferQueue,
-      media_players,
-      setSelectedPlayer,
-    ]);
+  const transferQueue = useCallback(
+    (targetEntity: string) => {
+      if (!ma_entity_id) return;
+      transferMaQueue(ma_entity_id, targetEntity);
+    },
+    [ma_entity_id]
+  );
 
-    const lmsTransferMenuItems: OverlayMenuItem[] = useMemo(() => {
-      if (!lms_entity_id || !isMainEntityLmsPlayer) return [];
-      const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
-        if (!mp.lms_entity_id) return null;
-        const state = hass.states[mp.entity_id];
-        if (
-          !state ||
-          state.state === "unavailable" ||
-          mp.entity_id === mediaPlayer.entity_id
-        )
-          return null;
-        return {
-          label: mp.name || state.attributes.friendly_name || mp.entity_id,
-          onClick: () => {
-            if (!mp.lms_entity_id) return;
-            transferLmsQueue(lms_entity_id, mp.lms_entity_id);
-            setSelectedPlayer(mp);
-          },
-        };
-      });
-
-      return items.filter(item => item !== null) as OverlayMenuItem[];
-    }, [
-      isMainEntityLmsPlayer,
-      lms_entity_id,
-      media_players,
-      setSelectedPlayer,
-    ]);
-
-    const markSongAsFavorite = useCallback(() => {
-      if (!ma_favorite_button_entity_id) return;
-      getHass().callService("button", "press", {
-        entity_id: ma_favorite_button_entity_id,
-      });
-    }, [ma_favorite_button_entity_id]);
-
-    const sourceSelectMenuItems: OverlayMenuItem[] = useMemo(() => {
-      return (player.attributes.source_list ?? []).map(source => ({
-        label: source,
+  const maTransferMenuItems: OverlayMenuItem[] = useMemo(() => {
+    if (!ma_entity_id || !isMainEntityMassPlayer) return [];
+    const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
+      if (!mp.ma_entity_id) return null;
+      const state = hass.states[mp.entity_id];
+      if (!state || state.state === "unavailable" || mp.entity_id === entity_id)
+        return null;
+      return {
+        label: state.attributes.friendly_name || mp.entity_id,
         onClick: () => {
-          getHass().callService("media_player", "select_source", {
-            entity_id: player.entity_id,
-            source,
-          });
+          if (!mp.ma_entity_id) return;
+          transferQueue(mp.ma_entity_id);
+          setSelectedPlayer(mp);
         },
-      }));
-    }, [player.attributes.source_list, player.attributes.source]);
+      };
+    });
 
-    const renderMediaPlayerActions =
-      (!!ma_entity_id && isMainEntityMassPlayer) ||
-      sourceSelectMenuItems.length > 0;
+    return items.filter(item => item !== null) as OverlayMenuItem[];
+  }, [
+    isMainEntityMassPlayer,
+    ma_entity_id,
+    transferQueue,
+    media_players,
+    setSelectedPlayer,
+  ]);
 
-    const { t } = useIntl();
+  const lmsTransferMenuItems: OverlayMenuItem[] = useMemo(() => {
+    if (!lms_entity_id || !isMainEntityLmsPlayer) return [];
+    const items: (OverlayMenuItem | null)[] = media_players.map(mp => {
+      if (!mp.lms_entity_id) return null;
+      const state = hass.states[mp.entity_id];
+      if (!state || state.state === "unavailable" || mp.entity_id === entity_id)
+        return null;
+      return {
+        label: mp.name || state.attributes.friendly_name || mp.entity_id,
+        onClick: () => {
+          if (!mp.lms_entity_id) return;
+          transferLmsQueue(lms_entity_id, mp.lms_entity_id);
+          setSelectedPlayer(mp);
+        },
+      };
+    });
 
-    return (
-      <div css={styles.root}>
-        {custom_buttons && custom_buttons.length > 0 && (
-          <Fragment>
-            <ViewHeader
-              title={t({
-                id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title",
-              })}
-              subtitle={t({
-                id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle",
-              })}
-            />
-            <div css={styles.buttons}>
-              {custom_buttons?.map((button, index) => (
-                <CustomButton
-                  key={index}
-                  button={button}
-                  entityId={mediaPlayer.entity_id}
-                />
-              ))}
-            </div>
-          </Fragment>
-        )}
-        {renderMediaPlayerActions && (
-          <Fragment>
-            <ViewHeader
-              title={t({
-                id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title",
-              })}
-              subtitle={t({
-                id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle",
-              })}
-            />
-            <div css={styles.buttons}>
-              {!!ma_entity_id && isMainEntityMassPlayer && (
-                <Fragment>
-                  {ma_favorite_button_entity_id && (
-                    <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
-                      {t({
-                        id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite",
-                      })}
-                    </Chip>
-                  )}
-                  {maTransferMenuItems.length > 0 && (
-                    <OverlayMenu
-                      menuItems={maTransferMenuItems}
-                      side="bottom"
-                      renderTrigger={triggerProps => (
-                        <Chip icon="mdi:transfer" {...triggerProps}>
-                          {t({
-                            id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
-                          })}
-                          <Icon size="x-small" icon="mdi:chevron-down" />
-                        </Chip>
-                      )}
-                    />
-                  )}
-                </Fragment>
-              )}
-              {lmsTransferMenuItems.length > 0 && (
-                <OverlayMenu
-                  menuItems={lmsTransferMenuItems}
-                  side="bottom"
-                  renderTrigger={triggerProps => (
-                    <Chip icon="mdi:transfer" {...triggerProps}>
-                      {t({
-                        id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
-                      })}
-                      <Icon size="x-small" icon="mdi:chevron-down" />
-                    </Chip>
-                  )}
-                />
-              )}
-              {sourceSelectMenuItems.length > 0 && player.attributes.source && (
-                <OverlayMenu
-                  side="bottom"
-                  menuItems={sourceSelectMenuItems}
-                  renderTrigger={triggerProps => (
-                    <Chip
-                      {...triggerProps}
-                      icon={getSourceIcon({
-                        source: player.attributes.source ?? "",
-                        fallbackIcon: "mdi:import",
-                      })}
-                    >
-                      {player.attributes.source}
-                      <Icon size="x-small" icon="mdi:chevron-down" />
-                    </Chip>
-                  )}
-                />
-              )}
-            </div>
-          </Fragment>
-        )}
-      </div>
-    );
-  }
-);
+    return items.filter(item => item !== null) as OverlayMenuItem[];
+  }, [isMainEntityLmsPlayer, lms_entity_id, media_players, setSelectedPlayer]);
+
+  const markSongAsFavorite = useCallback(() => {
+    if (!ma_favorite_button_entity_id) return;
+    getHass().callService("button", "press", {
+      entity_id: ma_favorite_button_entity_id,
+    });
+  }, [ma_favorite_button_entity_id]);
+
+  const sourceSelectMenuItems: OverlayMenuItem[] = useMemo(() => {
+    return (player.attributes.source_list ?? []).map(source => ({
+      label: source,
+      onClick: () => {
+        getHass().callService("media_player", "select_source", {
+          entity_id: player.entity_id,
+          source,
+        });
+      },
+    }));
+  }, [player.attributes.source_list, player.attributes.source]);
+
+  const renderMediaPlayerActions =
+    (!!ma_entity_id && isMainEntityMassPlayer) ||
+    sourceSelectMenuItems.length > 0;
+
+  const { t } = useIntl();
+
+  return (
+    <div css={styles.root}>
+      {custom_buttons && custom_buttons.length > 0 && (
+        <Fragment>
+          <ViewHeader
+            title={t({
+              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_title",
+            })}
+            subtitle={t({
+              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.shortcuts_subtitle",
+            })}
+          />
+          <div css={styles.buttons}>
+            {custom_buttons?.map((button, index) => (
+              <CustomButton key={index} button={button} entityId={entity_id} />
+            ))}
+          </div>
+        </Fragment>
+      )}
+      {renderMediaPlayerActions && (
+        <Fragment>
+          <ViewHeader
+            title={t({
+              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title",
+            })}
+            subtitle={t({
+              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle",
+            })}
+          />
+          <div css={styles.buttons}>
+            {!!ma_entity_id && isMainEntityMassPlayer && (
+              <Fragment>
+                {ma_favorite_button_entity_id && (
+                  <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
+                    {t({
+                      id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite",
+                    })}
+                  </Chip>
+                )}
+                {maTransferMenuItems.length > 0 && (
+                  <OverlayMenu
+                    menuItems={maTransferMenuItems}
+                    side="bottom"
+                    renderTrigger={triggerProps => (
+                      <Chip icon="mdi:transfer" {...triggerProps}>
+                        {t({
+                          id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
+                        })}
+                        <Icon size="x-small" icon="mdi:chevron-down" />
+                      </Chip>
+                    )}
+                  />
+                )}
+              </Fragment>
+            )}
+            {lmsTransferMenuItems.length > 0 && (
+              <OverlayMenu
+                menuItems={lmsTransferMenuItems}
+                side="bottom"
+                renderTrigger={triggerProps => (
+                  <Chip icon="mdi:transfer" {...triggerProps}>
+                    {t({
+                      id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
+                    })}
+                    <Icon size="x-small" icon="mdi:chevron-down" />
+                  </Chip>
+                )}
+              />
+            )}
+            {sourceSelectMenuItems.length > 0 && player.attributes.source && (
+              <OverlayMenu
+                side="bottom"
+                menuItems={sourceSelectMenuItems}
+                renderTrigger={triggerProps => (
+                  <Chip
+                    {...triggerProps}
+                    icon={getSourceIcon({
+                      source: player.attributes.source ?? "",
+                      fallbackIcon: "mdi:import",
+                    })}
+                  >
+                    {player.attributes.source}
+                    <Icon size="x-small" icon="mdi:chevron-down" />
+                  </Chip>
+                )}
+              />
+            )}
+          </div>
+        </Fragment>
+      )}
+    </div>
+  );
+});
 
 const CustomButton = ({
   button,

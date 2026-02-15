@@ -112,8 +112,7 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
       CardContext
     );
 
-  const { selectedPlayer, setSelectedPlayer, setLastInteraction } =
-    useSelectedPlayer();
+  const { selectedPlayer, setLastInteraction } = useSelectedPlayer();
 
   const defaultNavigationRoute = useMemo(
     () =>
@@ -171,15 +170,14 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
             styles.contentAreaDesktopMassive,
             config.mode === "card" && styles.contentAreaCard,
             config.options?.transparent_background_on_home &&
-              styles.contentAreaMassiveTransparent,
+            styles.contentAreaMassiveTransparent,
             config.mode === "panel" &&
-              config.options?.transparent_background_on_home &&
-              styles.contentAreaMassiveTransparent,
+            config.options?.transparent_background_on_home &&
+            styles.contentAreaMassiveTransparent,
           ]}
           ref={contentSizeRef}
         >
           <MassiveViewView
-            mediaPlayer={selectedPlayer}
             setNavigationRoute={setNavigationRoute}
             navigationRoute={navigationRoute}
           />
@@ -191,46 +189,32 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
           desktopMode && styles.contentAreaDesktop,
           config.mode === "card" && styles.contentAreaCard,
           navigationRoute === "massive" &&
-            config.options?.transparent_background_on_home &&
-            styles.contentAreaMassiveTransparent,
+          config.options?.transparent_background_on_home &&
+          styles.contentAreaMassiveTransparent,
           navigationRoute === "massive" &&
-            config.mode === "panel" &&
-            config.options?.transparent_background_on_home &&
-            styles.contentAreaMassiveTransparent,
+          config.mode === "panel" &&
+          config.options?.transparent_background_on_home &&
+          styles.contentAreaMassiveTransparent,
         ]}
         ref={contentSizeRef}
       >
         {navigationRoute === "search" && contentHeight && (
-          <SearchView height={contentHeight} mediaPlayer={selectedPlayer} />
+          <SearchView height={contentHeight} />
         )}
         {navigationRoute === "media-browser" && contentHeight && (
-          <MediaBrowserView
-            height={contentHeight}
-            mediaPlayer={selectedPlayer}
-          />
+          <MediaBrowserView height={contentHeight} />
         )}
-        {navigationRoute === "speaker-grouping" && (
-          <SpeakerGrouping
-            mediaPlayer={selectedPlayer}
-            setSelectedPlayer={setSelectedPlayer}
-          />
-        )}
+        {navigationRoute === "speaker-grouping" && <SpeakerGrouping />}
         {navigationRoute === "queue" && contentHeight && (
-          <QueueView mediaPlayer={selectedPlayer} height={contentHeight} />
+          <QueueView height={contentHeight} />
         )}
         {navigationRoute === "massive" && (
           <MassiveViewView
-            mediaPlayer={selectedPlayer}
             setNavigationRoute={setNavigationRoute}
             navigationRoute={navigationRoute}
           />
         )}
-        {navigationRoute === "custom-buttons" && (
-          <AdditionalActionsView
-            mediaPlayer={selectedPlayer}
-            setSelectedPlayer={setSelectedPlayer}
-          />
-        )}
+        {navigationRoute === "custom-buttons" && <AdditionalActionsView />}
       </div>
       <div
         css={[
@@ -244,13 +228,11 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
           cardHeight &&
           cardHeight > 500 && (
             <MiniPlayer
-              mediaPlayer={selectedPlayer}
               setNavigationRoute={setNavigationRoute}
               navigationRoute={navigationRoute}
             />
           )}
         <FooterActions
-          mediaPlayer={selectedPlayer}
           setNavigationRoute={setNavigationRoute}
           navigationRoute={navigationRoute}
           desktopMode={desktopMode}
