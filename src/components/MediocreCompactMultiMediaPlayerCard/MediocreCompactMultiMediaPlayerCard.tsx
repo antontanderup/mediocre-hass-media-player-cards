@@ -217,10 +217,10 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     },
     overrideCallback: tap_opens_popup
       ? {
-        onTap: () => {
-          setIsPopupVisible(true);
-        },
-      }
+          onTap: () => {
+            setIsPopupVisible(true);
+          },
+        }
       : onClick
         ? { onTap: onClick }
         : undefined,
