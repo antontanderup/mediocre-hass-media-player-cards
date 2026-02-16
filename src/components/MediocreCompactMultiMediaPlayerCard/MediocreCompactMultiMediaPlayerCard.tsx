@@ -85,7 +85,7 @@ const styles = {
   }),
 };
 
-export type MediocreMediaPlayerCardProps = {
+export type MediocreCompactMultiMediaPlayerCardProps = {
   isEmbeddedInMultiCard?: boolean;
   onClick?: () => void;
 };
@@ -93,7 +93,7 @@ export type MediocreMediaPlayerCardProps = {
 export const MediocreCompactMultiMediaPlayerCard = ({
   isEmbeddedInMultiCard,
   onClick,
-}: MediocreMediaPlayerCardProps) => {
+}: MediocreCompactMultiMediaPlayerCardProps) => {
   const { rootElement, config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -217,10 +217,10 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     },
     overrideCallback: tap_opens_popup
       ? {
-          onTap: () => {
-            setIsPopupVisible(true);
-          },
-        }
+        onTap: () => {
+          setIsPopupVisible(true);
+        },
+      }
       : onClick
         ? { onTap: onClick }
         : undefined,

@@ -6,7 +6,7 @@ import {
 export const getMultiConfigToMediocreMassiveConfig = (
   config: MediocreMultiMediaPlayerCardConfig,
   selectedPlayer: MediocreMultiMediaPlayerCardConfig["media_players"][number],
-  mode: "panel" | "card" | "in-card" | "popup" | "multi"
+  mode: "panel" | "card" | "in-card" | "popup"
 ): MediocreMassiveMediaPlayerCardConfig => {
   const speaker_group = {
     entity_id: selectedPlayer.speaker_group_entity_id,

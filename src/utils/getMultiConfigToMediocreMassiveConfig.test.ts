@@ -153,7 +153,7 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
     const result = getMultiConfigToMediocreMassiveConfig(
       config,
       selectedPlayer,
-      "multi"
+      "panel"
     );
     expect(result.speaker_group?.entities).toEqual([
       { name: "Living Room", entity: "media_player.living_room" },

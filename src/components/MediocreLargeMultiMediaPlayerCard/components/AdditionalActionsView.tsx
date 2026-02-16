@@ -42,9 +42,7 @@ const styles = {
   }),
 };
 
-export type AdditionalActionsViewProps = {};
-
-export const AdditionalActionsView = memo<AdditionalActionsViewProps>(() => {
+export const AdditionalActionsView = memo(() => {
   const { selectedPlayer, setSelectedPlayer } = useSelectedPlayer();
 
   const {
