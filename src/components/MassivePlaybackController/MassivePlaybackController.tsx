@@ -8,7 +8,7 @@ const styles = {
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    gap: "16px",
+    gap: "8px",
     justifyContent: "space-evenly",
     alignItems: "center",
     paddingTop: "16px",
