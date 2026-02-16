@@ -62,7 +62,8 @@ export const FooterActions = memo<FooterActionsProps>(
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
     const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
 
-    if (config.size !== "large") return null;
+    if (config.size && config.size !== "large") return null;
+
     return (
       <div
         css={[styles.root, config.mode === "in-card" && styles.footerInCard]}
