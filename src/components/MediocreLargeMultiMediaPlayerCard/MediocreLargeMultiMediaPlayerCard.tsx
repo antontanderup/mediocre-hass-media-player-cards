@@ -65,6 +65,9 @@ const styles = {
   rootCard: css({
     height: 780,
   }),
+  rootInCard: css({
+    height: 780,
+  }),
   contentArea: css({
     alignSelf: "stretch",
     overflow: "hidden",
@@ -85,6 +88,10 @@ const styles = {
   contentAreaCard: css({
     borderRadius: theme.sizes.cardBorderRadius,
   }),
+  contentAreaTransparent: css({
+    backgroundColor: "transparent",
+    borderStyle: "none",
+  }),
   contentAreaMassiveTransparent: css({
     backgroundColor: "transparent",
     borderStyle: "none",
@@ -104,9 +111,18 @@ const styles = {
   footerCard: css({
     padding: 0,
   }),
+  footerInCard: css({
+    padding: "0px 12px 12px 12px",
+  }),
 };
 
-export const MediocreLargeMultiMediaPlayerCard = () => {
+type MediocreLargeMultiMediaPlayerCardProps = {
+  className?: string;
+};
+
+export const MediocreLargeMultiMediaPlayerCard = ({
+  className,
+}: MediocreLargeMultiMediaPlayerCardProps) => {
   const { config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -157,8 +173,10 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
         styles.root,
         config.mode === "panel" && styles.rootPanel,
         config.mode === "card" && styles.rootCard,
+        config.mode === "in-card" && styles.rootInCard,
         desktopMode && styles.rootDesktop,
       ]}
+      className={className}
       style={config.height ? { height: config.height } : {}}
       ref={cardSizeRef}
       onClick={handleCardClick}
@@ -195,6 +213,7 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
             config.mode === "panel" &&
             config.options?.transparent_background_on_home &&
             styles.contentAreaMassiveTransparent,
+          config.mode === "in-card" && styles.contentAreaTransparent,
         ]}
         ref={contentSizeRef}
       >
@@ -221,6 +240,7 @@ export const MediocreLargeMultiMediaPlayerCard = () => {
           styles.footer,
           desktopMode && styles.footerDesktop,
           config.mode === "card" && styles.footerCard,
+          config.mode === "in-card" && styles.footerInCard,
         ]}
       >
         {!desktopMode &&

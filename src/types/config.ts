@@ -88,7 +88,7 @@ export const MediocreMediaPlayerCardConfigSchema =
 
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
-    mode: "'panel'|'card'|'in-card'|'popup'|'multi'", // don't document popup and multi as they are only for internal use
+    mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup and multi as they are only for internal use
   });
 
 export const MediocreMultiMediaPlayer = type({
@@ -125,9 +125,10 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
   commonMediaPlayerCardSchema.and(
     type({
       size: "'large'",
-      mode: "'panel'|'card'",
+      mode: "'panel'|'card'|'in-card'",
       "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
       "options?": commonMediaPlayerCardOptions.and({
+        "hide_selected_player_header?": "boolean", // Hide the header of the selected player in the massive view
         "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
         "default_tab?":
           "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
