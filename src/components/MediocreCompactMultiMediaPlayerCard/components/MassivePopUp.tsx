@@ -110,7 +110,7 @@ const styles = {
     maxHeight: `calc(98vh - ${headerHeight}px)`,
     maxWidth: "98vw",
     width: "100%",
-    height: "100%",
+    height: 780,
     overflow: "hidden",
   }),
 };
