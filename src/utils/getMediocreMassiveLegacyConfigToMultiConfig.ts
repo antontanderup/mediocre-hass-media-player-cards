@@ -14,7 +14,7 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
     mode: config.mode === "popup" ? "in-card" : config.mode,
     size: "large",
     options: {
-      hide_selected_player_header: config.mode === "popup" ? true : false,
+      hide_selected_player_header: true,
       show_volume_step_buttons:
         config.options?.show_volume_step_buttons ?? false,
       use_volume_up_down_for_step_buttons:
