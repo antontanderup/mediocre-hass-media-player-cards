@@ -7,7 +7,7 @@ import { NavigationRoute } from "@components/MediocreLargeMultiMediaPlayerCard";
 import { theme } from "@constants";
 import { useActionProps, useCanDisplayQueue } from "@hooks";
 import { memo } from "preact/compat";
-import { getHasMediaBrowser, getHasSearch } from "@utils";
+import { getHasMediaBrowser, getHasSearch, isDarkMode } from "@utils";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
@@ -26,6 +26,13 @@ const styles = {
     borderColor: "var(--ha-card-border-color,var(--divider-color,#e0e0e0))",
     borderStyle: "var(--ha-card-border-style, solid)",
   }),
+  footerInCard: css({
+    "--mmpc-surface-higher": `hsl(from ${theme.colors.card} h s calc(l ${isDarkMode() ? "+" : "-"} 5))`,
+    "--mmpc-surface-shadow": `hsl(from var(--mmpc-surface-higher) h calc(s / 2) calc(l - 10))`,
+    "--ha-card-border-width": "0px",
+    backgroundColor: "var(--mmpc-surface-higher)",
+    boxShadow: "0px 0px 20px var(--mmpc-surface-shadow)",
+  }),
 };
 
 export type FooterActionsProps = {
@@ -36,7 +43,7 @@ export type FooterActionsProps = {
 
 export const FooterActions = memo<FooterActionsProps>(
   ({ setNavigationRoute, navigationRoute, desktopMode }) => {
-    const { rootElement } =
+    const { rootElement, config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
       );
@@ -55,8 +62,11 @@ export const FooterActions = memo<FooterActionsProps>(
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
     const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
 
+    if (config.size !== "large") return null;
     return (
-      <div css={styles.root}>
+      <div
+        css={[styles.root, config.mode === "in-card" && styles.footerInCard]}
+      >
         {!desktopMode && (
           <IconButton
             size="small"
