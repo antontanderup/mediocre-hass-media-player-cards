@@ -14,6 +14,13 @@ export function selectActiveMultiMediaPlayer(
   config: MediocreMultiMediaPlayerCardConfig,
   selectedMediaPlayer?: MediocreMultiMediaPlayer
 ): MediocreMultiMediaPlayer | undefined {
+  if (config.disable_player_focus_switching) {
+    return (
+      selectedMediaPlayer ??
+      config.media_players.find(player => player.entity_id === config.entity_id)
+    );
+  }
+
   let player =
     selectedMediaPlayer ??
     config.media_players.find(player => player.entity_id === config.entity_id);

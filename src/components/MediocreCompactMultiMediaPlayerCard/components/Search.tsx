@@ -1,9 +1,7 @@
-import { useContext } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "@types";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { MaSearch, HaSearch, useSearchProviderMenu } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -16,13 +14,11 @@ const styles = {
 };
 
 export const Search = () => {
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { ma_entity_id, search, entity_id } = config;
-
+  const { selectedPlayer: { ma_entity_id, entity_id, search } = {} } =
+    useSelectedPlayer();
   const { selectedSearchProvider, searchProvidersMenu } = useSearchProviderMenu(
     search,
-    entity_id,
+    entity_id ?? "",
     ma_entity_id
   );
 

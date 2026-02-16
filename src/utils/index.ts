@@ -17,6 +17,8 @@ export * from "./getIsLmsPlayer";
 export * from "./getIsMassPlayer";
 export * from "./getMediaBrowserEntryArray";
 export * from "./getMediaPlayerTitleAndSubtitle";
+export * from "./getMediocreLegacyConfigToMultiConfig";
+export * from "./getMultiConfigToMediocreMassiveConfig";
 export * from "./getSearchEntryArray";
 export * from "./getSourceIcon";
 export * from "./getVolumeIcon";

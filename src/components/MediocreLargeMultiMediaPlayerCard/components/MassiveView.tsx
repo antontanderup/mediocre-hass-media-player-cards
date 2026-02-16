@@ -1,20 +1,11 @@
-import type {
-  MediocreMassiveMediaPlayerCardConfig,
-  MediocreMultiMediaPlayer,
-  MediocreMultiMediaPlayerCardConfig,
-} from "@types";
+import type { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { css } from "@emotion/react";
 import { useCallback, useContext, useMemo } from "preact/hooks";
-import {
-  CardContext,
-  CardContextProvider,
-  CardContextType,
-} from "@components/CardContext";
-import { MediocreMassiveMediaPlayerCard } from "@components/MediocreMassiveMediaPlayerCard";
+import { CardContext, CardContextType } from "@components/CardContext";
 import {
   Icon,
   IconButton,
-  NavigationRoute,
+  MassivePlaybackController,
   useHass,
   usePlayer,
   VolumeSlider,
@@ -23,18 +14,22 @@ import { getDeviceIcon, getHass, getVolumeIcon } from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 import { memo } from "preact/compat";
+import { NavigationRoute } from "../MediocreLargeMultiMediaPlayerCard";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
     padding: 16,
-    display: "grid",
     gap: 24,
-    gridTemplateRows: "auto 1fr auto",
-    gridTemplateColumns: "1fr",
+    display: "flex",
+    flexDirection: "column",
     height: "100%",
   }),
   massive: css({
     overflow: "hidden",
+    width: "100%",
+    height: "100%",
+    padding: 0,
   }),
   massiveHeader: css({
     display: "flex",
@@ -56,7 +51,6 @@ const styles = {
     alignItems: "center",
     flex: 1,
     maxHeight: "36px",
-    marginTop: "auto",
     gap: "8px",
     justifySelf: "center",
     width: "100%",
@@ -68,18 +62,16 @@ const styles = {
 };
 
 export type MassiveViewViewProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
 };
 
 export const MassiveViewView = memo<MassiveViewViewProps>(
-  ({
-    mediaPlayer,
-    setNavigationRoute,
-    navigationRoute,
-  }: MassiveViewViewProps) => {
+  ({ setNavigationRoute, navigationRoute }: MassiveViewViewProps) => {
     const hass = useHass();
+    const { selectedPlayer } = useSelectedPlayer();
+
+    const mediaPlayer = selectedPlayer!;
 
     const { rootElement, config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
@@ -141,60 +133,55 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
       return setNavigationRoute("speaker-grouping");
     }, [setNavigationRoute, navigationRoute]);
 
-    const massiveConfig: MediocreMassiveMediaPlayerCardConfig = useMemo(() => {
-      return {
-        ...mediaPlayer,
-        mode: "multi",
-        type: "custom:mediocre-massive-media-player-card",
-        use_art_colors: config.use_art_colors,
-      };
-    }, [mediaPlayer, config.use_art_colors]);
-
+    if (config.size === "compact") return null;
     return (
       <div css={styles.root}>
-        <div
-          css={styles.massiveHeader}
-          id="mmpc-multi-media-player-card-massive-view-header"
+        {!config.options?.hide_selected_player_header && (
+          <div
+            css={styles.massiveHeader}
+            id="mmpc-multi-media-player-card-massive-view-header"
+          >
+            <Icon size={"small"} icon={mdiIcon} />
+            <span css={styles.title}>
+              {mediaPlayer.name ?? friendlyName}
+              {groupMembers?.length > 1 && (
+                <span> +{groupMembers.length - 1}</span>
+              )}
+            </span>
+            <IconButton
+              size="small"
+              {...moreInfoButtonProps}
+              icon="mdi:dots-vertical"
+            />
+          </div>
+        )}
+        <MassivePlaybackController
+          css={styles.massive}
+          artworkButtonProps={{ onClick: handleOnClick }}
         >
-          <Icon size={"small"} icon={mdiIcon} />
-          <span css={styles.title}>
-            {mediaPlayer.name ?? friendlyName}
-            {groupMembers?.length > 1 && (
-              <span> +{groupMembers.length - 1}</span>
-            )}
-          </span>
-          <IconButton
-            size="small"
-            {...moreInfoButtonProps}
-            icon="mdi:dots-vertical"
-          />
-        </div>
-        <CardContextProvider rootElement={rootElement} config={massiveConfig}>
-          <MediocreMassiveMediaPlayerCard
-            css={styles.massive}
-            onClick={handleOnClick}
-          />
-        </CardContextProvider>
-        <div css={styles.volumeRoot}>
-          <IconButton
-            css={volumeMuted ? styles.buttonMuted : {}}
-            size="small"
-            onClick={handleToggleMute}
-            icon={VolumeIcon}
-          />
-          <VolumeSlider
-            entityId={
-              mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id
-            }
-            syncGroupChildren={true}
-            sliderSize={"medium"}
-            showStepButtons={config.options?.show_volume_step_buttons ?? false}
-            useVolumeUpDownForSteps={
-              config.options?.use_volume_up_down_for_step_buttons ?? false
-            }
-          />
-          <IconButton size="small" onClick={togglePower} icon={"mdi:power"} />
-        </div>
+          <div css={styles.volumeRoot}>
+            <IconButton
+              css={volumeMuted ? styles.buttonMuted : {}}
+              size="small"
+              onClick={handleToggleMute}
+              icon={VolumeIcon}
+            />
+            <VolumeSlider
+              entityId={
+                mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id
+              }
+              syncGroupChildren={true}
+              sliderSize={"medium"}
+              showStepButtons={
+                config.options?.show_volume_step_buttons ?? false
+              }
+              useVolumeUpDownForSteps={
+                config.options?.use_volume_up_down_for_step_buttons ?? false
+              }
+            />
+            <IconButton size="small" onClick={togglePower} icon={"mdi:power"} />
+          </div>
+        </MassivePlaybackController>
       </div>
     );
   }

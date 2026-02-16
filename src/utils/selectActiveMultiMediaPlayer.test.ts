@@ -30,6 +30,7 @@ describe("selectActiveMultiMediaPlayer", () => {
   it("returns the config.entity_id player if it is playing and group leader", () => {
     const config: MediocreMultiMediaPlayerCardConfig = {
       type: "multi",
+      size: "large",
       mode: "card",
       entity_id: "media_player.a",
       media_players: [basePlayer("media_player.a")],
@@ -49,6 +50,7 @@ describe("selectActiveMultiMediaPlayer", () => {
   it("returns another player if it is playing and group leader", () => {
     const config: MediocreMultiMediaPlayerCardConfig = {
       type: "multi",
+      size: "large",
       mode: "card",
       entity_id: "media_player.a",
       media_players: [
@@ -72,6 +74,7 @@ describe("selectActiveMultiMediaPlayer", () => {
   it("returns config.entity_id player if no player is playing or paused", () => {
     const config: MediocreMultiMediaPlayerCardConfig = {
       type: "multi",
+      size: "large",
       mode: "card",
       entity_id: "media_player.a",
       media_players: [
@@ -91,6 +94,7 @@ describe("selectActiveMultiMediaPlayer", () => {
   it("handles speaker_group_entity_id", () => {
     const config: MediocreMultiMediaPlayerCardConfig = {
       type: "multi",
+      size: "large",
       mode: "card",
       entity_id: "media_player.a",
       media_players: [

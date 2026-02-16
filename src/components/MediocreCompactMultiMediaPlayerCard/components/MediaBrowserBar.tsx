@@ -1,10 +1,8 @@
-import { useContext } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "@types";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { MediaBrowser } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { getHasMediaBrowser, getHasMediaBrowserEntryArray } from "@utils";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -16,9 +14,8 @@ const styles = {
 };
 
 export const MediaBrowserBar = () => {
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { media_browser, entity_id } = config;
+  const { selectedPlayer: { media_browser, entity_id } = {} } =
+    useSelectedPlayer();
 
   if (getHasMediaBrowser(media_browser) === false) {
     return null;
@@ -29,7 +26,7 @@ export const MediaBrowserBar = () => {
       <MediaBrowser
         mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
           media_browser,
-          entity_id
+          entity_id ?? ""
         )}
         horizontalPadding={12}
       />
