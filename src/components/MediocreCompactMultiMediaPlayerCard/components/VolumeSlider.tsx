@@ -80,12 +80,14 @@ export const VolumeTrigger = ({
     <Fragment>
       {!sliderVisible ? (
         <IconButton
+          id="mmpc-compact-volume-toggle"
           size="x-small"
           onClick={() => setSliderVisible(true)}
           icon={volumeIcon}
         />
       ) : (
         <IconButton
+          id="mmpc-compact-volume-toggle"
           size="x-small"
           onClick={() => setSliderVisible(false)}
           icon={"mdi:chevron-left"}
