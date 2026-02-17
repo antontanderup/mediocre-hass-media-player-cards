@@ -150,7 +150,6 @@ export const LyrionMediaBrowser = ({
     goToIndex,
     goHome,
     currentHistoryDropdownMenuItems,
-    navigateToSearchCategory,
     filteredItems,
   } = useLyrionMediaBrowserData({ entity_id: selectedMediaBrowser.entity_id });
 
@@ -218,7 +217,7 @@ export const LyrionMediaBrowser = ({
     if (!Array.isArray(row)) {
       return (
         <MediaSectionTitle
-          onClick={() => navigateToSearchCategory(row.categoryId)}
+          onClick={row.onClick}
         >
           {row.sectionTitle}
         </MediaSectionTitle>

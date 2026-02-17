@@ -26,7 +26,11 @@ import { getEnqueueModeIcon } from "@components/HaMediaBrowser";
 
 export type BrowserRow =
   | LyrionBrowserItem[]
-  | { sectionTitle: string; categoryId: LyrionCategoryType };
+  | {
+      sectionTitle: string;
+      categoryId: LyrionCategoryType;
+      onClick?: () => void;
+    };
 
 export const useLyrionMediaBrowserData = ({
   entity_id,
@@ -478,6 +482,7 @@ export const useLyrionMediaBrowserData = ({
         result.push({
           sectionTitle: section.title,
           categoryId: section.categoryId,
+          onClick: () => navigateToSearchCategory(section.categoryId),
         });
         const limited = section.items.slice(0, maxPerSection);
         if (section.isTrack) {
@@ -587,7 +592,6 @@ export const useLyrionMediaBrowserData = ({
     goToIndex,
     goHome,
     currentHistoryDropdownMenuItems,
-    navigateToSearchCategory,
     filteredItems: enrichedDisplayItems,
   };
 };
