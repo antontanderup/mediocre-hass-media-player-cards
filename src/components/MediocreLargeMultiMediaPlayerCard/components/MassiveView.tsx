@@ -51,7 +51,7 @@ const styles = {
     alignItems: "center",
     flex: 1,
     maxHeight: "36px",
-    gap: "8px",
+    gap: "12px",
     justifySelf: "center",
     width: "100%",
     maxWidth: 600,
@@ -171,7 +171,7 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
                 mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id
               }
               syncGroupChildren={true}
-              sliderSize={"medium"}
+              sliderSize={"small"}
               showStepButtons={
                 config.options?.show_volume_step_buttons ?? false
               }
