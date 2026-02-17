@@ -1,0 +1,40 @@
+name: Translation Status
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/components/i18n/*.json"
+  push:
+    branches:
+      - main
+    paths:
+      - "src/components/i18n/*.json"
+
+permissions:
+  contents: write
+
+jobs:
+  translation-status:
+    name: Update Translation Status
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate translation status
+        run: node scripts/check-translations.mjs
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "docs: update translation status"
+          file_pattern: "src/components/i18n/TRANSLATION_STATUS.md"
+          branch: ${{ github.ref_name }}
