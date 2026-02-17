@@ -18,7 +18,7 @@
   "dependencies": {
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
-    "@tanstack/react-form": "^1.28.0",
+    "@tanstack/react-form": "^1.28.3",
     "@tanstack/react-virtual": "^3.13.18",
     "@uidotdev/usehooks": "^2.4.1",
     "arktype": "^2.1.29",
