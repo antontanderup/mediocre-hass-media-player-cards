@@ -212,94 +212,6 @@ export const useLyrionMediaBrowserData = ({
     }
   }, [loading, hasMore, accumulatedItems.length]);
 
-  // Group items into rows for grid rendering
-  const { items, hasNoArtwork } = useMemo(() => {
-    let hasNoArtwork = true;
-    const result: BrowserRow[] = [];
-
-    // Check artwork across all items
-    displayItems.forEach(item => {
-      if (typeof item.thumbnail === "string") hasNoArtwork = false;
-    });
-
-    if (isGlobalSearch) {
-      // Group search results by type with section titles
-      const sections: Array<{
-        title: string;
-        categoryId: LyrionCategoryType;
-        items: LyrionBrowserItem[];
-        isTrack: boolean;
-      }> = [
-        {
-          title: "Artists",
-          categoryId: "artists",
-          items: displayItems.filter(i => i.type === "artist"),
-          isTrack: false,
-        },
-        {
-          title: "Albums",
-          categoryId: "albums",
-          items: displayItems.filter(i => i.type === "album"),
-          isTrack: false,
-        },
-        {
-          title: "Tracks",
-          categoryId: "tracks",
-          items: displayItems.filter(i => i.type === "track"),
-          isTrack: true,
-        },
-        {
-          title: "Playlists",
-          categoryId: "playlists",
-          items: displayItems.filter(i => i.type === "playlist"),
-          isTrack: false,
-        },
-      ];
-
-      const maxPerSection = chunkSize * 2;
-
-      for (const section of sections) {
-        if (section.items.length === 0) continue;
-        result.push({
-          sectionTitle: section.title,
-          categoryId: section.categoryId,
-        });
-        const limited = section.items.slice(0, maxPerSection);
-        if (section.isTrack) {
-          limited.forEach(item => result.push([item]));
-        } else {
-          for (let i = 0; i < limited.length; i += chunkSize) {
-            result.push(limited.slice(i, i + chunkSize));
-          }
-        }
-      }
-    } else {
-      // Standard grouping: expandable items in grid rows, tracks individually
-      const groupedByType: Record<"track" | "expandable", LyrionBrowserItem[]> =
-        {
-          track: [],
-          expandable: [],
-        };
-
-      displayItems.forEach(item => {
-        const isTrack = item.type === "track" && !isShowingCategories;
-        groupedByType[isTrack ? "track" : "expandable"].push(item);
-      });
-
-      Object.entries(groupedByType).forEach(([mediaType, items]) => {
-        if (mediaType === "track" && !isShowingCategories) {
-          items.forEach(item => result.push([item]));
-        } else {
-          for (let i = 0; i < items.length; i += chunkSize) {
-            result.push(items.slice(i, i + chunkSize));
-          }
-        }
-      });
-    }
-
-    return { items: result, hasNoArtwork };
-  }, [displayItems, chunkSize, isShowingCategories, isGlobalSearch]);
-
   const playItem = useCallback(
     (item: LyrionBrowserItem, enqueue?: HaEnqueueMode) => {
       let action = "loadtracks";
@@ -440,25 +352,6 @@ export const useLyrionMediaBrowserData = ({
     [loading, navKey]
   );
 
-  const goBack = useCallback(() => {
-    if (loading || navHistory.length === 0) return;
-    setHistory(prev => prev.slice(0, -1));
-  }, [navHistory.length, loading]);
-
-  const goToIndex = useCallback(
-    (navIndex: number) => {
-      if (loading) return;
-      // +2: one for home entry, one because slice end is exclusive
-      setHistory(prev => prev.slice(0, navIndex + 2));
-    },
-    [loading]
-  );
-
-  const goHome = useCallback(() => {
-    setInputValue("");
-    setHistory(prev => [prev[0]]);
-  }, []);
-
   const getItemOverlayMenuItems = useCallback(
     (item: LyrionBrowserItem, excludeExpandOptions = false) => {
       const menuItems: OverlayMenuItem[] = [];
@@ -523,6 +416,124 @@ export const useLyrionMediaBrowserData = ({
     [playItem, onItemClick, t]
   );
 
+  // Attach onClick and menuItems to each display item
+  const enrichedDisplayItems = useMemo(
+    () =>
+      displayItems.map(item => ({
+        ...item,
+        onClick: () => onItemClick(item),
+        menuItems: getItemOverlayMenuItems(item),
+      })),
+    [displayItems, onItemClick, getItemOverlayMenuItems]
+  );
+
+  // Group items into rows for grid rendering
+  const { items, hasNoArtwork } = useMemo(() => {
+    let hasNoArtwork = true;
+    const result: BrowserRow[] = [];
+
+    // Check artwork across all items
+    enrichedDisplayItems.forEach(item => {
+      if (typeof item.thumbnail === "string") hasNoArtwork = false;
+    });
+
+    if (isGlobalSearch) {
+      // Group search results by type with section titles
+      const sections: Array<{
+        title: string;
+        categoryId: LyrionCategoryType;
+        items: LyrionBrowserItem[];
+        isTrack: boolean;
+      }> = [
+        {
+          title: "Artists",
+          categoryId: "artists",
+          items: enrichedDisplayItems.filter(i => i.type === "artist"),
+          isTrack: false,
+        },
+        {
+          title: "Albums",
+          categoryId: "albums",
+          items: enrichedDisplayItems.filter(i => i.type === "album"),
+          isTrack: false,
+        },
+        {
+          title: "Tracks",
+          categoryId: "tracks",
+          items: enrichedDisplayItems.filter(i => i.type === "track"),
+          isTrack: true,
+        },
+        {
+          title: "Playlists",
+          categoryId: "playlists",
+          items: enrichedDisplayItems.filter(i => i.type === "playlist"),
+          isTrack: false,
+        },
+      ];
+
+      const maxPerSection = chunkSize * 2;
+
+      for (const section of sections) {
+        if (section.items.length === 0) continue;
+        result.push({
+          sectionTitle: section.title,
+          categoryId: section.categoryId,
+        });
+        const limited = section.items.slice(0, maxPerSection);
+        if (section.isTrack) {
+          limited.forEach(item => result.push([item]));
+        } else {
+          for (let i = 0; i < limited.length; i += chunkSize) {
+            result.push(limited.slice(i, i + chunkSize));
+          }
+        }
+      }
+    } else {
+      // Standard grouping: expandable items in grid rows, tracks individually
+      const groupedByType: Record<"track" | "expandable", LyrionBrowserItem[]> =
+        {
+          track: [],
+          expandable: [],
+        };
+
+      enrichedDisplayItems.forEach(item => {
+        const isTrack = item.type === "track" && !isShowingCategories;
+        groupedByType[isTrack ? "track" : "expandable"].push(item);
+      });
+
+      Object.entries(groupedByType).forEach(([mediaType, items]) => {
+        if (mediaType === "track" && !isShowingCategories) {
+          items.forEach(item => result.push([item]));
+        } else {
+          for (let i = 0; i < items.length; i += chunkSize) {
+            result.push(items.slice(i, i + chunkSize));
+          }
+        }
+      });
+    }
+
+    return { items: result, hasNoArtwork };
+  }, [enrichedDisplayItems, chunkSize, isShowingCategories, isGlobalSearch]);
+
+  const goBack = useCallback(() => {
+    if (loading || navHistory.length === 0) return;
+    setHistory(prev => prev.slice(0, -1));
+  }, [navHistory.length, loading]);
+
+  const goToIndex = useCallback(
+    (navIndex: number) => {
+      if (loading) return;
+      // +2: one for home entry, one because slice end is exclusive
+      setHistory(prev => prev.slice(0, navIndex + 2));
+    },
+    [loading]
+  );
+
+  const goHome = useCallback(() => {
+    setInputValue("");
+    setHistory(prev => [prev[0]]);
+  }, []);
+
   const currentHistoryDropdownMenuItems: OverlayMenuItem[] = useMemo(() => {
     const current = navHistory[navHistory.length - 1];
     return current
@@ -572,13 +583,11 @@ export const useLyrionMediaBrowserData = ({
     loadMore,
     chunkSize,
     setChunkSize,
-    onItemClick,
     goBack,
     goToIndex,
     goHome,
-    getItemOverlayMenuItems,
     currentHistoryDropdownMenuItems,
     navigateToSearchCategory,
-    filteredItems: displayItems,
+    filteredItems: enrichedDisplayItems,
   };
 };

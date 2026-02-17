@@ -146,11 +146,9 @@ export const LyrionMediaBrowser = ({
     loadMore,
     chunkSize,
     setChunkSize,
-    onItemClick,
     goBack,
     goToIndex,
     goHome,
-    getItemOverlayMenuItems,
     currentHistoryDropdownMenuItems,
     navigateToSearchCategory,
     filteredItems,
@@ -166,12 +164,12 @@ export const LyrionMediaBrowser = ({
           artist={item.subtitle}
           imageUrl={item.thumbnail}
           mdiIcon={getItemIcon(item)}
-          onClick={() => onItemClick(item)}
+          onClick={item.onClick}
         />
       );
     return (
       <OverlayMenu
-        menuItems={getItemOverlayMenuItems(item)}
+        menuItems={item.menuItems ?? []}
         renderTrigger={triggerProps => (
           <MediaTrack
             key={item.id + navHistory.length}
@@ -195,13 +193,13 @@ export const LyrionMediaBrowser = ({
           artist={item.subtitle}
           imageUrl={item.thumbnail}
           mdiIcon={getItemIcon(item)}
-          onClick={() => onItemClick(item)}
+          onClick={item.onClick}
         />
       );
     }
     return (
       <OverlayMenu
-        menuItems={getItemOverlayMenuItems(item)}
+        menuItems={item.menuItems ?? []}
         renderTrigger={triggerProps => (
           <MediaItem
             key={item.id + navHistory.length}

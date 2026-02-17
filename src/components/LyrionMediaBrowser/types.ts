@@ -1,3 +1,5 @@
+import type { OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
+
 // Browse category type
 export type LyrionCategoryType =
   | "artists"
@@ -30,6 +32,8 @@ export type LyrionBrowserItem = {
   subtitle?: string;
   artworkTrackId?: string;
   duration?: number;
+  onClick?: () => void;
+  menuItems?: OverlayMenuItem[];
 };
 
 // Navigation state item (for breadcrumbs)
