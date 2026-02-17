@@ -1,10 +1,8 @@
-import { useContext } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "@types";
-import { CardContext, CardContextType } from "@components/CardContext";
 import { IconButton, Queue, useIntl } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { useCallback } from "preact/compat";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -19,26 +17,23 @@ const styles = {
     color: theme.colors.onCard,
     padding: 0,
     margin: 0,
-    marginRight: "auto",
   }),
   titleRow: css({
     padding: 12,
     paddingBottom: 8,
     display: "flex",
     alignItems: "center",
-    gap: 8,
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   }),
 };
 
 export const QueueView = () => {
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-  const { lms_entity_id, ma_entity_id } = config;
+  const { selectedPlayer: { lms_entity_id, ma_entity_id } = {} } =
+    useSelectedPlayer();
   const { t } = useIntl();
 
   const renderHeader = useCallback(
-    (refetch: () => void, loading: boolean, clearQueue: () => void) => (
+    (refetch: () => void, loading: boolean) => (
       <div css={styles.titleRow}>
         <h3 css={styles.title}>
           {t({
@@ -46,12 +41,6 @@ export const QueueView = () => {
             defaultMessage: "Up Next",
           })}
         </h3>
-        <IconButton
-          icon="mdi:delete-sweep"
-          onClick={clearQueue}
-          size="x-small"
-          disabled={loading}
-        />
         <IconButton
           icon="mdi:refresh"
           onClick={refetch}

@@ -88,7 +88,7 @@ export const MediocreMediaPlayerCardConfigSchema =
 
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
-    mode: "'panel'|'card'|'in-card'|'popup'|'multi'", // don't document popup and multi as they are only for internal use
+    mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup and multi as they are only for internal use
   });
 
 export const MediocreMultiMediaPlayer = type({
@@ -102,24 +102,50 @@ export const MediocreMultiMediaPlayer = type({
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
+  "action?": interactionConfigSchema,
 });
 
-export const MediocreMultiMediaPlayerCardConfigSchema = type({
+export const commonMediaPlayerCardOptions = type({
+  "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active.
+  "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
+  "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
+});
+
+export const commonMediaPlayerCardSchema = type({
   type: "string",
-  mode: "'panel'|'card'",
-  "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
-  "use_art_colors?": "boolean",
   media_players: MediocreMultiMediaPlayer.array(),
-  "options?": {
-    "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active.
-    "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
-    "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
-    "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
-  },
+  "use_art_colors?": "boolean",
+  "disable_player_focus_switching?": "boolean",
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
 });
+
+export const MediocreMultiMediaPlayerCardConfigSchema =
+  commonMediaPlayerCardSchema.and(
+    type({
+      size: "'large'",
+      mode: "'panel'|'card'|'in-card'",
+      "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
+      "options?": commonMediaPlayerCardOptions.and({
+        "hide_selected_player_header?": "boolean", // Hide the header of the selected player in the massive view
+        "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
+        "default_tab?":
+          "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
+      }),
+    }).or(
+      type({
+        size: "'compact'",
+        "tap_opens_popup?": "boolean",
+        "options?": commonMediaPlayerCardOptions.and({
+          "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
+          "always_show_custom_buttons?": "boolean | null", // Always show custom buttons panel expanded
+          "hide_when_off?": "boolean | null", // Hide the card when the media player is off
+          "hide_when_group_child?": "boolean | null", // Hide the card when the media player is a group child
+        }),
+      })
+    )
+  );
 
 export type SearchMediaType = typeof searchMediaTypeSchema.infer;
 export type CommonMediocreMediaPlayerCardConfig =

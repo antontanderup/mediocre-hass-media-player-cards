@@ -59,22 +59,39 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         return {
           type: "custom:mediocre-multi-media-player-card",
           entity_id: "",
+          size: "large",
           mode: "card",
           use_art_colors: true,
           media_players: [],
         };
       }
+
+      const mediaPlayers = config.media_players.map(mp => ({
+        ...mp,
+        search: getSearchEntryArray(mp.search, mp.entity_id),
+        media_browser: mp?.media_browser
+          ? Array.isArray(mp.media_browser)
+            ? mp.media_browser
+            : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }]
+          : [],
+      }));
+
+      const isLarge = config.size === "large" || !config.size;
+      if (isLarge) {
+        const largeConfig = config as MediocreMultiMediaPlayerCardConfig & {
+          size: "large";
+        };
+        return {
+          ...largeConfig,
+          size: "large",
+          media_players: mediaPlayers,
+        };
+      }
+
       return {
         ...config,
-        media_players: config.media_players.map(mp => ({
-          ...mp,
-          search: getSearchEntryArray(mp.search, mp.entity_id),
-          media_browser: mp?.media_browser
-            ? Array.isArray(mp.media_browser)
-              ? mp.media_browser
-              : [{ entity_id: mp.media_browser.entity_id ?? mp.entity_id }]
-            : [],
-        })),
+        size: "compact",
+        media_players: mediaPlayers,
       };
     },
     []
@@ -112,6 +129,8 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       onChangeDebounceMs: 150,
     },
   });
+
+  const size = useStore(form.store, state => state.values.size);
 
   const formErrorMap = useStore(form.store, state => state.errorMap);
   const getSubformError = useCallback(
@@ -173,22 +192,42 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           name="use_art_colors"
           children={field => <field.Toggle label="Use album art colors." />}
         />
-        <form.Field name="mode">
+        <form.Field name="size">
           {field => (
             <FormSelect
               options={[
-                { name: "Panel", value: "panel" },
-                { name: "Card", value: "card" },
+                { name: "Large", value: "large" },
+                { name: "Compact", value: "compact" },
               ]}
               onSelected={value =>
-                field.handleChange(
-                  value as MediocreMultiMediaPlayerCardConfig["mode"]
-                )
+                field.handleChange(value as "large" | "compact")
               }
-              selected={config.mode || "panel"}
+              selected={field.state.value || "large"}
             />
           )}
         </form.Field>
+        {size === "compact" && (
+          <form.AppField
+            name="tap_opens_popup"
+            children={field => <field.Toggle label="Tap opens popup." />}
+          />
+        )}
+        {size === "large" && (
+          <form.Field name="mode">
+            {field => (
+              <FormSelect
+                options={[
+                  { name: "Panel", value: "panel" },
+                  { name: "Card", value: "card" },
+                ]}
+                onSelected={value =>
+                  field.handleChange(value as "panel" | "card")
+                }
+                selected={field.state.value || "panel"}
+              />
+            )}
+          </form.Field>
+        )}
       </FormGroup>
       <SubForm title="Media Players" error={getSubformError("media_players")}>
         <form.Field name="media_players" mode="array">
@@ -368,16 +407,85 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       </SubForm>
       <SubForm title="Advanced" error={getSubformError("height")}>
         <FormGroup>
-          <form.AppField
-            name="height"
-            children={field => <field.Text label="Height" />}
-          />
-          <form.AppField
-            name="options.transparent_background_on_home"
-            children={field => (
-              <field.Toggle label="Hide the card background on the home tab (massive player)" />
-            )}
-          />
+          {size === "large" && (
+            <Fragment>
+              <form.AppField
+                name="height"
+                children={field => <field.Text label="Height" />}
+              />
+              <form.AppField
+                name="options.transparent_background_on_home"
+                children={field => (
+                  <field.Toggle label="Hide the card background on the home tab (massive player)" />
+                )}
+              />
+              <form.Field name="options.default_tab">
+                {field => (
+                  <div
+                    css={css({
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 4,
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    })}
+                  >
+                    <Label>Default tab:</Label>
+                    <FormSelect
+                      options={[
+                        { name: "Home", value: "massive" },
+                        { name: "Search", value: "search" },
+                        { name: "Media Browser", value: "media-browser" },
+                        { name: "Queue", value: "queue" },
+                        { name: "Custom Buttons", value: "custom-buttons" },
+                        { name: "Speaker Grouping", value: "speaker-grouping" },
+                      ]}
+                      onSelected={value =>
+                        field.handleChange(
+                          value as
+                            | "massive"
+                            | "search"
+                            | "media-browser"
+                            | "speaker-grouping"
+                            | "custom-buttons"
+                            | "queue"
+                        )
+                      }
+                      selected={field.state.value || "massive"}
+                    />
+                  </div>
+                )}
+              </form.Field>
+            </Fragment>
+          )}
+          {size === "compact" && (
+            <Fragment>
+              <form.AppField
+                name="options.always_show_power_button"
+                children={field => (
+                  <field.Toggle label="Always show power button." />
+                )}
+              />
+              <form.AppField
+                name="options.always_show_custom_buttons"
+                children={field => (
+                  <field.Toggle label="Always show custom buttons panel below card" />
+                )}
+              />
+              <form.AppField
+                name="options.hide_when_off"
+                children={field => (
+                  <field.Toggle label="Hide when media player is off" />
+                )}
+              />
+              <form.AppField
+                name="options.hide_when_group_child"
+                children={field => (
+                  <field.Toggle label="Hide when media player is a group child" />
+                )}
+              />
+            </Fragment>
+          )}
           <form.AppField
             name="options.show_volume_step_buttons"
             children={field => (

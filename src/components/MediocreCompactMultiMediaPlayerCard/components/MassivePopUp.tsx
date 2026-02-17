@@ -13,9 +13,17 @@ import {
 } from "@components";
 import { css, keyframes } from "@emotion/react";
 import { useActionProps } from "@hooks";
-import { MediocreMediaPlayerCardConfig } from "@types";
-import { getDeviceIcon, isDarkMode } from "@utils";
+import {
+  MediocreMassiveMediaPlayerCardConfig,
+  MediocreMultiMediaPlayerCardConfig,
+} from "@types";
+import {
+  getDeviceIcon,
+  getMultiConfigToMediocreMassiveConfig,
+  isDarkMode,
+} from "@utils";
 import { theme } from "@constants";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const slideUp = keyframes`
   from {
@@ -102,7 +110,7 @@ const styles = {
     maxHeight: `calc(98vh - ${headerHeight}px)`,
     maxWidth: "98vw",
     width: "100%",
-    height: "100%",
+    height: 754,
     overflow: "hidden",
   }),
 };
@@ -116,9 +124,12 @@ export const MassivePopUp = ({
 }) => {
   const hass = useHass();
   const { config, rootElement } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+      CardContext
+    );
 
-  const { entity_id, speaker_group } = config;
+  const { selectedPlayer } = useSelectedPlayer();
+  const { entity_id, speaker_group_entity_id } = selectedPlayer || {};
   const {
     attributes: {
       friendly_name: friendlyName,
@@ -128,17 +139,18 @@ export const MassivePopUp = ({
   } = usePlayer();
 
   const groupMembers =
-    hass.states[speaker_group?.entity_id ?? entity_id]?.attributes
+    hass.states[speaker_group_entity_id ?? entity_id!]?.attributes
       ?.group_members;
   const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
-  const massiveConfig = useMemo(() => {
-    const { tap_opens_popup: _tap_opens_popup, ...commonConfig } = config;
-    return {
-      ...commonConfig,
-      mode: "popup",
-    };
-  }, [config]);
+  const cardConfig: MediocreMassiveMediaPlayerCardConfig | null =
+    useMemo(() => {
+      return getMultiConfigToMediocreMassiveConfig(
+        config,
+        selectedPlayer!,
+        "popup"
+      );
+    }, [selectedPlayer, config.use_art_colors]);
 
   const moreInfoButtonProps = useActionProps({
     rootElement,
@@ -183,7 +195,7 @@ export const MassivePopUp = ({
           />
         </div>
         <div css={styles.popUpContent}>
-          <CardContextProvider rootElement={rootElement} config={massiveConfig}>
+          <CardContextProvider rootElement={rootElement} config={cardConfig}>
             <MediocreMassiveMediaPlayerCard css={styles.massiveCard} />
           </CardContextProvider>
         </div>

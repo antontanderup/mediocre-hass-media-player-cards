@@ -6,16 +6,15 @@ import {
 import { MediocreMediaPlayerCard } from "@components/MediocreMediaPlayerCard";
 import { css } from "@emotion/react";
 import {
-  MediocreMultiMediaPlayer,
   MediocreMultiMediaPlayerCardConfig,
   MediocreMediaPlayerCardConfig,
 } from "@types";
 import { memo } from "preact/compat";
 import { useCallback, useContext, useMemo } from "preact/hooks";
-import { NavigationRoute } from "../MediocreMultiMediaPlayerCard";
+import { NavigationRoute } from "../MediocreLargeMultiMediaPlayerCard";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 export type MiniPlayerProps = {
-  mediaPlayer: MediocreMultiMediaPlayer;
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
 };
@@ -28,11 +27,14 @@ const styles = {
 };
 
 export const MiniPlayer = memo<MiniPlayerProps>(
-  ({ mediaPlayer, setNavigationRoute, navigationRoute }) => {
+  ({ setNavigationRoute, navigationRoute }) => {
     const { rootElement, config } =
       useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
         CardContext
       );
+
+    const { selectedPlayer } = useSelectedPlayer();
+    const mediaPlayer = selectedPlayer!;
 
     const cardConfig: MediocreMediaPlayerCardConfig = useMemo(() => {
       const { custom_buttons: _custom_buttons, ...rest } = mediaPlayer;

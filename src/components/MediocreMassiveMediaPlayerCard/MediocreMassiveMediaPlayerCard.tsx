@@ -1,170 +1,35 @@
-import { Title, Track } from "./components";
-import { PlaybackControls } from "./components/PlaybackControls";
-import { PlayerActions } from "./components/PlayerActions";
-import { useContext } from "preact/hooks";
-import { CardContext, CardContextType } from "@components/CardContext";
+import { useContext, useMemo } from "preact/hooks";
 import {
-  InteractionConfig,
-  MediocreMassiveMediaPlayerCardConfig,
-} from "@types";
-import { useActionProps, useArtworkColors } from "@hooks";
-import { AlbumArt } from "@components";
-import { css } from "@emotion/react";
-import { theme } from "@constants";
-import { isDarkMode } from "@utils";
-
-const styles = {
-  root: css({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    "--mmpc-extra-horizontal-padding": "0px",
-    boxSizing: "border-box",
-    "*": {
-      boxSizing: "border-box",
-    },
-    "--mmpc-surface-higher": `hsl(from ${theme.colors.card} h s calc(l ${isDarkMode() ? "+" : "-"} 5))`,
-  }),
-  rootPanelMode: css({
-    width: "100%",
-    height: "100%",
-    background:
-      "linear-gradient(var(--app-header-background-color), rgba(255, 255, 255, 0))", // Gradient transitions from panel header color to transparent
-    maxHeight: "calc(100vh - var(--header-height, 16px))",
-  }),
-  rootPopupMode: css({
-    "--mmpc-extra-horizontal-padding": "12px",
-    "--mmpc-surface-higher": `hsl(from ${theme.colors.dialog} h s calc(l ${isDarkMode() ? "+" : "-"}  5))`,
-  }),
-  rootMultiMode: css({
-    width: "100%",
-    height: "100%",
-  }),
-  card: css({
-    overflow: "hidden",
-  }),
-  artBackground: css({
-    background: `
-      radial-gradient( circle at bottom right, var(--art-alternative-color, transparent) -500%, transparent 40% ),
-      radial-gradient( circle at top center, var(--art-alternative-color, transparent) -500%, transparent 80%),
-      radial-gradient( circle at bottom center, var(--art-alternative-color, transparent) -500%, transparent 40% ),
-      radial-gradient( circle at top left, var(--art-alternative-color, transparent) -500%, transparent 40% )`,
-  }),
-  wrap: css({
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    gap: "16px",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    paddingTop: "16px",
-    paddingBottom: "16px",
-    height: "100%",
-  }),
-  wrapPanelMode: css({
-    width: "100%",
-    maxWidth: "480px",
-    padding: "16px",
-  }),
-  wrapMultiMode: css({
-    width: "100%",
-    padding: 0,
-  }),
-  wrapPopupMode: css({
-    maxWidth: "100%",
-    padding: "16px",
-    paddingBottom: "max(calc(env(safe-area-inset-bottom) + 8px), 16px)",
-  }),
-  wrapCardMode: css({
-    width: "100%",
-    padding: "16px",
-  }),
-};
+  CardContext,
+  CardContextProvider,
+  CardContextType,
+} from "@components/CardContext";
+import { MediocreMassiveMediaPlayerCardConfig } from "@types";
+import {
+  MediocreLargeMultiMediaPlayerCard,
+  SelectedPlayerProvider,
+} from "@components";
+import { getMediocreMassiveLegacyConfigToMediocreMultiConfig } from "@utils/getMediocreMassiveLegacyConfigToMultiConfig";
 
 export const MediocreMassiveMediaPlayerCard = ({
   className,
-  onClick,
 }: {
   className?: string;
-  onClick?: () => void;
 }) => {
   const { config, rootElement } =
     useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
       CardContext
     );
-  const { mode, use_art_colors, action } = config;
 
-  const { artVars, haVars } = useArtworkColors();
+  const multiConfig = useMemo(() => {
+    return getMediocreMassiveLegacyConfigToMediocreMultiConfig(config);
+  }, [config]);
 
-  const artAction: InteractionConfig = action ?? {
-    tap_action: { action: "more-info" },
-  };
-
-  const artActionProps = useActionProps({
-    rootElement,
-    actionConfig: {
-      ...artAction,
-      entity: config.entity_id,
-    },
-    overrideCallback: onClick
-      ? {
-          onTap: onClick,
-        }
-      : undefined,
-  });
-
-  const renderRoot = () => (
-    <div
-      className={className}
-      css={[
-        styles.root,
-        mode === "panel" && styles.rootPanelMode,
-        mode === "popup" && styles.rootPopupMode,
-        mode === "multi" && styles.rootMultiMode,
-        use_art_colors &&
-          mode !== "popup" &&
-          mode !== "multi" &&
-          styles.artBackground,
-      ]}
-      style={
-        mode !== "card"
-          ? {
-              ...(artVars ?? {}),
-              ...(haVars && use_art_colors ? haVars : {}),
-            }
-          : {}
-      }
-    >
-      <div
-        css={[
-          styles.wrap,
-          mode === "panel" && styles.wrapPanelMode,
-          mode === "card" && styles.wrapCardMode,
-          mode === "popup" && styles.wrapPopupMode,
-          mode === "multi" && styles.wrapMultiMode,
-        ]}
-      >
-        <AlbumArt iconSize="x-large" borderRadius={8} {...artActionProps} />
-        <Title />
-        <Track />
-        <PlaybackControls />
-        {mode !== "multi" && <PlayerActions />}
-      </div>
-    </div>
+  return (
+    <CardContextProvider rootElement={rootElement} config={multiConfig}>
+      <SelectedPlayerProvider>
+        <MediocreLargeMultiMediaPlayerCard className={className} />
+      </SelectedPlayerProvider>
+    </CardContextProvider>
   );
-
-  if (mode === "card") {
-    return (
-      <ha-card
-        css={styles.card}
-        style={{
-          ...(artVars ?? {}),
-          ...(haVars && use_art_colors ? haVars : {}),
-        }}
-      >
-        {renderRoot()}
-      </ha-card>
-    );
-  }
-  return renderRoot();
 };

@@ -3,38 +3,33 @@ import {
   CardContext,
   CardContextType,
   IconButton,
+  VolumeSlider as VolumeSliderComponent,
   usePlayer,
-  VolumeSlider,
 } from "@components";
+import { Fragment } from "preact/jsx-runtime";
 import { getHass, getVolumeIcon } from "@utils";
 import { css } from "@emotion/react";
-import { MediocreMassiveMediaPlayerCardConfig } from "@types";
+import { MediocreMultiMediaPlayerCardConfig } from "@types";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
     display: "flex",
     alignItems: "center",
-    flex: 1,
-    maxHeight: "36px",
-    marginTop: "auto",
-    gap: "8px",
-  }),
-  buttonMuted: css({
-    opacity: 0.8,
+    transition: "all 0.3s ease",
+    width: "100%",
+    gap: "4px",
   }),
 };
 
-export const VolumeController = () => {
+export const VolumeSlider = () => {
   const { config } =
-    useContext<CardContextType<MediocreMassiveMediaPlayerCardConfig>>(
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
-
-  const { speaker_group } = config;
-
+  const { selectedPlayer: { entity_id, speaker_group_entity_id } = {} } =
+    useSelectedPlayer();
   const player = usePlayer();
-
-  const entity_id = player.entity_id;
   const volume = player.attributes?.volume_level ?? 0;
   const volumeMuted = player.attributes?.is_volume_muted ?? false;
 
@@ -44,25 +39,21 @@ export const VolumeController = () => {
       entity_id,
       is_volume_muted: !volumeMuted,
     });
-  }, [volumeMuted]);
+  }, [entity_id, volumeMuted]);
 
   const VolumeIcon = useMemo(
     () => getVolumeIcon(volume, volumeMuted),
     [volume, volumeMuted]
   );
 
+  if (!entity_id) return null;
   return (
     <div css={styles.root}>
-      <IconButton
-        css={volumeMuted ? styles.buttonMuted : {}}
-        size="small"
-        onClick={handleToggleMute}
-        icon={VolumeIcon}
-      />
-      <VolumeSlider
-        entityId={speaker_group?.entity_id ?? entity_id}
+      <IconButton size="x-small" onClick={handleToggleMute} icon={VolumeIcon} />
+      <VolumeSliderComponent
+        entityId={speaker_group_entity_id ?? entity_id}
         syncGroupChildren={true}
-        sliderSize={"medium"}
+        sliderSize={"small"}
         showStepButtons={config.options?.show_volume_step_buttons ?? false}
         useVolumeUpDownForSteps={
           config.options?.use_volume_up_down_for_step_buttons ?? false
@@ -72,12 +63,34 @@ export const VolumeController = () => {
   );
 };
 
-export const VolumeTrigger = ({ onClick }: { onClick: () => void }) => {
+export const VolumeTrigger = ({
+  sliderVisible,
+  setSliderVisible,
+}: {
+  sliderVisible: boolean;
+  setSliderVisible: (newValue: boolean) => void;
+}) => {
   const player = usePlayer();
 
   const volume = player.attributes?.volume_level ?? 0;
   const volumeMuted = player.attributes?.is_volume_muted ?? false;
   const volumeIcon = getVolumeIcon(volume, volumeMuted);
 
-  return <IconButton size="small" onClick={onClick} icon={volumeIcon} />;
+  return (
+    <Fragment>
+      {!sliderVisible ? (
+        <IconButton
+          size="x-small"
+          onClick={() => setSliderVisible(true)}
+          icon={volumeIcon}
+        />
+      ) : (
+        <IconButton
+          size="x-small"
+          onClick={() => setSliderVisible(false)}
+          icon={"mdi:chevron-left"}
+        />
+      )}
+    </Fragment>
+  );
 };

@@ -1,11 +1,12 @@
 import { useContext } from "preact/hooks";
-import type { MediocreMediaPlayerCardConfig } from "@types";
+import type { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
 import { Chip, IconButton } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
+import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
 const styles = {
   root: css({
@@ -34,10 +35,7 @@ const styles = {
 };
 
 export const CustomButtons = () => {
-  const { config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
-
-  const { custom_buttons } = config;
+  const { selectedPlayer: { custom_buttons } = {} } = useSelectedPlayer();
 
   return (
     <div css={styles.root}>
@@ -58,14 +56,17 @@ export const CustomButton = ({
     name?: string;
   };
 }) => {
-  const { rootElement, config } =
-    useContext<CardContextType<MediocreMediaPlayerCardConfig>>(CardContext);
+  const { selectedPlayer: { entity_id } = {} } = useSelectedPlayer();
+  const { rootElement } =
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+      CardContext
+    );
   const { icon, name, ...actionConfig } = button;
   const actionProps = useActionProps({
     rootElement,
     actionConfig: {
       ...actionConfig,
-      entity: config.entity_id,
+      entity: entity_id,
     },
   });
   if (type === "icon-button") {
