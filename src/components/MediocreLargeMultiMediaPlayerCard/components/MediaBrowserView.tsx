@@ -23,7 +23,7 @@ export type MediaBrowserViewProps = {
 export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
   const { t } = useIntl();
   const { selectedPlayer } = useSelectedPlayer();
-  const { entity_id, media_browser } = selectedPlayer!;
+  const { entity_id, media_browser, lms_entity_id } = selectedPlayer!;
 
   const renderHeader = () => (
     <ViewHeader
@@ -41,6 +41,7 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
           media_browser,
           entity_id
         )}
+        lmsEntityId={lms_entity_id}
         horizontalPadding={16}
         renderHeader={renderHeader}
         maxHeight={height}
