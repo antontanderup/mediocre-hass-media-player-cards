@@ -18,7 +18,8 @@ import { css } from "@emotion/react";
 import { Fragment } from "preact/jsx-runtime";
 import { MediaSectionTitle } from "@components/MediaSearch";
 import { useIntl } from "@components/i18n";
-import type { LyrionBrowserItem, MediaBrowserEntry } from "@types";
+import type { MediaBrowserEntry } from "@types";
+import type { LyrionBrowserItem } from "./types";
 import { CATEGORIES } from "./constants";
 import {
   type BrowserRow,

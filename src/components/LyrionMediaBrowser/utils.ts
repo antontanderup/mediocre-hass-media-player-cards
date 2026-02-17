@@ -1,4 +1,4 @@
-import type { LyrionBrowserItem, LyrionNavigationItem } from "@types";
+import type { LyrionBrowserItem, LyrionNavigationItem } from "./types";
 
 /**
  * Build command and parameters based on navigation history

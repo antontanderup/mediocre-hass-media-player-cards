@@ -1,10 +1,7 @@
 import { useMemo } from "preact/hooks";
 import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
-import type {
-  LyrionBrowseResponse,
-  LyrionBrowserItem,
-  SqueezeboxServerStatusResponse,
-} from "@types";
+import type { LyrionBrowseResponse, SqueezeboxServerStatusResponse } from "@types";
+import type { LyrionBrowserItem } from "./types";
 
 /**
  * Build the base URL for the LMS server

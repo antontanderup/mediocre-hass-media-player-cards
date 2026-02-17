@@ -13,11 +13,8 @@ import {
 import { useLyrionBrowse } from "./useLyrionBrowse";
 import { useLyrionGlobalSearch } from "./useLyrionGlobalSearch";
 import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
-import type {
-  LyrionBrowserItem,
-  LyrionCategoryType,
-  SqueezeboxServerStatusResponse,
-} from "@types";
+import type { SqueezeboxServerStatusResponse } from "@types";
+import type { LyrionBrowserItem, LyrionCategoryType } from "./types";
 import {
   type BrowserHistoryEntry,
   CATEGORIES,
