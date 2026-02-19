@@ -216,9 +216,7 @@ export const LyrionMediaBrowser = ({
   const renderItem = (row: BrowserRow) => {
     if (!Array.isArray(row)) {
       return (
-        <MediaSectionTitle
-          onClick={row.onClick}
-        >
+        <MediaSectionTitle onClick={row.onClick}>
           {row.sectionTitle}
         </MediaSectionTitle>
       );
