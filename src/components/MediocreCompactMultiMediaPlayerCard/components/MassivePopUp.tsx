@@ -5,23 +5,16 @@ import {
   CardContextProvider,
 } from "@components/CardContext";
 import {
-  MediocreMassiveMediaPlayerCard,
   IconButton,
   Icon,
   useHass,
   usePlayer,
+  MediocreLargeMultiMediaPlayerCard,
 } from "@components";
 import { css, keyframes } from "@emotion/react";
 import { useActionProps } from "@hooks";
-import {
-  MediocreMassiveMediaPlayerCardConfig,
-  MediocreMultiMediaPlayerCardConfig,
-} from "@types";
-import {
-  getDeviceIcon,
-  getMultiConfigToMediocreMassiveConfig,
-  isDarkMode,
-} from "@utils";
+import { MediocreMultiMediaPlayerCardConfig } from "@types";
+import { getDeviceIcon, isDarkMode } from "@utils";
 import { theme } from "@constants";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
 
@@ -143,14 +136,30 @@ export const MassivePopUp = ({
       ?.group_members;
   const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
-  const cardConfig: MediocreMassiveMediaPlayerCardConfig | null =
-    useMemo(() => {
-      return getMultiConfigToMediocreMassiveConfig(
-        config,
-        selectedPlayer!,
-        "popup"
-      );
-    }, [selectedPlayer, config.use_art_colors]);
+  const cardConfig = useMemo(() => {
+    if (config.size === "large") return config;
+    const {
+      size: _size,
+      tap_opens_popup: _tap_opens_popup,
+      options,
+      ...commonConfig
+    } = config;
+    return {
+      ...commonConfig,
+      entity_id,
+      size: "large",
+      mode: "in-card",
+      disable_player_focus_switching: true,
+      options: {
+        hide_selected_player_header: true,
+        transparent_background_on_home: true,
+        player_is_active_when: options?.player_is_active_when,
+        show_volume_step_buttons: options?.show_volume_step_buttons,
+        use_volume_up_down_for_step_buttons:
+          options?.use_volume_up_down_for_step_buttons,
+      },
+    };
+  }, [config, entity_id]);
 
   const moreInfoButtonProps = useActionProps({
     rootElement,
@@ -196,7 +205,7 @@ export const MassivePopUp = ({
         </div>
         <div css={styles.popUpContent}>
           <CardContextProvider rootElement={rootElement} config={cardConfig}>
-            <MediocreMassiveMediaPlayerCard css={styles.massiveCard} />
+            <MediocreLargeMultiMediaPlayerCard css={styles.massiveCard} />
           </CardContextProvider>
         </div>
       </div>

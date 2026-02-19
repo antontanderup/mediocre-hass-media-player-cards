@@ -31,7 +31,7 @@ const styles = {
     "--mmpc-surface-shadow": `hsl(from var(--mmpc-surface-higher) h calc(s / 2) calc(l - 10))`,
     "--ha-card-border-width": "0px",
     backgroundColor: "var(--mmpc-surface-higher)",
-    boxShadow: "0px 0px 20px var(--mmpc-surface-shadow)",
+    boxShadow: "0px 0px 10px var(--mmpc-surface-shadow)",
   }),
 };
 

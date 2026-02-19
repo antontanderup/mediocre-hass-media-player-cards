@@ -268,6 +268,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                       />
                     ) : (
                       <IconButton
+                        id="mmpc-compact-custom-buttons-toggle"
                         size="x-small"
                         onClick={() => setShowCustomButtons(!showCustomButtons)}
                         icon={"mdi:dots-horizontal"}
@@ -284,6 +285,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                     lms_entity_id={lms_entity_id ?? undefined}
                     renderTrigger={triggerProps => (
                       <IconButton
+                        id="mmpc-compact-additional-actions-trigger"
                         icon={"mdi:dots-vertical"}
                         size="x-small"
                         {...triggerProps}
@@ -293,6 +295,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 )}
                 {hasMediaBrowser && (
                   <IconButton
+                    id="mmpc-compact-media-browser-toggle"
                     size="x-small"
                     onClick={() => setShowMediaBrowser(!showMediaBrowser)}
                     icon={"mdi:folder-music"}
@@ -300,6 +303,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 )}
                 {hasSearch && (
                   <IconButton
+                    id="mmpc-compact-search-toggle"
                     size="x-small"
                     onClick={() => setShowSearch(!showSearch)}
                     icon={"mdi:magnify"}
@@ -307,6 +311,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 )}
                 {hasQueue && (
                   <IconButton
+                    id="mmpc-compact-queue-toggle"
                     size="x-small"
                     onClick={() => setShowQueue(!showQueue)}
                     icon={"mdi:playlist-music"}
@@ -337,6 +342,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 )}
                 {hasGroupingFeature && (
                   <IconButton
+                    id="mmpc-compact-grouping-toggle"
                     size="x-small"
                     onClick={toggleGrouping}
                     icon={"mdi:speaker-multiple"}
@@ -344,6 +350,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 )}
                 {(!isOn || hasNoPlaybackControls || alwaysShowPowerButton) && (
                   <IconButton
+                    id="mmpc-compact-power-button"
                     size="x-small"
                     onClick={togglePower}
                     icon={"mdi:power"}
