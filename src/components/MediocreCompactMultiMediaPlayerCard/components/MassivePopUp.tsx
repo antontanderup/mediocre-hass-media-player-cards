@@ -146,8 +146,10 @@ export const MassivePopUp = ({
     } = config;
     return {
       ...commonConfig,
+      entity_id,
       size: "large",
       mode: "in-card",
+      disable_player_focus_switching: true,
       options: {
         hide_selected_player_header: true,
         transparent_background_on_home: true,
@@ -157,7 +159,7 @@ export const MassivePopUp = ({
           options?.use_volume_up_down_for_step_buttons,
       },
     };
-  }, [selectedPlayer, config.use_art_colors]);
+  }, [config, entity_id]);
 
   const moreInfoButtonProps = useActionProps({
     rootElement,
