@@ -150,8 +150,8 @@ export const Slider = ({
   useEffect(() => {
     return () => {
       if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
-    }
-  }, [])
+    };
+  }, []);
 
   const snapToStep = (val: number): number => {
     const stepped = Math.round((val - min) / step) * step + min;
