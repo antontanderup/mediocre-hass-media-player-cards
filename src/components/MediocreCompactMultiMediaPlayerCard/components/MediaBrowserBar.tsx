@@ -14,7 +14,7 @@ const styles = {
 };
 
 export const MediaBrowserBar = () => {
-  const { selectedPlayer: { media_browser, entity_id } = {} } =
+  const { selectedPlayer: { media_browser, entity_id, lms_entity_id } = {} } =
     useSelectedPlayer();
 
   if (getHasMediaBrowser(media_browser) === false) {
@@ -28,6 +28,7 @@ export const MediaBrowserBar = () => {
           media_browser,
           entity_id ?? ""
         )}
+        lmsEntityId={lms_entity_id}
         horizontalPadding={12}
       />
     </div>
