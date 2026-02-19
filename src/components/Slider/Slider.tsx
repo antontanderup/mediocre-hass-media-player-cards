@@ -88,6 +88,31 @@ const styles = {
   thumbLight: css({
     backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
   }),
+  tooltip: css({
+    position: "absolute",
+    bottom: "calc(100% + 8px)",
+    transform: "translateX(-50%)",
+    marginLeft: "-7px",
+    backgroundColor: "var(--primary-color)",
+    color: "var(--text-primary-color, white)",
+    padding: "2px 8px",
+    borderRadius: "4px",
+    fontSize: "12px",
+    fontWeight: 600,
+    lineHeight: "1.6",
+    whiteSpace: "nowrap",
+    pointerEvents: "none",
+    zIndex: 1,
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      top: "100%",
+      left: "50%",
+      transform: "translateX(-50%)",
+      border: "4px solid transparent",
+      borderTopColor: "var(--primary-color)",
+    },
+  }),
   stepButton: css({
     opacity: 0.8,
     "@media (hover: hover)": {
@@ -125,7 +150,7 @@ export const Slider = ({
   max,
   step,
   value,
-  unit: _unit,
+  unit,
   sliderSize = "medium",
   showStepButtons = false,
   className,
@@ -133,6 +158,7 @@ export const Slider = ({
   onChange,
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
+  const [isDragging, setIsDragging] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
   const dragRef = useRef<{
@@ -184,6 +210,7 @@ export const Slider = ({
       drag.hasMoved = true;
       drag.startX = e.clientX;
       drag.startValue = internalValue;
+      setIsDragging(true);
       return;
     }
 
@@ -230,9 +257,12 @@ export const Slider = ({
     }
 
     dragRef.current = null;
+    setIsDragging(false);
   };
 
   const thickness = getSliderSize(sliderSize);
+  const decimals = step % 1 !== 0 ? 1 : 0;
+  const displayValue = `${internalValue.toFixed(decimals)}${unit ?? ""}`;
 
   return (
     <div css={styles.root} className={className}>
@@ -257,6 +287,11 @@ export const Slider = ({
           style={{ left: `${fillPercent}%` }}
         />
       </div>
+      {isDragging && (
+        <div css={styles.tooltip} style={{ left: `${fillPercent}%` }}>
+          {displayValue}
+        </div>
+      )}
       {showStepButtons && (
         <Fragment>
           {fillPercent < 10 ? null : (
