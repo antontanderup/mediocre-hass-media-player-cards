@@ -72,7 +72,7 @@ const styles = {
     top: 0,
     left: 0,
     height: "100%",
-    backgroundColor: 'var(--primary-color)',
+    backgroundColor: "var(--primary-color)",
     pointerEvents: "none",
   }),
   thumb: css({
@@ -246,7 +246,10 @@ export const Slider = ({
         tabIndex={0}
       >
         <div css={styles.fill} style={{ width: `${fillPercent}%` }} />
-        <div css={[styles.thumb, !isDarkMode() && styles.thumbLight]} style={{ left: `${fillPercent}%` }} />
+        <div
+          css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
+          style={{ left: `${fillPercent}%` }}
+        />
       </div>
       {showStepButtons && (
         <Fragment>
