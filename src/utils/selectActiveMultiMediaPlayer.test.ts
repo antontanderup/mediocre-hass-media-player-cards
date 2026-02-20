@@ -91,6 +91,27 @@ describe("selectActiveMultiMediaPlayer", () => {
     );
   });
 
+  it("does not crash when a configured player entity is missing from hass states", () => {
+    const config: MediocreMultiMediaPlayerCardConfig = {
+      type: "multi",
+      size: "large",
+      mode: "card",
+      entity_id: "media_player.a",
+      media_players: [
+        basePlayer("media_player.a"),
+        basePlayer("media_player.missing"),
+      ],
+    };
+    const hass = makeHass({
+      "media_player.a": baseState("idle", ["media_player.a"], "media_player.a"),
+      // media_player.missing intentionally absent
+    });
+    expect(() => selectActiveMultiMediaPlayer(hass, config)).not.toThrow();
+    expect(selectActiveMultiMediaPlayer(hass, config)?.entity_id).toBe(
+      "media_player.a"
+    );
+  });
+
   it("handles speaker_group_entity_id", () => {
     const config: MediocreMultiMediaPlayerCardConfig = {
       type: "multi",
