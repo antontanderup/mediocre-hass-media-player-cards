@@ -80,6 +80,9 @@ export const IntlContextProvider = memo<
 
 export const useIntl = () => {
   const context = useContext(IntlContext);
+  if (!context.messages) {
+    throw new Error("useIntl must be used within an IntlContextProvider");
+  }
 
   const t = useCallback(
     ({ id, defaultMessage }: { id: string; defaultMessage?: string }) => {
