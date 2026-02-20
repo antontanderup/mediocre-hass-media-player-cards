@@ -225,11 +225,14 @@ export function useButtonCallbacks({
     [
       onMouseDown,
       onMouseMove,
+      onMouseUp,
       handleEnd,
       reset,
       onTouchStart,
       onTouchMove,
+      onTouchEnd,
       renderLongPressIndicator,
+      loading,
     ]
   );
 }
