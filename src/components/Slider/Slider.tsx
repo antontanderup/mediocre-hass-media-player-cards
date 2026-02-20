@@ -1,4 +1,5 @@
 import { IconButton } from "@components/IconButton";
+import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { isDarkMode } from "@utils";
 import { useEffect, useRef, useState } from "preact/hooks";
@@ -26,7 +27,7 @@ export type SliderSize =
   | "x-large"
   | "xx-large";
 
-const getSliderSize = (sliderSize: SliderSize) => {
+const getSliderSize = (sliderSize: SliderSize): number => {
   switch (sliderSize) {
     case "xx-small":
       return 12;
@@ -47,13 +48,70 @@ const getSliderSize = (sliderSize: SliderSize) => {
   }
 };
 
+const DRAG_THRESHOLD_PX = 4;
+
 const styles = {
   root: css({
     width: "100%",
     position: "relative",
+    userSelect: "none",
+    WebkitUserSelect: "none",
   }),
-  slider: css({
-    "--control-slider-border-radius": "6px",
+  track: css({
+    position: "relative",
+    width: "100%",
+    borderRadius: "6px",
+    overflow: "hidden",
+    cursor: "pointer",
+    touchAction: "none",
+    WebkitTapHighlightColor: "transparent",
+    backgroundColor: theme.colors.onCardDivider,
+  }),
+  fill: css({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: "100%",
+    backgroundColor: "var(--primary-color)",
+    pointerEvents: "none",
+  }),
+  thumb: css({
+    position: "absolute",
+    top: "50%",
+    height: "60%",
+    width: "5px",
+    transform: "translate(-10px, -50%)",
+    backgroundColor: "var(--text-primary-color)",
+    borderRadius: "3px",
+    pointerEvents: "none",
+  }),
+  thumbLight: css({
+    backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+  }),
+  tooltip: css({
+    position: "absolute",
+    bottom: "calc(100% + 8px)",
+    transform: "translateX(-50%)",
+    marginLeft: "-7px",
+    backgroundColor: "var(--primary-color)",
+    color: "var(--text-primary-color, white)",
+    padding: "2px 8px",
+    borderRadius: "4px",
+    fontSize: "12px",
+    fontWeight: 600,
+    lineHeight: "1.6",
+    whiteSpace: "nowrap",
+    pointerEvents: "none",
+    zIndex: 1,
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      top: "100%",
+      left: "50%",
+      transform: "translateX(-50%)",
+      border: "4px solid transparent",
+      borderTopColor: "var(--primary-color)",
+    },
   }),
   stepButton: css({
     opacity: 0.8,
@@ -100,58 +158,143 @@ export const Slider = ({
   onChange,
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
+  const [isDragging, setIsDragging] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
+  const dragRef = useRef<{
+    startX: number;
+    startValue: number;
+    hasMoved: boolean;
+  } | null>(null);
 
   useEffect(() => {
-    if (value !== internalValue) {
+    if (!dragRef.current && value !== internalValue) {
       setInternalValue(value);
     }
   }, [value]);
 
-  // Handle value change from ha-control-slider (value-changed event)
-  const sliderRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider) return;
-    const handler = (e: CustomEvent) => {
-      const newValue = Number(e.detail.value);
-      setInternalValue(newValue);
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        onChange(newValue);
-      }, 250);
-    };
-    slider.addEventListener("value-changed", handler as EventListener);
     return () => {
-      slider.removeEventListener("value-changed", handler as EventListener);
+      if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
     };
-  }, [onChange]);
+  }, []);
+
+  const snapToStep = (val: number): number => {
+    const stepped = Math.round((val - min) / step) * step + min;
+    return Math.max(min, Math.min(max, stepped));
+  };
+
+  const fillPercent = ((internalValue - min) / (max - min)) * 100;
+
+  const handlePointerDown = (e: PointerEvent) => {
+    const track = trackRef.current;
+    if (!track) return;
+    e.preventDefault();
+    track.setPointerCapture(e.pointerId);
+    dragRef.current = {
+      startX: e.clientX,
+      startValue: internalValue,
+      hasMoved: false,
+    };
+  };
+
+  const handlePointerMove = (e: PointerEvent) => {
+    const drag = dragRef.current;
+    const track = trackRef.current;
+    if (!drag || !track) return;
+
+    const dx = e.clientX - drag.startX;
+    if (!drag.hasMoved) {
+      if (Math.abs(dx) < DRAG_THRESHOLD_PX) return;
+      // Threshold crossed — anchor startX here so there's no jump
+      drag.hasMoved = true;
+      drag.startX = e.clientX;
+      drag.startValue = internalValue;
+      setIsDragging(true);
+      return;
+    }
+
+    const trackWidth = track.getBoundingClientRect().width;
+    const valueDelta = (dx / trackWidth) * (max - min);
+    const newValue = snapToStep(drag.startValue + valueDelta);
+    setInternalValue(newValue);
+
+    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+    debounceTimeout.current = setTimeout(() => onChange(newValue), 250);
+  };
+
+  const handlePointerUp = (e: PointerEvent) => {
+    const drag = dragRef.current;
+    const track = trackRef.current;
+    if (!drag || !track) return;
+
+    if (!drag.hasMoved) {
+      // Tap: step in the direction relative to the thumb position
+      const rect = track.getBoundingClientRect();
+      const thumbX = rect.left + (fillPercent / 100) * rect.width;
+
+      if (e.clientX <= thumbX) {
+        if (onStepButtonClick) {
+          onStepButtonClick("decrement");
+        } else {
+          const newVal = snapToStep(internalValue - step);
+          setInternalValue(newVal);
+          onChange(newVal);
+        }
+      } else {
+        if (onStepButtonClick) {
+          onStepButtonClick("increment");
+        } else {
+          const newVal = snapToStep(internalValue + step);
+          setInternalValue(newVal);
+          onChange(newVal);
+        }
+      }
+    } else {
+      // End of drag — commit final value immediately
+      if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+      onChange(internalValue);
+    }
+
+    dragRef.current = null;
+    setIsDragging(false);
+  };
 
   const thickness = getSliderSize(sliderSize);
+  const decimals = step % 1 !== 0 ? 1 : 0;
+  const displayValue = `${internalValue.toFixed(decimals)}${unit ?? ""}`;
 
   return (
-    <div css={styles.root}>
-      {/* @ts-expect-error --- web component from home assistant --- */}
-      <ha-control-slider
-        ref={sliderRef}
-        min={min}
-        max={max}
-        step={step}
-        unit={unit}
-        value={internalValue}
-        aria-valuenow={internalValue}
+    <div css={styles.root} className={className}>
+      <div
+        ref={trackRef}
+        css={styles.track}
+        style={{ height: `${thickness}px` }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        role="slider"
         aria-valuemin={min}
         aria-valuemax={max}
+        aria-valuenow={internalValue}
         aria-orientation="horizontal"
-        css={styles.slider}
-        class={className}
-        style={{ "--control-slider-thickness": `${thickness}px` }}
-      />
+        tabIndex={0}
+      >
+        <div css={styles.fill} style={{ width: `${fillPercent}%` }} />
+        <div
+          css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
+          style={{ left: `${fillPercent}%` }}
+        />
+      </div>
+      {isDragging && (
+        <div css={styles.tooltip} style={{ left: `${fillPercent}%` }}>
+          {displayValue}
+        </div>
+      )}
       {showStepButtons && (
         <Fragment>
-          {(internalValue * 100) / max < 10 ? null : (
+          {fillPercent < 10 ? null : (
             <IconButton
               size="x-small"
               onClick={() => {
@@ -169,7 +312,7 @@ export const Slider = ({
               ]}
             />
           )}
-          {(internalValue * 100) / max > 90 ? null : (
+          {fillPercent > 90 ? null : (
             <IconButton
               size="x-small"
               onClick={() => {

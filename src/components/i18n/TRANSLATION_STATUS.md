@@ -4,12 +4,12 @@
 
 ## Summary
 
-| Language | Keys translated | Completion | Status |
-|----------|----------------|------------|--------|
-| da | 65 / 65 | 100% ██████████ | ✅ |
-| de | 59 / 65 | 91% █████████░ | 🟡 |
-| nl | 59 / 65 | 91% █████████░ | 🟡 |
-| pt | 59 / 65 | 91% █████████░ | 🟡 |
+| Language | Keys translated | Completion      | Status |
+| -------- | --------------- | --------------- | ------ |
+| da       | 65 / 65         | 100% ██████████ | ✅     |
+| de       | 59 / 65         | 91% █████████░  | 🟡     |
+| nl       | 59 / 65         | 91% █████████░  | 🟡     |
+| pt       | 59 / 65         | 91% █████████░  | 🟡     |
 
 _Total English keys: 65_
 
@@ -17,27 +17,27 @@ _Total English keys: 65_
 
 ### de
 
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
 
 ### nl
 
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
 
 ### pt
 
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
