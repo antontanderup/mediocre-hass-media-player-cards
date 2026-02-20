@@ -260,7 +260,6 @@ export const Slider = ({
     setIsDragging(false);
   };
 
-
   const thickness = getSliderSize(sliderSize);
   const decimals = step % 1 !== 0 ? 1 : 0;
   const displayValue = `${internalValue.toFixed(decimals)}${unit ?? ""}`;
