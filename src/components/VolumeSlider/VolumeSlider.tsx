@@ -53,7 +53,7 @@ export const VolumeSlider = ({
         entity_id: entityId,
       });
     },
-    []
+    [entityId]
   );
 
   return (
