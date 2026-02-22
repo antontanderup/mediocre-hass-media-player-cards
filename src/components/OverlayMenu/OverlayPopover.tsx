@@ -324,7 +324,7 @@ export const OverlayPopover = forwardRef<
       return () => {
         observer.disconnect();
       };
-    }, [popoverRef.current, open, sideInput, alignInput]);
+    }, [open, sideInput, alignInput]);
 
     const popoverId = useState(
       () => `overlay-popover-${Math.random().toString(36).substr(2, 9)}`
