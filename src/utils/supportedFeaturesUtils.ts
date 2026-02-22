@@ -29,12 +29,12 @@ export function getSupportedFeatures(
   const supportPreviousTrack =
     !isOff &&
     supportedFeatures !== undefined &&
-    (supportedFeatures | 16) === supportedFeatures;
+    (supportedFeatures & 16) === 16;
 
   const supportNextTrack =
     !isOff &&
     supportedFeatures !== undefined &&
-    (supportedFeatures | 32) === supportedFeatures;
+    (supportedFeatures & 32) === 32;
 
   const supportsTogglePlayPause =
     !isOff &&

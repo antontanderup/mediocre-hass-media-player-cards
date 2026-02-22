@@ -29,10 +29,8 @@ export function useActionProps({
         : undefined,
       ...(overrideCallback ?? {}),
     }),
-    [actionConfig, overrideCallback]
+    [actionConfig, overrideCallback, rootElement]
   );
 
-  const buttonProps = useButtonCallbacks(callbacks);
-
-  return useMemo(() => buttonProps, [buttonProps]);
+  return useButtonCallbacks(callbacks);
 }

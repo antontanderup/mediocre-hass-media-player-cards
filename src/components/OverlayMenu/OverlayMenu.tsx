@@ -1,6 +1,12 @@
 import { Icon } from "@components/Icon";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
+import {
+  OverlayPopover,
+  OverlayPopoverHandle,
+  OverlayPopoverProps,
+} from "./OverlayPopover";
+import { ButtonHTMLAttributes, useRef } from "preact/compat";
 
 export type OverlayMenuItem =
   | {
@@ -68,13 +74,6 @@ const styles = {
   }),
 };
 
-import {
-  OverlayPopover,
-  OverlayPopoverHandle,
-  OverlayPopoverProps,
-} from "./OverlayPopover";
-import { ButtonHTMLAttributes, useRef } from "preact/compat";
-
 export const OverlayMenu = ({
   menuItems,
   ...overlayMenuProps
@@ -120,7 +119,7 @@ export const OverlayMenu = ({
     );
   };
 
-  const renderMenuItems = (items: OverlayMenuItem[], parentLevel = 0) => {
+  const renderMenuItems = (items: OverlayMenuItem[]) => {
     return items.map((item, index) => {
       const hasChildren =
         (!item.type || item.type === "item") &&
@@ -135,7 +134,7 @@ export const OverlayMenu = ({
             }
           >
             <div css={styles.menuRoot} role="menu">
-              {renderMenuItems(item.children!, parentLevel + 1)}
+              {renderMenuItems(item.children!)}
             </div>
           </OverlayPopover>
         );

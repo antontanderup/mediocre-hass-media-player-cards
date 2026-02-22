@@ -29,5 +29,8 @@ export const HassContextProvider = memo<
 
 export const useHass = () => {
   const context = useContext(HassContext);
+  if (!context.hass) {
+    throw new Error("useHass must be used within a HassContextProvider");
+  }
   return context.hass;
 };

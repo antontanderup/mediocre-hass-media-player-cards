@@ -54,7 +54,7 @@ export function useHassMessagePromise<T = unknown>(
           setError(null);
         }
         return result;
-      } catch (e: unknown | { message?: string }) {
+      } catch (e: unknown) {
         if (latestMessageKeyRef.current === messageKey) {
           setError(
             e && typeof e === "object" && "message" in e
@@ -67,7 +67,7 @@ export function useHassMessagePromise<T = unknown>(
         return null;
       }
     },
-    [message, options, loading]
+    [message, options]
   );
 
   // Refetch always forces refresh

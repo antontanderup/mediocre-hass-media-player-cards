@@ -13,7 +13,6 @@ export type IconSize =
 export type IconProps = {
   icon: string;
   size?: IconSize;
-  disabled?: boolean;
   className?: string;
 };
 
