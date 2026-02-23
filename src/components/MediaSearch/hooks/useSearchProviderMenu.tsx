@@ -55,7 +55,7 @@ export const useSearchProviderMenu = (
       });
     });
     return menuItems;
-  }, [ma_entity_id, search, fallbackEntityId, selectedSearchProvider, t]);
+  }, [selectedSearchProvider, t, searchEntryArray]);
 
   return useMemo(
     () => ({
@@ -65,6 +65,6 @@ export const useSearchProviderMenu = (
         entry => entry.entity_id === selectedSearchProvider
       ),
     }),
-    [searchProvidersMenu, selectedSearchProvider]
+    [searchProvidersMenu, selectedSearchProvider, searchEntryArray]
   );
 };

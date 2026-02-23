@@ -186,7 +186,7 @@ export const MediaBrowser = ({
     });
 
     return { items: result, hasNoArtwork };
-  }, [mediaBrowserItems, chunkSize, itemFilter]);
+  }, [mediaBrowserItems, chunkSize, itemFilter, history]);
 
   useEffect(() => {
     setItemFilter("");
@@ -264,7 +264,7 @@ export const MediaBrowser = ({
     if (history.length > 0) {
       setHistory(prev => prev.slice(0, -1));
     }
-  }, [isFetching]);
+  }, [isFetching, history]);
 
   const goToIndex = useCallback(
     (index: number) => {
@@ -332,7 +332,7 @@ export const MediaBrowser = ({
       }
       return menuItems;
     },
-    [selectedMediaBrowser]
+    [onMediaBrowserItemClick, playItem, t]
   );
 
   const currentHistoryDropdownMenuItems: OverlayMenuItem[] = useMemo(
@@ -340,7 +340,7 @@ export const MediaBrowser = ({
       history[history.length - 1]
         ? getItemOverlayMenuItems(history[history.length - 1], true)
         : [],
-    [history]
+    [history, getItemOverlayMenuItems]
   );
 
   const renderTrack = (item: MediaBrowserItem) => {
