@@ -113,12 +113,20 @@ export const useMassQueue = (entity_id: string, enabled: boolean) => {
     // even with limit_before set to 0
     const isPlayingIndex = items.findIndex(item => item.isPlaying);
     return items.slice(isPlayingIndex >= 0 ? isPlayingIndex : 0);
-  }, [data, skipToItem, deleteItem, moveItemUp, moveItemDown, player.title]);
+  }, [
+    data,
+    entity_id,
+    skipToItem,
+    deleteItem,
+    moveItemUp,
+    moveItemDown,
+    player.title,
+  ]);
 
   useEffect(() => {
     if (!data) return;
     refetch();
-  }, [player.title]);
+  }, [player.title]); // eslint-disable-line react-hooks/exhaustive-deps -- `data` intentionally omitted: including it would trigger an infinite refetch loop
 
   return useMemo(
     () => ({ queue, loading, error, refetch, clearQueue }),

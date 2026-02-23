@@ -25,7 +25,7 @@
     "chroma-js": "^3.2.0",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.4",
-    "preact": "^10.28.3"
+    "preact": "^10.28.4"
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",
@@ -33,20 +33,21 @@
     "@preact/preset-vite": "^2.10.3",
     "@types/chroma-js": "^3.1.2",
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.3.0",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.56.0",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.3",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "jiti": "^2.6.1",
     "prettier": "^3.8.1",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.55.0",
+    "typescript-eslint": "^8.56.1",
     "vite": "^7.3.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"

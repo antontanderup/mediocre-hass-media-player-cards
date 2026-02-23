@@ -35,8 +35,9 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
     const hass = useHass();
     const { t } = useIntl();
 
+    const playerState = hass.states[entityId] as MediaPlayerEntity;
     const contextValue = useMemo((): PlayerContextType => {
-      const player = hass.states[entityId] as MediaPlayerEntity;
+      const player = playerState;
       if (!player) {
         return {
           player: {
@@ -59,7 +60,7 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
           subtitle,
         },
       };
-    }, [hass.states[entityId], entityId]);
+    }, [playerState, entityId, t]);
 
     return (
       <PlayerContext.Provider value={contextValue}>
@@ -72,7 +73,7 @@ export const PlayerContextProvider = memo<PlayerContextProviderProps>(
 export const usePlayer = () => {
   const context = useContext(PlayerContext);
   if (!context) {
-    throw new Error("useHass must be used within a HassContextProvider");
+    throw new Error("usePlayer must be used within a PlayerContextProvider");
   }
   return context.player;
 };

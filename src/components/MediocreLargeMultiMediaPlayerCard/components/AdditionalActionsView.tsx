@@ -65,7 +65,7 @@ export const AdditionalActionsView = memo(() => {
   const player = usePlayer();
   const isMainEntityMassPlayer = useMemo(
     () => getHasMassFeatures(player.entity_id, ma_entity_id),
-    [player, player?.attributes?.active_child, ma_entity_id]
+    [player, ma_entity_id]
   );
 
   const isMainEntityLmsPlayer = useMemo(
@@ -102,6 +102,8 @@ export const AdditionalActionsView = memo(() => {
   }, [
     isMainEntityMassPlayer,
     ma_entity_id,
+    entity_id,
+    hass.states,
     transferQueue,
     media_players,
     setSelectedPlayer,
@@ -125,7 +127,14 @@ export const AdditionalActionsView = memo(() => {
     });
 
     return items.filter(item => item !== null) as OverlayMenuItem[];
-  }, [isMainEntityLmsPlayer, lms_entity_id, media_players, setSelectedPlayer]);
+  }, [
+    isMainEntityLmsPlayer,
+    lms_entity_id,
+    entity_id,
+    hass.states,
+    media_players,
+    setSelectedPlayer,
+  ]);
 
   const markSongAsFavorite = useCallback(() => {
     if (!ma_favorite_button_entity_id) return;
@@ -144,7 +153,7 @@ export const AdditionalActionsView = memo(() => {
         });
       },
     }));
-  }, [player.attributes.source_list, player.attributes.source]);
+  }, [player.attributes.source_list, player.entity_id]);
 
   const renderMediaPlayerActions =
     (!!ma_entity_id && isMainEntityMassPlayer) ||

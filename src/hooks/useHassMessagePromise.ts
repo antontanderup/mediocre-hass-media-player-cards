@@ -66,7 +66,7 @@ export function useHassMessagePromise<T = unknown>(
           setError(null);
         }
         return result;
-      } catch (e: unknown | { message?: string }) {
+      } catch (e: unknown) {
         if (latestMessageKeyRef.current === messageKey) {
           setError(
             e && typeof e === "object" && "message" in e
@@ -79,15 +79,17 @@ export function useHassMessagePromise<T = unknown>(
         return null;
       }
     },
-    [message, options, loading]
+    [message, options]
   );
 
   // Refetch always forces refresh
   const refetch = useCallback(() => fetch({ forceRefresh: true }), [fetch]);
 
+  const messageKey = JSON.stringify(message);
   useEffect(() => {
     if (message && options?.enabled !== false) fetch();
-  }, [JSON.stringify(message), options?.staleTime, options?.enabled]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- messageKey provides deep equality for message; fetch intentionally excluded to avoid re-triggering on every render (options object identity changes)
+  }, [messageKey, options?.staleTime, options?.enabled]);
 
   return useMemo(
     () => ({ data, loading, error, refetch }),

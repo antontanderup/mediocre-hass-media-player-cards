@@ -52,7 +52,7 @@ export const ActionsConfigurator = ({
         formElement.removeEventListener("value-changed", handleValueChanged);
       }
     };
-  }, [formRef.current, handleValueChanged]);
+  }, [handleValueChanged]);
 
   return (
     <ha-form

@@ -42,8 +42,9 @@ export function selectActiveMultiMediaPlayer(
   }
 
   config.media_players.forEach(p => {
-    const state = hass.states[p.entity_id] as MediaPlayerEntity;
+    const state = hass.states[p.entity_id] as MediaPlayerEntity | undefined;
     if (
+      state &&
       getIsActivePlayer(
         state.state,
         config.options?.player_is_active_when ?? "playing"

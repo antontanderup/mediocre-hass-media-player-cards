@@ -171,7 +171,7 @@ export const GroupVolumeController = ({
       }
       setPlayersLoading(prev => prev.filter(id => id !== speakerId));
     },
-    [mainEntityId, playersLoading, hass]
+    [playersLoading, hass, joinSpeaker]
   );
 
   const handleToggleMute = useCallback((entityId: string, isMuted: boolean) => {

@@ -17,6 +17,7 @@ export function useArtworkColors() {
 
   const albumArt = entity_picture_local || entity_picture;
   const albumArtRef = useRef<string | undefined>(null);
+  const colorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // State for average color
   const [palette, setPalette] = useState<Palette | null>(null);
@@ -27,8 +28,9 @@ export function useArtworkColors() {
   const getColors = useCallback(() => {
     if (albumArt && albumArt !== albumArtRef.current) {
       albumArtRef.current = albumArt;
+      if (colorTimeoutRef.current) clearTimeout(colorTimeoutRef.current);
       // delay ensures we wait for the image to be loaded and rely on caching
-      setTimeout(() => {
+      colorTimeoutRef.current = setTimeout(() => {
         if (albumArtRef.current !== albumArt) return;
         Vibrant.from(albumArt)
           .getPalette()
@@ -48,7 +50,10 @@ export function useArtworkColors() {
     if (albumArt) {
       getColors();
     }
-  }, [albumArt]);
+    return () => {
+      if (colorTimeoutRef.current) clearTimeout(colorTimeoutRef.current);
+    };
+  }, [albumArt, getColors]);
 
   // Listen for dark mode changes
   useEffect(() => {
@@ -198,7 +203,7 @@ export function useArtworkColors() {
         "--ha-dialog-surface-background": `${hslToCss({ ...userThemeHlsValues.haDialogSurfaceBackground, h: primaryColor.h, a: 1 })}`,
       },
     };
-  }, [palette, darkMode]);
+  }, [palette, darkMode, userThemeHlsValues]);
 
   return useMemo(
     () => ({
@@ -207,7 +212,7 @@ export function useArtworkColors() {
         : cssVariablesLight?.artVars,
       haVars: darkMode ? cssVariablesDark?.haVars : cssVariablesLight?.haVars,
     }),
-    [cssVariablesDark, cssVariablesLight]
+    [darkMode, cssVariablesDark, cssVariablesLight]
   );
 }
 

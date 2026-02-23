@@ -200,7 +200,7 @@ export function useButtonCallbacks({
       }
       handleEnd();
     },
-    [handleEnd]
+    [handleEnd, reset]
   );
 
   return useMemo(
@@ -225,11 +225,13 @@ export function useButtonCallbacks({
     [
       onMouseDown,
       onMouseMove,
-      handleEnd,
+      onMouseUp,
       reset,
       onTouchStart,
       onTouchMove,
+      onTouchEnd,
       renderLongPressIndicator,
+      loading,
     ]
   );
 }

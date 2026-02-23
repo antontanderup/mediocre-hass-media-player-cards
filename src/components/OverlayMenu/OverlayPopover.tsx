@@ -240,7 +240,14 @@ export const OverlayPopover = forwardRef<
         ...sidePosition,
         ...alignPosition,
       };
-    }, [triggerPosition, popoverPosition, side, align]);
+    }, [
+      triggerPosition,
+      popoverPosition,
+      side,
+      align,
+      getSidePosition,
+      getAlignPosition,
+    ]);
 
     // IntersectionObserver for popover and window
     useEffect(() => {
@@ -324,7 +331,7 @@ export const OverlayPopover = forwardRef<
       return () => {
         observer.disconnect();
       };
-    }, [popoverRef.current, open, sideInput, alignInput]);
+    }, [open, sideInput, alignInput]);
 
     const popoverId = useState(
       () => `overlay-popover-${Math.random().toString(36).substr(2, 9)}`

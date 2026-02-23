@@ -177,7 +177,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
       player.attributes.group_members.length > 1 &&
       player.attributes.group_members[0] !== groupingEntityId
     );
-  }, [selectedPlayer, hass]);
+  }, [selectedPlayer, hass, entity_id]);
 
   const supportedFeatures = useSupportedFeatures();
   const hasNoPlaybackControls =
@@ -195,7 +195,7 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     if (isEmbeddedInMultiCard) return false;
     if (config.media_players.length <= 1) return false;
     return true;
-  }, [config]);
+  }, [config, isEmbeddedInMultiCard]);
 
   const toggleGrouping = () => {
     setShowGrouping(!showGrouping);
