@@ -78,6 +78,7 @@ export const useLyrionMediaBrowserData = ({
   // Reset input when navigating to a new page
   useEffect(() => {
     setInputValue(history[history.length - 1].filter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navKey is a stable string proxy for navHistory; history is always current when navKey changes
   }, [navKey]);
 
   // Fetch server data
@@ -124,6 +125,7 @@ export const useLyrionMediaBrowserData = ({
         committedFilter,
         appSearchItemIdRef.current
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
     [navKey, startIndex, committedFilter]
   );
 
@@ -149,6 +151,7 @@ export const useLyrionMediaBrowserData = ({
     } else if (searchItemId) {
       appSearchItemIdRef.current = searchItemId;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
   }, [navKey, searchItemId]);
 
   // Reset pagination when navigation changes
@@ -201,6 +204,7 @@ export const useLyrionMediaBrowserData = ({
     const appEntry = navHistory.find(h => h.type === "app");
     if (appEntry && !appSearchItemIdRef.current && !searchItemId) return false;
     return true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
   }, [navKey, searchItemId]);
 
   // Check if there are more items to load (global search uses section headers to navigate)
@@ -262,6 +266,7 @@ export const useLyrionMediaBrowserData = ({
         console.error("Error playing media item:", error);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
     [entity_id, navKey]
   );
 
@@ -353,6 +358,7 @@ export const useLyrionMediaBrowserData = ({
         ]);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
     [loading, navKey]
   );
 
@@ -518,6 +524,7 @@ export const useLyrionMediaBrowserData = ({
     }
 
     return { items: result, hasNoArtwork };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navigateToSearchCategory is stable (empty deps) and defined later in the file
   }, [enrichedDisplayItems, chunkSize, isShowingCategories, isGlobalSearch]);
 
   const goBack = useCallback(() => {
@@ -553,6 +560,7 @@ export const useLyrionMediaBrowserData = ({
           true
         )
       : [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
   }, [navKey, getItemOverlayMenuItems]);
 
   const navigateToSearchCategory = useCallback(
