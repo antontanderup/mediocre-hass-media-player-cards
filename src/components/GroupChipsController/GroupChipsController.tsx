@@ -93,7 +93,7 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
         if (!a.isGrouped && b.isGrouped) return 1;
         return 0;
       });
-  }, [hass.states, speaker_group, showGrouped]);
+  }, [hass.states, speaker_group, showGrouped, mainEntityId, mainEntity]);
 
   const joinSpeaker = useCallback(
     async (speakerId: string) => {
@@ -140,7 +140,7 @@ export const GroupChipsController: FC<GroupChipsControllerProps> = ({
       }
       setPlayersLoading(prev => prev.filter(id => id !== speakerId));
     },
-    [mainEntityId, playersLoading, hass]
+    [playersLoading, hass, joinSpeaker]
   );
 
   return (

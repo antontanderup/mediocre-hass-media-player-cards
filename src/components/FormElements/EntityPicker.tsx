@@ -52,7 +52,7 @@ export const EntityPicker = (props: EntityPickerProps) => {
         formElement.removeEventListener("value-changed", handleValueChanged);
       }
     };
-  }, [formRef.current, handleValueChanged]);
+  }, [handleValueChanged]);
 
   return (
     <div>
