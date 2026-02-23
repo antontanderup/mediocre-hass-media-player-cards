@@ -66,6 +66,6 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
       loading: loading,
       error: error ?? currentTrackError ?? null,
     }),
-    [data, currentTrack, error, currentTrackError]
+    [data, currentTrack, loading, error, currentTrackError]
   );
 };
