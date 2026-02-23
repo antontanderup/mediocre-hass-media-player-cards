@@ -240,7 +240,14 @@ export const OverlayPopover = forwardRef<
         ...sidePosition,
         ...alignPosition,
       };
-    }, [triggerPosition, popoverPosition, side, align]);
+    }, [
+      triggerPosition,
+      popoverPosition,
+      side,
+      align,
+      getSidePosition,
+      getAlignPosition,
+    ]);
 
     // IntersectionObserver for popover and window
     useEffect(() => {
