@@ -85,7 +85,6 @@ export function useHassMessagePromise<T = unknown>(
   // Refetch always forces refresh
   const refetch = useCallback(() => fetch({ forceRefresh: true }), [fetch]);
 
-  const messageKey = JSON.stringify(message);
   useEffect(() => {
     if (message && options?.enabled !== false) fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- messageKey provides deep equality for message; fetch intentionally excluded to avoid re-triggering on every render (options object identity changes)
