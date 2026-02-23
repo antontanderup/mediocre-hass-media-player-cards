@@ -48,6 +48,22 @@ export const EntitiesPicker = ({
     });
   }, [value]);
 
+  const handleOnChange = useCallback(
+    (newValue?: MediaPlayerConfigEntity[]) => {
+      onChange(
+        newValue?.map(entity => {
+          if (typeof entity === "string") return entity;
+          if (entity.name) {
+            return { entity: entity.entity, name: entity.name };
+          } else {
+            return entity.entity;
+          }
+        })
+      );
+    },
+    [onChange]
+  );
+
   // Handle individual entity change
   const handleEntityChange = useCallback(
     (newEntityId: string | undefined, index: number) => {
@@ -70,7 +86,7 @@ export const EntitiesPicker = ({
       // Filter out any empty values that might have been added
       handleOnChange(newEntities.filter(Boolean));
     },
-    [entities, onChange]
+    [entities, handleOnChange]
   );
 
   const handleNameChange = useCallback(
@@ -81,23 +97,7 @@ export const EntitiesPicker = ({
         handleOnChange(newEntities.filter(Boolean));
       }
     },
-    [entities, onChange]
-  );
-
-  const handleOnChange = useCallback(
-    (newValue?: MediaPlayerConfigEntity[]) => {
-      onChange(
-        newValue?.map(entity => {
-          if (typeof entity === "string") return entity;
-          if (entity.name) {
-            return { entity: entity.entity, name: entity.name };
-          } else {
-            return entity.entity;
-          }
-        })
-      );
-    },
-    [onChange]
+    [entities, handleOnChange]
   );
 
   return (
