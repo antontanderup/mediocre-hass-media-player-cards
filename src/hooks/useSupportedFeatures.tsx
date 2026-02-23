@@ -10,6 +10,7 @@ export function useSupportedFeatures() {
 
   return useMemo(
     () => supportedFeatures,
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally tracks individual feature flags, not the object reference
     [
       supportedFeatures.supportPreviousTrack,
       supportedFeatures.supportNextTrack,
