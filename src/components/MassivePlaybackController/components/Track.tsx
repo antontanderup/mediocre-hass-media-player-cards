@@ -96,6 +96,7 @@ export const Track = () => {
       prettyNow: getPrettyPrinted(currentPosition),
       prettyEnd: getPrettyPrinted(mediaDuration),
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `tick` is an intentional render trigger (incremented by setInterval) to recalculate elapsed position each second
   }, [player, tick]); // Added tick to the dependency array to update when tick changes
 
   const sourceSelectMenuItems: OverlayMenuItem[] = useMemo(() => {
@@ -108,7 +109,7 @@ export const Track = () => {
         });
       },
     }));
-  }, [player.attributes.source_list, player.attributes.source]);
+  }, [player.attributes.source_list, player.entity_id]);
 
   return (
     <div css={styles.root}>

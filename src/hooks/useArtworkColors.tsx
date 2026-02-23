@@ -212,7 +212,7 @@ export function useArtworkColors() {
         : cssVariablesLight?.artVars,
       haVars: darkMode ? cssVariablesDark?.haVars : cssVariablesLight?.haVars,
     }),
-    [cssVariablesDark, cssVariablesLight]
+    [darkMode, cssVariablesDark, cssVariablesLight]
   );
 }
 

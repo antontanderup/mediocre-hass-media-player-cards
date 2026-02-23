@@ -90,14 +90,6 @@ export const AlbumArt = ({
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const latestImageUrl = useRef<string | null | undefined>(null);
 
-  useEffect(() => {
-    if (latestImageUrl.current === albumArt) {
-      return;
-    }
-    latestImageUrl.current = albumArt;
-    getImage(albumArt);
-  }, [albumArt]);
-
   const getImage = useCallback((url?: string | null, retries = 0) => {
     if (!url) {
       setLoaded(false);
@@ -146,6 +138,14 @@ export const AlbumArt = ({
       setLoaded(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (latestImageUrl.current === albumArt) {
+      return;
+    }
+    latestImageUrl.current = albumArt;
+    getImage(albumArt);
+  }, [albumArt, getImage]);
 
   return (
     <button

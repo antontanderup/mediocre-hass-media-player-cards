@@ -75,14 +75,6 @@ export const MediaImage = memo<MediaImageProps>(
     const [image, setImage] = useState<HTMLImageElement | null>(null);
     const latestImageUrl = useRef<string | null | undefined>(null);
 
-    useEffect(() => {
-      if (latestImageUrl.current === imageUrl) {
-        return;
-      }
-      latestImageUrl.current = imageUrl;
-      getImage(imageUrl);
-    }, [imageUrl]);
-
     const getImage = useCallback((url?: string | null, retries = 0) => {
       if (!url) {
         setLoaded(false);
@@ -122,6 +114,14 @@ export const MediaImage = memo<MediaImageProps>(
       img.src = getHass().hassUrl(url);
       setImage(img);
     }, []);
+
+    useEffect(() => {
+      if (latestImageUrl.current === imageUrl) {
+        return;
+      }
+      latestImageUrl.current = imageUrl;
+      getImage(imageUrl);
+    }, [imageUrl, getImage]);
 
     return (
       <div css={styles.root} className={className}>

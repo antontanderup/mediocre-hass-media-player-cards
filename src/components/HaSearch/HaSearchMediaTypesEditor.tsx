@@ -73,7 +73,7 @@ export const HaSearchMediaTypesEditor: FC<HaSearchMediaTypesEditorProps> = ({
       );
       return [];
     }
-  }, [entityId]);
+  }, [entityId, hass.connection]);
 
   return (
     <SubForm title="Media Types (optional)">

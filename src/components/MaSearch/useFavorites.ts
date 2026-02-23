@@ -96,7 +96,7 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
         setResults(newResults);
       });
     }
-  }, [configEntry, filter]);
+  }, [configEntry, filter, enabled]);
 
   return useMemo(() => ({ favorites: results, loading }), [results, loading]);
 };

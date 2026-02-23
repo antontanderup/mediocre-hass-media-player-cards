@@ -69,7 +69,7 @@ export const MiniPlayer = memo<MiniPlayerProps>(
         ...rest,
         use_art_colors: config.use_art_colors,
       };
-    }, [mediaPlayer, config.use_art_colors]);
+    }, [mediaPlayer, config]);
 
     const handleOnClick = useCallback(() => {
       if (navigationRoute === "speaker-grouping") {

@@ -223,16 +223,25 @@ export const useSqueezeboxQueue = (entity_id: string, enabled: boolean) => {
         setQueue(playlistItems);
       }
     }, 250);
-  }, [data, entity_id, moveItem, skipToItem, deleteItem, setQueue]);
+  }, [
+    data,
+    entity_id,
+    moveItem,
+    skipToItem,
+    deleteItem,
+    setQueue,
+    queue,
+    serverData,
+  ]);
 
   useEffect(() => {
     populateQueueInfo();
-  }, [data]);
+  }, [data, populateQueueInfo]);
 
   useEffect(() => {
     if (!data) return;
     refetch();
-  }, [player.title]);
+  }, [player.title]); // eslint-disable-line react-hooks/exhaustive-deps -- `data` intentionally omitted: including it would trigger an infinite refetch loop
 
   return useMemo(
     () => ({ queue, loading, error, refetch, clearQueue }),

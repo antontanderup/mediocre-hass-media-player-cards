@@ -83,6 +83,6 @@ export const useSearchQuery = (
 
   return useMemo(
     () => ({ results: results?.result ?? [], loading, playItem, error }),
-    [results, loading, error]
+    [results, loading, error, playItem]
   );
 };

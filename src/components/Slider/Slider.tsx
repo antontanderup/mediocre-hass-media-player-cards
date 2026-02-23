@@ -171,7 +171,7 @@ export const Slider = ({
     if (!dragRef.current && value !== internalValue) {
       setInternalValue(value);
     }
-  }, [value]);
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps -- `internalValue` intentionally omitted: including it would cause an infinite sync loop
 
   useEffect(() => {
     return () => {

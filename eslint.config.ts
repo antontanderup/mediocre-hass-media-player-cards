@@ -1,6 +1,7 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 import importPlugin from "eslint-plugin-import";
 import * as emotion from "@emotion/eslint-plugin";
 
@@ -10,6 +11,7 @@ export default tseslint.config(
   {
     plugins: {
       react: reactPlugin,
+      "react-hooks": reactHooksPlugin,
       import: importPlugin,
       "@emotion": emotion,
     },
@@ -48,6 +50,8 @@ export default tseslint.config(
       "react/prop-types": "off", // Disable prop-types as we're using TypeScript for type checking
       "@emotion/syntax-preference": [2, "object"],
       "react/no-unknown-property": ["error", { ignore: ["css"] }],
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
   }
 );

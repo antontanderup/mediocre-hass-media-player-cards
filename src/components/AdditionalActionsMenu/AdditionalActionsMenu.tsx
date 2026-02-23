@@ -136,11 +136,15 @@ export const AdditionalActionsMenu = ({
   }, [
     ma_favorite_button_entity_id,
     isMainEntityMassPlayer,
+    isMainEntityLmsPlayer,
     ma_entity_id,
     lms_entity_id,
     markSongAsFavorite,
     transferQueue,
     noSourceSelection,
+    player.attributes.source_list,
+    player.entity_id,
+    t,
   ]);
 
   if (menuItems.length === 0) return null;
