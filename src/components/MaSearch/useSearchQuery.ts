@@ -61,5 +61,8 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
     []
   );
 
-  return useMemo(() => ({ results: data, loading, playItem }), [data, loading]);
+  return useMemo(
+    () => ({ results: data, loading, playItem }),
+    [data, loading, playItem]
+  );
 };
