@@ -81,12 +81,15 @@ export const Queue: FC<QueueProps> = ({
   const error = isMainEntityLmsPlayer ? lmsError : maError;
   const clearQueue = isMainEntityLmsPlayer ? lmsClearQueue : maClearQueue;
 
-  const renderItem = useCallback((item: QueueItem) => {
-    if (item.isPlaying && queue.length < 1) {
-      return null;
-    }
-    return <QueueListItem item={item} />;
-  }, []);
+  const renderItem = useCallback(
+    (item: QueueItem) => {
+      if (item.isPlaying && queue.length < 1) {
+        return null;
+      }
+      return <QueueListItem item={item} />;
+    },
+    [queue]
+  );
 
   return (
     <VirtualList<QueueItem>

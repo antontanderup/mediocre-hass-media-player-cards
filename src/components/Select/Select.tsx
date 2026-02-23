@@ -87,7 +87,7 @@ export const Select = ({
         value: "",
       }
     );
-  }, [value, options]);
+  }, [value, options, placeholder]);
 
   return (
     <div css={styles.root} className={className} style={style}>
