@@ -98,7 +98,7 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
         entity_id,
         is_volume_muted: !volumeMuted,
       });
-    }, [volumeMuted]);
+    }, [volumeMuted, entity_id]);
 
     const VolumeIcon = useMemo(
       () => getVolumeIcon(volume, volumeMuted),

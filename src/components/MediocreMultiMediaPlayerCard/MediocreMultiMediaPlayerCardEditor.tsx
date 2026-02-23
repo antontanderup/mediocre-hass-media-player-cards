@@ -164,7 +164,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       // Reset the form with the new config values
       form.reset(getDefaultValuesFromConfig(newConfigValues));
     }
-  }, [config, form]);
+  }, [config, form]); // eslint-disable-line react-hooks/exhaustive-deps -- getDefaultValuesFromConfig is a stable imported function
 
   if (!config || !hass) return null;
 

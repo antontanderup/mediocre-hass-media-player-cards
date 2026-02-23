@@ -157,11 +157,11 @@ export const MediocreLargeMultiMediaPlayerCard = ({
           : "speaker-grouping"
       );
     }
-  }, [desktopMode, defaultNavigationRoute]);
+  }, [desktopMode, defaultNavigationRoute]); // eslint-disable-line react-hooks/exhaustive-deps -- `navigationRoute` intentionally omitted: this effect should only run when desktop mode changes
 
   const handleCardClick = useCallback(() => {
     setLastInteraction();
-  }, []);
+  }, [setLastInteraction]);
 
   if (config.size && config.size !== "large") return null;
   if (!selectedPlayer) return null;
