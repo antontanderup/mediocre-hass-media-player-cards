@@ -1,4 +1,4 @@
-import { IconButton } from "@components/IconButton";
+import { Icon } from "@components/Icon";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
 import { isDarkMode } from "@utils";
@@ -120,29 +120,17 @@ const styles = {
     },
   }),
   stepButton: css({
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
     opacity: 0.8,
-    "@media (hover: hover)": {
-      "&:hover": {
-        backgroundColor: "unset",
-      },
-      "&:active": {
-        backgroundColor: "unset",
-      },
-    },
-    borderRadius: 0,
-    height: "100%",
+    pointerEvents: "none",
   }),
   incrementButton: css({
-    position: "absolute",
-    top: "50%",
     right: "0px",
-    transform: "translateY(-50%)",
   }),
   decrementButton: css({
-    position: "absolute",
-    top: "50%",
     left: "0px",
-    transform: "translateY(-50%)",
     "--icon-primary-color": "var(--text-primary-color)",
   }),
   decrementButtonLight: css({
@@ -300,35 +288,21 @@ export const Slider = ({
       {showStepButtons && (
         <Fragment>
           {fillPercent < 10 ? null : (
-            <IconButton
+            <Icon
               size="x-small"
-              onClick={() => {
-                if (onStepButtonClick) {
-                  onStepButtonClick("decrement");
-                } else {
-                  onChange(Math.max(min, internalValue - step));
-                }
-              }}
               icon={"mdi:minus"}
               css={[
-                styles.decrementButton,
                 styles.stepButton,
+                styles.decrementButton,
                 !isDarkMode() && styles.decrementButtonLight,
               ]}
             />
           )}
           {fillPercent > 90 ? null : (
-            <IconButton
+            <Icon
               size="x-small"
-              onClick={() => {
-                if (onStepButtonClick) {
-                  onStepButtonClick("increment");
-                } else {
-                  onChange(Math.min(max, internalValue + step));
-                }
-              }}
               icon={"mdi:plus"}
-              css={[styles.incrementButton, styles.stepButton]}
+              css={[styles.stepButton, styles.incrementButton]}
             />
           )}
         </Fragment>
