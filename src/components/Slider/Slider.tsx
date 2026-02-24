@@ -73,6 +73,7 @@ const styles = {
     left: 0,
     height: "100%",
     backgroundColor: "var(--primary-color)",
+    transition: "width 0.05s",
     borderRadius: "6px",
     pointerEvents: "none",
   }),
@@ -85,6 +86,7 @@ const styles = {
     backgroundColor: "var(--text-primary-color)",
     borderRadius: "3px",
     pointerEvents: "none",
+    transition: "left 0.05s",
   }),
   thumbLight: css({
     backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
@@ -103,6 +105,7 @@ const styles = {
     lineHeight: "1.6",
     whiteSpace: "nowrap",
     pointerEvents: "none",
+    transition: "left 0.05s",
     zIndex: 1,
     "&::after": {
       content: '""',
