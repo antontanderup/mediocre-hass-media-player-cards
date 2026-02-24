@@ -121,10 +121,10 @@ const styles = {
     pointerEvents: "none",
   }),
   incrementButton: css({
-    right: "0px",
+    right: "4px",
   }),
   decrementButton: css({
-    left: "0px",
+    left: "4px",
     "--icon-primary-color": "var(--slider-on-fill-color)",
   }),
 };
