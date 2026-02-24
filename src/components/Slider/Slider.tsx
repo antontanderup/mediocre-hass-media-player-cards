@@ -1,8 +1,8 @@
 import { Icon } from "@components/Icon";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
-import { isDarkMode } from "@utils";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { getContrastingColor } from "@utils";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 
 export type SliderProps = {
@@ -84,13 +84,8 @@ const styles = {
       height: "60%",
       width: "5px",
       transform: "translateY(-50%)",
-      backgroundColor: "var(--text-primary-color)",
+      backgroundColor: "var(--slider-on-fill-color)",
       borderRadius: "3px",
-    },
-  }),
-  fillLight: css({
-    "&::after": {
-      backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
     },
   }),
   tooltip: css({
@@ -98,7 +93,7 @@ const styles = {
     bottom: "calc(100% + 8px)",
     marginLeft: "-7px",
     backgroundColor: "var(--primary-color)",
-    color: "var(--text-primary-color, white)",
+    color: "var(--slider-on-fill-color)",
     padding: "2px 8px",
     borderRadius: "4px",
     fontSize: "12px",
@@ -130,11 +125,7 @@ const styles = {
   }),
   decrementButton: css({
     left: "0px",
-    "--icon-primary-color": "var(--text-primary-color)",
-  }),
-  decrementButtonLight: css({
-    "--icon-primary-color":
-      "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    "--icon-primary-color": "var(--slider-on-fill-color)",
   }),
 };
 
@@ -265,9 +256,14 @@ export const Slider = ({
   const thickness = getSliderSize(sliderSize);
   const decimals = step % 1 !== 0 ? 1 : 0;
   const displayValue = `${internalValue.toFixed(decimals)}${unit ?? ""}`;
+  const onFillColor = useMemo(() => getContrastingColor("--primary-color"), []);
 
   return (
-    <div css={styles.root} className={className}>
+    <div
+      css={styles.root}
+      className={className}
+      style={{ "--slider-on-fill-color": onFillColor }}
+    >
       <div
         ref={trackRef}
         css={styles.track}
@@ -283,10 +279,7 @@ export const Slider = ({
         aria-orientation="horizontal"
         tabIndex={0}
       >
-        <div
-          css={[styles.fill, !isDarkMode() && styles.fillLight]}
-          style={{ width: `${fillPercent}%` }}
-        />
+        <div css={styles.fill} style={{ width: `${fillPercent}%` }} />
       </div>
       {isDragging && (
         <div
@@ -305,11 +298,7 @@ export const Slider = ({
             <Icon
               size="x-small"
               icon={"mdi:minus"}
-              css={[
-                styles.stepButton,
-                styles.decrementButton,
-                !isDarkMode() && styles.decrementButtonLight,
-              ]}
+              css={[styles.stepButton, styles.decrementButton]}
             />
           )}
           {fillPercent > 90 ? null : (
