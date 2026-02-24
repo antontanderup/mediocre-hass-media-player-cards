@@ -96,7 +96,6 @@ const styles = {
   tooltip: css({
     position: "absolute",
     bottom: "calc(100% + 8px)",
-    transform: "translateX(-50%)",
     marginLeft: "-7px",
     backgroundColor: "var(--primary-color)",
     color: "var(--text-primary-color, white)",
@@ -107,7 +106,7 @@ const styles = {
     lineHeight: "1.6",
     whiteSpace: "nowrap",
     pointerEvents: "none",
-    transition: "left 0.05s",
+    transition: "left 0.05s, transform 0.12s ease-out",
     zIndex: 1,
     "&::after": {
       content: '""',
@@ -153,12 +152,14 @@ export const Slider = ({
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
   const [isDragging, setIsDragging] = useState(false);
+  const [tooltipLean, setTooltipLean] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
   const dragRef = useRef<{
     startX: number;
     startValue: number;
     hasMoved: boolean;
+    prevClientX: number;
   } | null>(null);
 
   useEffect(() => {
@@ -189,6 +190,7 @@ export const Slider = ({
       startX: e.clientX,
       startValue: internalValue,
       hasMoved: false,
+      prevClientX: e.clientX,
     };
   };
 
@@ -207,6 +209,11 @@ export const Slider = ({
       setIsDragging(true);
       return;
     }
+
+    const instantDx = e.clientX - drag.prevClientX;
+    drag.prevClientX = e.clientX;
+    const lean = -Math.max(-15, Math.min(15, instantDx * 0.8));
+    setTooltipLean(lean);
 
     const trackWidth = track.getBoundingClientRect().width;
     const valueDelta = (dx / trackWidth) * (max - min);
@@ -252,6 +259,7 @@ export const Slider = ({
 
     dragRef.current = null;
     setIsDragging(false);
+    setTooltipLean(0);
   };
 
   const thickness = getSliderSize(sliderSize);
@@ -281,7 +289,13 @@ export const Slider = ({
         />
       </div>
       {isDragging && (
-        <div css={styles.tooltip} style={{ left: `${fillPercent}%` }}>
+        <div
+          css={styles.tooltip}
+          style={{
+            left: `${fillPercent}%`,
+            transform: `translateX(-50%) rotate(${tooltipLean}deg)`,
+          }}
+        >
           {displayValue}
         </div>
       )}
