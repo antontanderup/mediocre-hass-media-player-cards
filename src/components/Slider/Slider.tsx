@@ -76,20 +76,22 @@ const styles = {
     transition: "width 0.05s",
     borderRadius: "6px",
     pointerEvents: "none",
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      right: "5px",
+      height: "60%",
+      width: "5px",
+      transform: "translateY(-50%)",
+      backgroundColor: "var(--text-primary-color)",
+      borderRadius: "3px",
+    },
   }),
-  thumb: css({
-    position: "absolute",
-    top: "50%",
-    height: "60%",
-    width: "5px",
-    transform: "translate(-10px, -50%)",
-    backgroundColor: "var(--text-primary-color)",
-    borderRadius: "3px",
-    pointerEvents: "none",
-    transition: "left 0.05s",
-  }),
-  thumbLight: css({
-    backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+  fillLight: css({
+    "&::after": {
+      backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    },
   }),
   tooltip: css({
     position: "absolute",
@@ -285,10 +287,9 @@ export const Slider = ({
         aria-orientation="horizontal"
         tabIndex={0}
       >
-        <div css={styles.fill} style={{ width: `${fillPercent}%` }} />
         <div
-          css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
-          style={{ left: `${fillPercent}%` }}
+          css={[styles.fill, !isDarkMode() && styles.fillLight]}
+          style={{ width: `${fillPercent}%` }}
         />
       </div>
       {isDragging && (
