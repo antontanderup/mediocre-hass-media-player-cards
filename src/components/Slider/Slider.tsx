@@ -73,6 +73,7 @@ const styles = {
     left: 0,
     height: "100%",
     backgroundColor: "var(--primary-color)",
+    borderRadius: "6px",
     pointerEvents: "none",
   }),
   thumb: css({
