@@ -36,6 +36,19 @@ export function getBrightness([r, g, b]: RGBA): number {
   return (r * 299 + g * 587 + b * 114) / 1000;
 }
 
+export function getContrastingColor(cssVariable: string): "black" | "white" {
+  // Uses a temporary element so the browser fully resolves nested var()
+  // references and normalises the result to rgb(...) before parsing.
+  const el = document.createElement("div");
+  el.style.backgroundColor = `var(${cssVariable})`;
+  document.documentElement.appendChild(el);
+  const resolved = getComputedStyle(el).backgroundColor;
+  el.remove();
+  const rgb = parseColorToRgb(resolved);
+  if (!rgb) return "white";
+  return getBrightness(rgb) > 82 ? "black" : "white";
+}
+
 // Helper to get css color variable value
 export function getCssColorVariable(
   variableName: string,

@@ -1,8 +1,8 @@
-import { IconButton } from "@components/IconButton";
+import { Icon } from "@components/Icon";
 import { theme } from "@constants";
 import { css } from "@emotion/react";
-import { isDarkMode } from "@utils";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { getContrastingColor } from "@utils";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 
 export type SliderProps = {
@@ -73,28 +73,27 @@ const styles = {
     left: 0,
     height: "100%",
     backgroundColor: "var(--primary-color)",
+    transition: "width 0.05s",
+    borderRadius: "6px",
     pointerEvents: "none",
-  }),
-  thumb: css({
-    position: "absolute",
-    top: "50%",
-    height: "60%",
-    width: "5px",
-    transform: "translate(-10px, -50%)",
-    backgroundColor: "var(--text-primary-color)",
-    borderRadius: "3px",
-    pointerEvents: "none",
-  }),
-  thumbLight: css({
-    backgroundColor: "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      right: "5px",
+      height: "60%",
+      width: "5px",
+      transform: "translateY(-50%)",
+      backgroundColor: "var(--slider-on-fill-color)",
+      borderRadius: "3px",
+    },
   }),
   tooltip: css({
     position: "absolute",
     bottom: "calc(100% + 8px)",
-    transform: "translateX(-50%)",
     marginLeft: "-7px",
     backgroundColor: "var(--primary-color)",
-    color: "var(--text-primary-color, white)",
+    color: "var(--slider-on-fill-color)",
     padding: "2px 8px",
     borderRadius: "4px",
     fontSize: "12px",
@@ -102,6 +101,7 @@ const styles = {
     lineHeight: "1.6",
     whiteSpace: "nowrap",
     pointerEvents: "none",
+    transition: "left 0.05s, transform 0.12s ease-out",
     zIndex: 1,
     "&::after": {
       content: '""',
@@ -114,34 +114,18 @@ const styles = {
     },
   }),
   stepButton: css({
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
     opacity: 0.8,
-    "@media (hover: hover)": {
-      "&:hover": {
-        backgroundColor: "unset",
-      },
-      "&:active": {
-        backgroundColor: "unset",
-      },
-    },
-    borderRadius: 0,
-    height: "100%",
+    pointerEvents: "none",
   }),
   incrementButton: css({
-    position: "absolute",
-    top: "50%",
-    right: "0px",
-    transform: "translateY(-50%)",
+    right: "4px",
   }),
   decrementButton: css({
-    position: "absolute",
-    top: "50%",
-    left: "0px",
-    transform: "translateY(-50%)",
-    "--icon-primary-color": "var(--text-primary-color)",
-  }),
-  decrementButtonLight: css({
-    "--icon-primary-color":
-      "var(--art-surface-color, rgba(255, 255, 255, 0.8))",
+    left: "4px",
+    "--icon-primary-color": "var(--slider-on-fill-color)",
   }),
 };
 
@@ -159,12 +143,14 @@ export const Slider = ({
 }: SliderProps) => {
   const [internalValue, setInternalValue] = useState<number>(value);
   const [isDragging, setIsDragging] = useState(false);
+  const [tooltipLean, setTooltipLean] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | undefined>();
   const dragRef = useRef<{
     startX: number;
     startValue: number;
     hasMoved: boolean;
+    prevClientX: number;
   } | null>(null);
 
   useEffect(() => {
@@ -195,6 +181,7 @@ export const Slider = ({
       startX: e.clientX,
       startValue: internalValue,
       hasMoved: false,
+      prevClientX: e.clientX,
     };
   };
 
@@ -213,6 +200,11 @@ export const Slider = ({
       setIsDragging(true);
       return;
     }
+
+    const instantDx = e.clientX - drag.prevClientX;
+    drag.prevClientX = e.clientX;
+    const lean = -Math.max(-15, Math.min(15, instantDx * 0.8));
+    setTooltipLean(lean);
 
     const trackWidth = track.getBoundingClientRect().width;
     const valueDelta = (dx / trackWidth) * (max - min);
@@ -258,14 +250,20 @@ export const Slider = ({
 
     dragRef.current = null;
     setIsDragging(false);
+    setTooltipLean(0);
   };
 
   const thickness = getSliderSize(sliderSize);
   const decimals = step % 1 !== 0 ? 1 : 0;
   const displayValue = `${internalValue.toFixed(decimals)}${unit ?? ""}`;
+  const onFillColor = useMemo(() => getContrastingColor("--primary-color"), []);
 
   return (
-    <div css={styles.root} className={className}>
+    <div
+      css={styles.root}
+      className={className}
+      style={{ "--slider-on-fill-color": onFillColor }}
+    >
       <div
         ref={trackRef}
         css={styles.track}
@@ -282,48 +280,32 @@ export const Slider = ({
         tabIndex={0}
       >
         <div css={styles.fill} style={{ width: `${fillPercent}%` }} />
-        <div
-          css={[styles.thumb, !isDarkMode() && styles.thumbLight]}
-          style={{ left: `${fillPercent}%` }}
-        />
       </div>
       {isDragging && (
-        <div css={styles.tooltip} style={{ left: `${fillPercent}%` }}>
+        <div
+          css={styles.tooltip}
+          style={{
+            left: `${fillPercent}%`,
+            transform: `translateX(-50%) rotate(${tooltipLean}deg)`,
+          }}
+        >
           {displayValue}
         </div>
       )}
       {showStepButtons && (
         <Fragment>
           {fillPercent < 10 ? null : (
-            <IconButton
+            <Icon
               size="x-small"
-              onClick={() => {
-                if (onStepButtonClick) {
-                  onStepButtonClick("decrement");
-                } else {
-                  onChange(Math.max(min, internalValue - step));
-                }
-              }}
               icon={"mdi:minus"}
-              css={[
-                styles.decrementButton,
-                styles.stepButton,
-                !isDarkMode() && styles.decrementButtonLight,
-              ]}
+              css={[styles.stepButton, styles.decrementButton]}
             />
           )}
           {fillPercent > 90 ? null : (
-            <IconButton
+            <Icon
               size="x-small"
-              onClick={() => {
-                if (onStepButtonClick) {
-                  onStepButtonClick("increment");
-                } else {
-                  onChange(Math.min(max, internalValue + step));
-                }
-              }}
               icon={"mdi:plus"}
-              css={[styles.incrementButton, styles.stepButton]}
+              css={[styles.stepButton, styles.incrementButton]}
             />
           )}
         </Fragment>
