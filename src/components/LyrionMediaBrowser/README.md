@@ -92,11 +92,11 @@ For most non-app categories, the filter input appends `search:<term>` to the LMS
 
 Filter state uses three layers, all of which are necessary:
 
-| State | Purpose |
-|---|---|
-| `inputValue` | Immediate — drives the visible input field |
-| `debouncedInputValue` | Debounced (350 ms) — synced into `history[last].filter` via `useEffect` |
-| `history[last].filter` | Committed — tied to the current navigation level, restored on back |
+| State                  | Purpose                                                                 |
+| ---------------------- | ----------------------------------------------------------------------- |
+| `inputValue`           | Immediate — drives the visible input field                              |
+| `debouncedInputValue`  | Debounced (350 ms) — synced into `history[last].filter` via `useEffect` |
+| `history[last].filter` | Committed — tied to the current navigation level, restored on back      |
 
 When the user navigates, `inputValue` is reset to `history[last].filter` of the new level. Because `useDebounce` clears its pending timer whenever `inputValue` changes, any in-flight filter value from the previous level is cancelled before it can commit to the new level.
 

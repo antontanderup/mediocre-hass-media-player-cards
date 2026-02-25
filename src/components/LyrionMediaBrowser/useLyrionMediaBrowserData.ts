@@ -3,12 +3,7 @@ import { useIntl } from "@components/i18n";
 import type { OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
 import { useDebounce } from "@uidotdev/usehooks";
 import { getHass } from "@utils";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "preact/hooks";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { useLyrionBrowse } from "./useLyrionBrowse";
 import { useLyrionGlobalSearch } from "./useLyrionGlobalSearch";
 import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
