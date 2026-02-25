@@ -1,34 +1,56 @@
 import type { LyrionBrowserItem, LyrionNavigationItem } from "./types";
 
 /**
- * Build command and parameters based on navigation history
+ * Pre-extracted navigation context passed to buildBrowseParams.
+ * The caller (useLyrionMediaBrowserData) walks the history once and fills this
+ * in, so buildBrowseParams stays a pure function with no history scanning.
+ */
+export type BrowseContext = {
+  depth: number; // navHistory.length (1 = root category, >1 = nested)
+  current: LyrionNavigationItem; // deepest history entry
+  appCommand?: string; // set when any ancestor has type "app"
+  appSearchItemId?: string; // search node id captured from the app root browse
+  genreId?: string;
+  artistId?: string;
+  albumId?: string;
+  playlistId?: string;
+};
+
+/**
+ * Build command and parameters from a pre-extracted BrowseContext.
  */
 export function buildBrowseParams(
-  history: LyrionNavigationItem[],
+  context: BrowseContext,
   startIndex: number = 0,
-  searchTerm: string = "",
-  appSearchItemId?: string
+  searchTerm: string = ""
 ): {
   command: string;
   parameters: string[];
 } {
-  // Global search is handled by useLyrionGlobalSearch
-  if (history.length === 0) {
-    return { command: "", parameters: [] };
-  }
+  const {
+    depth,
+    current,
+    appCommand,
+    appSearchItemId,
+    genreId,
+    artistId,
+    albumId,
+    playlistId,
+  } = context;
 
-  const current = history[history.length - 1];
   const params = [startIndex.toString(), "100"]; // start, itemsPerResponse
 
   // For root categories, just use the command
-  if (history.length === 1) {
+  if (depth === 1) {
     const command = current.command;
 
     // Favorites special case - use "favorites" command with "items" as parameter
     if (command === "favorites") {
       // For lyrion_cli, pass "items" as first parameter
-      const favoriteParams = ["items", "0", "100", "want_url:1"];
-      return { command: "favorites", parameters: favoriteParams };
+      return {
+        command: "favorites",
+        parameters: ["items", "0", "100", "want_url:1"],
+      };
     }
 
     // Add extra parameters from category mapping
@@ -58,9 +80,8 @@ export function buildBrowseParams(
     return { command, parameters: params };
   }
 
-  // Check if we're inside an app (any history entry has type "app")
-  const appEntry = history.find(h => h.type === "app");
-  if (appEntry) {
+  // Inside an app
+  if (appCommand) {
     const appParams = ["items", startIndex.toString(), "100"];
 
     if (searchTerm && appSearchItemId) {
@@ -72,27 +93,21 @@ export function buildBrowseParams(
       appParams.push(`item_id:${current.id}`);
     }
 
-    return { command: appEntry.command, parameters: appParams };
+    return { command: appCommand, parameters: appParams };
   }
 
-  // For nested navigation, find relevant filter entries from history
+  // Nested library navigation
   let command = current.command;
-  const playlistEntry = history.find(h => h.type === "playlist");
-  const genreEntry = history.find(h => h.type === "genre");
-  const artistEntry = history.find(h => h.type === "artist");
-  const albumEntry = history.find(h => h.type === "album");
 
   // Playlists special case
-  if (playlistEntry && current.command === "titles") {
+  if (playlistId && current.command === "titles") {
     command = "playlists tracks";
-    params[0] = playlistEntry.id; // playlist_id
-    params[1] = startIndex.toString(); // start
-    params[2] = "100"; // count
+    const plParams = [playlistId, startIndex.toString(), "100"];
     if (searchTerm) {
-      params.push(`search:${searchTerm}`);
+      plParams.push(`search:${searchTerm}`);
     }
-    params.push("tags:altj");
-    return { command, parameters: params };
+    plParams.push("tags:altj");
+    return { command, parameters: plParams };
   }
 
   // Add search parameter for nested navigation
@@ -101,21 +116,21 @@ export function buildBrowseParams(
   }
 
   // Genre -> Artists
-  if (genreEntry && current.command === "artists") {
-    params.push(`genre_id:${genreEntry.id}`);
+  if (genreId && current.command === "artists") {
+    params.push(`genre_id:${genreId}`);
     params.push("tags:a");
   }
 
   // Artist -> Albums
-  if (artistEntry && current.command === "albums") {
-    params.push(`artist_id:${artistEntry.id}`);
+  if (artistId && current.command === "albums") {
+    params.push(`artist_id:${artistId}`);
     params.push("tags:alj");
   }
 
   // Album -> Tracks
-  if (current.command === "titles" && !playlistEntry) {
-    if (albumEntry) {
-      params.push(`album_id:${albumEntry.id}`);
+  if (current.command === "titles" && !playlistId) {
+    if (albumId) {
+      params.push(`album_id:${albumId}`);
     }
     params.push("tags:altj");
   }

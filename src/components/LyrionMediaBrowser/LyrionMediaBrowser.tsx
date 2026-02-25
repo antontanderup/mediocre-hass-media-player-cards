@@ -142,6 +142,7 @@ export const LyrionMediaBrowser = ({
     items,
     hasNoArtwork,
     loading,
+    error,
     hasMore,
     loadMore,
     chunkSize,
@@ -363,7 +364,17 @@ export const LyrionMediaBrowser = ({
         )}
         renderEmpty={() => {
           if (loading) return <Spinner />;
-          if (!loading && filteredItems.length === 0) {
+          if (error) {
+            return (
+              <div css={styles.noMediaText}>
+                {t({
+                  id: "MediaBrowser.error_text",
+                  defaultMessage: "Failed to load media.",
+                })}
+              </div>
+            );
+          }
+          if (filteredItems.length === 0) {
             return (
               <div css={styles.noMediaText}>
                 {t({

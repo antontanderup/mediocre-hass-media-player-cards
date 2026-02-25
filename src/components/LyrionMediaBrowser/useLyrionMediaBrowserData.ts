@@ -7,7 +7,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "preact/hooks";
 import { useLyrionBrowse } from "./useLyrionBrowse";
@@ -21,7 +20,11 @@ import {
   CATEGORY_COMMANDS,
   HOME_ENTRY,
 } from "./constants";
-import { buildBrowseParams, buildPlaylistSearchTerm } from "./utils";
+import {
+  type BrowseContext,
+  buildBrowseParams,
+  buildPlaylistSearchTerm,
+} from "./utils";
 import { getEnqueueModeIcon } from "@components/HaMediaBrowser";
 
 export type BrowserRow =
@@ -49,7 +52,7 @@ export const useLyrionMediaBrowserData = ({
   const [accumulatedItems, setAccumulatedItems] = useState<LyrionBrowserItem[]>(
     []
   );
-  const appSearchItemIdRef = useRef<string | undefined>();
+  const [appSearchItemId, setAppSearchItemId] = useState<string | undefined>();
 
   // Stable key that changes only on navigation, not on filter typing
   const navKey = navHistory.map(h => h.id).join("/");
@@ -61,11 +64,9 @@ export const useLyrionMediaBrowserData = ({
 
   const commitFilter = useCallback((filter: string) => {
     setHistory(prev => {
+      if (prev[prev.length - 1].filter === filter) return prev;
       const updated = [...prev];
-      updated[updated.length - 1] = {
-        ...updated[updated.length - 1],
-        filter,
-      };
+      updated[updated.length - 1] = { ...updated[updated.length - 1], filter };
       return updated;
     });
   }, []);
@@ -116,18 +117,24 @@ export const useLyrionMediaBrowserData = ({
     enabled: isGlobalSearch,
   });
 
-  // Build browse parameters from navigation history
-  const { command, parameters } = useMemo(
-    () =>
-      buildBrowseParams(
-        navHistory,
-        startIndex,
-        committedFilter,
-        appSearchItemIdRef.current
-      ),
+  // Build browse parameters from navigation history.
+  // Context is extracted here so buildBrowseParams stays a pure function.
+  const { command, parameters } = useMemo(() => {
+    if (navHistory.length === 0) return { command: "", parameters: [] };
+    const current = navHistory[navHistory.length - 1];
+    const context: BrowseContext = {
+      depth: navHistory.length,
+      current,
+      appCommand: navHistory.find(h => h.type === "app")?.command,
+      appSearchItemId,
+      genreId: navHistory.find(h => h.type === "genre")?.id,
+      artistId: navHistory.find(h => h.type === "artist")?.id,
+      albumId: navHistory.find(h => h.type === "album")?.id,
+      playlistId: navHistory.find(h => h.type === "playlist")?.id,
+    };
+    return buildBrowseParams(context, startIndex, committedFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
-    [navKey, startIndex, committedFilter]
-  );
+  }, [navKey, startIndex, committedFilter, appSearchItemId]);
 
   // Fetch browse data (disabled during global search)
   const {
@@ -135,6 +142,7 @@ export const useLyrionMediaBrowserData = ({
     loading: browseLoading,
     totalCount: browseTotalCount,
     searchItemId,
+    error: browseError,
   } = useLyrionBrowse({
     entity_id,
     command,
@@ -143,13 +151,14 @@ export const useLyrionMediaBrowserData = ({
     enabled: !isGlobalSearch && (navHistory.length > 0 || !!committedFilter),
   });
 
-  // Capture app search item id when browsing app root
+  // Capture app search item id when browsing app root.
+  // Stored as state (not a ref) so it flows into the browse params memo reactively.
   useEffect(() => {
     const appEntry = navHistory.find(h => h.type === "app");
     if (!appEntry) {
-      appSearchItemIdRef.current = undefined;
+      setAppSearchItemId(undefined);
     } else if (searchItemId) {
-      appSearchItemIdRef.current = searchItemId;
+      setAppSearchItemId(searchItemId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
   }, [navKey, searchItemId]);
@@ -202,10 +211,10 @@ export const useLyrionMediaBrowserData = ({
     const current = navHistory[navHistory.length - 1];
     if (current.command === "favorites") return false;
     const appEntry = navHistory.find(h => h.type === "app");
-    if (appEntry && !appSearchItemIdRef.current && !searchItemId) return false;
+    if (appEntry && !appSearchItemId && !searchItemId) return false;
     return true;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- navHistory recreates on every render; navKey is its stable id-based proxy
-  }, [navKey, searchItemId]);
+  }, [navKey, searchItemId, appSearchItemId]);
 
   // Check if there are more items to load (global search uses section headers to navigate)
   const hasMore =
@@ -592,6 +601,7 @@ export const useLyrionMediaBrowserData = ({
     items,
     hasNoArtwork,
     loading,
+    error: isGlobalSearch ? null : browseError,
     hasMore,
     loadMore,
     chunkSize,

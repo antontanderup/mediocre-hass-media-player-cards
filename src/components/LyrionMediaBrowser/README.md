@@ -12,7 +12,7 @@ A media browser component for Logitech Media Server (LMS) / Lyrion Music Server,
 | `useLyrionGlobalSearch.ts`     | Fires four parallel `useLyrionBrowse` calls (artists/albums/tracks/playlists) for home-screen search |
 | `types.ts`                     | Shared types: `LyrionBrowserItem`, `LyrionNavigationItem`, `LyrionCategoryType`                      |
 | `constants.ts`                 | Category definitions (`CATEGORIES`), command overrides (`CATEGORY_COMMANDS`), `HOME_ENTRY` sentinel  |
-| `utils.ts`                     | Pure helpers: `buildBrowseParams`, `buildPlaylistSearchTerm`                                         |
+| `utils.ts`                     | Pure helpers: `BrowseContext` type, `buildBrowseParams`, `buildPlaylistSearchTerm`                   |
 
 ---
 
@@ -63,10 +63,10 @@ When `navHistory.length === 0` and no filter is typed, the component renders the
 
 ### 2. Category / nested browsing
 
-Once the user enters a category, `useLyrionBrowse` fires a `lyrion_cli` query. `buildBrowseParams` constructs the correct LMS command and parameters from the current history stack:
+Once the user enters a category, `useLyrionBrowse` fires a `lyrion_cli` query. Before calling `buildBrowseParams`, the hook extracts a `BrowseContext` from `navHistory` — walking the stack once to identify ancestor IDs (genre, artist, album, playlist) and whether the user is inside an app. `buildBrowseParams` is a pure function that receives this context and constructs the correct LMS command and parameters:
 
 - **Root category**: uses the category's command directly, applying tag sets (e.g. `tags:alj` for albums, `tags:altj` for tracks).
-- **Nested (artist → albums → tracks)**: walks the history to find genre/artist/album/playlist ancestor entries and injects the appropriate `_id:` filter parameters.
+- **Nested (artist → albums → tracks)**: uses the pre-extracted ancestor IDs from `BrowseContext` to inject the appropriate `_id:` filter parameters.
 - **Playlists**: uses the special `playlists tracks` command with the playlist ID as the first positional argument.
 - **Apps / Radio**: uses `<app_cmd> items` with `item_id:` for sub-navigation.
 - **Favorites**: uses `favorites items 0 100 want_url:1`.
@@ -90,10 +90,20 @@ Results are merged, grouped into section rows (Artists / Albums / Tracks / Playl
 
 For most non-app categories, the filter input appends `search:<term>` to the LMS query. The query re-runs with `startIndex=0` each time the debounced value changes (350 ms debounce).
 
+Filter state uses three layers, all of which are necessary:
+
+| State | Purpose |
+|---|---|
+| `inputValue` | Immediate — drives the visible input field |
+| `debouncedInputValue` | Debounced (350 ms) — synced into `history[last].filter` via `useEffect` |
+| `history[last].filter` | Committed — tied to the current navigation level, restored on back |
+
+When the user navigates, `inputValue` is reset to `history[last].filter` of the new level. Because `useDebounce` clears its pending timer whenever `inputValue` changes, any in-flight filter value from the previous level is cancelled before it can commit to the new level.
+
 Search is disabled for:
 
 - Favorites (LMS doesn't support search there)
-- Apps that haven't yet exposed a `search` item in their `loop_loop`
+- Apps that haven't yet returned a `search` node in their `loop_loop` — `appSearchItemId` (state in `useLyrionMediaBrowserData`) is `undefined` until the first browse result arrives, at which point the search input appears and `appSearchItemId` is available for subsequent queries
 
 ---
 
