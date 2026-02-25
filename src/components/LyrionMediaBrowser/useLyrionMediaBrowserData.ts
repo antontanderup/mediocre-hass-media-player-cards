@@ -209,7 +209,7 @@ export const useLyrionMediaBrowserData = ({
   const isSearchable = useMemo(() => {
     if (navHistory.length === 0) return true;
     const current = navHistory[navHistory.length - 1];
-    if (current.command === "favorites") return false;
+    if (current.command === "favorites" || current.id === "apps") return false;
     const appEntry = navHistory.find(h => h.type === "app");
     if (appEntry && !appSearchItemId && !searchItemId) return false;
     return true;
