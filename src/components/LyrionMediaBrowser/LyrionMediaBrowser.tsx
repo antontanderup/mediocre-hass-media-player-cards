@@ -4,6 +4,7 @@ import {
   Input,
   MediaGrid,
   MediaItem,
+  MediaItemCompact,
   MediaTrack,
   searchStyles,
   Spinner,
@@ -154,8 +155,16 @@ export const LyrionMediaBrowser = ({
     filteredItems,
   } = useLyrionMediaBrowserData({ entity_id: selectedMediaBrowser.entity_id });
 
+  const renderCategory = (item: LyrionBrowserItem) => (
+    <MediaItemCompact
+      key={item.id + navHistory.length}
+      name={item.title}
+      mdiIcon={getItemIcon(item)}
+      onClick={item.onClick}
+    />
+  );
+
   const renderTrack = (item: LyrionBrowserItem) => {
-    if (isShowingCategories) return renderFolder(item);
     if (!item.can_play && item.can_expand)
       return (
         <MediaTrack
@@ -225,6 +234,7 @@ export const LyrionMediaBrowser = ({
     return (
       <MediaGrid numberOfColumns={chunkSize}>
         {row.map(mediaItem => {
+          if (isShowingCategories && mediaItem.type === 'category') return renderCategory(mediaItem);
           if (hasNoArtwork) {
             return renderTrack(mediaItem);
           }
