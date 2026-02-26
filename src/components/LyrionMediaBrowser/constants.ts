@@ -41,3 +41,8 @@ export const CATEGORY_COMMANDS: Partial<
   albumartists: { command: "artists", parameters: ["role_id:ALBUMARTIST"] },
   newmusic: { command: "albums", parameters: ["sort:new"] },
 };
+
+// Stable parameter arrays for home screen preview sections
+export const HOME_NEW_MUSIC_PARAMS = ["0", "100", "sort:new", "tags:alj"];
+export const HOME_FAVORITES_PARAMS = ["items", "0", "100", "want_url:1"];
+export const HOME_APPS_PARAMS = ["0", "100"];

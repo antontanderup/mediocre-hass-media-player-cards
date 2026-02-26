@@ -44,6 +44,16 @@ export function buildBrowseParams(
   if (depth === 1) {
     const command = current.command;
 
+    // App at depth=1: navigated directly (e.g. from home preview) without going
+    // through the Apps category. Use the same "items" prefix that the depth≥2
+    // appCommand branch would use.
+    if (current.type === "app") {
+      return {
+        command,
+        parameters: ["items", startIndex.toString(), "100"],
+      };
+    }
+
     // Favorites special case - use "favorites" command with "items" as parameter
     if (command === "favorites") {
       // For lyrion_cli, pass "items" as first parameter

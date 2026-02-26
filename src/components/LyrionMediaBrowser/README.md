@@ -23,6 +23,8 @@ LyrionMediaBrowser
   └── useLyrionMediaBrowserData          ← all state lives here
         ├── useLyrionGlobalSearch        ← home-screen search (parallel queries)
         │     └── useLyrionBrowse × 4
+        ├── useLyrionBrowse              ← home preview: new music
+        ├── useLyrionBrowse              ← home preview: favorites
         └── useLyrionBrowse              ← normal browsing (single query)
               └── useHassMessagePromise  ← lyrion_cli service call
 ```
@@ -57,9 +59,16 @@ Navigation is driven by a single `history` state array of `BrowserHistoryEntry` 
 
 ## Browse Modes
 
-### 1. Home screen (categories)
+### 1. Home screen (categories + preview sections)
 
-When `navHistory.length === 0` and no filter is typed, the component renders the static `CATEGORIES` list as a grid of folder items. No network call is made.
+When `navHistory.length === 0` and no filter is typed, the component renders:
+
+1. **Categories** — the static `CATEGORIES` list as a grid of folder items.
+2. **New Music** — up to `chunkSize × 2` recent albums fetched via `albums 0 100 sort:new tags:alj`, displayed as a grid with a clickable section title.
+3. **Favorites** — up to `chunkSize × 2` favorites fetched via `favorites items 0 100 want_url:1`, displayed as a grid with a clickable section title.
+4. **Apps** - up to `chunkSize x 2` apps via `apps 0 100`, displayed as a grid with a clickable section title.
+
+The section titles behave like the global-search section titles: clicking one navigates into that category (equivalent to clicking its tile in the categories grid). The two preview queries are driven by stable `HOME_NEW_MUSIC_PARAMS` / `HOME_FAVORITES_PARAMS` constants (defined in `constants.ts`) and enabled only while `isShowingHomePreview` (`isHomeScreen && !committedFilter`) is true.
 
 ### 2. Category / nested browsing
 

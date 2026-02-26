@@ -14,6 +14,9 @@ import {
   CATEGORIES,
   CATEGORY_COMMANDS,
   HOME_ENTRY,
+  HOME_APPS_PARAMS,
+  HOME_FAVORITES_PARAMS,
+  HOME_NEW_MUSIC_PARAMS,
 } from "./constants";
 import {
   type BrowseContext,
@@ -110,6 +113,30 @@ export const useLyrionMediaBrowserData = ({
     searchTerm: committedFilter,
     serverData,
     enabled: isGlobalSearch,
+  });
+
+  // Home screen preview: new music and favorites sections (hooks must be unconditional)
+  const isShowingHomePreview = isHomeScreen && !committedFilter;
+  const { items: homeNewMusicBrowseItems } = useLyrionBrowse({
+    entity_id,
+    command: "albums",
+    parameters: HOME_NEW_MUSIC_PARAMS,
+    serverData,
+    enabled: isShowingHomePreview,
+  });
+  const { items: homeFavoritesBrowseItems } = useLyrionBrowse({
+    entity_id,
+    command: "favorites",
+    parameters: HOME_FAVORITES_PARAMS,
+    serverData,
+    enabled: isShowingHomePreview,
+  });
+  const { items: homeAppsBrowseItems } = useLyrionBrowse({
+    entity_id,
+    command: "apps",
+    parameters: HOME_APPS_PARAMS,
+    serverData,
+    enabled: isShowingHomePreview,
   });
 
   // Build browse parameters from navigation history.
@@ -446,10 +473,22 @@ export const useLyrionMediaBrowserData = ({
     let hasNoArtwork = true;
     const result: BrowserRow[] = [];
 
-    // Check artwork across all items
+    // Check artwork across all items (including home preview sections)
     enrichedDisplayItems.forEach(item => {
       if (typeof item.thumbnail === "string") hasNoArtwork = false;
     });
+
+    if (isShowingHomePreview) {
+      homeNewMusicBrowseItems.forEach(item => {
+        if (typeof item.thumbnail === "string") hasNoArtwork = false;
+      });
+      homeFavoritesBrowseItems.forEach(item => {
+        if (typeof item.thumbnail === "string") hasNoArtwork = false;
+      });
+      homeAppsBrowseItems.forEach(item => {
+        if (typeof item.thumbnail === "string") hasNoArtwork = false;
+      });
+    }
 
     if (isGlobalSearch) {
       // Group search results by type with section titles
@@ -525,11 +564,79 @@ export const useLyrionMediaBrowserData = ({
           }
         }
       });
+
+      // Home screen preview sections (new music + favorites) below the categories
+      if (isShowingHomePreview) {
+        const maxRowItems = chunkSize * 2;
+
+        if (homeNewMusicBrowseItems.length > 0) {
+          result.push({
+            sectionTitle: "New Music",
+            categoryId: "newmusic",
+            onClick: () => navigateToSearchCategory("newmusic"),
+          });
+          const limited = homeNewMusicBrowseItems
+            .slice(0, maxRowItems)
+            .map(item => ({
+              ...item,
+              onClick: () => onItemClick(item),
+              menuItems: getItemOverlayMenuItems(item),
+            }));
+          for (let i = 0; i < limited.length; i += chunkSize) {
+            result.push(limited.slice(i, i + chunkSize));
+          }
+        }
+
+        if (homeFavoritesBrowseItems.length > 0) {
+          result.push({
+            sectionTitle: "Favorites",
+            categoryId: "favorites",
+            onClick: () => navigateToSearchCategory("favorites"),
+          });
+          const limited = homeFavoritesBrowseItems
+            .slice(0, maxRowItems)
+            .map(item => ({
+              ...item,
+              onClick: () => onItemClick(item),
+              menuItems: getItemOverlayMenuItems(item),
+            }));
+          for (let i = 0; i < limited.length; i += chunkSize) {
+            result.push(limited.slice(i, i + chunkSize));
+          }
+        }
+
+        if (homeAppsBrowseItems.length > 0) {
+          result.push({
+            sectionTitle: "Apps",
+            categoryId: "apps",
+            onClick: () => navigateToSearchCategory("apps"),
+          });
+          const limited = homeAppsBrowseItems
+            .slice(0, maxRowItems)
+            .map(item => ({
+              ...item,
+              onClick: () => onItemClick(item),
+              menuItems: getItemOverlayMenuItems(item),
+            }));
+          for (let i = 0; i < limited.length; i += chunkSize) {
+            result.push(limited.slice(i, i + chunkSize));
+          }
+        }
+      }
     }
 
     return { items: result, hasNoArtwork };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- navigateToSearchCategory is stable (empty deps) and defined later in the file
-  }, [enrichedDisplayItems, chunkSize, isShowingCategories, isGlobalSearch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- navigateToSearchCategory, onItemClick, getItemOverlayMenuItems are stable useCallbacks defined later in the file
+  }, [
+    enrichedDisplayItems,
+    chunkSize,
+    isShowingCategories,
+    isGlobalSearch,
+    isShowingHomePreview,
+    homeNewMusicBrowseItems,
+    homeFavoritesBrowseItems,
+    homeAppsBrowseItems,
+  ]);
 
   const goBack = useCallback(() => {
     if (loading || navHistory.length === 0) return;
