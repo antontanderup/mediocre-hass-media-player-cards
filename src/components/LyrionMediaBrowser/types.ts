@@ -5,6 +5,8 @@ export type LyrionCategoryType =
   | "artists"
   | "albumartists"
   | "albums"
+  | "randomalbums"
+  | "newartists"
   | "newmusic"
   | "genres"
   | "playlists"

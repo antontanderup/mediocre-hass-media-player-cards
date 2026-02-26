@@ -23,7 +23,9 @@ export const CATEGORIES: Array<{
     title: "Album Artists",
     icon: "mdi:account-music-outline",
   },
+  { id: "newartists", title: "New Artists", icon: "mdi:account-music-outline" },
   { id: "albums", title: "Albums", icon: "mdi:album" },
+  { id: "randomalbums", title: "Random Albums", icon: "mdi:shuffle-variant" },
   { id: "newmusic", title: "New Music", icon: "mdi:new-box" },
   { id: "genres", title: "Genres", icon: "mdi:music-box-multiple" },
   { id: "playlists", title: "Playlists", icon: "mdi:playlist-music" },
@@ -39,7 +41,9 @@ export const CATEGORY_COMMANDS: Partial<
 > = {
   tracks: { command: "titles", parameters: [] },
   albumartists: { command: "artists", parameters: ["role_id:ALBUMARTIST"] },
+  newartists: { command: "artists", parameters: ["sort:new"] },
   newmusic: { command: "albums", parameters: ["sort:new"] },
+  randomalbums: { command: "albums", parameters: ["sort:random"] },
 };
 
 // Stable parameter arrays for home screen preview sections
