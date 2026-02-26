@@ -234,7 +234,8 @@ export const LyrionMediaBrowser = ({
     return (
       <MediaGrid numberOfColumns={chunkSize}>
         {row.map(mediaItem => {
-          if (isShowingCategories && mediaItem.type === 'category') return renderCategory(mediaItem);
+          if (isShowingCategories && mediaItem.type === "category")
+            return renderCategory(mediaItem);
           if (hasNoArtwork) {
             return renderTrack(mediaItem);
           }
