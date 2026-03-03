@@ -13,7 +13,8 @@ const styles = {
     justifyContent: "space-between",
     cursor: "pointer",
     margin: "0 4px",
-    padding: "4px var(--mmpc-search-padding, 0px)",
+    padding:
+      "12px var(--mmpc-search-padding, 0px) 4px var(--mmpc-search-padding, 0px)",
   }),
   title: css({
     fontSize: "16px",

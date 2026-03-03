@@ -63,6 +63,8 @@ export const getMediocreLegacyConfigToMediocreMultiConfig = (
         config.options?.always_show_power_button ?? false,
       hide_when_group_child: config.options?.hide_when_group_child ?? false,
       hide_when_off: config.options?.hide_when_off ?? false,
+      use_experimental_lms_media_browser:
+        config.options?.use_experimental_lms_media_browser ?? false,
     },
     media_players,
   };

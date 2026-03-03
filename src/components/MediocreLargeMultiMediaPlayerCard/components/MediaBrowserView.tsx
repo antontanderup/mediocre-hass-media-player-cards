@@ -1,10 +1,11 @@
-import { MediaBrowser } from "@components";
+import { CardContext, CardContextType, MediaBrowser } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
-import { memo } from "preact/compat";
+import { memo, useContext } from "preact/compat";
 import { getHasMediaBrowserEntryArray } from "@utils";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
+import { MediocreMultiMediaPlayerCardConfig } from "@types";
 
 const styles = {
   root: css({
@@ -23,7 +24,11 @@ export type MediaBrowserViewProps = {
 export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
   const { t } = useIntl();
   const { selectedPlayer } = useSelectedPlayer();
-  const { entity_id, media_browser } = selectedPlayer!;
+  const { entity_id, media_browser, lms_entity_id } = selectedPlayer!;
+  const { config } =
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+      CardContext
+    );
 
   const renderHeader = () => (
     <ViewHeader
@@ -41,6 +46,10 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
           media_browser,
           entity_id
         )}
+        useExperimentalLmsMediaBrowser={
+          config?.options?.use_experimental_lms_media_browser ?? false
+        }
+        lmsEntityId={lms_entity_id}
         horizontalPadding={16}
         renderHeader={renderHeader}
         maxHeight={height}

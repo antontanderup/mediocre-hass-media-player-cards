@@ -498,6 +498,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
             )}
           />
+          <form.AppField
+            name="options.use_experimental_lms_media_browser"
+            children={field => (
+              <field.Toggle label="Use experimental LMS media browser (requires lyrion_cli integration)" />
+            )}
+          />
           <form.Field name="options.player_is_active_when">
             {field => (
               <div

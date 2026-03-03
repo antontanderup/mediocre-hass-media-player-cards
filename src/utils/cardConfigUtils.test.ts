@@ -93,6 +93,7 @@ describe("cardConfigUtils", () => {
         hide_when_group_child: false,
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
+        use_experimental_lms_media_browser: false,
       });
       expect(result.grid_options).toBeUndefined();
       expect(result.media_browser).toBeNull();
@@ -127,6 +128,7 @@ describe("cardConfigUtils", () => {
           hide_when_off: true,
           show_volume_step_buttons: true,
           use_volume_up_down_for_step_buttons: true,
+          use_experimental_lms_media_browser: false,
         },
         grid_options: { columns: "full" },
         media_browser: {
@@ -244,6 +246,7 @@ describe("cardConfigUtils", () => {
         always_show_power_button: false,
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
+        use_experimental_lms_media_browser: false,
       });
       expect(result.media_browser).toBeNull();
       expect(result.grid_options).toBeUndefined();

@@ -1,8 +1,10 @@
-import { MediaBrowser } from "@components";
+import { CardContext, CardContextType, MediaBrowser } from "@components";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { getHasMediaBrowser, getHasMediaBrowserEntryArray } from "@utils";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
+import { useContext } from "preact/hooks";
+import { MediocreMultiMediaPlayerCardConfig } from "@types";
 
 const styles = {
   root: css({
@@ -14,8 +16,13 @@ const styles = {
 };
 
 export const MediaBrowserBar = () => {
-  const { selectedPlayer: { media_browser, entity_id } = {} } =
+  const { selectedPlayer: { media_browser, entity_id, lms_entity_id } = {} } =
     useSelectedPlayer();
+
+  const { config } =
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
+      CardContext
+    );
 
   if (getHasMediaBrowser(media_browser) === false) {
     return null;
@@ -28,6 +35,10 @@ export const MediaBrowserBar = () => {
           media_browser,
           entity_id ?? ""
         )}
+        useExperimentalLmsMediaBrowser={
+          config?.options?.use_experimental_lms_media_browser ?? false
+        }
+        lmsEntityId={lms_entity_id}
         horizontalPadding={12}
       />
     </div>

@@ -52,6 +52,8 @@ export type VirtualListProps<T> = {
   maxHeight?: number;
   className?: string;
   style?: React.CSSProperties;
+  onEndReached?: () => void;
+  onEndReachedThreshold?: number;
 };
 
 export const VirtualList = <T,>({
@@ -66,9 +68,12 @@ export const VirtualList = <T,>({
   overscan = 5,
   className,
   style = {},
+  onEndReached,
+  onEndReachedThreshold = 0.8,
 }: VirtualListProps<T>) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [sizeRef, { width }] = useMeasure<HTMLDivElement>();
+  const hasCalledOnEndReached = useRef(false);
 
   useEffect(() => {
     if (onLayout && width !== null) {
@@ -93,6 +98,40 @@ export const VirtualList = <T,>({
         : undefined,
     overscan,
   });
+
+  // Handle onEndReached
+  useEffect(() => {
+    if (!onEndReached || !parentRef.current) return;
+
+    const checkEnd = () => {
+      const element = parentRef.current;
+      if (!element) return;
+
+      const scrollPercentage =
+        (element.scrollTop + element.clientHeight) / element.scrollHeight;
+
+      if (scrollPercentage >= onEndReachedThreshold) {
+        if (!hasCalledOnEndReached.current) {
+          hasCalledOnEndReached.current = true;
+          onEndReached();
+        }
+      } else {
+        // Reset flag when scrolling back up
+        hasCalledOnEndReached.current = false;
+      }
+    };
+
+    const element = parentRef.current;
+    element.addEventListener("scroll", checkEnd);
+
+    // Re-check whenever data grows
+    hasCalledOnEndReached.current = false;
+    checkEnd();
+
+    return () => {
+      element.removeEventListener("scroll", checkEnd);
+    };
+  }, [onEndReached, onEndReachedThreshold, data.length]);
 
   return (
     <div

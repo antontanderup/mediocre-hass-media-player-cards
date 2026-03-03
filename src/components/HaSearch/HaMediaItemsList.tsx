@@ -7,11 +7,10 @@ import {
   MediaGrid,
 } from "@components/MediaSearch";
 import { VirtualList, VirtualListProps } from "@components/VirtualList";
-import { MediaTrack } from "@components";
+import { getItemMdiIcon, MediaTrack } from "@components";
 import { useMemo, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { useIntl } from "@components/i18n";
-import { getItemMdiIcon } from "@components/MediaBrowser/utils";
 
 export type HaMediaItemsListProps = Omit<
   VirtualListProps<HaMediaListItem>,

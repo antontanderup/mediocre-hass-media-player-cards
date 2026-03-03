@@ -41,6 +41,8 @@ export const getDefaultValuesFromConfig = (
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
       config?.options?.use_volume_up_down_for_step_buttons ?? false,
+    use_experimental_lms_media_browser:
+      config?.options?.use_experimental_lms_media_browser ?? false,
   },
   grid_options: config?.grid_options,
   visibility: config?.visibility,
@@ -78,6 +80,8 @@ export const getDefaultValuesFromMassiveConfig = (
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
       config?.options?.use_volume_up_down_for_step_buttons ?? false,
+    use_experimental_lms_media_browser:
+      config?.options?.use_experimental_lms_media_browser ?? false,
   },
   grid_options: config?.grid_options,
   visibility: config?.visibility,
@@ -141,6 +145,9 @@ export const getSimpleConfigFromFormValues = (
   if (config.options?.use_volume_up_down_for_step_buttons === false) {
     delete config.options.use_volume_up_down_for_step_buttons;
   }
+  if (config.options?.use_experimental_lms_media_browser === false) {
+    delete config.options.use_experimental_lms_media_browser;
+  }
 
   if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
@@ -203,6 +210,9 @@ export const getSimpleConfigFromMassiveFormValues = (
   }
   if (config.options?.use_volume_up_down_for_step_buttons === false) {
     delete config.options.use_volume_up_down_for_step_buttons;
+  }
+  if (config.options?.use_experimental_lms_media_browser === false) {
+    delete config.options.use_experimental_lms_media_browser;
   }
 
   if (Object.keys(config.options ?? {}).length === 0) {
