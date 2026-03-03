@@ -3,7 +3,7 @@ import { LyrionMediaBrowser } from "@components/LyrionMediaBrowser";
 import { OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
 import { MediaBrowserEntry } from "@types";
 import { getCanDisplayLyrionMediaBrowser } from "@utils";
-import { FC, useMemo, useState } from "preact/compat";
+import { FC, useEffect, useMemo, useState } from "preact/compat";
 
 export type MediaBrowserProps = {
   mediaBrowserEntryArray: MediaBrowserEntry[];
@@ -23,6 +23,11 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
   // Component implementation
   const [selectedMediaBrowser, setSelectedMediaBrowser] =
     useState<MediaBrowserEntry>(mediaBrowserEntryArray[0]);
+
+  useEffect(() => {
+    // reset when entryArray changes
+    setSelectedMediaBrowser(mediaBrowserEntryArray[0]);
+  }, [mediaBrowserEntryArray]);
 
   const selectMediaBrowserMenuItems: OverlayMenuItem[] = useMemo(() => {
     return mediaBrowserEntryArray.map(mediaBrowserEntry => ({
