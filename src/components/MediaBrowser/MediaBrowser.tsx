@@ -48,7 +48,11 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
     return (
       <LyrionMediaBrowser
         selectedMediaBrowser={selectedMediaBrowser}
-        selectMediaBrowserMenuItems={selectMediaBrowserMenuItems}
+        selectMediaBrowserMenuItems={
+          selectMediaBrowserMenuItems.length > 1
+            ? selectMediaBrowserMenuItems
+            : undefined
+        }
         horizontalPadding={horizontalPadding}
         maxHeight={maxHeight}
         renderHeader={renderHeader}
@@ -58,7 +62,11 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
   return (
     <HaMediaBrowser
       selectedMediaBrowser={selectedMediaBrowser}
-      selectMediaBrowserMenuItems={selectMediaBrowserMenuItems}
+      selectMediaBrowserMenuItems={
+        selectMediaBrowserMenuItems.length > 1
+          ? selectMediaBrowserMenuItems
+          : undefined
+      }
       horizontalPadding={horizontalPadding}
       maxHeight={maxHeight}
       renderHeader={renderHeader}
