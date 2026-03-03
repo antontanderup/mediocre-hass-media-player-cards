@@ -34,7 +34,7 @@ const styles = {
     position: "absolute",
     right: -10,
     bottom: -10,
-    opacity: 0.12,
+    opacity: 0.06,
     pointerEvents: "none",
   }),
   name: css({
