@@ -114,7 +114,6 @@ export const VirtualList = <T,>({
         if (!hasCalledOnEndReached.current) {
           hasCalledOnEndReached.current = true;
           onEndReached();
-          console.log("onEndReached called");
         }
       } else {
         // Reset flag when scrolling back up
