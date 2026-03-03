@@ -103,22 +103,18 @@ export const VirtualList = <T,>({
   useEffect(() => {
     if (!onEndReached || !parentRef.current) return;
 
-    const handleScroll = () => {
+    const checkEnd = () => {
       const element = parentRef.current;
       if (!element) return;
 
-      const scrollTop = element.scrollTop;
-      const scrollHeight = element.scrollHeight;
-      const clientHeight = element.clientHeight;
+      const scrollPercentage =
+        (element.scrollTop + element.clientHeight) / element.scrollHeight;
 
-      // Calculate scroll percentage
-      const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
-
-      // If scrolled past threshold and haven't called yet
       if (scrollPercentage >= onEndReachedThreshold) {
         if (!hasCalledOnEndReached.current) {
           hasCalledOnEndReached.current = true;
           onEndReached();
+          console.log("onEndReached called");
         }
       } else {
         // Reset flag when scrolling back up
@@ -127,20 +123,16 @@ export const VirtualList = <T,>({
     };
 
     const element = parentRef.current;
-    element.addEventListener("scroll", handleScroll);
+    element.addEventListener("scroll", checkEnd);
 
-    // Check initial state
-    handleScroll();
+    // Re-check whenever data grows
+    hasCalledOnEndReached.current = false;
+    checkEnd();
 
     return () => {
-      element.removeEventListener("scroll", handleScroll);
+      element.removeEventListener("scroll", checkEnd);
     };
-  }, [onEndReached, onEndReachedThreshold]);
-
-  // Reset the flag when data length changes (new page loaded)
-  useEffect(() => {
-    hasCalledOnEndReached.current = false;
-  }, [data.length]);
+  }, [onEndReached, onEndReachedThreshold, data.length]);
 
   return (
     <div
