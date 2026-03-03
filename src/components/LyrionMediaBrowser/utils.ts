@@ -59,7 +59,7 @@ export function buildBrowseParams(
       // For lyrion_cli, pass "items" as first parameter
       return {
         command: "favorites",
-        parameters: ["items", "0", "100", "want_url:1"],
+        parameters: ["items", startIndex.toString(), "100", "want_url:1"],
       };
     }
 
