@@ -33,6 +33,10 @@ export function useHassMessagePromise<T = unknown>(
     [message]
   );
   const data = keyedData.key === messageKey ? keyedData.value : null;
+  // If the key has changed but data hasn't updated yet, treat as loading so
+  // consumers never see a render with loading=false and data=null in between.
+  const isPending =
+    !!message && options?.enabled !== false && keyedData.key !== messageKey;
 
   // Ref to track the latest message key (for race-condition guard in async fetch)
   const latestMessageKeyRef = useRef<string>("");
@@ -91,7 +95,7 @@ export function useHassMessagePromise<T = unknown>(
   }, [messageKey, options?.staleTime, options?.enabled]);
 
   return useMemo(
-    () => ({ data, loading, error, refetch }),
-    [data, loading, error, refetch]
+    () => ({ data, loading: loading || isPending, error, refetch }),
+    [data, loading, isPending, error, refetch]
   );
 }

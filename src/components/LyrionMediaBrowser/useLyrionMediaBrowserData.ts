@@ -221,11 +221,16 @@ export const useLyrionMediaBrowserData = ({
   );
 
   const isShowingCategories = isHomeScreen && !committedFilter;
+  // For the first page (startIndex === 0) use rawItems directly so there is no
+  // one-render lag between data arriving and it being displayed. accumulatedItems
+  // is only needed for subsequent pages where it carries all previously loaded items.
   const displayItems = isShowingCategories
     ? categoryItems
     : isGlobalSearch
       ? globalSearchItems
-      : accumulatedItems;
+      : startIndex === 0
+        ? rawItems
+        : accumulatedItems;
 
   // Determine if the current route supports search
   const isSearchable = useMemo(() => {
