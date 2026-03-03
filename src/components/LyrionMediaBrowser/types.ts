@@ -29,6 +29,7 @@ export type LyrionBrowserItem = {
     | "app";
   can_play: boolean;
   can_expand: boolean;
+  isFavorite?: boolean;
   url?: string;
   thumbnail?: string;
   subtitle?: string;

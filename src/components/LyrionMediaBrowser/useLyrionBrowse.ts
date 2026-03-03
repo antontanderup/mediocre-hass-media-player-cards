@@ -48,7 +48,8 @@ function resolveImageUrl(
  */
 function transformResponseToItems(
   response: LyrionBrowseResponse | null,
-  serverData: SqueezeboxServerStatusResponse | null
+  serverData: SqueezeboxServerStatusResponse | null,
+  isFavoritesQuery = false
 ): LyrionBrowserItem[] {
   if (!response) return [];
 
@@ -165,6 +166,7 @@ function transformResponseToItems(
           type: "playlist" as const,
           can_play: favorite.isaudio === 1,
           can_expand: (favorite.hasitems ?? 0) > 0,
+          isFavorite: isFavoritesQuery,
           thumbnail: resolveImageUrl(
             serverData,
             favorite.image,
@@ -216,8 +218,8 @@ export function useLyrionBrowse({
     );
 
   const items = useMemo(
-    () => transformResponseToItems(data, serverData),
-    [data, serverData]
+    () => transformResponseToItems(data, serverData, command === "favorites"),
+    [data, serverData, command]
   );
 
   const totalCount = data?.count ?? 0;

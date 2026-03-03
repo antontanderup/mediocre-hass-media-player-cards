@@ -258,7 +258,8 @@ export const useLyrionMediaBrowserData = ({
       else if (enqueue === "add") action = "addtracks";
 
       const appEntry = navHistory.find(h => h.type === "app");
-      const isFavorite = navHistory.find(h => h.command === "favorites");
+      const isFavorite =
+        item.isFavorite || navHistory.find(h => h.command === "favorites");
       try {
         if (appEntry) {
           // App items: use app command with playlist action
