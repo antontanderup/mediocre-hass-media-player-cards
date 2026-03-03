@@ -62,6 +62,8 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
         config.mode === "panel" ||
         config.mode === "in-card" ||
         config.mode === "popup",
+      use_experimental_lms_media_browser:
+        config.options?.use_experimental_lms_media_browser ?? false,
     },
     media_players,
   };

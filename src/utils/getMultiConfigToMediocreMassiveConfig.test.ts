@@ -103,6 +103,7 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
         options: {
           show_volume_step_buttons: true,
           use_volume_up_down_for_step_buttons: false,
+          use_experimental_lms_media_browser: false,
         },
       })
     );
@@ -172,6 +173,7 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
     expect(result.options).toEqual({
       show_volume_step_buttons: false,
       use_volume_up_down_for_step_buttons: false,
+      use_experimental_lms_media_browser: false,
     });
   });
 });

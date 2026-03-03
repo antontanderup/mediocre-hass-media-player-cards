@@ -122,6 +122,7 @@ describe("getMediocreLegacyConfigToMediocreMultiConfig", () => {
     expect(result.options).toEqual({
       show_volume_step_buttons: false,
       use_volume_up_down_for_step_buttons: false,
+      use_experimental_lms_media_browser: false,
       always_show_custom_buttons: false,
       always_show_power_button: false,
       hide_when_group_child: false,
