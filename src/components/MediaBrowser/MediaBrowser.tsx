@@ -10,6 +10,7 @@ export type MediaBrowserProps = {
   horizontalPadding?: number;
   maxHeight?: number;
   lmsEntityId?: string | null;
+  useExperimentalLmsMediaBrowser?: boolean;
   renderHeader?: () => preact.JSX.Element;
 };
 
@@ -18,6 +19,7 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
   lmsEntityId,
   horizontalPadding,
   maxHeight,
+  useExperimentalLmsMediaBrowser,
   renderHeader,
 }) => {
   // Component implementation
@@ -40,7 +42,8 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
   }, [mediaBrowserEntryArray, selectedMediaBrowser.entity_id]);
 
   const isLyrionEntity = selectedMediaBrowser.entity_id === lmsEntityId;
-  const canDisplayLyrionMediaBrowser = getCanDisplayLyrionMediaBrowser();
+  const canDisplayLyrionMediaBrowser =
+    useExperimentalLmsMediaBrowser && getCanDisplayLyrionMediaBrowser();
 
   if (!selectedMediaBrowser) return null;
 
