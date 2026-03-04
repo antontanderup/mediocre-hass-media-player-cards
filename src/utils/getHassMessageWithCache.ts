@@ -35,7 +35,9 @@ export async function getHassMessageWithCache<T = unknown>(
     return entry.value;
   }
   const hass = getHass();
-  const response = (await hass.connection.sendMessagePromise(message)) as T;
+  const response = (await hass.connection.sendMessagePromise({
+    ...message,
+  })) as T;
   _hassCache = {
     ..._hassCache,
     [key]: { value: response, timestamp: now, staleTime },
