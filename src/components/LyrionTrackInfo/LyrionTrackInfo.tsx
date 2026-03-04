@@ -6,6 +6,7 @@ import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { getIsLmsPlayer } from "@utils";
 import { Fragment } from "preact/jsx-runtime";
+import { LyrionRelatedAlbums } from "@components/LyrionRelatedAlbums";
 
 const styles = {
   trackInfo: css({
@@ -23,11 +24,6 @@ const styles = {
   trackInfoLabel: css({
     color: theme.colors.onCardMuted,
     minWidth: 80,
-  }),
-  albumsLabel: css({
-    fontSize: 12,
-    color: theme.colors.onCardMuted,
-    marginTop: 8,
   }),
 };
 
@@ -122,6 +118,10 @@ export const LyrionTrackInfo = ({ lms_entity_id }: LyrionTrackInfoProps) => {
           </div>
         )}
       </div>
+      <LyrionRelatedAlbums
+        entity_id={lms_entity_id ?? ""}
+        enabled={isLmsPlayer}
+      />
     </Fragment>
   );
 };
