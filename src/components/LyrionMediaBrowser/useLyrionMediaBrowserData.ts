@@ -274,7 +274,7 @@ export const useLyrionMediaBrowserData = ({
               : action === "inserttracks"
                 ? "insert"
                 : "add";
-          getHass().callService("lyrion_cli", "method", {
+          getHass().callService("squeezebox", "call_method", {
             entity_id,
             command: appEntry.command,
             parameters: ["playlist", appAction, `item_id:${item.id}`],
@@ -286,14 +286,14 @@ export const useLyrionMediaBrowserData = ({
               : action === "inserttracks"
                 ? "insert"
                 : "add";
-          getHass().callService("lyrion_cli", "method", {
+          getHass().callService("squeezebox", "call_method", {
             entity_id,
             command: "favorites",
             parameters: ["playlist", appAction, `item_id:${item.id}`],
           });
         } else {
           // Library items: use playlist loadtracks/addtracks/inserttracks
-          getHass().callService("lyrion_cli", "method", {
+          getHass().callService("squeezebox", "call_method", {
             entity_id,
             command: "playlist",
             parameters: [action, buildPlaylistSearchTerm(item)],
