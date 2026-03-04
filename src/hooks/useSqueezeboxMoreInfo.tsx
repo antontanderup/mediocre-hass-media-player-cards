@@ -3,10 +3,15 @@ import { useHassMessagePromise } from "@hooks";
 import { usePlayer } from "@components";
 import { useEffect, useMemo } from "preact/hooks";
 
-export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
+export const useSqueezeboxMoreInfo = ({
+  lms_entity_id,
+  enabled,
+}: {
+  lms_entity_id?: string;
+  enabled?: boolean;
+}) => {
   const player = usePlayer();
 
-  const enabled = !!lms_entity_id;
   const entity_id = lms_entity_id;
 
   const { data, loading, error, refetch } =
@@ -24,7 +29,7 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
       },
       {
         enabled: enabled,
-        staleTime: 30000, // 30 seconds
+        staleTime: 60000, // 1 minute
       }
     );
 
@@ -46,9 +51,11 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
         return_response: true,
       },
       {
-        enabled: !!data?.playlist_loop?.find(
-          i => Number(i["playlist index"]) === Number(data.playlist_cur_index)
-        )?.id,
+        enabled:
+          enabled &&
+          !!data?.playlist_loop?.find(
+            i => Number(i["playlist index"]) === Number(data.playlist_cur_index)
+          )?.id,
         staleTime: 86400000, // 24 hours
       }
     );
@@ -57,7 +64,7 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
     if (player.attributes.media_title) {
       refetch();
     }
-  }, [player.attributes.media_title, refetch]);
+  }, [player.attributes.media_title]);
 
   return useMemo(
     () => ({
