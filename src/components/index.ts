@@ -11,6 +11,7 @@ export * from "./HaMediaBrowser";
 export * from "./HaSearch";
 export * from "./HassContext";
 export * from "./Icon";
+export * from "./LyrionTrackInfo";
 export * from "./IconButton";
 export * from "./Input";
 export * from "./LyrionMediaBrowser";
