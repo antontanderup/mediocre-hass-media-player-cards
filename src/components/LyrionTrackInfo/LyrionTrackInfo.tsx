@@ -5,7 +5,6 @@ import { useSqueezeboxMoreInfo } from "@hooks";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { getIsLmsPlayer } from "@utils";
-import { Fragment } from "preact/jsx-runtime";
 
 const styles = {
   trackInfo: css({
@@ -105,27 +104,25 @@ export const LyrionTrackInfo = ({ lms_entity_id }: LyrionTrackInfoProps) => {
   ].filter(Boolean) as string[];
 
   return (
-    <Fragment>
-      <div css={styles.trackInfo}>
-        {audioBadges.length > 0 && (
-          <div css={styles.badgeRow}>
-            {audioBadges.map(label => (
-              <span key={label} css={styles.badge}>
-                {label}
-              </span>
-            ))}
-          </div>
-        )}
-        {metaBadges.length > 0 && (
-          <div css={styles.badgeRow}>
-            {metaBadges.map(label => (
-              <span key={label} css={[styles.badge, styles.badgeMuted]}>
-                {label}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </Fragment>
+    <div css={styles.trackInfo}>
+      {audioBadges.length > 0 && (
+        <div css={styles.badgeRow}>
+          {audioBadges.map(label => (
+            <span key={label} css={styles.badge}>
+              {label}
+            </span>
+          ))}
+        </div>
+      )}
+      {metaBadges.length > 0 && (
+        <div css={styles.badgeRow}>
+          {metaBadges.map(label => (
+            <span key={label} css={[styles.badge, styles.badgeMuted]}>
+              {label}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
