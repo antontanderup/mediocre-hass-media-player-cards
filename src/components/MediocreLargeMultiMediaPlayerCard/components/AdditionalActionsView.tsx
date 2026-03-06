@@ -265,7 +265,13 @@ export const AdditionalActionsView = memo(() => {
       )}
       {lms_entity_id && (
         <LyrionRelatedAlbums
-          renderHeader={() => <ViewHeader subtitle={"Related Albums"} />}
+          renderHeader={() => (
+            <ViewHeader
+              subtitle={t({
+                id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title",
+              })}
+            />
+          )}
           entity_id={lms_entity_id}
         />
       )}
