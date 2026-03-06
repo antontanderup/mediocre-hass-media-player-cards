@@ -64,7 +64,8 @@ export const useSqueezeboxMoreInfo = ({
     if (player.attributes.media_title) {
       refetch();
     }
-  }, [player.attributes.media_title]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.attributes.media_title]); //  only refetch on title change
 
   return useMemo(
     () => ({
