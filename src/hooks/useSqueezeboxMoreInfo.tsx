@@ -12,8 +12,6 @@ export const useSqueezeboxMoreInfo = ({
 }) => {
   const player = usePlayer();
 
-  const entity_id = lms_entity_id;
-
   const { data, loading, error, refetch } =
     useHassMessagePromise<SqueezeboxStatusResponse>(
       {
@@ -22,7 +20,7 @@ export const useSqueezeboxMoreInfo = ({
         service: "query",
         service_data: {
           command: "status",
-          entity_id,
+          entity_id: lms_entity_id,
           parameters: ["-"],
         },
         return_response: true,
@@ -41,7 +39,7 @@ export const useSqueezeboxMoreInfo = ({
         service: "query",
         service_data: {
           command: "songinfo",
-          entity_id,
+          entity_id: lms_entity_id,
           parameters: [
             0,
             100,
