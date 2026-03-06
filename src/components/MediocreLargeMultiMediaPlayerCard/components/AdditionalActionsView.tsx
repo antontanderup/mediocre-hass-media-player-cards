@@ -23,6 +23,7 @@ import {
   transferMaQueue,
 } from "@utils";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
+import { LyrionRelatedAlbums } from "@components/LyrionRelatedAlbums";
 
 const styles = {
   root: css({
@@ -30,6 +31,7 @@ const styles = {
     flexDirection: "column",
     alignItems: "flex-start",
     overflowY: "auto",
+    height: "100%",
     padding: 16,
     gap: 12,
   }),
@@ -257,12 +259,15 @@ export const AdditionalActionsView = memo(() => {
             title={t({
               id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title",
             })}
-            subtitle={t({
-              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_subtitle",
-            })}
           />
           <LyrionTrackInfo lms_entity_id={lms_entity_id ?? undefined} />
         </Fragment>
+      )}
+      {lms_entity_id && (
+        <LyrionRelatedAlbums
+          renderHeader={() => <ViewHeader subtitle={"Related Albums"} />}
+          entity_id={lms_entity_id}
+        />
       )}
     </div>
   );
