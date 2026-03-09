@@ -21,7 +21,7 @@
     "@tanstack/react-form": "^1.28.3",
     "@tanstack/react-virtual": "^3.13.19",
     "@uidotdev/usehooks": "^2.4.1",
-    "arktype": "^2.1.29",
+    "arktype": "^2.2.0",
     "chroma-js": "^3.2.0",
     "custom-card-helpers": "^1.9.0",
     "node-vibrant": "^4.0.4",

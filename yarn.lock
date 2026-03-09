@@ -2353,10 +2353,10 @@ arkregex@0.0.5:
   dependencies:
     "@ark/util" "0.56.0"
 
-arktype@^2.1.29:
-  version "2.1.29"
-  resolved "https://registry.yarnpkg.com/arktype/-/arktype-2.1.29.tgz#23bee076c8851d14e792bde6cd328b578a5654d9"
-  integrity sha512-jyfKk4xIOzvYNayqnD8ZJQqOwcrTOUbIU4293yrzAjA3O1dWh61j71ArMQ6tS/u4pD7vabSPe7nG3RCyoXW6RQ==
+arktype@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/arktype/-/arktype-2.2.0.tgz#883788f0e8948e4242e17e36ecdf0c066d9ed0e8"
+  integrity sha512-t54MZ7ti5BhOEvzEkgKnWvqj+UbDfWig+DHr5I34xatymPusKLS0lQpNJd8M6DzmIto2QGszHfNKoFIT8tMCZQ==
   dependencies:
     "@ark/schema" "0.56.0"
     "@ark/util" "0.56.0"
