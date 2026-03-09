@@ -20,11 +20,21 @@ export type SqueezeboxSongInfoLoopItem = {
   coverart?: string;
   album?: string;
   modificationTime?: string;
-  type?: string;
-  bitrate?: string;
-  remote?: number;
+  type?: string; // mp3, flc, etc.
+  bitrate?: string; // "0" or "256kbps CBR" etc.
+  samplerate?: string; // eg "44100"
+  lossless?: string; // "1" if lossless, "0" or undefined otherwise
+  samplesize?: string; // eg "16" / "24"
+  remote?: string; // "1" / "0" 1 = remote file, 0 = local file
   year?: string;
-  addedTime?: string;
+  playcount?: string; // "6"
+  tracknum?: string; // track number on the album
+  disc?: string; // disc number for multi-disc albums
+  disccount?: string; // total number of discs for multi-disc albums
+  release_type?: string; // e.g. "ALBUM"
+  filesize?: string; // "3065471" in bytes
+  genre?: string; // e.g. "Rock"
+  addedTime?: string; // e.g. "Friday, February 27, 2026, 2:39 PM"
   artwork_url?: string;
   lastUpdated?: string;
   live_edge?: string;
