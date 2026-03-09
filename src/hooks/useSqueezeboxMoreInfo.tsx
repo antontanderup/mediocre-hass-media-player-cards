@@ -1,4 +1,8 @@
-import { SqueezeboxStatusResponse, SqueezeboxSonginfoResponse } from "@types";
+import {
+  SqueezeboxStatusResponse,
+  SqueezeboxSonginfoResponse,
+  SqueezeboxSongInfoLoopItem,
+} from "@types";
 import { useHassMessagePromise } from "@hooks";
 import { usePlayer } from "@components";
 import { useEffect, useMemo } from "preact/hooks";
@@ -31,7 +35,7 @@ export const useSqueezeboxMoreInfo = ({
       }
     );
 
-  const { data: currentTrack, error: currentTrackError } =
+  const { data: songinfoResponse, error: currentTrackError } =
     useHassMessagePromise<SqueezeboxSonginfoResponse>(
       {
         type: "call_service",
@@ -64,6 +68,15 @@ export const useSqueezeboxMoreInfo = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.attributes.media_title]); //  only refetch on title change
+
+  const currentTrack = useMemo(
+    () =>
+      songinfoResponse?.songinfo_loop?.reduce<SqueezeboxSongInfoLoopItem>(
+        (acc, item) => ({ ...acc, ...item }),
+        {}
+      ),
+    [songinfoResponse]
+  );
 
   return useMemo(
     () => ({

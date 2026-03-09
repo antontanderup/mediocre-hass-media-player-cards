@@ -1,5 +1,4 @@
 import { useMemo } from "preact/hooks";
-import type { SqueezeboxSongInfoLoopItem } from "@types";
 import { usePlayer } from "@components/PlayerContext";
 import { useSqueezeboxMoreInfo } from "@hooks";
 import { css } from "@emotion/react";
@@ -53,55 +52,54 @@ export const LyrionTrackInfo = ({ lms_entity_id }: LyrionTrackInfoProps) => {
     enabled: isLmsPlayer,
   });
 
-  const lyrionTrackInfo = useMemo(
-    () =>
-      currentTrack?.songinfo_loop?.reduce<SqueezeboxSongInfoLoopItem>(
-        (acc, item) => ({ ...acc, ...item }),
-        {}
-      ),
-    [currentTrack]
-  );
+  const derived = useMemo(() => {
+    if (!currentTrack) return null;
 
-  if (!lyrionTrackInfo) return null;
+    const trackPosition = (() => {
+      if (!currentTrack.tracknum) return null;
+      const disc =
+        currentTrack.disc && currentTrack.disccount
+          ? `Disc ${currentTrack.disc}/${currentTrack.disccount} · `
+          : currentTrack.disc
+            ? `Disc ${currentTrack.disc} · `
+            : "";
+      return `${disc}Track ${currentTrack.tracknum}`;
+    })();
 
-  const trackPosition = (() => {
-    if (!lyrionTrackInfo.tracknum) return null;
-    const disc =
-      lyrionTrackInfo.disc && lyrionTrackInfo.disccount
-        ? `Disc ${lyrionTrackInfo.disc}/${lyrionTrackInfo.disccount} · `
-        : lyrionTrackInfo.disc
-          ? `Disc ${lyrionTrackInfo.disc} · `
-          : "";
-    return `${disc}Track ${lyrionTrackInfo.tracknum}`;
-  })();
+    const fileSize = (() => {
+      const bytes = Number(currentTrack.filesize);
+      if (!bytes) return null;
+      if (bytes >= 1024 * 1024)
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+      return `${Math.round(bytes / 1024)} KB`;
+    })();
 
-  const fileSize = (() => {
-    const bytes = Number(lyrionTrackInfo.filesize);
-    if (!bytes) return null;
-    if (bytes >= 1024 * 1024)
-      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-    return `${Math.round(bytes / 1024)} KB`;
-  })();
+    const audioBadges = [
+      currentTrack.type ? currentTrack.type.toUpperCase() : null,
+      currentTrack.lossless === "1" ? "Lossless" : null,
+      currentTrack.samplerate
+        ? `${Number(currentTrack.samplerate) / 1000} kHz`
+        : null,
+      currentTrack.samplesize ? `${currentTrack.samplesize}-bit` : null,
+      currentTrack.bitrate && currentTrack.bitrate !== "0"
+        ? currentTrack.bitrate
+        : null,
+      fileSize,
+    ].filter(Boolean) as string[];
 
-  const audioBadges = [
-    lyrionTrackInfo.type ? lyrionTrackInfo.type.toUpperCase() : null,
-    lyrionTrackInfo.lossless === "1" ? "Lossless" : null,
-    lyrionTrackInfo.samplerate
-      ? `${Number(lyrionTrackInfo.samplerate) / 1000} kHz`
-      : null,
-    lyrionTrackInfo.samplesize ? `${lyrionTrackInfo.samplesize}-bit` : null,
-    lyrionTrackInfo.bitrate && lyrionTrackInfo.bitrate !== "0"
-      ? lyrionTrackInfo.bitrate
-      : null,
-    fileSize,
-  ].filter(Boolean) as string[];
+    const metaBadges = [
+      currentTrack.genre,
+      currentTrack.year,
+      trackPosition,
+      currentTrack.playcount ? `${currentTrack.playcount} plays` : null,
+    ].filter(Boolean) as string[];
 
-  const metaBadges = [
-    lyrionTrackInfo.genre,
-    lyrionTrackInfo.year,
-    trackPosition,
-    lyrionTrackInfo.playcount ? `${lyrionTrackInfo.playcount} plays` : null,
-  ].filter(Boolean) as string[];
+    return { audioBadges, metaBadges };
+  }, [currentTrack]);
+
+  if (!derived) return null;
+
+  const { audioBadges, metaBadges } = derived;
 
   return (
     <div css={styles.trackInfo}>

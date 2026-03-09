@@ -15,17 +15,19 @@ const styles = {
     flexDirection: "column",
     gap: 8,
     width: "100%",
+    containerType: "inline-size",
   }),
   relatedScroll: css({
     display: "grid",
-    gridAutoFlow: "column",
-    gridAutoColumns: 100,
+    gridTemplateColumns: "repeat(3, 1fr)",
     gap: 8,
     width: "100%",
-    overflowX: "auto",
-    flexShrink: 0,
-    scrollbarWidth: "none",
-    "&::-webkit-scrollbar": { display: "none" },
+    "@container (min-width: 300px)": {
+      gridTemplateColumns: "repeat(4, 1fr)",
+    },
+    "@container (min-width: 500px)": {
+      gridTemplateColumns: "repeat(6, 1fr)",
+    },
   }),
 };
 
