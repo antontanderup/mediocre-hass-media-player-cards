@@ -52,4 +52,7 @@ speaker_group:
 | `options.always_show_custom_buttons` | boolean |          | Always show custom buttons panel expanded                                                               |
 | `options.hide_when_off`              | boolean |          | Hide the card when the media player is off                                                              |
 | `options.hide_when_group_child`      | boolean |          | Hide the card when the media player is a group child                                                    |
+| `options.show_volume_step_buttons`   | boolean |          | Show volume `+`/`-` step buttons on volume sliders                                                      |
+| `options.use_volume_up_down_for_step_buttons` | boolean |    | Use `volume_up`/`volume_down` services for step buttons instead of `set_volume`                        |
+| `options.use_experimental_lms_media_browser` | boolean |    | Replace the built-in media browser with an experimental lyrion_cli-based browser that includes global search and app access (e.g. Spotty, Qobuz). Requires `lms_entity_id` and lyrion_cli. |
 | `tap_opens_popup`                    | boolean |          | When set to true, tapping the card opens a popup with the massive card                                  |
