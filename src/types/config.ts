@@ -11,7 +11,7 @@ const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
-  "volume_trailing_button?": "'power' | 'ma_favorite' | 'custom' | 'none'", // Button shown to the right of the large view volume slider
+  "volume_trailing_button?": "'power' | 'ma_favorite' | 'group_volume' | 'custom' | 'none'", // Button shown to the right of the large view volume slider
 });
 
 const maFavoriteControlSchema = type({
@@ -24,6 +24,25 @@ const maFavoriteControlSchema = type({
     "'xx-small' | 'x-small' | 'small' | 'medium' | 'large'", // Size of the artwork overlay button
   "artwork_inset_top?": "string", // Top inset for the artwork overlay button (e.g. 14px or 1rem)
   "artwork_inset_right?": "string", // Right inset for the artwork overlay button (e.g. 14px or 1rem)
+});
+
+const volumePanelEntitySchema = type({
+  entity_id: "string",
+  "name?": "string | null",
+  "icon?": "string | null",
+  "show_power?": "boolean | null",
+  "power_entity_id?": type("string").or("null").or("undefined"),
+});
+
+const volumePanelGroupSchema = type({
+  "name?": "string | null",
+  entities: volumePanelEntitySchema.array(),
+});
+
+const volumePanelSchema = type({
+  "show_when?": "'grouped' | 'always'",
+  "entities?": volumePanelEntitySchema.array().or("undefined"),
+  "groups?": volumePanelGroupSchema.array().or("undefined"),
 });
 
 const searchMediaTypeSchema = type({
@@ -93,6 +112,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
   "ma_favorite_control?": maFavoriteControlSchema.or("undefined"),
+  "volume_panel?": volumePanelSchema.or("undefined"),
   "volume_trailing_button_custom_button?":
     customButton.or("null").or("undefined"),
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
@@ -127,6 +147,7 @@ export const MediocreMultiMediaPlayer = type({
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
   "ma_favorite_control?": maFavoriteControlSchema.or("undefined"),
+  "volume_panel?": volumePanelSchema.or("undefined"),
   "volume_trailing_button_custom_button?":
     customButton.or("null").or("undefined"),
   "action?": interactionConfigSchema,
@@ -142,7 +163,7 @@ export const commonMediaPlayerCardOptions = type({
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
-  "volume_trailing_button?": "'power' | 'ma_favorite' | 'custom' | 'none'", // Button shown to the right of the large view volume slider
+  "volume_trailing_button?": "'power' | 'ma_favorite' | 'group_volume' | 'custom' | 'none'", // Button shown to the right of the large view volume slider
 });
 
 export const commonMediaPlayerCardSchema = type({
@@ -200,6 +221,9 @@ export type MediaBrowserLegacyEntry = typeof mediaBrowserLegacyEntry.infer;
 export type CustomButton = typeof customButton.infer;
 export type CustomButtons = typeof customButtons.infer;
 export type MaFavoriteControl = typeof maFavoriteControlSchema.infer;
+export type VolumePanel = typeof volumePanelSchema.infer;
+export type VolumePanelGroup = typeof volumePanelGroupSchema.infer;
+export type VolumePanelEntity = typeof volumePanelEntitySchema.infer;
 export type SearchConfig = typeof searchConfig.infer;
 export type SearchLegacyEntry = typeof searchLegacyEntry.infer;
 export type SearchEntry = typeof searchEntry.infer;

@@ -13,6 +13,7 @@ import {
   MiniPlayer,
   SearchView,
   SpeakerGrouping,
+  VolumePanelView,
 } from "./components";
 import { useMeasure } from "@uidotdev/usehooks";
 import { css } from "@emotion/react";
@@ -28,6 +29,7 @@ export type NavigationRoute =
   | "media-browser"
   | "massive"
   | "speaker-grouping"
+  | "volume-panel"
   | "custom-buttons"
   | "queue"
   | "speaker-overview";
@@ -123,7 +125,7 @@ type MediocreLargeMultiMediaPlayerCardProps = {
 export const MediocreLargeMultiMediaPlayerCard = ({
   className,
 }: MediocreLargeMultiMediaPlayerCardProps) => {
-  const { config } =
+  const { config, rootElement } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
@@ -158,6 +160,28 @@ export const MediocreLargeMultiMediaPlayerCard = ({
       );
     }
   }, [desktopMode, defaultNavigationRoute]); // eslint-disable-line react-hooks/exhaustive-deps -- `navigationRoute` intentionally omitted: this effect should only run when desktop mode changes
+
+  useEffect(() => {
+    const handleMmpcAction = (
+      event: Event & {
+        detail?: {
+          action?: string;
+        };
+      }
+    ) => {
+      if (event.detail?.action !== "open-volume-panel") return;
+      setLastInteraction();
+      setNavigationRoute("volume-panel");
+    };
+
+    rootElement.addEventListener("mmpc-action", handleMmpcAction as EventListener);
+    return () => {
+      rootElement.removeEventListener(
+        "mmpc-action",
+        handleMmpcAction as EventListener
+      );
+    };
+  }, [rootElement, setLastInteraction]);
 
   const handleCardClick = useCallback(() => {
     setLastInteraction();
@@ -223,6 +247,7 @@ export const MediocreLargeMultiMediaPlayerCard = ({
           <MediaBrowserView height={contentHeight} />
         )}
         {navigationRoute === "speaker-grouping" && <SpeakerGrouping />}
+        {navigationRoute === "volume-panel" && <VolumePanelView />}
         {navigationRoute === "queue" && contentHeight && (
           <QueueView height={contentHeight} />
         )}

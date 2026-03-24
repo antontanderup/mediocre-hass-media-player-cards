@@ -45,6 +45,20 @@ export const handleAction = async (
     });
   }
 
+  if (actionObject?.action === "mmpc-action") {
+    const event = new CustomEvent("mmpc-action", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        action: actionObject.mmpc_action,
+        interaction: action,
+        config: actionConfig,
+      },
+    });
+    element.dispatchEvent(event);
+    return Promise.resolve();
+  }
+
   // Thank you to bubble card for inspiration for this
   const event = new CustomEvent("hass-action", {
     bubbles: true,

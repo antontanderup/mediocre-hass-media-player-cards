@@ -35,6 +35,7 @@ export const getMultiConfigToMediocreMassiveConfig = (
     lms_entity_id: selectedPlayer.lms_entity_id,
     search: selectedPlayer.search,
     media_browser: selectedPlayer.media_browser,
+    volume_panel: selectedPlayer.volume_panel,
     volume_trailing_button_custom_button:
       selectedPlayer.volume_trailing_button_custom_button,
     custom_buttons: selectedPlayer.custom_buttons,

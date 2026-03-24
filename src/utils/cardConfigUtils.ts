@@ -27,6 +27,7 @@ export const getDefaultValuesFromConfig = (
       : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
     : null,
   ma_favorite_control: config?.ma_favorite_control,
+  volume_panel: config?.volume_panel,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   lms_entity_id: config?.lms_entity_id ?? null,
@@ -84,6 +85,7 @@ export const getDefaultValuesFromMassiveConfig = (
       : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
     : null,
   ma_favorite_control: config?.ma_favorite_control,
+  volume_panel: config?.volume_panel,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   lms_entity_id: config?.lms_entity_id ?? null,
@@ -136,6 +138,9 @@ export const getSimpleConfigFromFormValues = (
     Object.keys(config.ma_favorite_control).length === 0
   ) {
     delete config.ma_favorite_control;
+  }
+  if (!config.volume_panel || Object.keys(config.volume_panel).length === 0) {
+    delete config.volume_panel;
   }
 
   // Only preserve ma_favorite_button_entity_id if it is a non-empty string
@@ -242,6 +247,9 @@ export const getSimpleConfigFromMassiveFormValues = (
     Object.keys(config.ma_favorite_control).length === 0
   ) {
     delete config.ma_favorite_control;
+  }
+  if (!config.volume_panel || Object.keys(config.volume_panel).length === 0) {
+    delete config.volume_panel;
   }
 
   // Only preserve ma_favorite_button_entity_id if it is a non-empty string

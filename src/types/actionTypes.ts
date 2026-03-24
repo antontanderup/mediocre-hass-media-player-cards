@@ -1,7 +1,7 @@
 import { type } from "arktype";
 
 export const actionTypeSchema = type(
-  "'more-info' | 'toggle' | 'navigate' | 'url' | 'perform-action' | 'assist'"
+  "'more-info' | 'toggle' | 'navigate' | 'url' | 'perform-action' | 'assist' | 'mmpc-action'"
 );
 
 export const interactionTypeSchema = type("'tap' | 'hold' | 'double_tap'");
@@ -23,6 +23,10 @@ export const actionConfigSchema = type({
   .or({
     action: "'navigate'",
     navigation_path: "string",
+  })
+  .or({
+    action: "'mmpc-action'",
+    mmpc_action: "'open-volume-panel'",
   })
   .or({
     action: "'more-info'",

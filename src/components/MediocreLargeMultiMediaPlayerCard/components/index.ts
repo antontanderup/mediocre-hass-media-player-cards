@@ -7,3 +7,4 @@ export * from "./MiniPlayer";
 export * from "./SearchView";
 export * from "./SpeakerGrouping";
 export * from "./ViewHeader";
+export * from "./VolumePanelView";

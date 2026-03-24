@@ -112,6 +112,9 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
     const groupMembers =
       hass.states[mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id]
         ?.attributes?.group_members;
+    const canOpenGroupVolumePanel =
+      (mediaPlayer.volume_panel?.show_when ?? "grouped") === "always" ||
+      (groupMembers?.length ?? 0) > 1;
     const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
     const moreInfoButtonProps = useActionProps({
@@ -188,6 +191,8 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
               customButton={mediaPlayer.volume_trailing_button_custom_button}
               entityId={entity_id}
               onPower={togglePower}
+              onOpenGroupVolumePanel={() => setNavigationRoute("volume-panel")}
+              canOpenGroupVolumePanel={canOpenGroupVolumePanel}
               rootElement={rootElement}
             />
           </div>
@@ -198,10 +203,12 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
 );
 
 type VolumeTrailingButtonProps = {
-  buttonType: "power" | "ma_favorite" | "custom" | "none";
+  buttonType: "power" | "ma_favorite" | "group_volume" | "custom" | "none";
   customButton?: CustomButtonConfig | null;
   entityId: string;
   onPower: () => void;
+  onOpenGroupVolumePanel: () => void;
+  canOpenGroupVolumePanel: boolean;
   rootElement: HTMLElement;
 };
 
@@ -210,6 +217,8 @@ const VolumeTrailingButton = ({
   customButton,
   entityId,
   onPower,
+  onOpenGroupVolumePanel,
+  canOpenGroupVolumePanel,
   rootElement,
 }: VolumeTrailingButtonProps) => {
   switch (buttonType) {
@@ -217,6 +226,15 @@ const VolumeTrailingButton = ({
       return null;
     case "ma_favorite":
       return <MaFavoriteButton size="small" />;
+    case "group_volume":
+      if (!canOpenGroupVolumePanel) return null;
+      return (
+        <IconButton
+          size="small"
+          onClick={onOpenGroupVolumePanel}
+          icon="mdi:volume-source"
+        />
+      );
     case "custom":
       if (!customButton) return null;
       return (

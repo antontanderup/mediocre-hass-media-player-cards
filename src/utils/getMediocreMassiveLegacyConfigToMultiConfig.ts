@@ -17,6 +17,7 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
       lms_entity_id: config.lms_entity_id,
       search: config.search,
       media_browser: config.media_browser,
+      volume_panel: config.volume_panel,
       volume_trailing_button_custom_button:
         config.volume_trailing_button_custom_button,
       custom_buttons: config.custom_buttons,
