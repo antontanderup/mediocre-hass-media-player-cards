@@ -1,10 +1,16 @@
-import { Icon, IconSize, usePlayer } from "@components";
+import { CardContext, CardContextType } from "@components/CardContext";
+import { Icon, IconSize, MaFavoriteButton, usePlayer } from "@components";
 import { fadeIn, theme } from "@constants";
 import { css } from "@emotion/react";
-import { getDeviceIcon, getSourceIcon } from "@utils";
+import { getDeviceIcon, getHass, getSourceIcon } from "@utils";
 import { ButtonHTMLAttributes, JSX } from "preact/compat";
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { getHass } from "@utils";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "preact/hooks";
 
 export type AlbumArtProps = {
   size?: number | string;
@@ -12,6 +18,18 @@ export type AlbumArtProps = {
   iconSize: IconSize;
   renderLongPressIndicator?: () => JSX.Element | null;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
+
+type FavoriteAwareCardConfig = {
+  ma_favorite_control?: {
+    show_on_artwork?: boolean | null;
+    artwork_button_size?:
+      | "xx-small"
+      | "x-small"
+      | "small"
+      | "medium"
+      | "large";
+  };
+};
 
 const styles = {
   root: css({
@@ -62,6 +80,11 @@ const styles = {
     height: "100%",
     aspectRatio: "1 / 1",
   }),
+  favoriteLayer: css({
+    position: "absolute",
+    inset: 0,
+    pointerEvents: "none",
+  }),
 };
 
 export const AlbumArt = ({
@@ -71,6 +94,9 @@ export const AlbumArt = ({
   renderLongPressIndicator,
   ...buttonProps
 }: AlbumArtProps) => {
+  const { config } = useContext<CardContextType<FavoriteAwareCardConfig>>(
+    CardContext
+  );
   const player = usePlayer();
   const {
     media_title: title,
@@ -89,6 +115,9 @@ export const AlbumArt = ({
 
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const latestImageUrl = useRef<string | null | undefined>(null);
+  const showMaFavoriteOnArtwork = config.ma_favorite_control?.show_on_artwork;
+  const artworkFavoriteButtonSize =
+    config.ma_favorite_control?.artwork_button_size ?? "small";
 
   const getImage = useCallback((url?: string | null, retries = 0) => {
     if (!url) {
@@ -194,6 +223,14 @@ export const AlbumArt = ({
           </div>
         )}
       </div>
+      {showMaFavoriteOnArtwork && (
+        <div css={styles.favoriteLayer}>
+          <MaFavoriteButton
+            placement="artwork"
+            size={artworkFavoriteButtonSize}
+          />
+        </div>
+      )}
       {renderLongPressIndicator && renderLongPressIndicator()}
     </button>
   );

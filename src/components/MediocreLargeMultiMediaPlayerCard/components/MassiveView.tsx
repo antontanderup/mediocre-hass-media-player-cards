@@ -8,6 +8,7 @@ import { CardContext, CardContextType } from "@components/CardContext";
 import {
   Icon,
   IconButton,
+  MaFavoriteButton,
   MassivePlaybackController,
   useHass,
   usePlayer,
@@ -197,7 +198,7 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
 );
 
 type VolumeTrailingButtonProps = {
-  buttonType: "power" | "custom" | "none";
+  buttonType: "power" | "ma_favorite" | "custom" | "none";
   customButton?: CustomButtonConfig | null;
   entityId: string;
   onPower: () => void;
@@ -214,6 +215,8 @@ const VolumeTrailingButton = ({
   switch (buttonType) {
     case "none":
       return null;
+    case "ma_favorite":
+      return <MaFavoriteButton size="small" />;
     case "custom":
       if (!customButton) return null;
       return (

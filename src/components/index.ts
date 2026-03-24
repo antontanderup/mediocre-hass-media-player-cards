@@ -14,6 +14,7 @@ export * from "./Icon";
 export * from "./IconButton";
 export * from "./Input";
 export * from "./LyrionMediaBrowser";
+export * from "./MaFavoriteButton";
 export * from "./MaSearch";
 export * from "./MassivePlaybackController";
 export * from "./MediaBrowser";

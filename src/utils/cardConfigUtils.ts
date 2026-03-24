@@ -26,6 +26,7 @@ export const getDefaultValuesFromConfig = (
       ? config.media_browser
       : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
     : null,
+  ma_favorite_control: config?.ma_favorite_control,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   lms_entity_id: config?.lms_entity_id ?? null,
@@ -82,6 +83,7 @@ export const getDefaultValuesFromMassiveConfig = (
       ? config.media_browser
       : [{ entity_id: config.media_browser.entity_id ?? config.entity_id }]
     : null,
+  ma_favorite_control: config?.ma_favorite_control,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
   lms_entity_id: config?.lms_entity_id ?? null,
@@ -129,6 +131,12 @@ export const getSimpleConfigFromFormValues = (
   if (!config.action || Object.keys(config.action).length === 0)
     delete config.action;
   if (!config.ma_entity_id) delete config.ma_entity_id;
+  if (
+    !config.ma_favorite_control ||
+    Object.keys(config.ma_favorite_control).length === 0
+  ) {
+    delete config.ma_favorite_control;
+  }
 
   // Only preserve ma_favorite_button_entity_id if it is a non-empty string
   if (!config.ma_favorite_button_entity_id) {
@@ -229,6 +237,12 @@ export const getSimpleConfigFromMassiveFormValues = (
   if (!config.action || Object.keys(config.action).length === 0)
     delete config.action;
   if (!config.ma_entity_id) delete config.ma_entity_id;
+  if (
+    !config.ma_favorite_control ||
+    Object.keys(config.ma_favorite_control).length === 0
+  ) {
+    delete config.ma_favorite_control;
+  }
 
   // Only preserve ma_favorite_button_entity_id if it is a non-empty string
   if (!config.ma_favorite_button_entity_id) {
