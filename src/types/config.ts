@@ -29,10 +29,12 @@ export const mediaPlayerConfigEntityArray = mediaPlayerConfigEntity.array();
 const mediaBrowserEntry = type({
   "name?": "string | null",
   entity_id: type("string"),
+  "media_types?": searchMediaTypeSchema.array().or("undefined"),
 });
 const mediaBrowserLegacyEntry = type({
   "enabled?": "boolean | null", // Enables media browser functionality
   "entity_id?": type("string").or("null").or("undefined"), // entity_id of the media browser to use (optional will fall back to the entity_id of the card)
+  "media_types?": searchMediaTypeSchema.array().or("undefined"),
 });
 
 const mediaBrowser = type("null")
@@ -127,6 +129,7 @@ export const commonMediaPlayerCardSchema = type({
   type: "string",
   entity_id: "string", // entity id of the initially selected media player (used when player is active)
   media_players: MediocreMultiMediaPlayer.array(),
+  "media_browser?": mediaBrowser,
   "use_art_colors?": "boolean",
   "disable_player_focus_switching?": "boolean",
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)

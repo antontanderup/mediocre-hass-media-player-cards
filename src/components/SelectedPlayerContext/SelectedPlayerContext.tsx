@@ -8,6 +8,7 @@ import {
 } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { useHass } from "@components/HassContext";
+import { getResolvedMultiMediaPlayer } from "@utils";
 import { selectActiveMultiMediaPlayer } from "@utils/selectActiveMultiMediaPlayer";
 import {
   MediocreMultiMediaPlayer,
@@ -70,12 +71,18 @@ export const SelectedPlayerProvider = ({
     lastInteractionRef.current = Date.now();
   }, []);
 
+  const resolvedSelectedPlayer = getResolvedMultiMediaPlayer(config, selectedPlayer);
+
   return (
     <SelectedPlayerContext.Provider
-      value={{ selectedPlayer, setSelectedPlayer, setLastInteraction }}
+      value={{
+        selectedPlayer: resolvedSelectedPlayer,
+        setSelectedPlayer,
+        setLastInteraction,
+      }}
     >
       <PlayerContextProvider
-        entityId={selectedPlayer?.entity_id || config.entity_id}
+        entityId={resolvedSelectedPlayer?.entity_id || config.entity_id}
       >
         {children}
       </PlayerContextProvider>

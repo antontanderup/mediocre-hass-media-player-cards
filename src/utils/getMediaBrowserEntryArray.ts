@@ -8,5 +8,12 @@ export const getHasMediaBrowserEntryArray = (
     return mediaBrowser;
   }
 
-  return [{ entity_id: mediaBrowser?.entity_id ?? fallbackEntityId }];
+  return [
+    {
+      entity_id: mediaBrowser?.entity_id ?? fallbackEntityId,
+      ...(mediaBrowser?.media_types
+        ? { media_types: mediaBrowser.media_types }
+        : {}),
+    },
+  ];
 };

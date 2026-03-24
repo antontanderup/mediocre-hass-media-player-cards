@@ -17,6 +17,7 @@ export * from "./getIsDarkMode";
 export * from "./getIsLmsPlayer";
 export * from "./getIsMassPlayer";
 export * from "./getMediaBrowserEntryArray";
+export * from "./getResolvedMultiMediaPlayer";
 export * from "./getMediaPlayerTitleAndSubtitle";
 export * from "./getMediocreLegacyConfigToMultiConfig";
 export * from "./getMultiConfigToMediocreMassiveConfig";
