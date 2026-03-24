@@ -54,6 +54,7 @@ export const AdditionalActionsView = memo(() => {
   } = selectedPlayer!;
 
   const {
+    rootElement,
     config: { media_players },
   } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
@@ -155,9 +156,13 @@ export const AdditionalActionsView = memo(() => {
     }));
   }, [player.attributes.source_list, player.entity_id]);
 
-  const renderMediaPlayerActions =
-    (!!ma_entity_id && isMainEntityMassPlayer) ||
-    sourceSelectMenuItems.length > 0;
+  const moreInfoButtonProps = useActionProps({
+    rootElement,
+    actionConfig: {
+      tap_action: { action: "more-info" },
+      entity: entity_id,
+    },
+  });
 
   const { t } = useIntl();
 
@@ -180,77 +185,80 @@ export const AdditionalActionsView = memo(() => {
           </div>
         </Fragment>
       )}
-      {renderMediaPlayerActions && (
-        <Fragment>
-          <ViewHeader
-            title={t({
-              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title",
+      <Fragment>
+        <ViewHeader
+          title={t({
+            id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_title",
+          })}
+          subtitle={t({
+            id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle",
+          })}
+        />
+        <div css={styles.buttons}>
+          {!!ma_entity_id && isMainEntityMassPlayer && (
+            <Fragment>
+              {ma_favorite_button_entity_id && (
+                <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
+                  {t({
+                    id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite",
+                  })}
+                </Chip>
+              )}
+              {maTransferMenuItems.length > 0 && (
+                <OverlayMenu
+                  menuItems={maTransferMenuItems}
+                  side="bottom"
+                  renderTrigger={triggerProps => (
+                    <Chip icon="mdi:transfer" {...triggerProps}>
+                      {t({
+                        id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
+                      })}
+                      <Icon size="x-small" icon="mdi:chevron-down" />
+                    </Chip>
+                  )}
+                />
+              )}
+            </Fragment>
+          )}
+          {lmsTransferMenuItems.length > 0 && (
+            <OverlayMenu
+              menuItems={lmsTransferMenuItems}
+              side="bottom"
+              renderTrigger={triggerProps => (
+                <Chip icon="mdi:transfer" {...triggerProps}>
+                  {t({
+                    id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
+                  })}
+                  <Icon size="x-small" icon="mdi:chevron-down" />
+                </Chip>
+              )}
+            />
+          )}
+          {sourceSelectMenuItems.length > 0 && player.attributes.source && (
+            <OverlayMenu
+              side="bottom"
+              menuItems={sourceSelectMenuItems}
+              renderTrigger={triggerProps => (
+                <Chip
+                  {...triggerProps}
+                  icon={getSourceIcon({
+                    source: player.attributes.source ?? "",
+                    fallbackIcon: "mdi:import",
+                  })}
+                >
+                  {player.attributes.source}
+                  <Icon size="x-small" icon="mdi:chevron-down" />
+                </Chip>
+              )}
+            />
+          )}
+          <Chip icon="mdi:information-outline" {...moreInfoButtonProps}>
+            {t({
+              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info",
             })}
-            subtitle={t({
-              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.media_player_actions_subtitle",
-            })}
-          />
-          <div css={styles.buttons}>
-            {!!ma_entity_id && isMainEntityMassPlayer && (
-              <Fragment>
-                {ma_favorite_button_entity_id && (
-                  <Chip icon="mdi:heart-plus" onClick={markSongAsFavorite}>
-                    {t({
-                      id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.mark_as_favorite",
-                    })}
-                  </Chip>
-                )}
-                {maTransferMenuItems.length > 0 && (
-                  <OverlayMenu
-                    menuItems={maTransferMenuItems}
-                    side="bottom"
-                    renderTrigger={triggerProps => (
-                      <Chip icon="mdi:transfer" {...triggerProps}>
-                        {t({
-                          id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
-                        })}
-                        <Icon size="x-small" icon="mdi:chevron-down" />
-                      </Chip>
-                    )}
-                  />
-                )}
-              </Fragment>
-            )}
-            {lmsTransferMenuItems.length > 0 && (
-              <OverlayMenu
-                menuItems={lmsTransferMenuItems}
-                side="bottom"
-                renderTrigger={triggerProps => (
-                  <Chip icon="mdi:transfer" {...triggerProps}>
-                    {t({
-                      id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.transfer_queue",
-                    })}
-                    <Icon size="x-small" icon="mdi:chevron-down" />
-                  </Chip>
-                )}
-              />
-            )}
-            {sourceSelectMenuItems.length > 0 && player.attributes.source && (
-              <OverlayMenu
-                side="bottom"
-                menuItems={sourceSelectMenuItems}
-                renderTrigger={triggerProps => (
-                  <Chip
-                    {...triggerProps}
-                    icon={getSourceIcon({
-                      source: player.attributes.source ?? "",
-                      fallbackIcon: "mdi:import",
-                    })}
-                  >
-                    {player.attributes.source}
-                    <Icon size="x-small" icon="mdi:chevron-down" />
-                  </Chip>
-                )}
-              />
-            )}
-          </div>
-        </Fragment>
-      )}
+          </Chip>
+        </div>
+      </Fragment>
     </div>
   );
 });
