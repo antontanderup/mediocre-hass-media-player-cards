@@ -9,10 +9,25 @@ import {
 } from "./types";
 import { musicMediaTypes, responseKeyMediaTypeMap } from "./constants";
 
-export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
+export const useLibrary = (
+  filter: MaFilterType,
+  options: {
+    enabled: boolean;
+    favorite?: boolean;
+    search?: string;
+    limit?: number;
+  }
+) => {
   const [configEntry, setConfigEntry] = useState(null);
   const [results, setResults] = useState<MaSearchResponse | null>();
   const [loading, setLoading] = useState(false);
+  const [canLoadMore, setCanLoadMore] = useState(false);
+  const {
+    enabled,
+    favorite = false,
+    search = "",
+    limit = filter === "all" ? 8 : filter === "music" ? 20 : 100,
+  } = options;
 
   useEffect(() => {
     const hass = getHass();
@@ -35,10 +50,12 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
   useEffect(() => {
     if (!configEntry || !enabled) {
       setResults(null);
+      setCanLoadMore(false);
       return;
     }
     let isCancelled = false;
     setResults(null);
+    setCanLoadMore(false);
     setLoading(true);
 
     const newResults: MaSearchResponse = {
@@ -60,8 +77,9 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
         service_data: {
           config_entry_id: configEntry,
           media_type: mediaType,
-          favorite: true,
-          limit: filter === "all" ? 8 : 20,
+          favorite: favorite || undefined,
+          search: search || undefined,
+          limit,
         },
         return_response: true,
       };
@@ -70,13 +88,20 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
           response: { items: MaMediaItem[] };
         }>(message, { staleTime: 120000 });
         if (!res.response) {
-          return;
+          return false;
         }
         // @ts-expect-error we must trust the response here
         newResults[mediaTypeResponseKeyMap[mediaType]] = res.response.items ?? [];
+        return (res.response.items?.length ?? 0) >= limit;
       } catch (e) {
-        console.error("Error fetching favorites:", mediaType, e);
-        return;
+        console.error(
+          favorite
+            ? "Error fetching favorite items:"
+            : "Error fetching library items:",
+          mediaType,
+          e
+        );
+        return false;
       }
     };
 
@@ -85,23 +110,26 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
         Object.values(responseKeyMediaTypeMap).map(mediaType =>
           getResult(mediaType)
         )
-      ).then(() => {
+      ).then(hasMore => {
         if (isCancelled) return;
         setLoading(false);
+        setCanLoadMore(hasMore.some(Boolean));
         setResults(newResults);
       });
     } else if (filter === "music") {
       Promise.all(musicMediaTypes.map(mediaType => getResult(mediaType))).then(
-        () => {
+        hasMore => {
           if (isCancelled) return;
           setLoading(false);
+          setCanLoadMore(hasMore.some(Boolean));
           setResults(newResults);
         }
       );
     } else {
-      getResult(filter).then(() => {
+      getResult(filter).then(hasMore => {
         if (isCancelled) return;
         setLoading(false);
+        setCanLoadMore(Boolean(hasMore));
         setResults(newResults);
       });
     }
@@ -109,9 +137,12 @@ export const useFavorites = (filter: MaFilterType, enabled: boolean) => {
     return () => {
       isCancelled = true;
     };
-  }, [configEntry, filter, enabled]);
+  }, [configEntry, filter, enabled, favorite, limit, search]);
 
-  return useMemo(() => ({ favorites: results, loading }), [results, loading]);
+  return useMemo(
+    () => ({ library: results, loading, canLoadMore }),
+    [results, loading, canLoadMore]
+  );
 };
 
 const mediaTypeResponseKeyMap: {

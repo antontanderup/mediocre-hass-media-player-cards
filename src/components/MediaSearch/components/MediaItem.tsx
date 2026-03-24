@@ -104,6 +104,7 @@ export const MediaItem = forwardRef<HTMLButtonElement, MediaItemProps>(
           css={styles.mediaImage}
           imageUrl={imageUrl}
           mdiIcon={mdiIcon}
+          fallbackText={name}
           loading={loading}
           done={done}
         />

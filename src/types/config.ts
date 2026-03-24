@@ -5,6 +5,11 @@ const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
   "always_show_footer_more_actions?": "boolean", // Always show the footer more-actions button in the large view, even when no custom buttons are configured
   "hide_mini_player_on_secondary_views?": "boolean", // Hide the mini player shown below non-home views in the large card
+  "ma_library_compact_thumbs_columns?": "number", // Number of columns for compact-thumb view on MA library category pages
+  "ma_library_root_columns?": "number", // Number of columns for the MA library root category tiles
+  "ma_library_thumbs_columns?": "number", // Number of columns for thumb view on MA library category pages
+  "ma_search_compact_thumbs_columns?": "number", // Number of columns for compact-thumb view in MA global search
+  "ma_search_thumbs_columns?": "number", // Number of columns for thumb view in MA global search
   "media_browser_view_icon?": "string", // Icon for the media browser tab in the large footer navigation
   "media_browser_view_title?": "string", // Custom title shown for the large Browse Media view
   "player_view_icon?": "string", // Icon for the main player tab in the large footer navigation
@@ -157,6 +162,11 @@ export const MediocreMultiMediaPlayer = type({
 export const commonMediaPlayerCardOptions = type({
   "always_show_footer_more_actions?": "boolean", // Always show the footer more-actions button in the large view, even when no custom buttons are configured
   "hide_mini_player_on_secondary_views?": "boolean", // Hide the mini player shown below non-home views in the large card
+  "ma_library_compact_thumbs_columns?": "number", // Number of columns for compact-thumb view on MA library category pages
+  "ma_library_root_columns?": "number", // Number of columns for the MA library root category tiles
+  "ma_library_thumbs_columns?": "number", // Number of columns for thumb view on MA library category pages
+  "ma_search_compact_thumbs_columns?": "number", // Number of columns for compact-thumb view in MA global search
+  "ma_search_thumbs_columns?": "number", // Number of columns for thumb view in MA global search
   "media_browser_view_icon?": "string", // Icon for the media browser tab in the large footer navigation
   "media_browser_view_title?": "string", // Custom title shown for the large Browse Media view
   "player_view_icon?": "string", // Icon for the main player tab in the large footer navigation

@@ -5,6 +5,7 @@ import { css, keyframes } from "@emotion/react";
 import { getHass } from "@utils";
 import { memo } from "preact/compat";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { getMediaPlaceholderText } from "./getMediaPlaceholderText";
 
 const fadeInOut = keyframes({
   "0%": { opacity: 1, transform: "translateY(0px)" },
@@ -55,6 +56,19 @@ const styles = {
   iconNoBackground: css({
     backgroundColor: "transparent",
   }),
+  placeholder: css({
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#b3b3b3",
+    color: "rgba(255, 255, 255, 0.78)",
+    fontSize: "clamp(1.3rem, 3.4vw, 3rem)",
+    fontWeight: 500,
+    letterSpacing: "-0.04em",
+    userSelect: "none",
+  }),
   done: css({
     animation: `${fadeInOut} 3s forwards`,
   }),
@@ -63,13 +77,21 @@ const styles = {
 export type MediaImageProps = {
   imageUrl?: string | null;
   mdiIcon?: string | null;
+  fallbackText?: string | null;
   loading?: boolean;
   done?: boolean;
   className?: string;
 };
 
 export const MediaImage = memo<MediaImageProps>(
-  ({ imageUrl, mdiIcon, loading, done, className }: MediaImageProps) => {
+  ({
+    imageUrl,
+    mdiIcon,
+    fallbackText,
+    loading,
+    done,
+    className,
+  }: MediaImageProps) => {
     const [error, setError] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -123,6 +145,8 @@ export const MediaImage = memo<MediaImageProps>(
       getImage(imageUrl);
     }, [imageUrl, getImage]);
 
+    const placeholderText = getMediaPlaceholderText(fallbackText);
+
     return (
       <div css={styles.root} className={className}>
         {image?.src && !error && (
@@ -132,6 +156,9 @@ export const MediaImage = memo<MediaImageProps>(
             alt=""
           />
         )}
+        {!image?.src && !mdiIcon && !!placeholderText && (
+          <div css={styles.placeholder}>{placeholderText}</div>
+        )}
         {!image?.src && mdiIcon && !error && (
           <Icon
             icon={mdiIcon}
@@ -139,7 +166,10 @@ export const MediaImage = memo<MediaImageProps>(
             css={[styles.icon, styles.iconNoBackground]}
           />
         )}
-        {!!error && (
+        {!!error && !mdiIcon && !!placeholderText && (
+          <div css={styles.placeholder}>{placeholderText}</div>
+        )}
+        {!!error && (!placeholderText || !!mdiIcon) && (
           <Icon
             icon={mdiIcon ?? "mdi:image-broken-variant"}
             size="medium"

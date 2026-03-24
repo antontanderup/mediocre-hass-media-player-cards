@@ -42,19 +42,21 @@ export const SearchView = memo<SearchViewProps>(({ height }) => {
 
   const { t } = useIntl();
   const configuredTitle = config?.options?.search_view_title?.trim();
+  const searchTitle =
+    configuredTitle ||
+    (selectedSearchProvider?.entity_id === ma_entity_id
+      ? t({
+          id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
+          defaultMessage: "Global Search",
+        })
+      : t({
+          id: "MediocreMultiMediaPlayerCard.SearchView.search_title",
+          defaultMessage: "Search",
+        }));
 
   const renderHeader = () => (
     <ViewHeader
-      title={
-        configuredTitle ||
-        (selectedSearchProvider?.entity_id === ma_entity_id
-          ? t({
-              id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
-            })
-          : t({
-              id: "MediocreMultiMediaPlayerCard.SearchView.search_title",
-            }))
-      }
+      title={searchTitle}
       css={styles.header}
       renderAction={
         searchProvidersMenu.length > 1
@@ -89,7 +91,10 @@ export const SearchView = memo<SearchViewProps>(({ height }) => {
         <MaSearch
           renderHeader={renderHeader}
           maEntityId={ma_entity_id}
+          filterConfig={selectedSearchProvider.media_types}
           horizontalPadding={16}
+          thumbColumns={config?.options?.ma_search_thumbs_columns}
+          compactThumbColumns={config?.options?.ma_search_compact_thumbs_columns}
           maxHeight={height}
         />
       );

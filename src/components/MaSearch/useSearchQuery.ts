@@ -7,9 +7,20 @@ import {
   MaSearchResponse,
 } from "./types";
 import { useHassMessagePromise } from "@hooks/useHassMessagePromise";
+import { musicMediaTypes } from "./constants";
 
-export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
+export const useSearchQuery = (
+  debounceQuery: string,
+  filter: MaFilterType,
+  options?: {
+    enabled?: boolean;
+    limit?: number;
+    libraryOnly?: boolean;
+  }
+) => {
   const [configEntry, setConfigEntry] = useState(null);
+  const { limit = filter === "all" ? 8 : filter === "music" ? 24 : 100 } =
+    options ?? {};
 
   useEffect(() => {
     const hass = getHass();
@@ -37,16 +48,29 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
       service_data: {
         name: debounceQuery,
         config_entry_id: configEntry,
-        media_type: filter === "all" ? undefined : filter,
-        limit: filter === "all" ? 8 : 100,
+        media_type:
+          filter === "all"
+            ? undefined
+            : filter === "music"
+              ? musicMediaTypes
+              : [filter],
+        limit,
+        library_only: options?.libraryOnly || undefined,
       },
       return_response: true,
     },
     {
-      enabled: debounceQuery !== "" && !!configEntry,
-      staleTime: 120000, // 2 minutes
+      enabled: debounceQuery !== "" && !!configEntry && (options?.enabled ?? true),
+      staleTime: 120000,
     }
   );
+
+  const canLoadMore = useMemo(() => {
+    if (!data) return false;
+    return Object.values(data).some(
+      items => Array.isArray(items) && items.length >= limit
+    );
+  }, [data, limit]);
 
   const playItem = useCallback(
     async (item: MaMediaItem, targetEntity: string, enqueue: MaEnqueueMode) => {
@@ -62,7 +86,7 @@ export const useSearchQuery = (debounceQuery: string, filter: MaFilterType) => {
   );
 
   return useMemo(
-    () => ({ results: data, loading, playItem }),
-    [data, loading, playItem]
+    () => ({ results: data, loading, playItem, canLoadMore }),
+    [data, loading, playItem, canLoadMore]
   );
 };

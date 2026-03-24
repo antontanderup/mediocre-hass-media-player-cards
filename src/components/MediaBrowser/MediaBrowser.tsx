@@ -4,11 +4,16 @@ import { OverlayMenuItem } from "@components/OverlayMenu/OverlayMenu";
 import { MediaBrowserEntry } from "@types";
 import { getCanDisplayLyrionMediaBrowser } from "@utils";
 import { FC, useEffect, useMemo, useState } from "preact/compat";
+import { MaLibraryBrowser } from "../MaSearch/MaLibraryBrowser";
 
 export type MediaBrowserProps = {
   mediaBrowserEntryArray: MediaBrowserEntry[];
   horizontalPadding?: number;
   maxHeight?: number;
+  maEntityId?: string | null;
+  maLibraryCompactThumbColumns?: number;
+  maLibraryRootColumns?: number;
+  maLibraryThumbColumns?: number;
   lmsEntityId?: string | null;
   useExperimentalLmsMediaBrowser?: boolean;
   renderHeader?: () => preact.JSX.Element;
@@ -16,6 +21,10 @@ export type MediaBrowserProps = {
 
 export const MediaBrowser: FC<MediaBrowserProps> = ({
   mediaBrowserEntryArray,
+  maEntityId,
+  maLibraryCompactThumbColumns,
+  maLibraryRootColumns,
+  maLibraryThumbColumns,
   lmsEntityId,
   horizontalPadding,
   maxHeight,
@@ -42,6 +51,7 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
   }, [mediaBrowserEntryArray, selectedMediaBrowser.entity_id]);
 
   const isLyrionEntity = selectedMediaBrowser.entity_id === lmsEntityId;
+  const isMusicAssistantEntity = selectedMediaBrowser.entity_id === maEntityId;
   const canDisplayLyrionMediaBrowser =
     useExperimentalLmsMediaBrowser && getCanDisplayLyrionMediaBrowser();
 
@@ -56,6 +66,26 @@ export const MediaBrowser: FC<MediaBrowserProps> = ({
             ? selectMediaBrowserMenuItems
             : undefined
         }
+        horizontalPadding={horizontalPadding}
+        maxHeight={maxHeight}
+        renderHeader={renderHeader}
+      />
+    );
+  }
+  if (isMusicAssistantEntity && maEntityId) {
+    return (
+      <MaLibraryBrowser
+        maEntityId={maEntityId}
+        filterConfig={selectedMediaBrowser.media_types}
+        providerLabel={selectedMediaBrowser.name ?? selectedMediaBrowser.entity_id}
+        providerMenuItems={
+          selectMediaBrowserMenuItems.length > 1
+            ? selectMediaBrowserMenuItems
+            : undefined
+        }
+        rootColumns={maLibraryRootColumns}
+        thumbColumns={maLibraryThumbColumns}
+        compactThumbColumns={maLibraryCompactThumbColumns}
         horizontalPadding={horizontalPadding}
         maxHeight={maxHeight}
         renderHeader={renderHeader}

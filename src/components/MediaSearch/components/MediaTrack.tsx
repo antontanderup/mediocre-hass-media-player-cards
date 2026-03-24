@@ -158,6 +158,7 @@ export const MediaTrack = forwardRef<HTMLButtonElement, MediaTrackProps>(
           imageUrl={imageUrl}
           loading={loading}
           mdiIcon={mdiIcon}
+          fallbackText={title}
           done={done}
         />
         <div css={styles.trackInfo}>

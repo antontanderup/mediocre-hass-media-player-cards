@@ -310,7 +310,11 @@ const CompactMiniPlayer = ({
           onKeyDown={handleContainerKeyDown}
         >
           <div css={styles.artwork}>
-            <MediaImage imageUrl={imageUrl} mdiIcon={mdiIcon} />
+            <MediaImage
+              imageUrl={imageUrl}
+              mdiIcon={mdiIcon}
+              fallbackText={displayPlayerName}
+            />
           </div>
           <div css={styles.textColumn}>
             <div css={styles.title}>{displayTitle}</div>

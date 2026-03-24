@@ -69,6 +69,7 @@ export const HaSearch = ({
             placeholder={t({ id: "Search.input_placeholder" })}
             onChange={setQuery}
             value={query}
+            clearable
             loading={loading}
             css={searchStyles.input}
           />

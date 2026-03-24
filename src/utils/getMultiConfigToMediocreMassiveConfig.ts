@@ -45,6 +45,33 @@ export const getMultiConfigToMediocreMassiveConfig = (
     options: {
       always_show_footer_more_actions:
         config.options?.always_show_footer_more_actions ?? false,
+      ...(config.options?.ma_library_compact_thumbs_columns
+        ? {
+            ma_library_compact_thumbs_columns:
+              config.options.ma_library_compact_thumbs_columns,
+          }
+        : {}),
+      ...(config.options?.ma_library_root_columns
+        ? {
+            ma_library_root_columns: config.options.ma_library_root_columns,
+          }
+        : {}),
+      ...(config.options?.ma_library_thumbs_columns
+        ? {
+            ma_library_thumbs_columns: config.options.ma_library_thumbs_columns,
+          }
+        : {}),
+      ...(config.options?.ma_search_compact_thumbs_columns
+        ? {
+            ma_search_compact_thumbs_columns:
+              config.options.ma_search_compact_thumbs_columns,
+          }
+        : {}),
+      ...(config.options?.ma_search_thumbs_columns
+        ? {
+            ma_search_thumbs_columns: config.options.ma_search_thumbs_columns,
+          }
+        : {}),
       ...(config.options?.media_browser_view_icon
         ? { media_browser_view_icon: config.options.media_browser_view_icon }
         : {}),

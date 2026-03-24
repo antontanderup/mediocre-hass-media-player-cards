@@ -7,6 +7,7 @@ interface InputProps {
   value?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
+  clearable?: boolean;
   disabled?: boolean;
   type?: string;
   label?: string;
@@ -62,6 +63,12 @@ const styles = {
       cursor: "not-allowed",
     },
   }),
+  inputWithClearButton: css({
+    paddingRight: "36px",
+  }),
+  inputWithTrailingIcons: css({
+    paddingRight: "56px",
+  }),
   icon: css({
     position: "absolute",
     right: "16px",
@@ -72,12 +79,33 @@ const styles = {
       animation: `${spinAnimation} 1s linear infinite`,
     },
   }),
+  iconWithClearButton: css({
+    right: "36px",
+  }),
+  clearButton: css({
+    position: "absolute",
+    right: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    border: "none",
+    background: "transparent",
+    color: "var(--secondary-text-color)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 0,
+    cursor: "pointer",
+    "&:hover": {
+      color: "var(--primary-text-color)",
+    },
+  }),
 };
 
 export const Input = ({
   value = "",
   placeholder,
   onChange,
+  clearable = false,
   disabled,
   type = "text",
   label,
@@ -89,12 +117,18 @@ export const Input = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.((e.target as HTMLInputElement).value);
   };
+  const showClearButton = clearable && !!value && !disabled;
+  const showLoadingIndicator = loading && !showClearButton;
 
   return (
     <div css={styles.root} className={className} style={style}>
       {label && <label css={styles.label}>{label}</label>}
       <input
-        css={styles.input}
+        css={[
+          styles.input,
+          showClearButton && styles.inputWithClearButton,
+          showClearButton && showLoadingIndicator && styles.inputWithTrailingIcons,
+        ]}
         value={value}
         placeholder={placeholder}
         onChange={handleChange}
@@ -102,7 +136,23 @@ export const Input = ({
         type={type}
         name={name}
       />
-      {loading && <Icon size="x-small" icon="mdi:loading" css={styles.icon} />}
+      {showLoadingIndicator && (
+        <Icon
+          size="x-small"
+          icon="mdi:loading"
+          css={[styles.icon, showClearButton && styles.iconWithClearButton]}
+        />
+      )}
+      {showClearButton && (
+        <button
+          type="button"
+          css={styles.clearButton}
+          onClick={() => onChange?.("")}
+          aria-label="Clear input"
+        >
+          <Icon size="x-small" icon="mdi:close" />
+        </button>
+      )}
     </div>
   );
 };

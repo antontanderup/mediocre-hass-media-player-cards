@@ -5,11 +5,12 @@ export type MaMediaType =
   | "track"
   | "playlist"
   | "radio"
+  | "genre"
   | "audiobook"
   | "podcast";
 
 // Filter types (includes "all" in addition to MaMediaType)
-export type MaFilterType = "all" | MaMediaType;
+export type MaFilterType = "all" | "music" | MaMediaType;
 
 // Enqueue modes for media playback
 export type MaEnqueueMode =
@@ -18,6 +19,8 @@ export type MaEnqueueMode =
   | "next"
   | "replace_next"
   | "add";
+
+export type MaViewMode = "list" | "thumbs" | "compact_thumbs";
 
 // Filter configuration type
 export interface MaFilterConfig {
@@ -63,6 +66,10 @@ export interface MaRadio extends MaMediaItem {
   media_type: "radio";
 }
 
+export interface MaGenre extends MaMediaItem {
+  media_type: "genre";
+}
+
 export interface MaPodcast extends MaMediaItem {
   media_type: "podcast";
 }
@@ -78,6 +85,7 @@ export interface MaSearchResponse {
   tracks: MaTrack[];
   playlists: MaPlaylist[];
   radio: MaRadio[];
+  genres: MaGenre[];
   audiobooks: MaAudiobook[];
   podcasts: MaPodcast[];
 }

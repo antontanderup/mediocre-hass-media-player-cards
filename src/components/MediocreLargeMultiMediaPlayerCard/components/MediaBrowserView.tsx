@@ -24,7 +24,8 @@ export type MediaBrowserViewProps = {
 export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
   const { t } = useIntl();
   const { selectedPlayer } = useSelectedPlayer();
-  const { entity_id, media_browser, lms_entity_id } = selectedPlayer!;
+  const { entity_id, media_browser, lms_entity_id, ma_entity_id } =
+    selectedPlayer!;
   const { config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
@@ -50,11 +51,17 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
           media_browser,
           entity_id
         )}
+        maEntityId={ma_entity_id}
         useExperimentalLmsMediaBrowser={
           config?.options?.use_experimental_lms_media_browser ?? false
         }
         lmsEntityId={lms_entity_id}
         horizontalPadding={16}
+        maLibraryRootColumns={config?.options?.ma_library_root_columns}
+        maLibraryThumbColumns={config?.options?.ma_library_thumbs_columns}
+        maLibraryCompactThumbColumns={
+          config?.options?.ma_library_compact_thumbs_columns
+        }
         renderHeader={renderHeader}
         maxHeight={height}
       />
