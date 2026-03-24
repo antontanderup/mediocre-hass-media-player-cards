@@ -30,11 +30,15 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
       CardContext
     );
 
+  const configuredTitle = config?.options?.media_browser_view_title?.trim();
   const renderHeader = () => (
     <ViewHeader
-      title={t({
-        id: "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title",
-      })}
+      title={
+        configuredTitle ||
+        t({
+          id: "MediocreMultiMediaPlayerCard.MediaBrowserView.browse_media_title",
+        })
+      }
       css={styles.header}
     />
   );

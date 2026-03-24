@@ -35,8 +35,18 @@ export const getDefaultValuesFromConfig = (
       config?.options?.always_show_power_button ?? false,
     always_show_custom_buttons:
       config?.options?.always_show_custom_buttons ?? false,
+    always_show_footer_more_actions:
+      config?.options?.always_show_footer_more_actions ?? false,
     hide_when_off: config?.options?.hide_when_off ?? false,
     hide_when_group_child: config?.options?.hide_when_group_child ?? false,
+    media_browser_view_icon: config?.options?.media_browser_view_icon ?? "",
+    ...(config?.options?.media_browser_view_title
+      ? { media_browser_view_title: config.options.media_browser_view_title }
+      : {}),
+    player_view_icon: config?.options?.player_view_icon ?? "",
+    ...(config?.options?.search_view_title
+      ? { search_view_title: config.options.search_view_title }
+      : {}),
     show_volume_step_buttons:
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
@@ -76,6 +86,16 @@ export const getDefaultValuesFromMassiveConfig = (
   options: {
     always_show_power_button:
       config?.options?.always_show_power_button ?? false,
+    always_show_footer_more_actions:
+      config?.options?.always_show_footer_more_actions ?? false,
+    media_browser_view_icon: config?.options?.media_browser_view_icon ?? "",
+    ...(config?.options?.media_browser_view_title
+      ? { media_browser_view_title: config.options.media_browser_view_title }
+      : {}),
+    player_view_icon: config?.options?.player_view_icon ?? "",
+    ...(config?.options?.search_view_title
+      ? { search_view_title: config.options.search_view_title }
+      : {}),
     show_volume_step_buttons:
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
@@ -142,6 +162,21 @@ export const getSimpleConfigFromFormValues = (
   if (config.options?.show_volume_step_buttons === false) {
     delete config.options.show_volume_step_buttons;
   }
+  if (config.options?.always_show_footer_more_actions === false) {
+    delete config.options.always_show_footer_more_actions;
+  }
+  if (!config.options?.media_browser_view_icon) {
+    delete config.options?.media_browser_view_icon;
+  }
+  if (!config.options?.media_browser_view_title) {
+    delete config.options?.media_browser_view_title;
+  }
+  if (!config.options?.player_view_icon) {
+    delete config.options?.player_view_icon;
+  }
+  if (!config.options?.search_view_title) {
+    delete config.options?.search_view_title;
+  }
   if (config.options?.use_volume_up_down_for_step_buttons === false) {
     delete config.options.use_volume_up_down_for_step_buttons;
   }
@@ -204,6 +239,21 @@ export const getSimpleConfigFromMassiveFormValues = (
 
   if (config.options?.always_show_power_button === false) {
     delete config.options.always_show_power_button;
+  }
+  if (config.options?.always_show_footer_more_actions === false) {
+    delete config.options.always_show_footer_more_actions;
+  }
+  if (!config.options?.media_browser_view_icon) {
+    delete config.options?.media_browser_view_icon;
+  }
+  if (!config.options?.media_browser_view_title) {
+    delete config.options?.media_browser_view_title;
+  }
+  if (!config.options?.player_view_icon) {
+    delete config.options?.player_view_icon;
+  }
+  if (!config.options?.search_view_title) {
+    delete config.options?.search_view_title;
   }
   if (config.options?.show_volume_step_buttons === false) {
     delete config.options.show_volume_step_buttons;

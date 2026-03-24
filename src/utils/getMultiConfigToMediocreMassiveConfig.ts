@@ -38,6 +38,20 @@ export const getMultiConfigToMediocreMassiveConfig = (
     speaker_group:
       speaker_group.entities.length > 1 ? speaker_group : undefined,
     options: {
+      always_show_footer_more_actions:
+        config.options?.always_show_footer_more_actions ?? false,
+      ...(config.options?.media_browser_view_icon
+        ? { media_browser_view_icon: config.options.media_browser_view_icon }
+        : {}),
+      ...(config.options?.media_browser_view_title
+        ? { media_browser_view_title: config.options.media_browser_view_title }
+        : {}),
+      ...(config.options?.player_view_icon
+        ? { player_view_icon: config.options.player_view_icon }
+        : {}),
+      ...(config.options?.search_view_title
+        ? { search_view_title: config.options.search_view_title }
+        : {}),
       show_volume_step_buttons:
         config.options?.show_volume_step_buttons ?? false,
       use_volume_up_down_for_step_buttons:

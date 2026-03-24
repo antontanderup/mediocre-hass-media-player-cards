@@ -61,6 +61,17 @@ export const FooterActions = memo<FooterActionsProps>(
     const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
     const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
+    const footerMoreActionsForced =
+      config.options?.always_show_footer_more_actions;
+    const playerViewIcon = config.options?.player_view_icon?.trim() || "mdi:home";
+    const mediaBrowserViewIcon =
+      config.options?.media_browser_view_icon?.trim() || "mdi:folder-music";
+    const showDirectCustomButton =
+      !!custom_buttons &&
+      custom_buttons.length === 1 &&
+      footerMoreActionsForced !== true;
+    const showFooterMoreActionsButton =
+      (custom_buttons?.length ?? 0) > 1 || footerMoreActionsForced === true;
 
     if (config.size && config.size !== "large") return null;
 
@@ -71,7 +82,7 @@ export const FooterActions = memo<FooterActionsProps>(
         {!desktopMode && (
           <IconButton
             size="small"
-            icon={"mdi:home"}
+            icon={playerViewIcon}
             onClick={() => setNavigationRoute("massive")}
             selected={navigationRoute === "massive"}
           />
@@ -87,7 +98,7 @@ export const FooterActions = memo<FooterActionsProps>(
         {hasMediaBrowser && (
           <IconButton
             size="small"
-            icon={"mdi:folder-music"}
+            icon={mediaBrowserViewIcon}
             onClick={() => setNavigationRoute("media-browser")}
             selected={navigationRoute === "media-browser"}
           />
@@ -100,13 +111,13 @@ export const FooterActions = memo<FooterActionsProps>(
             selected={navigationRoute === "queue"}
           />
         )}
-        {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (
+        {showDirectCustomButton ? (
           <CustomButton
             button={custom_buttons[0]}
             rootElement={rootElement}
             entityId={entity_id}
           />
-        ) : (custom_buttons && custom_buttons.length > 1) || ma_entity_id ? (
+        ) : showFooterMoreActionsButton ? (
           <IconButton
             size="small"
             icon={"mdi:dots-horizontal"}

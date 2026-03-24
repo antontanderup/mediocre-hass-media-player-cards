@@ -4,13 +4,16 @@ import {
   useSearchProviderMenu,
   Chip,
   Icon,
+  CardContext,
+  CardContextType,
 } from "@components";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
 import { useIntl } from "@components/i18n";
-import { memo } from "preact/compat";
+import { memo, useContext } from "preact/compat";
 import { OverlayMenu } from "@components/OverlayMenu/OverlayMenu";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
+import { MediocreMultiMediaPlayerCardConfig } from "@types";
 
 const styles = {
   root: css({
@@ -29,6 +32,8 @@ export type SearchViewProps = {
 export const SearchView = memo<SearchViewProps>(({ height }) => {
   const { selectedPlayer } = useSelectedPlayer();
   const { ma_entity_id, search, entity_id } = selectedPlayer!;
+  const { config } =
+    useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(CardContext);
   const { selectedSearchProvider, searchProvidersMenu } = useSearchProviderMenu(
     search,
     entity_id,
@@ -36,17 +41,19 @@ export const SearchView = memo<SearchViewProps>(({ height }) => {
   );
 
   const { t } = useIntl();
+  const configuredTitle = config?.options?.search_view_title?.trim();
 
   const renderHeader = () => (
     <ViewHeader
       title={
-        selectedSearchProvider?.entity_id === ma_entity_id
+        configuredTitle ||
+        (selectedSearchProvider?.entity_id === ma_entity_id
           ? t({
               id: "MediocreMultiMediaPlayerCard.SearchView.search_in_ma_title",
             })
           : t({
               id: "MediocreMultiMediaPlayerCard.SearchView.search_title",
-            })
+            }))
       }
       css={styles.header}
       renderAction={
