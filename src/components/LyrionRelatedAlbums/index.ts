@@ -1,0 +1,1 @@
+export { LyrionRelatedAlbums } from "./LyrionRelatedAlbums";

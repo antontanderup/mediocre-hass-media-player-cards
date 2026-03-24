@@ -4,5 +4,6 @@ export * from "./useButtonCallbacks";
 export * from "./useCanDisplayQueue";
 export * from "./useHassMessagePromise";
 export * from "./useMassQueue";
+export * from "./useSqueezeboxMoreInfo";
 export * from "./useSqueezeboxQueue";
 export * from "./useSupportedFeatures";

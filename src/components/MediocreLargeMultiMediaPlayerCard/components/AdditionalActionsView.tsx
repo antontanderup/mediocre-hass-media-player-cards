@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo } from "preact/hooks";
 import type { MediocreMultiMediaPlayerCardConfig } from "@types";
 import { CardContext, CardContextType } from "@components/CardContext";
 import { InteractionConfig } from "@types";
-import { Chip, Icon, useHass, usePlayer } from "@components";
+import { Chip, Icon, LyrionTrackInfo, useHass, usePlayer } from "@components";
 import { useActionProps } from "@hooks";
 import { css } from "@emotion/react";
 import { ViewHeader } from "./ViewHeader";
@@ -23,6 +23,7 @@ import {
   transferMaQueue,
 } from "@utils";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
+import { LyrionRelatedAlbums } from "@components/LyrionRelatedAlbums";
 
 const styles = {
   root: css({
@@ -30,6 +31,7 @@ const styles = {
     flexDirection: "column",
     alignItems: "flex-start",
     overflowY: "auto",
+    height: "100%",
     padding: 16,
     gap: 12,
   }),
@@ -250,6 +252,28 @@ export const AdditionalActionsView = memo(() => {
             )}
           </div>
         </Fragment>
+      )}
+      {isMainEntityLmsPlayer && (
+        <Fragment>
+          <ViewHeader
+            title={t({
+              id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title",
+            })}
+          />
+          <LyrionTrackInfo lms_entity_id={lms_entity_id ?? undefined} />
+        </Fragment>
+      )}
+      {lms_entity_id && (
+        <LyrionRelatedAlbums
+          renderHeader={() => (
+            <ViewHeader
+              subtitle={t({
+                id: "MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title",
+              })}
+            />
+          )}
+          entity_id={lms_entity_id}
+        />
       )}
     </div>
   );
