@@ -89,11 +89,15 @@ describe("cardConfigUtils", () => {
       expect(result.options).toEqual({
         always_show_power_button: false,
         always_show_custom_buttons: false,
+        always_show_footer_more_actions: false,
         hide_when_off: false,
         hide_when_group_child: false,
+        media_browser_view_icon: "",
+        player_view_icon: "",
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
         use_experimental_lms_media_browser: false,
+        volume_trailing_button: "power",
       });
       expect(result.grid_options).toBeUndefined();
       expect(result.media_browser).toBeNull();
@@ -152,6 +156,14 @@ describe("cardConfigUtils", () => {
           },
         ],
         lms_entity_id: null,
+        volume_trailing_button_custom_button: null,
+        options: {
+          ...fullConfig.options,
+          always_show_footer_more_actions: false,
+          media_browser_view_icon: "",
+          player_view_icon: "",
+          volume_trailing_button: "power",
+        },
         visibility: undefined,
       });
     });
@@ -244,9 +256,13 @@ describe("cardConfigUtils", () => {
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({
         always_show_power_button: false,
+        always_show_footer_more_actions: false,
+        media_browser_view_icon: "",
+        player_view_icon: "",
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
         use_experimental_lms_media_browser: false,
+        volume_trailing_button: "power",
       });
       expect(result.media_browser).toBeNull();
       expect(result.grid_options).toBeUndefined();

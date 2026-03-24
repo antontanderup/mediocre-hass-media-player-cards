@@ -11,6 +11,7 @@ const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
+  "volume_trailing_button?": "'power' | 'custom' | 'none'", // Button shown to the right of the large view volume slider
 });
 
 const searchMediaTypeSchema = type({
@@ -79,6 +80,8 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
+  "volume_trailing_button_custom_button?":
+    customButton.or("null").or("undefined"),
   "options?": commonMediocreMediaPlayerCardConfigOptionsSchema,
   "grid_options?": "unknown", // Home Assistant grid layout options (passed through without validation)
   "visibility?": "unknown", // Home Assistant visibility options (passed through without validation)
@@ -110,6 +113,8 @@ export const MediocreMultiMediaPlayer = type({
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
+  "volume_trailing_button_custom_button?":
+    customButton.or("null").or("undefined"),
   "action?": interactionConfigSchema,
 });
 
@@ -123,6 +128,7 @@ export const commonMediaPlayerCardOptions = type({
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
+  "volume_trailing_button?": "'power' | 'custom' | 'none'", // Button shown to the right of the large view volume slider
 });
 
 export const commonMediaPlayerCardSchema = type({

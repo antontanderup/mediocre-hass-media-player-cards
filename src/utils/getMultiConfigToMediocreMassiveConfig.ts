@@ -33,6 +33,8 @@ export const getMultiConfigToMediocreMassiveConfig = (
     lms_entity_id: selectedPlayer.lms_entity_id,
     search: selectedPlayer.search,
     media_browser: selectedPlayer.media_browser,
+    volume_trailing_button_custom_button:
+      selectedPlayer.volume_trailing_button_custom_button,
     custom_buttons: selectedPlayer.custom_buttons,
     mode: mode,
     speaker_group:
@@ -51,6 +53,9 @@ export const getMultiConfigToMediocreMassiveConfig = (
         : {}),
       ...(config.options?.search_view_title
         ? { search_view_title: config.options.search_view_title }
+        : {}),
+      ...(config.options?.volume_trailing_button
+        ? { volume_trailing_button: config.options.volume_trailing_button }
         : {}),
       show_volume_step_buttons:
         config.options?.show_volume_step_buttons ?? false,

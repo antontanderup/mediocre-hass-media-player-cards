@@ -1,4 +1,7 @@
-import type { MediocreMultiMediaPlayerCardConfig } from "@types";
+import type {
+  CustomButton as CustomButtonConfig,
+  MediocreMultiMediaPlayerCardConfig,
+} from "@types";
 import { css } from "@emotion/react";
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import { CardContext, CardContextType } from "@components/CardContext";
@@ -179,10 +182,70 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
                 config.options?.use_volume_up_down_for_step_buttons ?? false
               }
             />
-            <IconButton size="small" onClick={togglePower} icon={"mdi:power"} />
+            <VolumeTrailingButton
+              buttonType={config.options?.volume_trailing_button ?? "power"}
+              customButton={mediaPlayer.volume_trailing_button_custom_button}
+              entityId={entity_id}
+              onPower={togglePower}
+              rootElement={rootElement}
+            />
           </div>
         </MassivePlaybackController>
       </div>
     );
   }
 );
+
+type VolumeTrailingButtonProps = {
+  buttonType: "power" | "custom" | "none";
+  customButton?: CustomButtonConfig | null;
+  entityId: string;
+  onPower: () => void;
+  rootElement: HTMLElement;
+};
+
+const VolumeTrailingButton = ({
+  buttonType,
+  customButton,
+  entityId,
+  onPower,
+  rootElement,
+}: VolumeTrailingButtonProps) => {
+  switch (buttonType) {
+    case "none":
+      return null;
+    case "custom":
+      if (!customButton) return null;
+      return (
+        <VolumeTrailingCustomButton
+          button={customButton}
+          entityId={entityId}
+          rootElement={rootElement}
+        />
+      );
+    case "power":
+    default:
+      return <IconButton size="small" onClick={onPower} icon={"mdi:power"} />;
+  }
+};
+
+const VolumeTrailingCustomButton = ({
+  button,
+  entityId,
+  rootElement,
+}: {
+  button: CustomButtonConfig;
+  entityId: string;
+  rootElement: HTMLElement;
+}) => {
+  const { icon: _icon, name: _name, ...actionConfig } = button;
+  const actionProps = useActionProps({
+    rootElement,
+    actionConfig: {
+      ...actionConfig,
+      entity: entityId,
+    },
+  });
+
+  return <IconButton icon={button.icon} size="small" {...actionProps} />;
+};

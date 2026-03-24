@@ -101,10 +101,12 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
           ],
         },
         options: {
+          always_show_footer_more_actions: false,
           show_volume_step_buttons: true,
           use_volume_up_down_for_step_buttons: false,
           use_experimental_lms_media_browser: false,
         },
+        volume_trailing_button_custom_button: undefined,
       })
     );
   });
@@ -171,6 +173,7 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
       "panel"
     );
     expect(result.options).toEqual({
+      always_show_footer_more_actions: false,
       show_volume_step_buttons: false,
       use_volume_up_down_for_step_buttons: false,
       use_experimental_lms_media_browser: false,
