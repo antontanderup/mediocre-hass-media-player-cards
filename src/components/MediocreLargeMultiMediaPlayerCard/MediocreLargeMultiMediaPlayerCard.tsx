@@ -270,7 +270,8 @@ export const MediocreLargeMultiMediaPlayerCard = ({
         {!desktopMode &&
           navigationRoute !== "massive" &&
           cardHeight &&
-          cardHeight > 500 && (
+          cardHeight > 500 &&
+          !config.options?.hide_mini_player_on_secondary_views && (
             <MiniPlayer
               setNavigationRoute={setNavigationRoute}
               navigationRoute={navigationRoute}

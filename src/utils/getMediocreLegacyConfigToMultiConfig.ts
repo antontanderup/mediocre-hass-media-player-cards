@@ -67,6 +67,12 @@ export const getMediocreLegacyConfigToMediocreMultiConfig = (
         config.options?.always_show_power_button ?? false,
       always_show_footer_more_actions:
         config.options?.always_show_footer_more_actions ?? false,
+      ...(config.options?.hide_mini_player_on_secondary_views
+        ? {
+            hide_mini_player_on_secondary_views:
+              config.options.hide_mini_player_on_secondary_views,
+          }
+        : {}),
       hide_when_group_child: config.options?.hide_when_group_child ?? false,
       hide_when_off: config.options?.hide_when_off ?? false,
       ...(config.options?.media_browser_view_icon

@@ -68,6 +68,12 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
         config.mode === "popup",
       always_show_footer_more_actions:
         config.options?.always_show_footer_more_actions ?? false,
+      ...(config.options?.hide_mini_player_on_secondary_views
+        ? {
+            hide_mini_player_on_secondary_views:
+              config.options.hide_mini_player_on_secondary_views,
+          }
+        : {}),
       ...(config.options?.media_browser_view_icon
         ? { media_browser_view_icon: config.options.media_browser_view_icon }
         : {}),
