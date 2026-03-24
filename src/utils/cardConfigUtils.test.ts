@@ -89,8 +89,11 @@ describe("cardConfigUtils", () => {
       expect(result.options).toEqual({
         always_show_power_button: false,
         always_show_custom_buttons: false,
+        always_show_footer_more_actions: false,
         hide_when_off: false,
         hide_when_group_child: false,
+        media_browser_view_icon: "",
+        player_view_icon: "",
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
         use_experimental_lms_media_browser: false,
@@ -144,6 +147,12 @@ describe("cardConfigUtils", () => {
         ...fullConfig,
         name: null,
         media_browser: [{ entity_id: "media_player.browser" }],
+        options: {
+          ...fullConfig.options,
+          always_show_footer_more_actions: false,
+          media_browser_view_icon: "",
+          player_view_icon: "",
+        },
         search: [
           {
             name: "Search",
@@ -244,6 +253,9 @@ describe("cardConfigUtils", () => {
       expect(result.custom_buttons).toEqual([]);
       expect(result.options).toEqual({
         always_show_power_button: false,
+        always_show_footer_more_actions: false,
+        media_browser_view_icon: "",
+        player_view_icon: "",
         show_volume_step_buttons: false,
         use_volume_up_down_for_step_buttons: false,
         use_experimental_lms_media_browser: false,
