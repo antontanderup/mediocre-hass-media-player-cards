@@ -59,7 +59,7 @@ export const FooterActions = memo<FooterActionsProps>(
     } = selectedPlayer!;
 
     const hasSearch = getHasSearch(search, ma_entity_id);
-    const hasMediaBrowser = getHasMediaBrowser(media_browser);
+    const hasMediaBrowser = getHasMediaBrowser(media_browser, ma_entity_id);
     const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
     const footerMoreActionsForced =
       config.options?.always_show_footer_more_actions;

@@ -16,15 +16,16 @@ const styles = {
 };
 
 export const MediaBrowserBar = () => {
-  const { selectedPlayer: { media_browser, entity_id, lms_entity_id } = {} } =
-    useSelectedPlayer();
+  const {
+    selectedPlayer: { media_browser, entity_id, lms_entity_id, ma_entity_id } = {},
+  } = useSelectedPlayer();
 
   const { config } =
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
 
-  if (getHasMediaBrowser(media_browser) === false) {
+  if (getHasMediaBrowser(media_browser, ma_entity_id) === false) {
     return null;
   }
 
@@ -33,8 +34,10 @@ export const MediaBrowserBar = () => {
       <MediaBrowser
         mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
           media_browser,
-          entity_id ?? ""
+          entity_id ?? "",
+          ma_entity_id
         )}
+        maEntityId={ma_entity_id}
         useExperimentalLmsMediaBrowser={
           config?.options?.use_experimental_lms_media_browser ?? false
         }

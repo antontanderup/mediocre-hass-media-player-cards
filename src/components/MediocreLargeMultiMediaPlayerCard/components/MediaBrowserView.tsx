@@ -49,7 +49,8 @@ export const MediaBrowserView = memo<MediaBrowserViewProps>(({ height }) => {
       <MediaBrowser
         mediaBrowserEntryArray={getHasMediaBrowserEntryArray(
           media_browser,
-          entity_id
+          entity_id,
+          ma_entity_id
         )}
         maEntityId={ma_entity_id}
         useExperimentalLmsMediaBrowser={
