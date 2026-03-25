@@ -117,6 +117,25 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         if (newConfig.search) {
           stripNulls(newConfig.search);
         }
+        if (newConfig.options?.ui?.footer_icons) {
+          Object.keys(newConfig.options.ui.footer_icons).forEach(key => {
+            const icon =
+              newConfig.options?.ui?.footer_icons?.[
+                key as keyof typeof newConfig.options.ui.footer_icons
+              ];
+            if (!icon?.trim()) {
+              delete newConfig.options?.ui?.footer_icons?.[
+                key as keyof typeof newConfig.options.ui.footer_icons
+              ];
+            }
+          });
+          if (Object.keys(newConfig.options.ui.footer_icons).length === 0) {
+            delete newConfig.options.ui.footer_icons;
+          }
+          if (Object.keys(newConfig.options.ui).length === 0) {
+            delete newConfig.options.ui;
+          }
+        }
 
         if (formApi.state.isValid) {
           if (JSON.stringify(config) !== JSON.stringify(newConfig)) {
@@ -131,6 +150,9 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
   });
 
   const size = useStore(form.store, state => state.values.size);
+  const tapOpensPopup = useStore(form.store, state =>
+    "tap_opens_popup" in state.values ? state.values.tap_opens_popup : false
+  );
 
   const formErrorMap = useStore(form.store, state => state.errorMap);
   const getSubformError = useCallback(
@@ -531,6 +553,37 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           </form.Field>
         </FormGroup>
       </SubForm>
+      {(size === "large" || tapOpensPopup) && (
+        <SubForm
+          title="UI Customization (optional)"
+          error={getSubformError("options.ui")}
+        >
+          <SubForm
+            title="Footer / Navigation"
+            error={getSubformError("options.ui.footer_icons")}
+          >
+            <Label>Optional icon overrides for the large footer tabs.</Label>
+            <form.AppField
+              name="options.ui.footer_icons.player"
+              children={field => (
+                <field.Text label="Player / Home tab icon" isIconInput />
+              )}
+            />
+            <form.AppField
+              name="options.ui.footer_icons.search"
+              children={field => (
+                <field.Text label="Search tab icon" isIconInput />
+              )}
+            />
+            <form.AppField
+              name="options.ui.footer_icons.media_browser"
+              children={field => (
+                <field.Text label="Browse Media tab icon" isIconInput />
+              )}
+            />
+          </SubForm>
+        </SubForm>
+      )}
     </form.AppForm>
   );
 };
