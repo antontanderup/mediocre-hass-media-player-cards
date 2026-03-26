@@ -11,12 +11,31 @@ const uiCustomizationSchema = type({
   "footer_icons?": footerIconsSchema, // Override footer/navigation tab icons
 });
 
+const multiLargeUiCustomizationSchema = uiCustomizationSchema.and({
+  "volume_bar?": {
+    "trailing_volume_button_icon?": "string", // Override the linked volume trailing button icon
+  },
+});
+
 const maFavoriteControlSchema = type({
   "show_on_artwork?": "boolean | null",
   "favorite_button_size?": "'small' | 'medium' | 'large'",
   "favorite_button_offset?": "string",
   "active_color?": "string",
   "inactive_color?": "string",
+});
+
+const linkedVolumePanelEntitySchema = type({
+  entity_id: "string",
+  "name?": "string | null",
+  "icon?": "string | null",
+  "show_power?": "boolean | null",
+});
+
+const linkedVolumePanelSchema = type({
+  "launch_from?": "'disabled' | 'trailing_volume_bar_button'",
+  "include_grouped_players?": "boolean | null",
+  entities: linkedVolumePanelEntitySchema.array(),
 });
 
 const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
@@ -126,6 +145,7 @@ export const MediocreMultiMediaPlayer = type({
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
+  "linked_volume_panel?": linkedVolumePanelSchema.or("undefined"),
   "action?": interactionConfigSchema,
 });
 
@@ -154,7 +174,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
       "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
       "options?": commonMediaPlayerCardOptions.and({
         "hide_selected_player_header?": "boolean", // Hide the header of the selected player in the massive view
-        "ui?": uiCustomizationSchema, // UI customization overrides
+        "ui?": multiLargeUiCustomizationSchema, // UI customization overrides
         "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
         "default_tab?":
           "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
@@ -175,6 +195,8 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
 
 export type SearchMediaType = typeof searchMediaTypeSchema.infer;
 export type MaFavoriteControl = typeof maFavoriteControlSchema.infer;
+export type LinkedVolumePanel = typeof linkedVolumePanelSchema.infer;
+export type LinkedVolumePanelEntity = typeof linkedVolumePanelEntitySchema.infer;
 export type CommonMediocreMediaPlayerCardConfig =
   typeof commonMediocreMediaPlayerCardConfigSchema.infer;
 export type MediocreMediaPlayerCardConfig =

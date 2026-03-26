@@ -21,8 +21,10 @@ import { FieldGroupMediaBrowser } from "@components/Form/components/FieldGroupMe
 import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupCustomButtons";
 import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
 import { FieldGroupSearch } from "@components/Form/components/FieldGroupSearch";
+import { FieldGroupVolumePanel } from "@components/Form/components/FieldGroupVolumePanel";
 import { getSearchEntryArray } from "@utils/getSearchEntryArray";
 import { getCleanMaFavoriteControl } from "@utils/cardConfigUtils";
+import { getCleanLinkedVolumePanel } from "@utils";
 
 export type MediocreMultiMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -120,34 +122,57 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         }
         newConfig.media_players = newConfig.media_players.map(
           (player: MediocreMultiMediaPlayerCardConfig["media_players"][number]) => {
-          const maFavoriteControl = getCleanMaFavoriteControl(
-            player.ma_favorite_control
-          );
-          if (maFavoriteControl) {
-            return {
-              ...player,
-              ma_favorite_control: maFavoriteControl,
-            };
-          }
-          const { ma_favorite_control: _omit, ...rest } = player;
-          return rest;
+            const nextPlayer = { ...player };
+            const maFavoriteControl = getCleanMaFavoriteControl(
+              player.ma_favorite_control
+            );
+            const linkedVolumePanel = getCleanLinkedVolumePanel(
+              player.linked_volume_panel
+            );
+
+            if (maFavoriteControl) {
+              nextPlayer.ma_favorite_control = maFavoriteControl;
+            } else {
+              delete nextPlayer.ma_favorite_control;
+            }
+
+            if (linkedVolumePanel) {
+              nextPlayer.linked_volume_panel = linkedVolumePanel;
+            } else {
+              delete nextPlayer.linked_volume_panel;
+            }
+
+            return nextPlayer;
           }
         );
-        if (newConfig.size === "large" && newConfig.options?.ui?.footer_icons) {
-          Object.keys(newConfig.options.ui.footer_icons).forEach(key => {
-            const icon =
-              newConfig.options?.ui?.footer_icons?.[
-                key as keyof typeof newConfig.options.ui.footer_icons
-              ];
-            if (!icon?.trim()) {
-              delete newConfig.options?.ui?.footer_icons?.[
-                key as keyof typeof newConfig.options.ui.footer_icons
-              ];
+        if (newConfig.size === "large" && newConfig.options?.ui) {
+          if (newConfig.options.ui.footer_icons) {
+            Object.keys(newConfig.options.ui.footer_icons).forEach(key => {
+              const icon =
+                newConfig.options?.ui?.footer_icons?.[
+                  key as keyof typeof newConfig.options.ui.footer_icons
+                ];
+              if (!icon?.trim()) {
+                delete newConfig.options?.ui?.footer_icons?.[
+                  key as keyof typeof newConfig.options.ui.footer_icons
+                ];
+              }
+            });
+            if (Object.keys(newConfig.options.ui.footer_icons).length === 0) {
+              delete newConfig.options.ui.footer_icons;
             }
-          });
-          if (Object.keys(newConfig.options.ui.footer_icons).length === 0) {
-            delete newConfig.options.ui.footer_icons;
           }
+
+          const trailingVolumeButtonIcon =
+            newConfig.options.ui.volume_bar?.trailing_volume_button_icon?.trim();
+          if (trailingVolumeButtonIcon) {
+            newConfig.options.ui.volume_bar = {
+              trailing_volume_button_icon: trailingVolumeButtonIcon,
+            };
+          } else if (newConfig.options.ui.volume_bar) {
+            delete newConfig.options.ui.volume_bar;
+          }
+
           if (Object.keys(newConfig.options.ui).length === 0) {
             delete newConfig.options.ui;
           }
@@ -415,6 +440,24 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           }} // todo this casting is stupid
                         />
                       </SubForm>
+                      {size === "large" ? (
+                        <SubForm
+                          title="Linked Volume Panel (optional)"
+                          error={getSubformError(
+                            `media_players[${index}].linked_volume_panel`
+                          )}
+                        >
+                          <FieldGroupVolumePanel
+                            form={form}
+                            fields={{
+                              linked_volume_panel:
+                                `media_players[${index}].linked_volume_panel` as never,
+                            }}
+                          />
+                        </SubForm>
+                      ) : (
+                        <Fragment />
+                      )}
                     </SubForm>
                   );
                 })}
@@ -605,6 +648,18 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               name="options.ui.footer_icons.media_browser"
               children={field => (
                 <field.Text label="Browse Media tab icon" isIconInput />
+              )}
+            />
+          </SubForm>
+          <SubForm
+            title="Volume Bar"
+            error={getSubformError("options.ui.volume_bar")}
+          >
+            <Label>Optional icon override for the linked volume trailing button.</Label>
+            <form.AppField
+              name="options.ui.volume_bar.trailing_volume_button_icon"
+              children={field => (
+                <field.Text label="Trailing volume button icon" isIconInput />
               )}
             />
           </SubForm>
