@@ -21,6 +21,7 @@ export * from "./getMediaPlayerTitleAndSubtitle";
 export * from "./getMediocreLegacyConfigToMultiConfig";
 export * from "./getMultiConfigToMediocreMassiveConfig";
 export * from "./getSearchEntryArray";
+export * from "./linkedVolumePanel";
 export * from "./getSourceIcon";
 export * from "./getVolumeIcon";
 export * from "./selectActiveMultiMediaPlayer";
