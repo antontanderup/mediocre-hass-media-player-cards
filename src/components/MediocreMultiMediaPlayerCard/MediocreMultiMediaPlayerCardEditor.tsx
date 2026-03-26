@@ -150,9 +150,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
   });
 
   const size = useStore(form.store, state => state.values.size);
-  const tapOpensPopup = useStore(form.store, state =>
-    "tap_opens_popup" in state.values ? state.values.tap_opens_popup : false
-  );
 
   const formErrorMap = useStore(form.store, state => state.errorMap);
   const getSubformError = useCallback(
