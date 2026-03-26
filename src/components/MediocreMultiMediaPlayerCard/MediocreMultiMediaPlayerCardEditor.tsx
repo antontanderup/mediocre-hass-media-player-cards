@@ -553,7 +553,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           </form.Field>
         </FormGroup>
       </SubForm>
-      {(size === "large" || tapOpensPopup) && (
+      { size === "large" && (
         <SubForm
           title="UI Customization (optional)"
           error={getSubformError("options.ui")}
