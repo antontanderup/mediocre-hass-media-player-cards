@@ -1,8 +1,46 @@
 import {
+  MaFavoriteControl,
   MediocreMediaPlayerCardConfig,
   MediocreMassiveMediaPlayerCardConfig,
 } from "@types";
 import { getSearchEntryArray } from "./getSearchEntryArray";
+
+const getCleanFooterIcons = (
+  footerIcons?: Record<string, string | undefined>
+) => {
+  const entries = Object.entries(footerIcons ?? {}).filter(
+    ([, icon]) => !!icon?.trim()
+  );
+
+  return entries.length > 0 ? Object.fromEntries(entries) : undefined;
+};
+
+export const getCleanMaFavoriteControl = (
+  control?: MaFavoriteControl | null
+): MaFavoriteControl | undefined => {
+  if (!control?.show_on_artwork) return undefined;
+
+  const activeColor = control.active_color?.trim();
+  const favoriteButtonOffset = control.favorite_button_offset?.trim();
+  const inactiveColor = control.inactive_color?.trim();
+
+  return {
+    show_on_artwork: true,
+    ...(control.favorite_button_size &&
+    control.favorite_button_size !== "small"
+      ? { favorite_button_size: control.favorite_button_size }
+      : {}),
+    ...(favoriteButtonOffset && favoriteButtonOffset !== "14px"
+      ? { favorite_button_offset: favoriteButtonOffset }
+      : {}),
+    ...(activeColor && activeColor !== "#f2c94c"
+      ? { active_color: activeColor }
+      : {}),
+    ...(inactiveColor && inactiveColor !== "#111111"
+      ? { inactive_color: inactiveColor }
+      : {}),
+  };
+};
 
 /**
  * Creates default values from a regular media player card config
@@ -28,6 +66,9 @@ export const getDefaultValuesFromConfig = (
     : null,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
+  ...(config?.ma_favorite_control
+    ? { ma_favorite_control: { ...config.ma_favorite_control } }
+    : {}),
   lms_entity_id: config?.lms_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
   options: {
@@ -71,6 +112,9 @@ export const getDefaultValuesFromMassiveConfig = (
     : null,
   ma_entity_id: config?.ma_entity_id ?? null,
   ma_favorite_button_entity_id: config?.ma_favorite_button_entity_id ?? null,
+  ...(config?.ma_favorite_control
+    ? { ma_favorite_control: { ...config.ma_favorite_control } }
+    : {}),
   lms_entity_id: config?.lms_entity_id ?? null,
   custom_buttons: config?.custom_buttons ?? [],
   options: {
@@ -80,6 +124,15 @@ export const getDefaultValuesFromMassiveConfig = (
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
       config?.options?.use_volume_up_down_for_step_buttons ?? false,
+    ...(config?.options?.ui?.footer_icons
+      ? {
+          ui: {
+            footer_icons: {
+              ...config.options.ui.footer_icons,
+            },
+          },
+        }
+      : {}),
     use_experimental_lms_media_browser:
       config?.options?.use_experimental_lms_media_browser ?? false,
   },
@@ -107,6 +160,12 @@ export const getSimpleConfigFromFormValues = (
   // Only preserve ma_favorite_button_entity_id if it is a non-empty string
   if (!config.ma_favorite_button_entity_id) {
     delete config.ma_favorite_button_entity_id;
+  }
+  const maFavoriteControl = getCleanMaFavoriteControl(config.ma_favorite_control);
+  if (maFavoriteControl) {
+    config.ma_favorite_control = maFavoriteControl;
+  } else {
+    delete config.ma_favorite_control;
   }
 
   if (!config.lms_entity_id) delete config.lms_entity_id;
@@ -148,7 +207,6 @@ export const getSimpleConfigFromFormValues = (
   if (config.options?.use_experimental_lms_media_browser === false) {
     delete config.options.use_experimental_lms_media_browser;
   }
-
   if (Object.keys(config.options ?? {}).length === 0) {
     delete config.options;
   }
@@ -184,6 +242,12 @@ export const getSimpleConfigFromMassiveFormValues = (
   if (!config.ma_favorite_button_entity_id) {
     delete config.ma_favorite_button_entity_id;
   }
+  const maFavoriteControl = getCleanMaFavoriteControl(config.ma_favorite_control);
+  if (maFavoriteControl) {
+    config.ma_favorite_control = maFavoriteControl;
+  } else {
+    delete config.ma_favorite_control;
+  }
 
   if (!config.lms_entity_id) delete config.lms_entity_id;
   if (!config.custom_buttons || config.custom_buttons.length === 0)
@@ -210,6 +274,21 @@ export const getSimpleConfigFromMassiveFormValues = (
   }
   if (config.options?.use_volume_up_down_for_step_buttons === false) {
     delete config.options.use_volume_up_down_for_step_buttons;
+  }
+  const footerIcons = getCleanFooterIcons(config.options?.ui?.footer_icons);
+  if (footerIcons) {
+    config.options = {
+      ...config.options,
+      ui: {
+        ...config.options?.ui,
+        footer_icons: footerIcons,
+      },
+    };
+  } else if (config.options?.ui?.footer_icons) {
+    delete config.options.ui.footer_icons;
+  }
+  if (config.options?.ui && Object.keys(config.options.ui).length === 0) {
+    delete config.options.ui;
   }
   if (config.options?.use_experimental_lms_media_browser === false) {
     delete config.options.use_experimental_lms_media_browser;

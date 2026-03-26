@@ -16,6 +16,7 @@ export * from "./Input";
 export * from "./LyrionMediaBrowser";
 export * from "./MaSearch";
 export * from "./MassivePlaybackController";
+export * from "./MaFavoriteButton";
 export * from "./MediaBrowser";
 export * from "./MediaSearch";
 export * from "./MediocreChipMediaPlayerGroupCard";
