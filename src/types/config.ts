@@ -142,6 +142,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
       "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
       "options?": commonMediaPlayerCardOptions.and({
         "hide_selected_player_header?": "boolean", // Hide the header of the selected player in the massive view
+        "ui?": uiCustomizationSchema, // UI customization overrides
         "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
         "default_tab?":
           "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
