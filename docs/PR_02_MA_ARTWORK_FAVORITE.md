@@ -39,10 +39,15 @@ This PR turns that into a real artwork control while staying inside the boundari
 Supported fields in this PR:
 
 - `show_on_artwork`
+  - enables the artwork overlay button
 - `favorite_button_size`
+  - `small | medium | large`
 - `favorite_button_offset`
+  - one CSS offset value or two values as `x y`
 - `active_color`
+  - icon color when the current item is favorited
 - `inactive_color`
+  - icon color when the current item is not favorited
 
 Example:
 
@@ -83,6 +88,31 @@ That means:
 - multi card editor: per-player under `Music Assistant Integration (optional)`
 
 The artwork-specific controls only appear where there is actually a large artwork surface to place them on.
+
+In practice:
+
+- regular card: available when the card uses popup artwork
+- massive card: available directly
+- multi card: available for large cards
+
+The controls were kept in the MA section on purpose because this is not generic footer/UI customization. It depends on:
+
+- `ma_entity_id`
+- `ma_favorite_button_entity_id`
+- MA queue behavior
+
+### New runtime pieces
+
+This PR adds a dedicated runtime path for the artwork control:
+
+- `MaFavoriteButton`
+- `useMaFavoriteControl`
+
+Why:
+
+- keep the favorite logic isolated from the rest of the artwork/player rendering
+- keep MA-specific edge cases in one place
+- avoid leaking this behavior into unrelated generic button code
 
 ## How the two-way favorite behavior works
 
@@ -133,6 +163,19 @@ and then keeps a very small local override layer so that:
 - the visual state settles back to the real queue state once MA/HA reports it
 
 This ended up being the most reliable compromise without introducing a large custom state machine.
+
+The final behavior is intentionally modest:
+
+- local click sets a short-lived rendered override
+- Home Assistant `call_service` events for favorite/unfavorite also update that rendered override
+- the queue-reported state remains the long-term source of truth
+- a lightweight background refresh remains enabled so multiple open dashboards can converge even when they are otherwise idle
+
+This was the simplest model that still behaved well in testing across:
+
+- local clicks
+- two browser windows
+- Developer Tools manual service calls
 
 ## Important limitation: provider items vs library items
 
@@ -192,6 +235,28 @@ For provider items:
 
 This avoids broken backend errors in the UI and matches the current MA behavior more honestly.
 
+## User-facing behavior summary
+
+### When the current item is a library track
+
+- the star reflects current favorite state
+- clicking it favorites or unfavorites immediately
+- the state should sync quickly across open dashboards
+
+### When the current item is a provider-backed track
+
+- the star can still be used to favorite the track
+- the card warns that the favorite may take time to appear
+- unfavorite is intentionally blocked until MA exposes the track as a library item
+
+### When MA favorite config is missing
+
+If any of the required MA pieces are missing:
+
+- no artwork favorite button is shown
+
+That means the feature remains fully opt-in.
+
 ## Related MA discussion / docs
 
 Useful references for this behavior:
@@ -237,6 +302,15 @@ media_players:
       favorite_button_size: medium
       favorite_button_offset: 24px 14px
 ```
+
+## Screenshots
+
+Suggested screenshots to include in the PR:
+
+- editor screenshot showing the Music Assistant configuration section and artwork favorite controls
+- runtime screenshot showing the favorite button on artwork
+
+Those two images should make the PR much easier to scan quickly.
 
 ## Compatibility
 
