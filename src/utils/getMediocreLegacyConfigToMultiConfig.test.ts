@@ -43,12 +43,6 @@ describe("getMediocreLegacyConfigToMediocreMultiConfig", () => {
       always_show_power_button: false,
       hide_when_group_child: false,
       hide_when_off: false,
-      ui: {
-        footer_icons: {
-          player: "mdi:play-circle",
-          media_browser: "mdi:bookshelf",
-        },
-      },
     },
   };
 
@@ -69,12 +63,6 @@ describe("getMediocreLegacyConfigToMediocreMultiConfig", () => {
           always_show_power_button: false,
           hide_when_group_child: false,
           hide_when_off: false,
-          ui: {
-            footer_icons: {
-              player: "mdi:play-circle",
-              media_browser: "mdi:bookshelf",
-            },
-          },
         }),
         media_players: [
           expect.objectContaining({

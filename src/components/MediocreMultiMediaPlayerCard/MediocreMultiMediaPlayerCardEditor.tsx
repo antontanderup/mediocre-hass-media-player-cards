@@ -22,6 +22,7 @@ import { FieldGroupCustomButtons } from "@components/Form/components/FieldGroupC
 import { FieldGroupMaEntities } from "@components/Form/components/FieldGroupMaEntities";
 import { FieldGroupSearch } from "@components/Form/components/FieldGroupSearch";
 import { getSearchEntryArray } from "@utils/getSearchEntryArray";
+import { getCleanMaFavoriteControl } from "@utils/cardConfigUtils";
 
 export type MediocreMultiMediaPlayerCardEditorProps = {
   rootElement: HTMLElement;
@@ -117,7 +118,22 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         if (newConfig.search) {
           stripNulls(newConfig.search);
         }
-        if (newConfig.options?.ui?.footer_icons) {
+        newConfig.media_players = newConfig.media_players.map(
+          (player: MediocreMultiMediaPlayerCardConfig["media_players"][number]) => {
+          const maFavoriteControl = getCleanMaFavoriteControl(
+            player.ma_favorite_control
+          );
+          if (maFavoriteControl) {
+            return {
+              ...player,
+              ma_favorite_control: maFavoriteControl,
+            };
+          }
+          const { ma_favorite_control: _omit, ...rest } = player;
+          return rest;
+          }
+        );
+        if (newConfig.size === "large" && newConfig.options?.ui?.footer_icons) {
           Object.keys(newConfig.options.ui.footer_icons).forEach(key => {
             const icon =
               newConfig.options?.ui?.footer_icons?.[
@@ -135,6 +151,8 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           if (Object.keys(newConfig.options.ui).length === 0) {
             delete newConfig.options.ui;
           }
+        } else if (newConfig.options && "ui" in newConfig.options) {
+          delete (newConfig.options as { ui?: unknown }).ui;
         }
 
         if (formApi.state.isValid) {
@@ -150,10 +168,6 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
   });
 
   const size = useStore(form.store, state => state.values.size);
-  const tapOpensPopup = useStore(form.store, state =>
-    "tap_opens_popup" in state.values ? state.values.tap_opens_popup : false
-  );
-
   const formErrorMap = useStore(form.store, state => state.errorMap);
   const getSubformError = useCallback(
     (fieldName: string) => {
@@ -316,6 +330,9 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           ) ??
                           getSubformError(
                             `media_players[${index}].ma_favorite_button_entity_id`
+                          ) ??
+                          getSubformError(
+                            `media_players[${index}].ma_favorite_control`
                           )
                         }
                       >
@@ -324,7 +341,16 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           fields={{
                             ma_entity_id: `media_players[${index}].ma_entity_id`,
                             ma_favorite_button_entity_id: `media_players[${index}].ma_favorite_button_entity_id`,
+                            ma_favorite_control: `media_players[${index}].ma_favorite_control`,
                           }}
+                          showArtworkFavoriteControls={
+                            size === "large"
+                          }
+                          artworkFavoriteHelperText={
+                            size === "large"
+                              ? undefined
+                              : "Artwork favorite only appears on large cards."
+                          }
                         />
                       </SubForm>
                       <SubForm
@@ -553,7 +579,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           </form.Field>
         </FormGroup>
       </SubForm>
-      {(size === "large" || tapOpensPopup) && (
+      {size === "large" && (
         <SubForm
           title="UI Customization (optional)"
           error={getSubformError("options.ui")}

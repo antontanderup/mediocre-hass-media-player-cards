@@ -67,7 +67,8 @@ export const FooterActions = memo<FooterActionsProps>(
     const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
     const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
-    const footerIcons = config.options?.ui?.footer_icons;
+    const footerIcons =
+      config.size === "large" ? config.options?.ui?.footer_icons : undefined;
     const getFooterIcon = (key: keyof typeof defaultFooterIcons) =>
       footerIcons?.[key]?.trim() || defaultFooterIcons[key];
 

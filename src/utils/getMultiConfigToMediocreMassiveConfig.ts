@@ -8,6 +8,8 @@ export const getMultiConfigToMediocreMassiveConfig = (
   selectedPlayer: MediocreMultiMediaPlayerCardConfig["media_players"][number],
   mode: "panel" | "card" | "in-card" | "popup"
 ): MediocreMassiveMediaPlayerCardConfig => {
+  const footerIcons =
+    config.size === "large" ? config.options?.ui?.footer_icons : undefined;
   const speaker_group = {
     entity_id: selectedPlayer.speaker_group_entity_id,
     entities: config.media_players
@@ -30,6 +32,8 @@ export const getMultiConfigToMediocreMassiveConfig = (
     use_art_colors: config.use_art_colors,
     action: selectedPlayer.action,
     ma_entity_id: selectedPlayer.ma_entity_id,
+    ma_favorite_button_entity_id: selectedPlayer.ma_favorite_button_entity_id,
+    ma_favorite_control: selectedPlayer.ma_favorite_control,
     lms_entity_id: selectedPlayer.lms_entity_id,
     search: selectedPlayer.search,
     media_browser: selectedPlayer.media_browser,
@@ -42,11 +46,11 @@ export const getMultiConfigToMediocreMassiveConfig = (
         config.options?.show_volume_step_buttons ?? false,
       use_volume_up_down_for_step_buttons:
         config.options?.use_volume_up_down_for_step_buttons ?? false,
-      ...(config.options?.ui?.footer_icons
+      ...(footerIcons
         ? {
             ui: {
               footer_icons: {
-                ...config.options.ui.footer_icons,
+                ...footerIcons,
               },
             },
           }

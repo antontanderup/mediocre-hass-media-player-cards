@@ -168,7 +168,8 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
         title="Music Assistant Configuration (optional)"
         error={
           getSubformError("ma_entity_id") ??
-          getSubformError("ma_favorite_button_entity_id")
+          getSubformError("ma_favorite_button_entity_id") ??
+          getSubformError("ma_favorite_control")
         }
       >
         <FieldGroupMaEntities
@@ -176,7 +177,10 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
           fields={{
             ma_entity_id: "ma_entity_id",
             ma_favorite_button_entity_id: "ma_favorite_button_entity_id",
+            ma_favorite_control: "ma_favorite_control",
           }}
+          artworkFavoriteHelperText={undefined}
+          showArtworkFavoriteControls={true}
         />
       </SubForm>
       <SubForm

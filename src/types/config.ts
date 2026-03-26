@@ -11,9 +11,16 @@ const uiCustomizationSchema = type({
   "footer_icons?": footerIconsSchema, // Override footer/navigation tab icons
 });
 
+const maFavoriteControlSchema = type({
+  "show_on_artwork?": "boolean | null",
+  "favorite_button_size?": "'small' | 'medium' | 'large'",
+  "favorite_button_offset?": "string",
+  "active_color?": "string",
+  "inactive_color?": "string",
+});
+
 const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
-  "ui?": uiCustomizationSchema, // UI customization overrides
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
@@ -80,6 +87,7 @@ const commonMediocreMediaPlayerCardConfigSchema = type({
   "custom_buttons?": customButtons,
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
+  "ma_favorite_control?": maFavoriteControlSchema,
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
@@ -101,6 +109,9 @@ export const MediocreMediaPlayerCardConfigSchema =
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
     mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup and multi as they are only for internal use
+    "options?": commonMediocreMediaPlayerCardConfigOptionsSchema.and({
+      "ui?": uiCustomizationSchema, // UI customization overrides
+    }),
   });
 
 export const MediocreMultiMediaPlayer = type({
@@ -111,6 +122,7 @@ export const MediocreMultiMediaPlayer = type({
   "can_be_grouped?": "boolean | null",
   "ma_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant entity_id (adds MA specific features (currently search))
   "ma_favorite_button_entity_id?": type("string").or("null").or("undefined"), // MusicAssistant button entity to mark current song as favorite
+  "ma_favorite_control?": maFavoriteControlSchema,
   "lms_entity_id?": type("string").or("null").or("undefined"), // LMS entity_id (adds LMS specific features)
   "search?": searchConfig,
   "media_browser?": mediaBrowser,
@@ -119,7 +131,6 @@ export const MediocreMultiMediaPlayer = type({
 
 export const commonMediaPlayerCardOptions = type({
   "player_is_active_when?": "'playing' | 'playing_or_paused'", // When to consider a media player as active.
-  "ui?": uiCustomizationSchema, // UI customization overrides
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
@@ -143,6 +154,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
       "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
       "options?": commonMediaPlayerCardOptions.and({
         "hide_selected_player_header?": "boolean", // Hide the header of the selected player in the massive view
+        "ui?": uiCustomizationSchema, // UI customization overrides
         "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
         "default_tab?":
           "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
@@ -162,6 +174,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
   );
 
 export type SearchMediaType = typeof searchMediaTypeSchema.infer;
+export type MaFavoriteControl = typeof maFavoriteControlSchema.infer;
 export type CommonMediocreMediaPlayerCardConfig =
   typeof commonMediocreMediaPlayerCardConfigSchema.infer;
 export type MediocreMediaPlayerCardConfig =
