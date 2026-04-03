@@ -62,38 +62,38 @@ media_players:
 
 ## Options
 
-| Option                       | Type          | Default  | Description                                                                                              |
-| ---------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------------- |
-| `type`                       | string        | Required | Lovelace card type (should be `"custom:mediocre-multi-media-player-card"`)                               |
-| `size`                       | string        | Required | Card size: `large` (full multi-player panel) or `compact` (single compact card showing the active player) |
-| `entity_id`                  | string        | Required | Entity ID of the initially selected / active media player                                                |
-| `use_art_colors`             | boolean       |          | Use artwork colors for the card                                                                          |
-| `disable_player_focus_switching` | boolean   |          | Disable automatic switching of the focused player when playback starts                                   |
-| `media_players`              | array         | Required | List of media player configs (see below)                                                                 |
-| `options.player_is_active_when` | string     |          | When to consider a player active: `playing` or `playing_or_paused`                                      |
-| `options.show_volume_step_buttons` | boolean |          | Show volume `+`/`-` step buttons on volume sliders                                                      |
-| `options.use_volume_up_down_for_step_buttons` | boolean |  | Use `volume_up`/`volume_down` services for step buttons instead of `set_volume`                         |
-| `options.use_experimental_lms_media_browser` | boolean |  | Replace the built-in media browser with an experimental lyrion_cli-based browser that includes global search and app access (e.g. Spotty, Qobuz). Requires `lms_entity_id` and lyrion_cli. |
+| Option                                        | Type    | Default  | Description                                                                                                                                                                                |
+| --------------------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `type`                                        | string  | Required | Lovelace card type (should be `"custom:mediocre-multi-media-player-card"`)                                                                                                                 |
+| `size`                                        | string  | Required | Card size: `large` (full multi-player panel) or `compact` (single compact card showing the active player)                                                                                  |
+| `entity_id`                                   | string  | Required | Entity ID of the initially selected / active media player                                                                                                                                  |
+| `use_art_colors`                              | boolean |          | Use artwork colors for the card                                                                                                                                                            |
+| `disable_player_focus_switching`              | boolean |          | Disable automatic switching of the focused player when playback starts                                                                                                                     |
+| `media_players`                               | array   | Required | List of media player configs (see below)                                                                                                                                                   |
+| `options.player_is_active_when`               | string  |          | When to consider a player active: `playing` or `playing_or_paused`                                                                                                                         |
+| `options.show_volume_step_buttons`            | boolean |          | Show volume `+`/`-` step buttons on volume sliders                                                                                                                                         |
+| `options.use_volume_up_down_for_step_buttons` | boolean |          | Use `volume_up`/`volume_down` services for step buttons instead of `set_volume`                                                                                                            |
+| `options.use_experimental_lms_media_browser`  | boolean |          | Replace the built-in media browser with an experimental lyrion_cli-based browser that includes global search and app access (e.g. Spotty, Qobuz). Requires `lms_entity_id` and lyrion_cli. |
 
 ### Size-specific options (`size: large`)
 
-| Option                                   | Type          | Default  | Description                                                                       |
-| ---------------------------------------- | ------------- | -------- | --------------------------------------------------------------------------------- |
-| `mode`                                   | string        | Required | Display mode: `card`, `in-card`, or `panel`                                       |
-| `height`                                 | number/string |          | Height of the card (px or any CSS unit)                                           |
-| `options.transparent_background_on_home` | boolean       |          | Makes the background transparent when showing the massive player                  |
-| `options.hide_selected_player_header`    | boolean       |          | Hide the header of the selected player in the massive view                        |
+| Option                                   | Type          | Default  | Description                                                                                                    |
+| ---------------------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| `mode`                                   | string        | Required | Display mode: `card`, `in-card`, or `panel`                                                                    |
+| `height`                                 | number/string |          | Height of the card (px or any CSS unit)                                                                        |
+| `options.transparent_background_on_home` | boolean       |          | Makes the background transparent when showing the massive player                                               |
+| `options.hide_selected_player_header`    | boolean       |          | Hide the header of the selected player in the massive view                                                     |
 | `options.default_tab`                    | string        |          | Tab to show by default: `massive`, `search`, `media-browser`, `speaker-grouping`, `custom-buttons`, or `queue` |
 
 ### Size-specific options (`size: compact`)
 
-| Option                                   | Type    | Default | Description                                                                       |
-| ---------------------------------------- | ------- | ------- | --------------------------------------------------------------------------------- |
-| `tap_opens_popup`                        | boolean |         | Tapping the card opens a popup with the massive card                              |
-| `options.always_show_power_button`       | boolean |         | Always show the power button, even if the media player is on                      |
-| `options.always_show_custom_buttons`     | boolean |         | Always show custom buttons panel expanded                                         |
-| `options.hide_when_off`                  | boolean |         | Hide the card when the active player is off                                       |
-| `options.hide_when_group_child`          | boolean |         | Hide the card when the active player is a group child                             |
+| Option                               | Type    | Default | Description                                                  |
+| ------------------------------------ | ------- | ------- | ------------------------------------------------------------ |
+| `tap_opens_popup`                    | boolean |         | Tapping the card opens a popup with the massive card         |
+| `options.always_show_power_button`   | boolean |         | Always show the power button, even if the media player is on |
+| `options.always_show_custom_buttons` | boolean |         | Always show custom buttons panel expanded                    |
+| `options.hide_when_off`              | boolean |         | Hide the card when the active player is off                  |
+| `options.hide_when_group_child`      | boolean |         | Hide the card when the active player is a group child        |
 
 ### Each item in `media_players`
 

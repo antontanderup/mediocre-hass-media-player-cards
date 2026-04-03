@@ -4,12 +4,12 @@
 
 ## Summary
 
-| Language | Keys translated | Completion | Status |
-|----------|----------------|------------|--------|
-| da | 66 / 66 | 100% ██████████ | ✅ |
-| de | 59 / 66 | 89% █████████░ | 🟡 |
-| nl | 59 / 66 | 89% █████████░ | 🟡 |
-| pt | 59 / 66 | 89% █████████░ | 🟡 |
+| Language | Keys translated | Completion      | Status |
+| -------- | --------------- | --------------- | ------ |
+| da       | 66 / 66         | 100% ██████████ | ✅     |
+| de       | 59 / 66         | 89% █████████░  | 🟡     |
+| nl       | 59 / 66         | 89% █████████░  | 🟡     |
+| pt       | 59 / 66         | 89% █████████░  | 🟡     |
 
 _Total English keys: 66_
 
@@ -17,30 +17,30 @@ _Total English keys: 66_
 
 ### de
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
 
 ### nl
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
 
 ### pt
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`

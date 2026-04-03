@@ -13,16 +13,14 @@ const baseConfig: MediocreMassiveMediaPlayerCardConfig = {
 
 describe("getMediocreMassiveLegacyConfigToMediocreMultiConfig", () => {
   it("sets the correct output type", () => {
-    const result = getMediocreMassiveLegacyConfigToMediocreMultiConfig(
-      baseConfig
-    );
+    const result =
+      getMediocreMassiveLegacyConfigToMediocreMultiConfig(baseConfig);
     expect(result.type).toBe("custom:mediocre-multi-media-player-card");
   });
 
   it("includes the main entity as the first media_player with can_be_grouped: true", () => {
-    const result = getMediocreMassiveLegacyConfigToMediocreMultiConfig(
-      baseConfig
-    );
+    const result =
+      getMediocreMassiveLegacyConfigToMediocreMultiConfig(baseConfig);
     expect(result.media_players[0]).toMatchObject({
       entity_id: "media_player.main",
       can_be_grouped: true,
@@ -30,9 +28,8 @@ describe("getMediocreMassiveLegacyConfigToMediocreMultiConfig", () => {
   });
 
   it("sets size to large", () => {
-    const result = getMediocreMassiveLegacyConfigToMediocreMultiConfig(
-      baseConfig
-    );
+    const result =
+      getMediocreMassiveLegacyConfigToMediocreMultiConfig(baseConfig);
     expect(result.size).toBe("large");
   });
 
@@ -134,9 +131,8 @@ describe("getMediocreMassiveLegacyConfigToMediocreMultiConfig", () => {
   });
 
   it("sets disable_player_focus_switching to true", () => {
-    const result = getMediocreMassiveLegacyConfigToMediocreMultiConfig(
-      baseConfig
-    );
+    const result =
+      getMediocreMassiveLegacyConfigToMediocreMultiConfig(baseConfig);
     expect(result.disable_player_focus_switching).toBe(true);
   });
 
@@ -152,9 +148,8 @@ describe("getMediocreMassiveLegacyConfigToMediocreMultiConfig", () => {
       ...baseConfig,
       use_art_colors: true,
     });
-    const withoutColors = getMediocreMassiveLegacyConfigToMediocreMultiConfig(
-      baseConfig
-    );
+    const withoutColors =
+      getMediocreMassiveLegacyConfigToMediocreMultiConfig(baseConfig);
     expect(withColors.use_art_colors).toBe(true);
     expect(withoutColors.use_art_colors).toBe(false);
   });

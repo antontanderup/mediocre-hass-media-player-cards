@@ -15,9 +15,9 @@ describe("getHasSearch", () => {
   });
 
   it("returns true when search is a non-empty array", () => {
-    expect(
-      getHasSearch([{ entity_id: "media_player.test" }], undefined)
-    ).toBe(true);
+    expect(getHasSearch([{ entity_id: "media_player.test" }], undefined)).toBe(
+      true
+    );
   });
 
   it("returns false when search is an empty array", () => {

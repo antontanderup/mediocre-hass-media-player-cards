@@ -10,9 +10,7 @@ describe("getHasMediaBrowser", () => {
   });
 
   it("returns true when mediaBrowser is a non-empty array", () => {
-    expect(
-      getHasMediaBrowser([{ entity_id: "media_player.test" }])
-    ).toBe(true);
+    expect(getHasMediaBrowser([{ entity_id: "media_player.test" }])).toBe(true);
   });
 
   it("returns false when mediaBrowser is an empty array", () => {

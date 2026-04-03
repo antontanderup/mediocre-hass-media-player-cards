@@ -36,10 +36,7 @@ describe("getHasMediaBrowserEntryArray", () => {
   });
 
   it("falls back to fallbackEntityId when mediaBrowser is null", () => {
-    const result = getHasMediaBrowserEntryArray(
-      null,
-      "media_player.fallback"
-    );
+    const result = getHasMediaBrowserEntryArray(null, "media_player.fallback");
     expect(result).toEqual([{ entity_id: "media_player.fallback" }]);
   });
 });
