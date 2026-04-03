@@ -23,6 +23,17 @@ export class CardWrapper<
   private _previousHass: HomeAssistant | null = null;
   private _previousConfig: Config | null = null;
 
+  private _didServicesChange(
+    prevHass: HomeAssistant | null,
+    hass: HomeAssistant | null
+  ): boolean {
+    if (!prevHass || !hass) return false;
+    return (
+      !!prevHass.services["mass_queue"] !== !!hass.services["mass_queue"] ||
+      !!prevHass.services["lyrion_cli"] !== !!hass.services["lyrion_cli"]
+    );
+  }
+
   set hass(hass: HomeAssistant) {
     if (!this.Card) {
       throw new Error("Preact Card is not defined");
@@ -32,7 +43,8 @@ export class CardWrapper<
     const shouldRender =
       !!entityId &&
       (this.config !== this._previousConfig ||
-        this.shouldUpdate?.(this._previousHass, hass));
+        this.shouldUpdate?.(this._previousHass, hass) ||
+        this._didServicesChange(this._previousHass, hass));
 
     if (shouldRender) {
       this._previousHass = hass;
