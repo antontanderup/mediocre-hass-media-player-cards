@@ -1712,17 +1712,17 @@
   dependencies:
     "@sinonjs/commons" "^3.0.1"
 
-"@tanstack/devtools-event-client@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/devtools-event-client/-/devtools-event-client-0.4.0.tgz#7c586e5bf4bc18999f8a19d0fa53657e4646e2a5"
-  integrity sha512-RPfGuk2bDZgcu9bAJodvO2lnZeHuz4/71HjZ0bGb/SPg8+lyTA+RLSKQvo7fSmPSi8/vcH3aKQ8EM9ywf1olaw==
+"@tanstack/devtools-event-client@^0.4.1":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@tanstack/devtools-event-client/-/devtools-event-client-0.4.3.tgz#bfa2e68f5e06a8bb8934c7bd96912adf2d96571d"
+  integrity sha512-OZI6QyULw0FI0wjgmeYzCIfbgPsOEzwJtCpa69XrfLMtNXLGnz3d/dIabk7frg0TmHo+Ah49w5I4KC7Tufwsvw==
 
-"@tanstack/form-core@1.28.4":
-  version "1.28.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/form-core/-/form-core-1.28.4.tgz#25f97f59dea54f0bb3541dcfdb547dbe0b2ec713"
-  integrity sha512-2eox5ePrJ6kvA1DXD5QHk/GeGr3VFZ0uYR63UgQOe7bUg6h1JfXaIMqTjZK9sdGyE4oRNqFpoW54H0pZM7nObQ==
+"@tanstack/form-core@1.28.6":
+  version "1.28.6"
+  resolved "https://registry.yarnpkg.com/@tanstack/form-core/-/form-core-1.28.6.tgz#fd3e8d04c391922852e3174aaa2f003ed4f79cc1"
+  integrity sha512-4zroxL6VDj5O+w7l3dYZnUeL/h30KtNSV7UWzKAL7cl+8clMFdISPDlDlluS37As7oqvPVKo8B83VlIBvgmRog==
   dependencies:
-    "@tanstack/devtools-event-client" "^0.4.0"
+    "@tanstack/devtools-event-client" "^0.4.1"
     "@tanstack/pacer-lite" "^0.1.1"
     "@tanstack/store" "^0.9.1"
 
@@ -1731,12 +1731,12 @@
   resolved "https://registry.yarnpkg.com/@tanstack/pacer-lite/-/pacer-lite-0.1.1.tgz#431d3b0ac871280e8326fdbf156bb171d9bb0aa3"
   integrity sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w==
 
-"@tanstack/react-form@^1.28.4":
-  version "1.28.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-form/-/react-form-1.28.4.tgz#3b10f2b072a310b1745f6d7d01c4f4664deb45aa"
-  integrity sha512-ZGBwl9JM2u0kol7jAWpqAkr2JSHfXJaLPsFDZWPf+ewpVkwngTTW/rGgtoDe5uVpHoDIpOhzpPCAh6O1SjGEOg==
+"@tanstack/react-form@^1.28.6":
+  version "1.28.6"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-form/-/react-form-1.28.6.tgz#f3c1282d72d338adc39d58c845597f5a826e2a4e"
+  integrity sha512-dRxwKeNW3uuJvf0sXsIQ2compFMnIJNk9B436Lx0fqkqK+CBvA1tNmEdX+faoCpuQ5Wua3c8ahVibJ65cpkijA==
   dependencies:
-    "@tanstack/form-core" "1.28.4"
+    "@tanstack/form-core" "1.28.6"
     "@tanstack/react-store" "^0.9.1"
 
 "@tanstack/react-store@^0.9.1":
