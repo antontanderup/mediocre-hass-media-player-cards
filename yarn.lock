@@ -1521,10 +1521,10 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.7.tgz#eb5014dfd0b03e7f3ba2eeeff506eed89b028058"
   integrity sha512-YLT9Zo3oNPJoBjBc4q8G2mjU4tqIbf5CEOORbUUr48dCD9q3umJ3IPlVqOqDakPfd2HuwccBaqlGhN4Gmr5OWg==
 
-"@preact/preset-vite@^2.10.3":
-  version "2.10.3"
-  resolved "https://registry.yarnpkg.com/@preact/preset-vite/-/preset-vite-2.10.3.tgz#8fe0ca8d73a2a23dfab59f62727ab0778fa99763"
-  integrity sha512-1SiS+vFItpkNdBs7q585PSAIln0wBeBdcpJYbzPs1qipsb/FssnkUioNXuRsb8ZnU8YEQHr+3v8+/mzWSnTQmg==
+"@preact/preset-vite@^2.10.5":
+  version "2.10.5"
+  resolved "https://registry.yarnpkg.com/@preact/preset-vite/-/preset-vite-2.10.5.tgz#a0c332d42ad3471bb84310a5b270326115cfa301"
+  integrity sha512-p0vJpxiVO7KWWazWny3LUZ+saXyZKWv6Ju0bYMWNJRp2YveufRPgSUB1C4MTqGJfz07EehMgfN+AJNwQy+w6Iw==
   dependencies:
     "@babel/plugin-transform-react-jsx" "^7.27.1"
     "@babel/plugin-transform-react-jsx-development" "^7.27.1"
@@ -1532,8 +1532,10 @@
     "@rollup/pluginutils" "^5.0.0"
     babel-plugin-transform-hook-names "^1.0.2"
     debug "^4.4.3"
+    magic-string "^0.30.21"
     picocolors "^1.1.1"
     vite-prerender-plugin "^0.5.8"
+    zimmerframe "^1.1.4"
 
 "@prefresh/babel-plugin@0.5.2":
   version "0.5.2"
@@ -4934,7 +4936,7 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-"magic-string@0.x >= 0.26.0":
+"magic-string@0.x >= 0.26.0", magic-string@^0.30.21:
   version "0.30.21"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.21.tgz#56763ec09a0fa8091df27879fd94d19078c00d91"
   integrity sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==
@@ -6554,6 +6556,11 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zimmerframe@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/zimmerframe/-/zimmerframe-1.1.4.tgz#0352b5cafad3ad4526b0a526a9a52d9c040d865b"
+  integrity sha512-B58NGBEoc8Y9MWWCQGl/gq9xBCe4IiKM0a2x7GZdQKOW5Exr8S1W24J6OgM1njK8xCRGvAJIL/MxXHf6SkmQKQ==
 
 "zod-validation-error@^3.5.0 || ^4.0.0":
   version "4.0.2"
