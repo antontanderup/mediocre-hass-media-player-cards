@@ -86,6 +86,34 @@ describe("getSupportedFeatures", () => {
       });
       expect(result.supportsTogglePlayPause).toBe(false);
     });
+
+    it("supportsPause is true only when PAUSE bit is set", () => {
+      const withPause = getSupportedFeatures("playing", {
+        supported_features: FEATURE_PAUSE,
+      });
+      expect(withPause.supportsPause).toBe(true);
+
+      const playOnly = getSupportedFeatures("playing", {
+        supported_features: FEATURE_PLAY,
+      });
+      expect(playOnly.supportsPause).toBe(false);
+    });
+
+    it("supportsPause is false when player is off", () => {
+      const result = getSupportedFeatures("off", {
+        supported_features: FEATURE_PAUSE,
+      });
+      expect(result.supportsPause).toBe(false);
+    });
+
+    it("HEOS-like player (PLAY+STOP, no PAUSE) has supportsTogglePlayPause true but supportsPause false", () => {
+      const result = getSupportedFeatures("playing", {
+        supported_features: FEATURE_PLAY | FEATURE_STOP,
+      });
+      expect(result.supportsTogglePlayPause).toBe(true);
+      expect(result.supportsPause).toBe(false);
+      expect(result.supportsStop).toBe(true);
+    });
   });
 
   describe("stop", () => {

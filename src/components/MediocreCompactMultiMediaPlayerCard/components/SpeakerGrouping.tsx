@@ -155,6 +155,9 @@ export const SpeakerGrouping = () => {
     return (
       <PlayerContextProvider key={player.entity_id} entityId={player.entity_id}>
         {({ player: { state } }) => {
+          const supportedFeatures = player.attributes?.supported_features;
+          const supportsPause =
+            supportedFeatures !== undefined && (supportedFeatures & 1) === 1;
           return (
             <Chip
               css={[
@@ -181,11 +184,6 @@ export const SpeakerGrouping = () => {
 
                     e.preventDefault();
 
-                    const supportedFeatures =
-                      player.attributes?.supported_features;
-                    const supportsPause =
-                      supportedFeatures !== undefined &&
-                      (supportedFeatures & 1) === 1;
                     if (supportsPause || supportedFeatures === undefined) {
                       getHass().callService(
                         "media_player",
@@ -207,7 +205,9 @@ export const SpeakerGrouping = () => {
                   }}
                   icon={
                     state === "playing"
-                      ? "mdi:pause-circle-outline"
+                      ? supportsPause
+                        ? "mdi:pause-circle-outline"
+                        : "mdi:stop-circle-outline"
                       : "mdi:play-circle-outline"
                   }
                 />

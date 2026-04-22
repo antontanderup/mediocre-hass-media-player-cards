@@ -42,6 +42,7 @@ export const PlaybackControls = () => {
     supportsShuffle,
     supportsRepeat,
     supportsTogglePlayPause,
+    supportsPause,
     supportsStop,
   } = useSupportedFeatures();
 
@@ -81,7 +82,13 @@ export const PlaybackControls = () => {
           id="mmpc-compact-play-pause-toggle"
           size="medium"
           onClick={togglePlayback}
-          icon={playing ? "mdi:pause-circle" : "mdi:play-circle"}
+          icon={
+            playing
+              ? supportsPause
+                ? "mdi:pause-circle"
+                : "mdi:stop-circle"
+              : "mdi:play-circle"
+          }
         />
       ) : supportsStop ? (
         <IconButton
