@@ -181,15 +181,29 @@ export const SpeakerGrouping = () => {
 
                     e.preventDefault();
 
-                    getHass().callService(
-                      "media_player",
-
-                      "media_play_pause",
-
-                      {
+                    const supportedFeatures =
+                      player.attributes?.supported_features;
+                    const supportsPause =
+                      supportedFeatures !== undefined &&
+                      (supportedFeatures & 1) === 1;
+                    if (supportsPause || supportedFeatures === undefined) {
+                      getHass().callService(
+                        "media_player",
+                        "media_play_pause",
+                        { entity_id: player.entity_id }
+                      );
+                    } else if (state === "playing") {
+                      const supportsStop = (supportedFeatures & 4096) === 4096;
+                      getHass().callService(
+                        "media_player",
+                        supportsStop ? "media_stop" : "media_pause",
+                        { entity_id: player.entity_id }
+                      );
+                    } else {
+                      getHass().callService("media_player", "media_play", {
                         entity_id: player.entity_id,
-                      }
-                    );
+                      });
+                    }
                   }}
                   icon={
                     state === "playing"

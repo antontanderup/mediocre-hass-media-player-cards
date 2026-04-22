@@ -5,7 +5,8 @@ import { useCallback, useMemo } from "preact/hooks";
 export const usePlayerActions = () => {
   const {
     entity_id,
-    attributes: { shuffle, repeat },
+    state,
+    attributes: { shuffle, repeat, supported_features: supportedFeatures },
   } = usePlayer();
 
   const stop = useCallback(() => {
@@ -15,10 +16,21 @@ export const usePlayerActions = () => {
   }, [entity_id]);
 
   const togglePlayback = useCallback(() => {
-    getHass().callService("media_player", "media_play_pause", {
-      entity_id,
-    });
-  }, [entity_id]);
+    const supportsPause =
+      supportedFeatures !== undefined && (supportedFeatures & 1) === 1;
+    if (supportsPause || supportedFeatures === undefined) {
+      getHass().callService("media_player", "media_play_pause", { entity_id });
+    } else if (state === "playing") {
+      const supportsStop = (supportedFeatures & 4096) === 4096;
+      getHass().callService(
+        "media_player",
+        supportsStop ? "media_stop" : "media_pause",
+        { entity_id }
+      );
+    } else {
+      getHass().callService("media_player", "media_play", { entity_id });
+    }
+  }, [entity_id, state, supportedFeatures]);
 
   const nextTrack = useCallback(() => {
     getHass().callService("media_player", "media_next_track", {
