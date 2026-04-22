@@ -38,9 +38,7 @@ export function getSupportedFeatures(
     (supportedFeatures & 32) === 32;
 
   const supportsPause =
-    !isOff &&
-    supportedFeatures !== undefined &&
-    (supportedFeatures & 1) === 1;
+    !isOff && supportedFeatures !== undefined && (supportedFeatures & 1) === 1;
 
   const supportsTogglePlayPause =
     !isOff &&
