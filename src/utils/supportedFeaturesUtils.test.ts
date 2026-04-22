@@ -73,11 +73,18 @@ describe("getSupportedFeatures", () => {
       expect(result.supportsTogglePlayPause).toBe(true);
     });
 
-    it("supports toggle play/pause via PLAY bit (16384)", () => {
+    it("supports toggle play/pause via PLAY+STOP bits", () => {
+      const result = getSupportedFeatures("playing", {
+        supported_features: FEATURE_PLAY | FEATURE_STOP,
+      });
+      expect(result.supportsTogglePlayPause).toBe(true);
+    });
+
+    it("does not support toggle play/pause when PLAY is set but not PAUSE or STOP", () => {
       const result = getSupportedFeatures("playing", {
         supported_features: FEATURE_PLAY,
       });
-      expect(result.supportsTogglePlayPause).toBe(true);
+      expect(result.supportsTogglePlayPause).toBe(false);
     });
 
     it("does not support toggle play/pause when neither bit is set", () => {
