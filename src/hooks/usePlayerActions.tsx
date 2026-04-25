@@ -1,13 +1,16 @@
 import { usePlayer } from "@components";
 import { getHass } from "@utils";
+import { useSupportedFeatures } from "@hooks/useSupportedFeatures";
 import { useCallback, useMemo } from "preact/hooks";
 
 export const usePlayerActions = () => {
   const {
     entity_id,
     state,
-    attributes: { shuffle, repeat, supported_features: supportedFeatures },
+    attributes: { shuffle, repeat },
   } = usePlayer();
+
+  const { supportsPause, supportsStop } = useSupportedFeatures();
 
   const stop = useCallback(() => {
     getHass().callService("media_player", "media_stop", {
@@ -16,12 +19,9 @@ export const usePlayerActions = () => {
   }, [entity_id]);
 
   const togglePlayback = useCallback(() => {
-    const supportsPause =
-      supportedFeatures !== undefined && (supportedFeatures & 1) === 1;
-    if (supportsPause || supportedFeatures === undefined) {
+    if (supportsPause) {
       getHass().callService("media_player", "media_play_pause", { entity_id });
     } else if (state === "playing") {
-      const supportsStop = (supportedFeatures & 4096) === 4096;
       getHass().callService(
         "media_player",
         supportsStop ? "media_stop" : "media_pause",
@@ -30,7 +30,7 @@ export const usePlayerActions = () => {
     } else {
       getHass().callService("media_player", "media_play", { entity_id });
     }
-  }, [entity_id, state, supportedFeatures]);
+  }, [entity_id, state, supportsPause, supportsStop]);
 
   const nextTrack = useCallback(() => {
     getHass().callService("media_player", "media_next_track", {

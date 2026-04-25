@@ -20,7 +20,7 @@ import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { useIntl } from "@components/i18n";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
-import { getHass } from "@utils";
+import { getHass, getSupportedFeatures } from "@utils";
 
 const styles = {
   speakerGroupContainer: css({
@@ -155,9 +155,10 @@ export const SpeakerGrouping = () => {
     return (
       <PlayerContextProvider key={player.entity_id} entityId={player.entity_id}>
         {({ player: { state } }) => {
-          const supportedFeatures = player.attributes?.supported_features;
-          const supportsPause =
-            supportedFeatures !== undefined && (supportedFeatures & 1) === 1;
+          const { supportsPause, supportsStop } = getSupportedFeatures(
+            state,
+            player.attributes ?? {}
+          );
           return (
             <Chip
               css={[
@@ -184,14 +185,13 @@ export const SpeakerGrouping = () => {
 
                     e.preventDefault();
 
-                    if (supportsPause || supportedFeatures === undefined) {
+                    if (supportsPause) {
                       getHass().callService(
                         "media_player",
                         "media_play_pause",
                         { entity_id: player.entity_id }
                       );
                     } else if (state === "playing") {
-                      const supportsStop = (supportedFeatures & 4096) === 4096;
                       getHass().callService(
                         "media_player",
                         supportsStop ? "media_stop" : "media_pause",
