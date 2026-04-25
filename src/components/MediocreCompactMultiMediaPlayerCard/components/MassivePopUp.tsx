@@ -115,9 +115,7 @@ export const MassivePopUp = ({
         <Icon size="small" icon={mdiIcon} />
         <span css={styles.title}>
           {friendlyName}
-          {groupMembers?.length > 1 && (
-            <span> +{groupMembers.length - 1}</span>
-          )}
+          {groupMembers?.length > 1 && <span> +{groupMembers.length - 1}</span>}
         </span>
       </span>
       <span slot="headerActionItems">
