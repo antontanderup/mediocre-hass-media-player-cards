@@ -110,7 +110,7 @@ export const MassivePopUp = ({
   }, [setVisible]);
 
   return (
-    <ha-adaptive-dialog ref={dialogRef} open={visible}>
+    <ha-adaptive-dialog ref={dialogRef} hass={hass} open={visible}>
       <span slot="headerTitle" css={styles.titleContainer}>
         <Icon size="small" icon={mdiIcon} />
         <span css={styles.title}>

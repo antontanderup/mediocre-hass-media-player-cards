@@ -87,6 +87,7 @@ interface HaButtonAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
 
 interface HaAdaptiveDialogAttributes extends preact.JSX
   .HTMLAttributes<HTMLElement> {
+  hass?: HomeAssistant;
   open?: boolean;
   type?: "alert" | "standard";
   width?: "small" | "medium" | "large" | "full";
