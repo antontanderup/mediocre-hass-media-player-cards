@@ -85,6 +85,21 @@ interface HaButtonAttributes extends preact.JSX.HTMLAttributes<HTMLElement> {
   onClick?: (e?: preact.JSX.TargetedMouseEvent<HTMLElement>) => void;
 }
 
+interface HaAdaptiveDialogAttributes
+  extends preact.JSX.HTMLAttributes<HTMLElement> {
+  open?: boolean;
+  type?: "alert" | "standard";
+  width?: "small" | "medium" | "large" | "full";
+  "prevent-scrim-close"?: boolean;
+  "allow-mode-change"?: boolean;
+  "without-header"?: boolean;
+  "hide-close-button"?: boolean;
+  "header-title"?: string;
+  "header-subtitle"?: string;
+  "header-subtitle-position"?: "above" | "below";
+  flexcontent?: boolean;
+}
+
 declare module "preact" {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
@@ -98,6 +113,7 @@ declare module "preact" {
       "ha-entity-picker": HaEntityPickerAttributes;
       "ha-entities-picker": HaEntitiesPickerAttributes;
       "ha-button": HaButtonAttributes;
+      "ha-adaptive-dialog": HaAdaptiveDialogAttributes;
     }
   }
 }
