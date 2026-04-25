@@ -119,11 +119,18 @@ describe("getSupportedFeatures", () => {
         supported_features: 32768 | 4096, // SUPPORT_SHUFFLE_SET | SUPPORT_STOP
       });
       expect(result.supportsShuffle).toBe(true);
-      // supportsTogglePlayPause true
+      // supportsTogglePlayPause true (PAUSE bit)
       result = getSupportedFeatures("playing", {
         ...baseAttributes,
         shuffle: false,
-        supported_features: 32768 | 16384, // SUPPORT_SHUFFLE_SET | SUPPORT_PAUSE
+        supported_features: 32768 | 1, // SUPPORT_SHUFFLE_SET | SUPPORT_PAUSE
+      });
+      expect(result.supportsShuffle).toBe(true);
+      // supportsTogglePlayPause true (PLAY+STOP)
+      result = getSupportedFeatures("playing", {
+        ...baseAttributes,
+        shuffle: false,
+        supported_features: 32768 | 16384 | 4096, // SUPPORT_SHUFFLE_SET | SUPPORT_PLAY | SUPPORT_STOP
       });
       expect(result.supportsShuffle).toBe(true);
     });
@@ -183,11 +190,18 @@ describe("getSupportedFeatures", () => {
         supported_features: 262144 | 4096, // SUPPORT_REPEAT_SET | SUPPORT_STOP
       });
       expect(result.supportsRepeat).toBe(true);
-      // supportsTogglePlayPause true
+      // supportsTogglePlayPause true (PAUSE bit)
       result = getSupportedFeatures("playing", {
         ...baseAttributes,
         repeat: "off",
-        supported_features: 262144 | 16384, // SUPPORT_REPEAT_SET | SUPPORT_PAUSE
+        supported_features: 262144 | 1, // SUPPORT_REPEAT_SET | SUPPORT_PAUSE
+      });
+      expect(result.supportsRepeat).toBe(true);
+      // supportsTogglePlayPause true (PLAY+STOP)
+      result = getSupportedFeatures("playing", {
+        ...baseAttributes,
+        repeat: "off",
+        supported_features: 262144 | 16384 | 4096, // SUPPORT_REPEAT_SET | SUPPORT_PLAY | SUPPORT_STOP
       });
       expect(result.supportsRepeat).toBe(true);
     });
@@ -261,9 +275,25 @@ describe("getSupportedFeatures", () => {
     it("should return true when player is not off and has pause feature", () => {
       const result = getSupportedFeatures("playing", {
         ...baseAttributes,
-        supported_features: 16384, // SUPPORT_PAUSE
+        supported_features: 1, // SUPPORT_PAUSE
       });
       expect(result.supportsTogglePlayPause).toBe(true);
+    });
+
+    it("should return true when player has play+stop features", () => {
+      const result = getSupportedFeatures("playing", {
+        ...baseAttributes,
+        supported_features: 16384 | 4096, // SUPPORT_PLAY | SUPPORT_STOP
+      });
+      expect(result.supportsTogglePlayPause).toBe(true);
+    });
+
+    it("should return false when player has play but not pause or stop", () => {
+      const result = getSupportedFeatures("playing", {
+        ...baseAttributes,
+        supported_features: 16384, // SUPPORT_PLAY only
+      });
+      expect(result.supportsTogglePlayPause).toBe(false);
     });
 
     it("should return false when player is off", () => {
@@ -308,11 +338,18 @@ describe("getSupportedFeatures", () => {
           supported_features: 32768 | 4096,
         }).supportsShuffle
       ).toBe(true);
-      // Shuffle + togglePlayPause
+      // Shuffle + togglePlayPause (PAUSE bit)
       expect(
         getSupportedFeatures("playing", {
           ...shuffleAttrs,
-          supported_features: 32768 | 16384,
+          supported_features: 32768 | 1,
+        }).supportsShuffle
+      ).toBe(true);
+      // Shuffle + togglePlayPause (PLAY+STOP)
+      expect(
+        getSupportedFeatures("playing", {
+          ...shuffleAttrs,
+          supported_features: 32768 | 16384 | 4096,
         }).supportsShuffle
       ).toBe(true);
     });
@@ -333,11 +370,18 @@ describe("getSupportedFeatures", () => {
           supported_features: 262144 | 4096,
         }).supportsRepeat
       ).toBe(true);
-      // Repeat + togglePlayPause
+      // Repeat + togglePlayPause (PAUSE bit)
       expect(
         getSupportedFeatures("playing", {
           ...repeatAttrs,
-          supported_features: 262144 | 16384,
+          supported_features: 262144 | 1,
+        }).supportsRepeat
+      ).toBe(true);
+      // Repeat + togglePlayPause (PLAY+STOP)
+      expect(
+        getSupportedFeatures("playing", {
+          ...repeatAttrs,
+          supported_features: 262144 | 16384 | 4096,
         }).supportsRepeat
       ).toBe(true);
     });

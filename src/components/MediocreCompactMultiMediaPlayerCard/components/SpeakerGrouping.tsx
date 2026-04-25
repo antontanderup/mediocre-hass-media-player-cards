@@ -20,7 +20,7 @@ import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { useIntl } from "@components/i18n";
 import { useSelectedPlayer } from "@components/SelectedPlayerContext";
-import { getHass } from "@utils";
+import { getHass, getSupportedFeatures } from "@utils";
 
 const styles = {
   speakerGroupContainer: css({
@@ -155,6 +155,10 @@ export const SpeakerGrouping = () => {
     return (
       <PlayerContextProvider key={player.entity_id} entityId={player.entity_id}>
         {({ player: { state } }) => {
+          const { supportsPause, supportsStop } = getSupportedFeatures(
+            state,
+            player.attributes ?? {}
+          );
           return (
             <Chip
               css={[
@@ -181,19 +185,29 @@ export const SpeakerGrouping = () => {
 
                     e.preventDefault();
 
-                    getHass().callService(
-                      "media_player",
-
-                      "media_play_pause",
-
-                      {
+                    if (supportsPause) {
+                      getHass().callService(
+                        "media_player",
+                        "media_play_pause",
+                        { entity_id: player.entity_id }
+                      );
+                    } else if (state === "playing") {
+                      getHass().callService(
+                        "media_player",
+                        supportsStop ? "media_stop" : "media_pause",
+                        { entity_id: player.entity_id }
+                      );
+                    } else {
+                      getHass().callService("media_player", "media_play", {
                         entity_id: player.entity_id,
-                      }
-                    );
+                      });
+                    }
                   }}
                   icon={
                     state === "playing"
-                      ? "mdi:pause-circle-outline"
+                      ? supportsPause
+                        ? "mdi:pause-circle-outline"
+                        : "mdi:stop-circle-outline"
                       : "mdi:play-circle-outline"
                   }
                 />

@@ -17,6 +17,7 @@ export function useSupportedFeatures() {
       supportedFeatures.supportsShuffle,
       supportedFeatures.supportsRepeat,
       supportedFeatures.supportsTogglePlayPause,
+      supportedFeatures.supportsPause,
       supportedFeatures.supportsStop,
     ]
   );

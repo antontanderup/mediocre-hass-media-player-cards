@@ -13,6 +13,7 @@ interface SupportedFeatures {
   supportsShuffle: boolean;
   supportsRepeat: boolean;
   supportsTogglePlayPause: boolean;
+  supportsPause: boolean;
   supportsStop: boolean;
 }
 
@@ -36,10 +37,17 @@ export function getSupportedFeatures(
     supportedFeatures !== undefined &&
     (supportedFeatures & 32) === 32;
 
+  const supportsPause =
+    !isOff && supportedFeatures !== undefined && (supportedFeatures & 1) === 1;
+
   const supportsTogglePlayPause =
     !isOff &&
     supportedFeatures !== undefined &&
-    ((supportedFeatures & 1) === 1 || (supportedFeatures & 16384) === 16384);
+    // Either PAUSE is supported (media_play_pause works), or PLAY+STOP are
+    // both supported (can use individual actions without leaving player stuck)
+    ((supportedFeatures & 1) === 1 ||
+      ((supportedFeatures & 16384) === 16384 &&
+        (supportedFeatures & 4096) === 4096));
 
   const supportsStop =
     !isOff &&
@@ -69,6 +77,7 @@ export function getSupportedFeatures(
     supportsShuffle,
     supportsRepeat,
     supportsTogglePlayPause,
+    supportsPause,
     supportsStop,
   };
 }
