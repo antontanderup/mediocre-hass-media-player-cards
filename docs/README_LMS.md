@@ -50,3 +50,22 @@ search:
 media_browser:
   - entity_id: media_player.living_room_lms
 ```
+
+### 4. Experimental LMS Media Browser
+
+When both `lms_entity_id` and the [lyrion_cli integration](https://github.com/peteS-UK/lyrion_cli) are present, you can opt into an experimental lyrion_cli-based media browser by setting `use_experimental_lms_media_browser: true` under `options`.
+
+These cards use a custom built-in media browser (since custom Lovelace cards cannot launch the standard Home Assistant media browser). The experimental lyrion_cli-based browser replaces this with a purpose-built browser that fetches content directly from your LMS library and offers:
+
+- **Global search** across your entire LMS library
+- **App access** — browse and play from LMS plugins such as Spotty (Spotify) and Qobuz
+
+```yaml
+type: "custom:mediocre-media-player-card"
+entity_id: media_player.living_room
+lms_entity_id: media_player.living_room_lms
+options:
+  use_experimental_lms_media_browser: true
+```
+
+> **Note:** This feature is experimental and may change in future releases.

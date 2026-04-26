@@ -100,20 +100,19 @@ export const FooterActions = memo<FooterActionsProps>(
             selected={navigationRoute === "queue"}
           />
         )}
-        {custom_buttons && custom_buttons.length === 1 && !ma_entity_id ? (
+        {custom_buttons && custom_buttons.length === 1 ? (
           <CustomButton
             button={custom_buttons[0]}
             rootElement={rootElement}
             entityId={entity_id}
           />
-        ) : (custom_buttons && custom_buttons.length > 1) || ma_entity_id ? (
-          <IconButton
-            size="small"
-            icon={"mdi:dots-horizontal"}
-            onClick={() => setNavigationRoute("custom-buttons")}
-            selected={navigationRoute === "custom-buttons"}
-          />
         ) : null}
+        <IconButton
+          size="small"
+          icon={"mdi:dots-horizontal"}
+          onClick={() => setNavigationRoute("custom-buttons")}
+          selected={navigationRoute === "custom-buttons"}
+        />
         <IconButton
           size="small"
           icon={"mdi:speaker-multiple"}
