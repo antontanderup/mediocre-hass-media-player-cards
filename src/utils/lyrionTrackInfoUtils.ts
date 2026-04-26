@@ -17,8 +17,7 @@ export function deriveLyrionTrackBadges(
   const fileSize = (() => {
     const bytes = Number(currentTrack.filesize);
     if (!bytes) return null;
-    if (bytes >= 1024 * 1024)
-      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     return `${Math.round(bytes / 1024)} KB`;
   })();
 
