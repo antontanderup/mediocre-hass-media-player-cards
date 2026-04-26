@@ -21,7 +21,9 @@
       "media_player_actions_subtitle": "Additional controls for your media player.",
       "mark_as_favorite": "Mark as Favorite",
       "more_info": "More Info",
-      "transfer_queue": "Transfer Queue"
+      "transfer_queue": "Transfer Queue",
+      "lyrion_info_title": "Track info",
+      "related_albums_title": "Related Albums"
     },
     "QueueView": {
       "up_next": "Up Next",

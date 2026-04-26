@@ -1,13 +1,20 @@
-import { SqueezeboxStatusResponse, SqueezeboxSonginfoResponse } from "@types";
+import {
+  SqueezeboxStatusResponse,
+  SqueezeboxSonginfoResponse,
+  SqueezeboxSongInfoLoopItem,
+} from "@types";
 import { useHassMessagePromise } from "@hooks";
 import { usePlayer } from "@components";
 import { useEffect, useMemo } from "preact/hooks";
 
-export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
+export const useSqueezeboxMoreInfo = ({
+  lms_entity_id,
+  enabled,
+}: {
+  lms_entity_id?: string;
+  enabled?: boolean;
+}) => {
   const player = usePlayer();
-
-  const enabled = !!lms_entity_id;
-  const entity_id = lms_entity_id;
 
   const { data, loading, error, refetch } =
     useHassMessagePromise<SqueezeboxStatusResponse>(
@@ -17,18 +24,18 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
         service: "query",
         service_data: {
           command: "status",
-          entity_id,
+          entity_id: lms_entity_id,
           parameters: ["-"],
         },
         return_response: true,
       },
       {
         enabled: enabled,
-        staleTime: 30000, // 30 seconds
+        staleTime: 60000, // 1 minute
       }
     );
 
-  const { data: currentTrack, error: currentTrackError } =
+  const { data: songinfoResponse, error: currentTrackError } =
     useHassMessagePromise<SqueezeboxSonginfoResponse>(
       {
         type: "call_service",
@@ -36,7 +43,7 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
         service: "query",
         service_data: {
           command: "songinfo",
-          entity_id,
+          entity_id: lms_entity_id,
           parameters: [
             0,
             100,
@@ -46,9 +53,11 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
         return_response: true,
       },
       {
-        enabled: !!data?.playlist_loop?.find(
-          i => Number(i["playlist index"]) === Number(data.playlist_cur_index)
-        )?.id,
+        enabled:
+          enabled &&
+          !!data?.playlist_loop?.find(
+            i => Number(i["playlist index"]) === Number(data.playlist_cur_index)
+          )?.id,
         staleTime: 86400000, // 24 hours
       }
     );
@@ -57,7 +66,17 @@ export const useSqueezeboxMoreInfo = (lms_entity_id: string) => {
     if (player.attributes.media_title) {
       refetch();
     }
-  }, [player.attributes.media_title, refetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.attributes.media_title]); //  only refetch on title change
+
+  const currentTrack = useMemo(
+    () =>
+      songinfoResponse?.songinfo_loop?.reduce<SqueezeboxSongInfoLoopItem>(
+        (acc, item) => ({ ...acc, ...item }),
+        {}
+      ),
+    [songinfoResponse]
+  );
 
   return useMemo(
     () => ({

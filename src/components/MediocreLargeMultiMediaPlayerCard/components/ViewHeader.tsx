@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { JSX } from "preact/jsx-runtime";
 
 type ViewHeaderProps = {
-  title: string;
+  title?: string;
   subtitle?: string;
   className?: string;
   renderAction?: () => JSX.Element;
@@ -36,7 +36,7 @@ export const ViewHeader = ({
   return (
     <div css={styles.root} className={className}>
       <div css={styles.titleRow}>
-        <span css={styles.title}>{title}</span>
+        {!!title && <span css={styles.title}>{title}</span>}
         {!!renderAction && renderAction()}
       </div>
       {!!subtitle && <span css={styles.subtitle}>{subtitle}</span>}

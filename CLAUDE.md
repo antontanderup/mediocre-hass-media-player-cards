@@ -16,6 +16,10 @@
 - **Formatting**: Prettier (double quotes, trailing commas ES5, 80 col)
 - **Runtime Validation**: arktype
 
+## Setup
+
+Always run `yarn` before starting any work to ensure dependencies are installed.
+
 ## Commands
 
 ```bash
