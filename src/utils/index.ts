@@ -25,6 +25,7 @@ export * from "./getSourceIcon";
 export * from "./getVolumeIcon";
 export * from "./selectActiveMultiMediaPlayer";
 export * from "./setVolume";
+export * from "./lyrionTrackInfoUtils";
 export * from "./supportedFeaturesUtils";
 export * from "./transferLmsQueue";
 export * from "./transferMaQueue";
