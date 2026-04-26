@@ -31,7 +31,8 @@ const styles = {
   }),
   massiveCard: css({
     width: "100%",
-    height: 754,
+    height: "min-content",
+    minHeight: "100%",
     overflow: "hidden",
   }),
 };
@@ -110,7 +111,7 @@ export const MassivePopUp = ({
   }, [setVisible]);
 
   return (
-    <ha-adaptive-dialog ref={dialogRef} hass={hass} open={visible}>
+    <ha-adaptive-dialog ref={dialogRef} hass={hass} open={visible} flexcontent>
       <span slot="headerTitle" css={styles.titleContainer}>
         <Icon size="small" icon={mdiIcon} />
         <span css={styles.title}>
