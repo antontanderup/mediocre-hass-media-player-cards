@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { mockHass } from "./mock-hass";
+import { buildHaIconScript } from "./ha-icon-stub";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,9 +45,10 @@ const HA_DARK_CSS = `
   }
 `;
 
-// Minimal stubs for HA custom elements that the cards reference.
-const HA_ELEMENT_STUBS = `
-  // ha-card: styled card container
+// Minimal stub for ha-card — the styled card container.
+// ha-icon and ha-svg-icon are injected separately via buildHaIconScript()
+// so they render real MDI paths from @mdi/js.
+const HA_CARD_STUB = `
   customElements.define("ha-card", class extends HTMLElement {
     connectedCallback() {
       this.style.display = "block";
@@ -56,25 +58,6 @@ const HA_ELEMENT_STUBS = `
       this.style.overflow = "hidden";
     }
   });
-
-  // ha-icon: renders a filled circle using currentColor as placeholder.
-  customElements.define("ha-icon", class extends HTMLElement {
-    static get observedAttributes() { return ["icon"]; }
-    connectedCallback() { this._render(); }
-    attributeChangedCallback() { this._render(); }
-    _render() {
-      this.style.display = "inline-flex";
-      this.style.alignItems = "center";
-      this.style.justifyContent = "center";
-      this.style.width = "var(--mdc-icon-size, 24px)";
-      this.style.height = "var(--mdc-icon-size, 24px)";
-      this.style.flexShrink = "0";
-      this.innerHTML = '<svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor" style="display:block"><circle cx="12" cy="12" r="9" fill-opacity="0.25"/><circle cx="12" cy="12" r="6" fill-opacity="0.55"/><circle cx="12" cy="12" r="3"/></svg>';
-    }
-  });
-
-  // ha-slider: thin range input wrapper
-  customElements.define("ha-slider", class extends HTMLInputElement {}, { extends: "input" });
 `;
 
 /** Set up a fresh browser page with HA theme CSS and element stubs, then inject the card bundle. */
@@ -83,8 +66,10 @@ async function setupPage(page: Page) {
     `<!DOCTYPE html><html><head><style>${HA_DARK_CSS}</style></head><body></body></html>`
   );
 
-  // Define stub HA custom elements before the bundle registers card elements.
-  await page.addScriptTag({ content: HA_ELEMENT_STUBS });
+  // Register ha-card stub and real ha-icon/ha-svg-icon (backed by @mdi/js)
+  // before the bundle loads so they are already defined when the cards render.
+  await page.addScriptTag({ content: HA_CARD_STUB });
+  await page.addScriptTag({ content: buildHaIconScript() });
 
   // Mount <home-assistant> BEFORE the bundle loads.
   // getHass() = document.querySelector("home-assistant").hass is called during
