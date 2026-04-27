@@ -134,14 +134,4 @@ yarn build
 
 When using `yarn dev`, the output file will be named `mediocre-hass-media-player-cards-dev.js` instead of `mediocre-hass-media-player-cards.js`.
 
-### Updating README screenshots
-
-The screenshots in this README are generated automatically with [Playwright](https://playwright.dev) using mock Home Assistant data. To regenerate them after UI changes:
-
-```bash
-yarn screenshots
-```
-
-This builds the development bundle and renders each card type in a headless browser with mock entity data, saving the results to `screenshots/`. Commit the updated images to keep the README current.
-
 You can also create a `.env.development` file (based on the `.env.development.example`) to use custom component names during development. This is usefull if you want to test in a live environment without risking breaking anything for your users (family members :D).
