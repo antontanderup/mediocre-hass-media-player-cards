@@ -74,10 +74,7 @@ export const mockStates = {
     "Living Room",
     "playing",
     {
-      group_members: [
-        "media_player.living_room",
-        "media_player.kitchen",
-      ],
+      group_members: ["media_player.living_room", "media_player.kitchen"],
     }
   ),
   "media_player.kitchen": makePlayer(
@@ -88,10 +85,7 @@ export const mockStates = {
       media_title: "Hotel California",
       media_artist: "Eagles",
       media_album_name: "Hotel California",
-      group_members: [
-        "media_player.living_room",
-        "media_player.kitchen",
-      ],
+      group_members: ["media_player.living_room", "media_player.kitchen"],
     }
   ),
   "media_player.bedroom": makePlayer(

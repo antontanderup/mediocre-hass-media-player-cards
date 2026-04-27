@@ -79,7 +79,9 @@ const HA_ELEMENT_STUBS = `
 
 /** Set up a fresh browser page with HA theme CSS and element stubs, then inject the card bundle. */
 async function setupPage(page: Page) {
-  await page.setContent(`<!DOCTYPE html><html><head><style>${HA_DARK_CSS}</style></head><body></body></html>`);
+  await page.setContent(
+    `<!DOCTYPE html><html><head><style>${HA_DARK_CSS}</style></head><body></body></html>`
+  );
 
   // Define stub HA custom elements before the bundle registers card elements.
   await page.addScriptTag({ content: HA_ELEMENT_STUBS });
@@ -87,17 +89,22 @@ async function setupPage(page: Page) {
   // Mount <home-assistant> BEFORE the bundle loads.
   // getHass() = document.querySelector("home-assistant").hass is called during
   // bundle initialisation, so the element must already exist.
-  await page.evaluate((hassData) => {
+  await page.evaluate(hassData => {
     function buildHass(data: Record<string, unknown>) {
       return {
         ...data,
         hassUrl: (p: string) =>
-          p.startsWith("data:") || p.startsWith("http") ? p : `http://localhost:8123${p}`,
+          p.startsWith("data:") || p.startsWith("http")
+            ? p
+            : `http://localhost:8123${p}`,
         callService: () => Promise.resolve(),
         callWS: () => Promise.resolve(),
         subscribeEvents: () => () => {},
         subscribeMessage: () => () => {},
-        connection: { subscribeEvents: () => () => {}, addEventListener: () => {} },
+        connection: {
+          subscribeEvents: () => () => {},
+          addEventListener: () => {},
+        },
         localize: (key: string) => key,
         formatEntityState: () => "",
         formatEntityAttributeValue: (_: unknown, __: unknown, val: unknown) =>
