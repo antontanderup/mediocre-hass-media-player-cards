@@ -13,7 +13,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "screenshots": "yarn dev && yarn playwright test",
+    "playwright": "playwright"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -30,6 +32,7 @@
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.12.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
     "@preact/preset-vite": "^2.10.5",
     "@types/chroma-js": "^3.1.2",
     "@types/jest": "^30.0.0",
