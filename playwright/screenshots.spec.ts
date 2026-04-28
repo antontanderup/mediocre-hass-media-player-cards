@@ -200,6 +200,8 @@ test("mediocre-massive-media-player-card screenshot", async ({ page }) => {
       type: "mediocre-massive-media-player-card",
       entity_id: "media_player.living_room",
       mode: "card",
+      search: { enabled: true },
+      media_browser: { enabled: true },
       speaker_group: {
         entities: [
           { entity: "media_player.kitchen" },
@@ -225,7 +227,11 @@ test("mediocre-multi-media-player-card screenshot", async ({ page }) => {
       size: "large",
       mode: "card",
       media_players: [
-        { entity_id: "media_player.living_room" },
+        {
+          entity_id: "media_player.living_room",
+          search: { enabled: true },
+          media_browser: { enabled: true },
+        },
         { entity_id: "media_player.kitchen" },
         { entity_id: "media_player.bedroom" },
         { entity_id: "media_player.office" },
