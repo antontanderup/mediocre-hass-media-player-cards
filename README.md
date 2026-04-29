@@ -47,7 +47,7 @@ resources:
 
 A standard-sized media player card for a single entity. Supports grouping, custom actions, and (optional) Music Assistant integration.
 
-<img width="396" height="135" alt="Mediocre Media Player Card Screenshot" src="https://github.com/user-attachments/assets/443cbfb0-7cf9-4941-b909-360693266aab" />
+<img alt="Mediocre Media Player Card Screenshot" src="./screenshots/mediocre-media-player-card.png" />
 
 → [Read full documentation](./docs/mediocre-media-player-card.md)
 
@@ -57,7 +57,7 @@ A standard-sized media player card for a single entity. Supports grouping, custo
 
 A full-sized, feature-rich card for a single media player. Includes all features of the standard card, plus multiple display modes.
 
-<img width="396" height="693" alt="Mediocre Massive Media Player Card Screenshot" src="https://github.com/user-attachments/assets/69afbcef-356a-460e-9779-2102f5747695" />
+<img alt="Mediocre Massive Media Player Card Screenshot" src="./screenshots/mediocre-massive-media-player-card.png" />
 
 → [Read full documentation](./docs/mediocre-massive-media-player-card.md)
 
@@ -67,7 +67,7 @@ A full-sized, feature-rich card for a single media player. Includes all features
 
 Control and view multiple media players at once. Great for dashboards with several speakers or grouped devices.
 
-<img width="396" height="779" alt="image" src="https://github.com/user-attachments/assets/ee38fc29-8516-404e-bd72-0781bb9696b4" />
+<img alt="Mediocre Multi Media Player Card Screenshot" src="./screenshots/mediocre-multi-media-player-card.png" />
 
 → [Read full documentation](./docs/mediocre-multi-media-player-card.md)
 
@@ -77,7 +77,7 @@ Control and view multiple media players at once. Great for dashboards with sever
 
 A compact chip-style card for quickly grouping/ungrouping speakers. Perfect for putting under your media player card of choice.
 
-<img src="https://github.com/user-attachments/assets/96d2691c-e636-432a-87d9-f7dc33570ea6" width="400px" alt="Mediocre Chip Media Player Group Card Screenshot" />
+<img alt="Mediocre Chip Media Player Group Card Screenshot" src="./screenshots/mediocre-chip-media-player-group-card.png" />
 
 → [Read full documentation](./docs/mediocre-chip-media-player-group-card.md)
 

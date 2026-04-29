@@ -4,12 +4,12 @@
 
 ## Summary
 
-| Language | Keys translated | Completion | Status |
-|----------|----------------|------------|--------|
-| da | 66 / 69 | 96% ██████████ | 🟡 |
-| de | 59 / 69 | 86% █████████░ | 🟡 |
-| nl | 59 / 69 | 86% █████████░ | 🟡 |
-| pt | 59 / 69 | 86% █████████░ | 🟡 |
+| Language | Keys translated | Completion     | Status |
+| -------- | --------------- | -------------- | ------ |
+| da       | 66 / 69         | 96% ██████████ | 🟡     |
+| de       | 59 / 69         | 86% █████████░ | 🟡     |
+| nl       | 59 / 69         | 86% █████████░ | 🟡     |
+| pt       | 59 / 69         | 86% █████████░ | 🟡     |
 
 _Total English keys: 69_
 
@@ -17,45 +17,45 @@ _Total English keys: 69_
 
 ### da
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
-  - `LyrionTrackInfo.empty_state`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
+- `LyrionTrackInfo.empty_state`
 
 ### de
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
-  - `LyrionTrackInfo.empty_state`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
+- `LyrionTrackInfo.empty_state`
 
 ### nl
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
-  - `LyrionTrackInfo.empty_state`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
+- `LyrionTrackInfo.empty_state`
 
 ### pt
 
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
-  - `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next`
-  - `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
-  - `MediocreMediaPlayerCard.QueueView.up_next`
-  - `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
-  - `Search.search_provider.title`
-  - `Search.enqueue_mode.title`
-  - `LyrionTrackInfo.empty_state`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.more_info`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
+- `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next`
+- `MediocreMultiMediaPlayerCard.QueueView.up_next_subtitle`
+- `MediocreMediaPlayerCard.QueueView.up_next`
+- `MediocreMassiveMediaPlayerCard.PlayerActions.queue_view_modal_title`
+- `Search.search_provider.title`
+- `Search.enqueue_mode.title`
+- `LyrionTrackInfo.empty_state`
