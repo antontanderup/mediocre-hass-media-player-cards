@@ -96,6 +96,7 @@ export const MediaItem = forwardRef<HTMLButtonElement, MediaItemProps>(
     return (
       <button
         css={[styles.root, !isDarkMode() && styles.rootLight]}
+        id={`mmpc-media-item-${name.replace(/\s/g, "").slice(0, 8)}`}
         onClick={handleOnClick}
         {...buttonProps}
         ref={ref}
