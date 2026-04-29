@@ -4,6 +4,8 @@ import { useSqueezeboxMoreInfo } from "@hooks";
 import { css } from "@emotion/react";
 import { theme } from "@constants";
 import { deriveLyrionTrackBadges, getIsLmsPlayer } from "@utils";
+import { Spinner } from "@components";
+import { useIntl } from "@components/i18n";
 
 const styles = {
   trackInfo: css({
@@ -33,6 +35,10 @@ const styles = {
     backgroundColor: "transparent",
     border: `1px solid ${theme.colors.onCardDivider}`,
   }),
+  emptyState: css({
+    fontSize: 13,
+    color: theme.colors.onCardMuted,
+  }),
 };
 
 type LyrionTrackInfoProps = {
@@ -41,13 +47,14 @@ type LyrionTrackInfoProps = {
 
 export const LyrionTrackInfo = ({ lms_entity_id }: LyrionTrackInfoProps) => {
   const player = usePlayer();
+  const { t } = useIntl();
 
   const isLmsPlayer = useMemo(
     () => !!(lms_entity_id && getIsLmsPlayer(player, lms_entity_id)),
     [player, lms_entity_id]
   );
 
-  const { currentTrack } = useSqueezeboxMoreInfo({
+  const { currentTrack, loading } = useSqueezeboxMoreInfo({
     lms_entity_id: lms_entity_id ?? "",
     enabled: isLmsPlayer,
   });
@@ -57,7 +64,22 @@ export const LyrionTrackInfo = ({ lms_entity_id }: LyrionTrackInfoProps) => {
     [currentTrack]
   );
 
-  if (!derived) return null;
+  if (loading && !derived) return <Spinner />;
+
+  const hasNoBadges =
+    !derived ||
+    (derived.audioBadges.length === 0 && derived.metaBadges.length === 0);
+
+  if (hasNoBadges) {
+    return (
+      <span css={styles.emptyState}>
+        {t({
+          id: "LyrionTrackInfo.empty_state",
+          defaultMessage: "No track info available",
+        })}
+      </span>
+    );
+  }
 
   const { audioBadges, metaBadges } = derived;
 

@@ -101,6 +101,9 @@
     "transfer_queue": "Transfer Queue",
     "select_source": "Select Source"
   },
+  "LyrionTrackInfo": {
+    "empty_state": "No track info available"
+  },
   "player_states": {
     "Off": "Off",
     "Idle": "Idle",
