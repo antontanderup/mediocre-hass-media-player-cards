@@ -84,7 +84,8 @@
   "AdditionalActionsMenu": {
     "mark_as_favorite": "Marcar como Favorito",
     "transfer_queue": "Transferir Fila",
-    "select_source": "Selecionar Fonte"
+    "select_source": "Selecionar Fonte",
+    "select_sound_mode": "Modo de Som"
   },
   "player_states": {
     "Off": "Desligado",

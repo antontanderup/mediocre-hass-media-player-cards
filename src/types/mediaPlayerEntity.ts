@@ -51,6 +51,8 @@ export interface MediaPlayerEntityAttributes {
   group_members?: string[]; // Array of entity_ids
   source?: string;
   source_list?: string[];
+  sound_mode?: string;
+  sound_mode_list?: string[];
   device_class?: MediaPlayerDeviceClass;
   media_content_id?: string;
   media_content_type?: MediaContentType;

@@ -158,6 +158,23 @@ export const AdditionalActionsView = memo(() => {
     }));
   }, [player.attributes.source_list, player.entity_id]);
 
+  const soundModeMenuItems: OverlayMenuItem[] = useMemo(() => {
+    return (player.attributes.sound_mode_list ?? []).map(sound_mode => ({
+      label: sound_mode,
+      selected: sound_mode === player.attributes.sound_mode,
+      onClick: () => {
+        getHass().callService("media_player", "select_sound_mode", {
+          entity_id: player.entity_id,
+          sound_mode,
+        });
+      },
+    }));
+  }, [
+    player.attributes.sound_mode_list,
+    player.attributes.sound_mode,
+    player.entity_id,
+  ]);
+
   const moreInfoButtonProps = useActionProps({
     rootElement,
     actionConfig: {
@@ -249,6 +266,18 @@ export const AdditionalActionsView = memo(() => {
                   })}
                 >
                   {player.attributes.source}
+                  <Icon size="x-small" icon="mdi:chevron-down" />
+                </Chip>
+              )}
+            />
+          )}
+          {soundModeMenuItems.length > 0 && player.attributes.sound_mode && (
+            <OverlayMenu
+              side="bottom"
+              menuItems={soundModeMenuItems}
+              renderTrigger={triggerProps => (
+                <Chip {...triggerProps} icon="mdi:equalizer">
+                  {player.attributes.sound_mode}
                   <Icon size="x-small" icon="mdi:chevron-down" />
                 </Chip>
               )}
