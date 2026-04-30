@@ -64,6 +64,10 @@ export const MediocreMediaPlayerCardEditor: FC<
     },
   });
 
+  const tapOpensPopup = useStore(
+    form.store,
+    state => state.values.tap_opens_popup ?? false
+  );
   const formErrorMap = useStore(form.store, state => state.errorMap);
   const getSubformError = useCallback(
     (fieldName: string) => {
@@ -162,7 +166,8 @@ export const MediocreMediaPlayerCardEditor: FC<
         title="Music Assistant Configuration (optional)"
         error={
           getSubformError("ma_entity_id") ??
-          getSubformError("ma_favorite_button_entity_id")
+          getSubformError("ma_favorite_button_entity_id") ??
+          getSubformError("ma_favorite_control")
         }
       >
         <FieldGroupMaEntities
@@ -170,7 +175,14 @@ export const MediocreMediaPlayerCardEditor: FC<
           fields={{
             ma_entity_id: "ma_entity_id",
             ma_favorite_button_entity_id: "ma_favorite_button_entity_id",
+            ma_favorite_control: "ma_favorite_control",
           }}
+          showArtworkFavoriteControls={tapOpensPopup}
+          artworkFavoriteHelperText={
+            tapOpensPopup
+              ? "Shown on popup artwork."
+              : "Artwork favorite only appears on the popup artwork. Enable \"Tap opens popup\" to use it on this card."
+          }
         />
       </SubForm>
       <SubForm
