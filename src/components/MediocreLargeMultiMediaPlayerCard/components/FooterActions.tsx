@@ -35,6 +35,12 @@ const styles = {
   }),
 };
 
+const defaultFooterIcons = {
+  player: "mdi:home",
+  search: "mdi:magnify",
+  media_browser: "mdi:folder-music",
+} as const;
+
 export type FooterActionsProps = {
   setNavigationRoute: (route: NavigationRoute) => void;
   navigationRoute: NavigationRoute;
@@ -61,6 +67,9 @@ export const FooterActions = memo<FooterActionsProps>(
     const hasSearch = getHasSearch(search, ma_entity_id);
     const hasMediaBrowser = getHasMediaBrowser(media_browser);
     const hasQueue = useCanDisplayQueue({ ma_entity_id, lms_entity_id });
+    const footerIcons = config.options?.ui?.footer_icons;
+    const getFooterIcon = (key: keyof typeof defaultFooterIcons) =>
+      footerIcons?.[key]?.trim() || defaultFooterIcons[key];
 
     if (config.size && config.size !== "large") return null;
 
@@ -71,7 +80,7 @@ export const FooterActions = memo<FooterActionsProps>(
         {!desktopMode && (
           <IconButton
             size="small"
-            icon={"mdi:home"}
+            icon={getFooterIcon("player")}
             onClick={() => setNavigationRoute("massive")}
             selected={navigationRoute === "massive"}
           />
@@ -79,7 +88,7 @@ export const FooterActions = memo<FooterActionsProps>(
         {hasSearch && (
           <IconButton
             size="small"
-            icon={"mdi:magnify"}
+            icon={getFooterIcon("search")}
             onClick={() => setNavigationRoute("search")}
             selected={navigationRoute === "search"}
           />
@@ -87,7 +96,7 @@ export const FooterActions = memo<FooterActionsProps>(
         {hasMediaBrowser && (
           <IconButton
             size="small"
-            icon={"mdi:folder-music"}
+            icon={getFooterIcon("media_browser")}
             onClick={() => setNavigationRoute("media-browser")}
             selected={navigationRoute === "media-browser"}
           />

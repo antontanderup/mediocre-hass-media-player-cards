@@ -126,6 +126,12 @@ describe("cardConfigUtils", () => {
           always_show_custom_buttons: true,
           hide_when_group_child: true,
           hide_when_off: true,
+          ui: {
+            footer_icons: {
+              player: "mdi:play-circle",
+              media_browser: "mdi:bookshelf",
+            },
+          },
           show_volume_step_buttons: true,
           use_volume_up_down_for_step_buttons: true,
           use_experimental_lms_media_browser: false,
@@ -363,6 +369,41 @@ describe("cardConfigUtils", () => {
         media_browser: { enabled: true },
       });
     });
+
+    it("should preserve non-empty footer icon overrides and drop empty ones", () => {
+      const configWithFooterIcons: MediocreMediaPlayerCardConfig = {
+        type: "custom:mediocre-media-player-card",
+        entity_id: "media_player.test",
+        use_art_colors: false,
+        tap_opens_popup: false,
+        action: {},
+        speaker_group: { entity_id: null, entities: [] },
+        search: { enabled: false, show_favorites: false, entity_id: null },
+        ma_entity_id: null,
+        custom_buttons: [],
+        options: {
+          always_show_power_button: false,
+          always_show_custom_buttons: false,
+          ui: {
+            footer_icons: {
+              player: "mdi:play",
+              search: " ",
+            },
+          },
+        },
+        media_browser: { enabled: false },
+      };
+
+      const result = getSimpleConfigFromFormValues(configWithFooterIcons);
+
+      expect(result.options).toEqual({
+        ui: {
+          footer_icons: {
+            player: "mdi:play",
+          },
+        },
+      });
+    });
   });
 
   describe("getSimpleConfigFromMassiveFormValues", () => {
@@ -448,6 +489,42 @@ describe("cardConfigUtils", () => {
         mode: "card",
         grid_options: { columns: "full" },
         media_browser: { enabled: true },
+      });
+    });
+
+    it("should preserve non-empty footer icon overrides and drop empty ones", () => {
+      const configWithFooterIcons: MediocreMassiveMediaPlayerCardConfig = {
+        type: "custom:mediocre-massive-media-player-card",
+        entity_id: "media_player.test",
+        mode: "card",
+        use_art_colors: false,
+        action: {},
+        speaker_group: { entity_id: null, entities: [] },
+        search: { enabled: false, show_favorites: false, entity_id: null },
+        ma_entity_id: null,
+        custom_buttons: [],
+        options: {
+          always_show_power_button: false,
+          ui: {
+            footer_icons: {
+              media_browser: "mdi:playlist-music",
+              search: "",
+            },
+          },
+        },
+        media_browser: { enabled: false },
+      };
+
+      const result = getSimpleConfigFromMassiveFormValues(
+        configWithFooterIcons
+      );
+
+      expect(result.options).toEqual({
+        ui: {
+          footer_icons: {
+            media_browser: "mdi:playlist-music",
+          },
+        },
       });
     });
   });
