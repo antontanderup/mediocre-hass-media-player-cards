@@ -80,7 +80,8 @@
   "AdditionalActionsMenu": {
     "mark_as_favorite": "Markeren als favoriet",
     "transfer_queue": "Wachtrij overzetten",
-    "select_source": "Bron selecteren"
+    "select_source": "Bron selecteren",
+    "select_sound_mode": "Geluidsmodus"
   },
   "player_states": {
     "Off": "Uit",
