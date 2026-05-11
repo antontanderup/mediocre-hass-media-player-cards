@@ -39,7 +39,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
-    "@typescript-eslint/parser": "^8.57.1",
+    "@typescript-eslint/parser": "^8.59.2",
     "eslint": "^9.39.4",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
