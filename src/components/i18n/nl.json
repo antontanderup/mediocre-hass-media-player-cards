@@ -18,7 +18,14 @@
       "media_player_actions_title": "Mediaspeleracties",
       "media_player_actions_subtitle": "Extra bedieningselementen voor je mediaspeler.",
       "mark_as_favorite": "Markeren als favoriet",
-      "transfer_queue": "Wachtrij overzetten"
+      "more_info": "Meer informatie",
+      "transfer_queue": "Wachtrij overzetten",
+      "lyrion_info_title": "Nummerinformatie",
+      "related_albums_title": "Gerelateerde albums"
+    },
+    "QueueView": {
+      "up_next": "Hierna",
+      "up_next_subtitle": "Huidige afspeelwachtrij"
     }
   },
   "MediocreMediaPlayerCard": {
@@ -26,6 +33,9 @@
       "grouped_speakers_title": "Gegroepeerde luidsprekers",
       "link_volume_title": "Volume koppelen",
       "add_speakers_title": "Luidsprekers toevoegen aan groep"
+    },
+    "QueueView": {
+      "up_next": "Hierna"
     }
   },
   "MediocreMassiveMediaPlayerCard": {
@@ -34,11 +44,15 @@
       "speaker_grouping_modal_title": "Luidsprekergroepering",
       "media_browser_modal_title": "Mediabrowser",
       "search_modal_title": "Zoeken",
-      "shortcuts_modal_title": "Snelkoppelingen"
+      "shortcuts_modal_title": "Snelkoppelingen",
+      "queue_view_modal_title": "Hierna"
     },
     "SpeakerGrouping": { "link_volume": "Volume koppelen" }
   },
   "Search": {
+    "search_provider": {
+      "title": "Zoeken met.."
+    },
     "input_placeholder": "Zoeken naar media...",
     "categories": {
       "All": "Alles",
@@ -54,6 +68,7 @@
       "Radio": "Radio"
     },
     "enqueue_mode": {
+      "title": "Wachtrijmodus",
       "play": "Afspelen",
       "replace": "Wachtrij vervangen",
       "next": "Als volgende toevoegen",
@@ -81,6 +96,9 @@
     "mark_as_favorite": "Markeren als favoriet",
     "transfer_queue": "Wachtrij overzetten",
     "select_source": "Bron selecteren"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "Geen nummerinformatie beschikbaar"
   },
   "player_states": {
     "Off": "Uit",
