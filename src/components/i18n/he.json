@@ -1,0 +1,111 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "קיבוץ נגני מדיה",
+      "join_subtitle": "קיבוץ הנגנים הנבחרים.",
+      "link_volume": "קישור עוצמת הקול",
+      "player_focus_title": "מיקוד נגן",
+      "player_focus_subtitle": "שינוי הנגן שבשליטתך."
+    },
+    "MediaBrowserView": { "browse_media_title": "עיון במדיה" },
+    "SearchView": {
+      "search_in_ma_title": "חיפוש ב‑Music Assistant",
+      "search_title": "חיפוש"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "קיצורי דרך",
+      "shortcuts_subtitle": "גישה מהירה לפעולות המועדפות עליך.",
+      "media_player_actions_title": "פעולות נגן המדיה",
+      "media_player_actions_subtitle": "פקדים נוספים לנגן המדיה שלך.",
+      "mark_as_favorite": "סימון כמועדף",
+      "more_info": "מידע נוסף",
+      "transfer_queue": "העברת התור",
+      "lyrion_info_title": "פרטי הרצועה",
+      "related_albums_title": "אלבומים קשורים"
+    },
+    "QueueView": {
+      "up_next": "הבא בתור",
+      "up_next_subtitle": "תור ההשמעה הנוכחי"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "רמקולים מקובצים",
+      "link_volume_title": "קישור עוצמת הקול",
+      "add_speakers_title": "הוספת רמקולים לקבוצה"
+    },
+    "QueueView": {
+      "up_next": "הבא בתור"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "עוצמת קול",
+      "speaker_grouping_modal_title": "קיבוץ רמקולים",
+      "media_browser_modal_title": "דפדפן המדיה",
+      "search_modal_title": "חיפוש",
+      "shortcuts_modal_title": "קיצורי דרך",
+      "queue_view_modal_title": "הבא בתור"
+    },
+    "SpeakerGrouping": { "link_volume": "קישור עוצמת הקול" }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "חיפוש באמצעות.."
+    },
+    "input_placeholder": "חיפוש מדיה...",
+    "categories": {
+      "All": "הכול",
+      "Favorites": "מועדפים",
+      "Favorite": "מועדף",
+      "Artists": "אמנים",
+      "Albums": "אלבומים",
+      "Tracks": "רצועות",
+      "Playlists": "רשימות השמעה",
+      "Podcasts": "פודקאסטים",
+      "Audiobooks": "ספרי שמע",
+      "Genres": "ז'אנרים",
+      "Radio": "רדיו"
+    },
+    "enqueue_mode": {
+      "title": "מצב הוספה לתור",
+      "play": "השמעה",
+      "replace": "החלפת התור",
+      "next": "הוספה כהבא בתור",
+      "replace_next": "החלפת הבא בתור",
+      "add": "הוספה לתור"
+    },
+    "no_results": "לא נמצאו תוצאות."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "בית",
+    "filter_placeholder": "סינון תוצאות...",
+    "empty_text": "אין פריטי מדיה זמינים.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "הוספה לתור",
+      "enqueue_mode": {
+        "play": "השמעה",
+        "next": "השמעה כהבא בתור",
+        "replace": "החלפת התור",
+        "add": "הוספה לתור"
+      },
+      "browse": "עיון"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "סימון כמועדף",
+    "transfer_queue": "העברת התור",
+    "select_source": "בחירת מקור"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "אין פרטי רצועה זמינים"
+  },
+  "player_states": {
+    "Off": "כבוי",
+    "Idle": "ממתין",
+    "Playing": "מנגן",
+    "Paused": "מושהה",
+    "Stopped": "נעצר",
+    "Unavailable": "לא זמין"
+  }
+}
