@@ -3,6 +3,7 @@ import { MediocreMediaPlayerCardConfig } from "@types";
 import { useCallback, useEffect } from "preact/hooks";
 import { useStore, ValidationErrorMap } from "@tanstack/react-form";
 import { FormGroup, Label, SubForm } from "@components";
+import { useIntl } from "@components/i18n";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
 import {
@@ -24,6 +25,7 @@ export type MediocreMediaPlayerCardEditorProps = {
 export const MediocreMediaPlayerCardEditor: FC<
   MediocreMediaPlayerCardEditorProps
 > = ({ config, rootElement, hass }) => {
+  const { t } = useIntl();
   const updateConfig = useCallback(
     (newConfig: MediocreMediaPlayerCardConfig) => {
       const event = new Event("config-changed", {
@@ -94,7 +96,7 @@ export const MediocreMediaPlayerCardEditor: FC<
         name="entity_id"
         children={field => (
           <field.EntityPicker
-            label="Media Player Entity"
+            label={t({ id: "Editor.common.media_player_entity" })}
             required
             domains={["media_player"]}
           />
@@ -103,7 +105,9 @@ export const MediocreMediaPlayerCardEditor: FC<
 
       <form.AppField
         name="name"
-        children={field => <field.Text label="Name (optional)" />}
+        children={field => (
+          <field.Text label={t({ id: "Editor.common.name_optional" })} />
+        )}
       />
 
       <FormGroup
@@ -111,20 +115,27 @@ export const MediocreMediaPlayerCardEditor: FC<
       >
         <form.AppField
           name="use_art_colors"
-          children={field => <field.Toggle label="Use album art colors." />}
+          children={field => (
+            <field.Toggle label={t({ id: "Editor.common.use_art_colors" })} />
+          )}
         />
         <form.AppField
           name="tap_opens_popup"
-          children={field => <field.Toggle label="Tap opens popup." />}
+          children={field => (
+            <field.Toggle label={t({ id: "Editor.common.tap_opens_popup" })} />
+          )}
         />
       </FormGroup>
 
-      <SubForm title="Interactions" error={getSubformError("action")}>
+      <SubForm
+        title={t({ id: "Editor.common.interactions" })}
+        error={getSubformError("action")}
+      >
         <form.Field
           name="tap_opens_popup"
           children={tapField =>
             tapField.state.value && (
-              <Label>Tap action overridden by "tap opens popup".</Label>
+              <Label>{t({ id: "Editor.common.tap_action_overridden" })}</Label>
             )
           }
         />
@@ -135,14 +146,14 @@ export const MediocreMediaPlayerCardEditor: FC<
       </SubForm>
 
       <SubForm
-        title="Speaker Group Configuration (optional)"
+        title={t({ id: "Editor.common.speaker_group_config" })}
         error={getSubformError("speaker_group")}
       >
         <form.AppField
           name="speaker_group.entity_id"
           children={field => (
             <field.EntityPicker
-              label="Main Speaker Entity ID (Optional)"
+              label={t({ id: "Editor.common.main_speaker_entity" })}
               domains={["media_player"]}
             />
           )}
@@ -151,7 +162,7 @@ export const MediocreMediaPlayerCardEditor: FC<
           name="speaker_group.entities"
           children={field => (
             <field.EntitiesPicker
-              label="Select Speakers (including main speaker)"
+              label={t({ id: "Editor.common.select_speakers" })}
               domains={["media_player"]}
             />
           )}
@@ -159,7 +170,7 @@ export const MediocreMediaPlayerCardEditor: FC<
       </SubForm>
 
       <SubForm
-        title="Music Assistant Configuration (optional)"
+        title={t({ id: "Editor.common.ma_config" })}
         error={
           getSubformError("ma_entity_id") ??
           getSubformError("ma_favorite_button_entity_id")
@@ -174,27 +185,30 @@ export const MediocreMediaPlayerCardEditor: FC<
         />
       </SubForm>
       <SubForm
-        title="LMS Configuration (optional)"
+        title={t({ id: "Editor.common.lms_config" })}
         error={getSubformError("lms_entity_id")}
       >
         <form.AppField
           name="lms_entity_id"
           children={field => (
             <field.EntityPicker
-              label="LMS Media Player Entity ID"
+              label={t({ id: "Editor.common.lms_entity" })}
               domains={["media_player"]}
             />
           )}
         />
       </SubForm>
-      <SubForm title="Search (optional)" error={getSubformError("search")}>
+      <SubForm
+        title={t({ id: "Editor.common.search_optional" })}
+        error={getSubformError("search")}
+      >
         <FieldGroupSearch
           form={form}
           fields={{ search: "search", ma_entity_id: "ma_entity_id" }}
         />
       </SubForm>
       <SubForm
-        title="Media Browser (optional)"
+        title={t({ id: "Editor.common.media_browser_optional" })}
         error={getSubformError("media_browser")}
       >
         <FieldGroupMediaBrowser
@@ -203,7 +217,7 @@ export const MediocreMediaPlayerCardEditor: FC<
         />
       </SubForm>
       <SubForm
-        title="Custom Buttons (optional)"
+        title={t({ id: "Editor.common.custom_buttons_optional" })}
         error={getSubformError("custom_buttons")}
       >
         <FieldGroupCustomButtons
@@ -213,47 +227,61 @@ export const MediocreMediaPlayerCardEditor: FC<
         />
       </SubForm>
       <SubForm
-        title="Additional options (optional)"
+        title={t({ id: "Editor.common.additional_options" })}
         error={getSubformError("options")}
       >
         <form.AppField
           name="options.always_show_power_button"
-          children={field => <field.Toggle label="Always show power button." />}
+          children={field => (
+            <field.Toggle
+              label={t({ id: "Editor.options.always_show_power_button" })}
+            />
+          )}
         />
         <form.AppField
           name="options.always_show_custom_buttons"
           children={field => (
-            <field.Toggle label="Always show custom buttons panel below card" />
+            <field.Toggle
+              label={t({ id: "Editor.options.always_show_custom_buttons" })}
+            />
           )}
         />
         <form.AppField
           name="options.hide_when_off"
           children={field => (
-            <field.Toggle label="Hide when media player is off" />
+            <field.Toggle label={t({ id: "Editor.options.hide_when_off" })} />
           )}
         />
         <form.AppField
           name="options.hide_when_group_child"
           children={field => (
-            <field.Toggle label="Hide when media player is a group child" />
+            <field.Toggle
+              label={t({ id: "Editor.options.hide_when_group_child" })}
+            />
           )}
         />
         <form.AppField
           name="options.show_volume_step_buttons"
           children={field => (
-            <field.Toggle label="Show volume step buttons + - on volume sliders" />
+            <field.Toggle
+              label={t({ id: "Editor.options.show_volume_step_buttons" })}
+            />
           )}
         />
         <form.AppField
           name="options.use_volume_up_down_for_step_buttons"
           children={field => (
-            <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
+            <field.Toggle
+              label={t({ id: "Editor.options.use_volume_up_down" })}
+            />
           )}
         />
         <form.AppField
           name="options.use_experimental_lms_media_browser"
           children={field => (
-            <field.Toggle label="Use experimental LMS media browser (requires lyrion_cli integration)" />
+            <field.Toggle
+              label={t({ id: "Editor.options.use_experimental_lms" })}
+            />
           )}
         />
       </SubForm>

@@ -13,6 +13,7 @@ import {
   Button,
   Label,
 } from "@components";
+import { useIntl } from "@components/i18n";
 import { css } from "@emotion/react";
 import { FC, Fragment } from "preact/compat";
 import { getAllMassPlayers } from "@utils";
@@ -32,6 +33,7 @@ export type MediocreMultiMediaPlayerCardEditorProps = {
 export const MediocreMultiMediaPlayerCardEditor: FC<
   MediocreMultiMediaPlayerCardEditorProps
 > = ({ config, rootElement, hass }) => {
+  const { t } = useIntl();
   const updateConfigTimeout = useRef<number | null>(null);
   const updateConfig = useCallback(
     (newConfig: MediocreMultiMediaPlayerCardConfig) => {
@@ -174,7 +176,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         name="entity_id"
         children={field => (
           <field.EntityPicker
-            label="Default Media Player (used when no media player is active)"
+            label={t({ id: "Editor.multi.default_media_player" })}
             required
             domains={["media_player"]}
           />
@@ -190,14 +192,19 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
       >
         <form.AppField
           name="use_art_colors"
-          children={field => <field.Toggle label="Use album art colors." />}
+          children={field => (
+            <field.Toggle label={t({ id: "Editor.common.use_art_colors" })} />
+          )}
         />
         <form.Field name="size">
           {field => (
             <FormSelect
               options={[
-                { name: "Large", value: "large" },
-                { name: "Compact", value: "compact" },
+                { name: t({ id: "Editor.select.large" }), value: "large" },
+                {
+                  name: t({ id: "Editor.select.compact" }),
+                  value: "compact",
+                },
               ]}
               onSelected={value =>
                 field.handleChange(value as "large" | "compact")
@@ -209,7 +216,11 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
         {size === "compact" && (
           <form.AppField
             name="tap_opens_popup"
-            children={field => <field.Toggle label="Tap opens popup." />}
+            children={field => (
+              <field.Toggle
+                label={t({ id: "Editor.common.tap_opens_popup" })}
+              />
+            )}
           />
         )}
         {size === "large" && (
@@ -217,8 +228,8 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
             {field => (
               <FormSelect
                 options={[
-                  { name: "Panel", value: "panel" },
-                  { name: "Card", value: "card" },
+                  { name: t({ id: "Editor.select.panel" }), value: "panel" },
+                  { name: t({ id: "Editor.select.card" }), value: "card" },
                 ]}
                 onSelected={value =>
                   field.handleChange(value as "panel" | "card")
@@ -229,7 +240,10 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           </form.Field>
         )}
       </FormGroup>
-      <SubForm title="Media Players" error={getSubformError("media_players")}>
+      <SubForm
+        title={t({ id: "Editor.multi.media_players" })}
+        error={getSubformError("media_players")}
+      >
         <form.Field name="media_players" mode="array">
           {field => {
             return (
@@ -242,7 +256,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         hass.states[mediaPlayer.entity_id]?.attributes
                           .friendly_name ||
                         mediaPlayer.entity_id ||
-                        "Media Player"
+                        t({ id: "Editor.multi.media_player_fallback" })
                       }
                       buttons={[
                         {
@@ -267,14 +281,18 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         <form.AppField
                           name={`media_players[${index}].name`}
                           children={subField => (
-                            <subField.Text label="Name (optional)" />
+                            <subField.Text
+                              label={t({ id: "Editor.common.name_optional" })}
+                            />
                           )}
                         />
                         <form.AppField
                           name={`media_players[${index}].speaker_group_entity_id`}
                           children={subField => (
                             <subField.EntityPicker
-                              label="Group Media Player (if different from above)"
+                              label={t({
+                                id: "Editor.multi.group_media_player",
+                              })}
                               domains={["media_player"]}
                             />
                           )}
@@ -282,12 +300,14 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         <form.AppField
                           name={`media_players[${index}].can_be_grouped`}
                           children={subField => (
-                            <subField.Toggle label="Enable speaker grouping (joining) for this player" />
+                            <subField.Toggle
+                              label={t({ id: "Editor.multi.enable_grouping" })}
+                            />
                           )}
                         />
                       </FormGroup>
                       <SubForm
-                        title="Music Assistant Integration (optional)"
+                        title={t({ id: "Editor.multi.ma_integration" })}
                         error={
                           getSubformError(
                             `media_players[${index}].ma_entity_id`
@@ -306,7 +326,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         />
                       </SubForm>
                       <SubForm
-                        title="LMS Configuration (optional)"
+                        title={t({ id: "Editor.common.lms_config" })}
                         error={getSubformError(
                           `media_players[${index}].lms_entity_id`
                         )}
@@ -315,14 +335,14 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                           name={`media_players[${index}].lms_entity_id`}
                           children={field => (
                             <field.EntityPicker
-                              label="LMS Media Player Entity ID"
+                              label={t({ id: "Editor.common.lms_entity" })}
                               domains={["media_player"]}
                             />
                           )}
                         />
                       </SubForm>
                       <SubForm
-                        title="Search Configuration (optional) (not for music assistant)"
+                        title={t({ id: "Editor.multi.search_config" })}
                         error={getSubformError(
                           `media_players[${index}].search`
                         )}
@@ -336,7 +356,9 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         />
                       </SubForm>
                       <SubForm
-                        title="Media Browser (optional)"
+                        title={t({
+                          id: "Editor.common.media_browser_optional",
+                        })}
                         error={getSubformError(
                           `media_players[${index}].media_browser`
                         )}
@@ -351,7 +373,9 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       </SubForm>
 
                       <SubForm
-                        title="Custom Buttons (optional)"
+                        title={t({
+                          id: "Editor.common.custom_buttons_optional",
+                        })}
                         error={getSubformError(
                           `media_players[${index}].custom_buttons`
                         )}
@@ -385,10 +409,10 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                         field.pushValue({ entity_id: value });
                       }
                     }}
-                    label="Add a new media player"
+                    label={t({ id: "Editor.multi.add_media_player" })}
                     domains={["media_player"]}
                   />
-                  <span>or</span>
+                  <span>{t({ id: "Editor.multi.or" })}</span>
                   <Button
                     onClick={() => {
                       const newPlayers = getMusicAssistantPlayers();
@@ -397,7 +421,7 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       });
                     }}
                   >
-                    Add all Music Assistant media players
+                    {t({ id: "Editor.multi.add_all_ma" })}
                   </Button>
                 </div>
               </Fragment>
@@ -405,18 +429,25 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           }}
         </form.Field>
       </SubForm>
-      <SubForm title="Advanced" error={getSubformError("height")}>
+      <SubForm
+        title={t({ id: "Editor.multi.advanced" })}
+        error={getSubformError("height")}
+      >
         <FormGroup>
           {size === "large" && (
             <Fragment>
               <form.AppField
                 name="height"
-                children={field => <field.Text label="Height" />}
+                children={field => (
+                  <field.Text label={t({ id: "Editor.multi.height" })} />
+                )}
               />
               <form.AppField
                 name="options.transparent_background_on_home"
                 children={field => (
-                  <field.Toggle label="Hide the card background on the home tab (massive player)" />
+                  <field.Toggle
+                    label={t({ id: "Editor.multi.transparent_background" })}
+                  />
                 )}
               />
               <form.Field name="options.default_tab">
@@ -430,15 +461,33 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                       justifyContent: "space-between",
                     })}
                   >
-                    <Label>Default tab:</Label>
+                    <Label>{t({ id: "Editor.multi.default_tab" })}</Label>
                     <FormSelect
                       options={[
-                        { name: "Home", value: "massive" },
-                        { name: "Search", value: "search" },
-                        { name: "Media Browser", value: "media-browser" },
-                        { name: "Queue", value: "queue" },
-                        { name: "Custom Buttons", value: "custom-buttons" },
-                        { name: "Speaker Grouping", value: "speaker-grouping" },
+                        {
+                          name: t({ id: "Editor.select.home" }),
+                          value: "massive",
+                        },
+                        {
+                          name: t({ id: "Editor.select.search" }),
+                          value: "search",
+                        },
+                        {
+                          name: t({ id: "Editor.select.media_browser" }),
+                          value: "media-browser",
+                        },
+                        {
+                          name: t({ id: "Editor.select.queue" }),
+                          value: "queue",
+                        },
+                        {
+                          name: t({ id: "Editor.select.custom_buttons" }),
+                          value: "custom-buttons",
+                        },
+                        {
+                          name: t({ id: "Editor.select.speaker_grouping" }),
+                          value: "speaker-grouping",
+                        },
                       ]}
                       onSelected={value =>
                         field.handleChange(
@@ -463,25 +512,35 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
               <form.AppField
                 name="options.always_show_power_button"
                 children={field => (
-                  <field.Toggle label="Always show power button." />
+                  <field.Toggle
+                    label={t({ id: "Editor.options.always_show_power_button" })}
+                  />
                 )}
               />
               <form.AppField
                 name="options.always_show_custom_buttons"
                 children={field => (
-                  <field.Toggle label="Always show custom buttons panel below card" />
+                  <field.Toggle
+                    label={t({
+                      id: "Editor.options.always_show_custom_buttons",
+                    })}
+                  />
                 )}
               />
               <form.AppField
                 name="options.hide_when_off"
                 children={field => (
-                  <field.Toggle label="Hide when media player is off" />
+                  <field.Toggle
+                    label={t({ id: "Editor.options.hide_when_off" })}
+                  />
                 )}
               />
               <form.AppField
                 name="options.hide_when_group_child"
                 children={field => (
-                  <field.Toggle label="Hide when media player is a group child" />
+                  <field.Toggle
+                    label={t({ id: "Editor.options.hide_when_group_child" })}
+                  />
                 )}
               />
             </Fragment>
@@ -489,19 +548,25 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           <form.AppField
             name="options.show_volume_step_buttons"
             children={field => (
-              <field.Toggle label="Show volume step buttons + - on volume sliders" />
+              <field.Toggle
+                label={t({ id: "Editor.options.show_volume_step_buttons" })}
+              />
             )}
           />
           <form.AppField
             name="options.use_volume_up_down_for_step_buttons"
             children={field => (
-              <field.Toggle label="Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)" />
+              <field.Toggle
+                label={t({ id: "Editor.options.use_volume_up_down" })}
+              />
             )}
           />
           <form.AppField
             name="options.use_experimental_lms_media_browser"
             children={field => (
-              <field.Toggle label="Use experimental LMS media browser (requires lyrion_cli integration)" />
+              <field.Toggle
+                label={t({ id: "Editor.options.use_experimental_lms" })}
+              />
             )}
           />
           <form.Field name="options.player_is_active_when">
@@ -515,11 +580,17 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
                   justifyContent: "space-between",
                 })}
               >
-                <Label>Consider player active when:</Label>
+                <Label>{t({ id: "Editor.multi.player_active_when" })}</Label>
                 <FormSelect
                   options={[
-                    { name: "Playing", value: "playing" },
-                    { name: "Playing or Paused", value: "playing_or_paused" },
+                    {
+                      name: t({ id: "Editor.select.playing" }),
+                      value: "playing",
+                    },
+                    {
+                      name: t({ id: "Editor.select.playing_or_paused" }),
+                      value: "playing_or_paused",
+                    },
                   ]}
                   onSelected={value =>
                     field.handleChange(value as "playing" | "playing_or_paused")

@@ -5,6 +5,7 @@ import {
   GlanceGuard,
   HassContextProvider,
 } from "@components";
+import { IntlContextProvider } from "@components/i18n";
 
 export type EditorCardProps<T> = {
   config: T;
@@ -26,18 +27,20 @@ export class CardEditorWrapper<T> extends HTMLElement {
     this._config = config;
     if (!this._hass || !this.Card) return;
     render(
-      <EmotionContextProvider rootElement={this}>
-        <GlanceGuard>
-          <HassContextProvider hass={this._hass}>
-            <this.Card
-              config={this._config}
-              hass={this._hass}
-              rootElement={this}
-              {...this.extraProps}
-            />
-          </HassContextProvider>
-        </GlanceGuard>
-      </EmotionContextProvider>,
+      <IntlContextProvider locale={this._hass.language ?? "en"}>
+        <EmotionContextProvider rootElement={this}>
+          <GlanceGuard>
+            <HassContextProvider hass={this._hass}>
+              <this.Card
+                config={this._config}
+                hass={this._hass}
+                rootElement={this}
+                {...this.extraProps}
+              />
+            </HassContextProvider>
+          </GlanceGuard>
+        </EmotionContextProvider>
+      </IntlContextProvider>,
       this
     );
   }
