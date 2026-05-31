@@ -111,5 +111,98 @@
     "Paused": "Paused",
     "Stopped": "Stopped",
     "Unavailable": "Unavailable"
+  },
+  "Editor": {
+    "common": {
+      "media_player_entity": "Media Player Entity",
+      "name_optional": "Name (optional)",
+      "name": "Name",
+      "use_art_colors": "Use album art colors.",
+      "tap_opens_popup": "Tap opens popup.",
+      "interactions": "Interactions",
+      "tap_action_overridden": "Tap action overridden by \"tap opens popup\".",
+      "speaker_group_config": "Speaker Group Configuration (optional)",
+      "main_speaker_entity": "Main Speaker Entity ID (Optional)",
+      "select_speakers": "Select Speakers (including main speaker)",
+      "ma_config": "Music Assistant Configuration (optional)",
+      "lms_config": "LMS Configuration (optional)",
+      "lms_entity": "LMS Media Player Entity ID",
+      "search_optional": "Search (optional)",
+      "media_browser_optional": "Media Browser (optional)",
+      "custom_buttons_optional": "Custom Buttons (optional)",
+      "additional_options": "Additional options (optional)"
+    },
+    "options": {
+      "always_show_power_button": "Always show power button.",
+      "always_show_custom_buttons": "Always show custom buttons panel below card",
+      "hide_when_off": "Hide when media player is off",
+      "hide_when_group_child": "Hide when media player is a group child",
+      "show_volume_step_buttons": "Show volume step buttons + - on volume sliders",
+      "use_volume_up_down": "Use volume_up and volume_down services for step buttons (breaks volume sync when step buttons are used)",
+      "use_experimental_lms": "Use experimental LMS media browser (requires lyrion_cli integration)"
+    },
+    "ma_entities": {
+      "ma_entity_id": "Music Assistant Entity ID (Optional)",
+      "ma_favorite_button": "MA Favorite Button Entity ID (Optional)"
+    },
+    "media_browser": {
+      "name": "Name",
+      "entity_id": "Media Browser Entity ID",
+      "add": "Add Media Browser",
+      "entry": "Entry"
+    },
+    "search": {
+      "name": "Name",
+      "entity_id": "Media Player Entity ID (to search)",
+      "add": "Add Search",
+      "entry": "Entry"
+    },
+    "custom_buttons": {
+      "name": "Name",
+      "icon": "Icon",
+      "interactions": "Interactions",
+      "add": "Add Custom Button",
+      "button": "Button"
+    },
+    "entities_picker": {
+      "name": "Name"
+    },
+    "multi": {
+      "default_media_player": "Default Media Player (used when no media player is active)",
+      "media_players": "Media Players",
+      "media_player_fallback": "Media Player",
+      "ma_integration": "Music Assistant Integration (optional)",
+      "group_media_player": "Group Media Player (if different from above)",
+      "enable_grouping": "Enable speaker grouping (joining) for this player",
+      "search_config": "Search Configuration (optional) (not for music assistant)",
+      "add_media_player": "Add a new media player",
+      "or": "or",
+      "add_all_ma": "Add all Music Assistant media players",
+      "advanced": "Advanced",
+      "height": "Height",
+      "transparent_background": "Hide the card background on the home tab (massive player)",
+      "default_tab": "Default tab:",
+      "player_active_when": "Consider player active when:"
+    },
+    "select": {
+      "panel": "Panel",
+      "card": "Card",
+      "in_card": "In Card",
+      "large": "Large",
+      "compact": "Compact",
+      "home": "Home",
+      "search": "Search",
+      "media_browser": "Media Browser",
+      "queue": "Queue",
+      "custom_buttons": "Custom Buttons",
+      "speaker_grouping": "Speaker Grouping",
+      "playing": "Playing",
+      "playing_or_paused": "Playing or Paused"
+    },
+    "actions": {
+      "tap_action": "Tap Action",
+      "hold_action": "Hold Action",
+      "double_tap_action": "Double Tap Action"
+    }
   }
 }
