@@ -13,6 +13,7 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
       entity_id: config.entity_id,
       ma_entity_id: config.ma_entity_id,
       ma_favorite_button_entity_id: config.ma_favorite_button_entity_id,
+      ma_favorite_control: config.ma_favorite_control,
       speaker_group_entity_id: config.speaker_group?.entity_id,
       lms_entity_id: config.lms_entity_id,
       search: config.search,
@@ -58,6 +59,15 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
         config.options?.show_volume_step_buttons ?? false,
       use_volume_up_down_for_step_buttons:
         config.options?.use_volume_up_down_for_step_buttons ?? false,
+      ...(config.options?.ui?.footer_icons
+        ? {
+            ui: {
+              footer_icons: {
+                ...config.options.ui.footer_icons,
+              },
+            },
+          }
+        : {}),
       transparent_background_on_home:
         config.mode === "panel" ||
         config.mode === "in-card" ||

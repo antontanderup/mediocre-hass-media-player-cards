@@ -6,4 +6,5 @@ export * from "./MediaBrowserView";
 export * from "./MiniPlayer";
 export * from "./SearchView";
 export * from "./SpeakerGrouping";
+export * from "./VolumePanelView";
 export * from "./ViewHeader";
