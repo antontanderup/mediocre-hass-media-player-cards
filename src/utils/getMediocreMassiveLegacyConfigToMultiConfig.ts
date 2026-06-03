@@ -58,6 +58,15 @@ export const getMediocreMassiveLegacyConfigToMediocreMultiConfig = (
         config.options?.show_volume_step_buttons ?? false,
       use_volume_up_down_for_step_buttons:
         config.options?.use_volume_up_down_for_step_buttons ?? false,
+      ...(config.options?.ui?.footer_icons
+        ? {
+            ui: {
+              footer_icons: {
+                ...config.options.ui.footer_icons,
+              },
+            },
+          }
+        : {}),
       transparent_background_on_home:
         config.mode === "panel" ||
         config.mode === "in-card" ||

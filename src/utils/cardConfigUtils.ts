@@ -4,6 +4,16 @@ import {
 } from "@types";
 import { getSearchEntryArray } from "./getSearchEntryArray";
 
+const getCleanFooterIcons = (
+  footerIcons?: Record<string, string | undefined>
+) => {
+  const entries = Object.entries(footerIcons ?? {}).filter(
+    ([, icon]) => !!icon?.trim()
+  );
+
+  return entries.length > 0 ? Object.fromEntries(entries) : undefined;
+};
+
 /**
  * Creates default values from a regular media player card config
  */
@@ -41,6 +51,15 @@ export const getDefaultValuesFromConfig = (
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
       config?.options?.use_volume_up_down_for_step_buttons ?? false,
+    ...(config?.options?.ui?.footer_icons
+      ? {
+          ui: {
+            footer_icons: {
+              ...config.options.ui.footer_icons,
+            },
+          },
+        }
+      : {}),
     use_experimental_lms_media_browser:
       config?.options?.use_experimental_lms_media_browser ?? false,
   },
@@ -80,6 +99,15 @@ export const getDefaultValuesFromMassiveConfig = (
       config?.options?.show_volume_step_buttons ?? false,
     use_volume_up_down_for_step_buttons:
       config?.options?.use_volume_up_down_for_step_buttons ?? false,
+    ...(config?.options?.ui?.footer_icons
+      ? {
+          ui: {
+            footer_icons: {
+              ...config.options.ui.footer_icons,
+            },
+          },
+        }
+      : {}),
     use_experimental_lms_media_browser:
       config?.options?.use_experimental_lms_media_browser ?? false,
   },
@@ -144,6 +172,21 @@ export const getSimpleConfigFromFormValues = (
   }
   if (config.options?.use_volume_up_down_for_step_buttons === false) {
     delete config.options.use_volume_up_down_for_step_buttons;
+  }
+  const footerIcons = getCleanFooterIcons(config.options?.ui?.footer_icons);
+  if (footerIcons) {
+    config.options = {
+      ...config.options,
+      ui: {
+        ...config.options?.ui,
+        footer_icons: footerIcons,
+      },
+    };
+  } else if (config.options?.ui?.footer_icons) {
+    delete config.options.ui.footer_icons;
+  }
+  if (config.options?.ui && Object.keys(config.options.ui).length === 0) {
+    delete config.options.ui;
   }
   if (config.options?.use_experimental_lms_media_browser === false) {
     delete config.options.use_experimental_lms_media_browser;
@@ -210,6 +253,21 @@ export const getSimpleConfigFromMassiveFormValues = (
   }
   if (config.options?.use_volume_up_down_for_step_buttons === false) {
     delete config.options.use_volume_up_down_for_step_buttons;
+  }
+  const footerIcons = getCleanFooterIcons(config.options?.ui?.footer_icons);
+  if (footerIcons) {
+    config.options = {
+      ...config.options,
+      ui: {
+        ...config.options?.ui,
+        footer_icons: footerIcons,
+      },
+    };
+  } else if (config.options?.ui?.footer_icons) {
+    delete config.options.ui.footer_icons;
+  }
+  if (config.options?.ui && Object.keys(config.options.ui).length === 0) {
+    delete config.options.ui;
   }
   if (config.options?.use_experimental_lms_media_browser === false) {
     delete config.options.use_experimental_lms_media_browser;

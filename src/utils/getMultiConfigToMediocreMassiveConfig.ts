@@ -42,6 +42,15 @@ export const getMultiConfigToMediocreMassiveConfig = (
         config.options?.show_volume_step_buttons ?? false,
       use_volume_up_down_for_step_buttons:
         config.options?.use_volume_up_down_for_step_buttons ?? false,
+      ...(config.options?.ui?.footer_icons
+        ? {
+            ui: {
+              footer_icons: {
+                ...config.options.ui.footer_icons,
+              },
+            },
+          }
+        : {}),
       use_experimental_lms_media_browser:
         config.options?.use_experimental_lms_media_browser ?? false,
     },

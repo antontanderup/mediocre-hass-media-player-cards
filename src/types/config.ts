@@ -1,11 +1,22 @@
 import { type } from "arktype";
 import { interactionConfigSchema } from "./actionTypes";
 
+const footerIconsSchema = type({
+  "player?": "string",
+  "search?": "string",
+  "media_browser?": "string",
+});
+
+const uiCustomizationSchema = type({
+  "footer_icons?": footerIconsSchema, // Override footer/navigation tab icons
+});
+
 const commonMediocreMediaPlayerCardConfigOptionsSchema = type({
   "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
+  "ui?": uiCustomizationSchema, // UI customization overrides
 });
 
 const searchMediaTypeSchema = type({
@@ -90,6 +101,9 @@ export const MediocreMediaPlayerCardConfigSchema =
 export const MediocreMassiveMediaPlayerCardConfigSchema =
   commonMediocreMediaPlayerCardConfigSchema.and({
     mode: "'panel'|'card'|'in-card'|'popup'", // don't document popup and multi as they are only for internal use
+    "options?": commonMediocreMediaPlayerCardConfigOptionsSchema.and({
+      "ui?": uiCustomizationSchema, // UI customization overrides
+    })
   });
 
 export const MediocreMultiMediaPlayer = type({
@@ -111,6 +125,7 @@ export const commonMediaPlayerCardOptions = type({
   "show_volume_step_buttons?": "boolean", // Show volume step buttons + - on volume sliders
   "use_volume_up_down_for_step_buttons?": "boolean", // Use volume_up and volume_down services for step buttons instead of setting volume using set_volume. This breaks volume sync when step buttons are used.
   "use_experimental_lms_media_browser?": "boolean", // Use the experimental LMS media browser instead of the default one when an LMS entity is used and lyrion_cli integration is present.
+  "ui?": uiCustomizationSchema, // UI customization overrides
 });
 
 export const commonMediaPlayerCardSchema = type({
@@ -131,6 +146,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
       "height?": "number | string", // height of the card (can be a number in px or a string with any css unit)
       "options?": commonMediaPlayerCardOptions.and({
         "hide_selected_player_header?": "boolean", // Hide the header of the selected player in the massive view
+        "ui?": uiCustomizationSchema, // UI customization overrides
         "transparent_background_on_home?": "boolean", // Makes the background transparent when the showing the massive player
         "default_tab?":
           "'massive'|'search'|'media-browser'|'speaker-grouping'|'custom-buttons'|'queue'", // The tab to show by default when the card loads
