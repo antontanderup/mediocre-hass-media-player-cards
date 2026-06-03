@@ -3,6 +3,7 @@ export * from "./useArtworkColors";
 export * from "./useButtonCallbacks";
 export * from "./useCanDisplayQueue";
 export * from "./useHassMessagePromise";
+export * from "./useMaFavoriteControl";
 export * from "./useMassQueue";
 export * from "./useSqueezeboxMoreInfo";
 export * from "./useSqueezeboxQueue";

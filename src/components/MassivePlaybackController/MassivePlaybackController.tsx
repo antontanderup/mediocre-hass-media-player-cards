@@ -30,7 +30,12 @@ export const MassivePlaybackController = ({
 }: MassivePlaybackControllerProps) => {
   return (
     <div css={styles.root} className={className}>
-      <AlbumArt iconSize="x-large" borderRadius={8} {...artworkButtonProps} />
+      <AlbumArt
+        iconSize="x-large"
+        borderRadius={8}
+        showMaFavoriteButton={true}
+        {...artworkButtonProps}
+      />
       <Title />
       <Track />
       <PlaybackControls />
