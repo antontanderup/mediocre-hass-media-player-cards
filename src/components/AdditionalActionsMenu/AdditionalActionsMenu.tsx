@@ -22,6 +22,7 @@ export type AdditionalActionsMenuProps = {
   ma_favorite_button_entity_id?: string;
   lms_entity_id?: string;
   noSourceSelection?: boolean;
+  noSoundModeSelection?: boolean;
 } & Omit<OverlayMenuProps, "menuItems" | "children">;
 
 export const AdditionalActionsMenu = ({
@@ -29,6 +30,7 @@ export const AdditionalActionsMenu = ({
   ma_favorite_button_entity_id,
   lms_entity_id,
   noSourceSelection,
+  noSoundModeSelection,
   ...overlayMenuProps
 }: AdditionalActionsMenuProps) => {
   const { t } = useIntl();
@@ -132,6 +134,28 @@ export const AdditionalActionsMenu = ({
         })),
       });
     }
+    if (
+      !noSoundModeSelection &&
+      player.attributes.sound_mode_list?.length &&
+      player.attributes.sound_mode_list?.length > 0
+    ) {
+      items.push({
+        label: t({
+          id: "AdditionalActionsMenu.select_sound_mode",
+        }),
+        icon: "mdi:equalizer",
+        children: (player.attributes.sound_mode_list ?? []).map(sound_mode => ({
+          label: sound_mode,
+          selected: sound_mode === player.attributes.sound_mode,
+          onClick: () => {
+            getHass().callService("media_player", "select_sound_mode", {
+              entity_id: player.entity_id,
+              sound_mode,
+            });
+          },
+        })),
+      });
+    }
     return items;
   }, [
     ma_favorite_button_entity_id,
@@ -142,7 +166,10 @@ export const AdditionalActionsMenu = ({
     markSongAsFavorite,
     transferQueue,
     noSourceSelection,
+    noSoundModeSelection,
     player.attributes.source_list,
+    player.attributes.sound_mode_list,
+    player.attributes.sound_mode,
     player.entity_id,
     t,
   ]);
