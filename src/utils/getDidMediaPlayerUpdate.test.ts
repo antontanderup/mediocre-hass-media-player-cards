@@ -52,6 +52,25 @@ describe("getDidMediaPlayerUpdate", () => {
       expect(getDidMediaPlayerUpdate(prev, next)).toBe(true);
     });
 
+    it("detects media_position change", () => {
+      const prev = makeEntity();
+      const next = makeEntity({
+        attributes: { ...prev.attributes, media_position: 45 },
+      });
+      expect(getDidMediaPlayerUpdate(prev, next)).toBe(true);
+    });
+
+    it("detects media_position_updated_at change", () => {
+      const prev = makeEntity();
+      const next = makeEntity({
+        attributes: {
+          ...prev.attributes,
+          media_position_updated_at: "2026-09-10T12:00:00Z",
+        },
+      });
+      expect(getDidMediaPlayerUpdate(prev, next)).toBe(true);
+    });
+
     it("detects volume_level change", () => {
       const prev = makeEntity();
       const next = makeEntity({

@@ -1,6 +1,7 @@
 export * from "./actions";
 export * from "./cardConfigUtils";
 export * from "./colorUtils";
+export * from "./computeTrackPosition";
 export * from "./getAllMassPlayers";
 export * from "./getAllSqueezeboxPlayers";
 export * from "./getCanDisplayLmsQueue";
