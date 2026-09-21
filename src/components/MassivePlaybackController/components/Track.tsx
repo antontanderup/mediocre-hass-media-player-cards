@@ -6,7 +6,7 @@ import {
   OverlayMenu,
   OverlayMenuItem,
 } from "@components/OverlayMenu/OverlayMenu";
-import { getHass, getSourceIcon } from "@utils";
+import { computeTrackPosition, getHass, getSourceIcon } from "@utils";
 
 const styles = {
   root: css({
@@ -63,39 +63,7 @@ export const Track = () => {
   }, [isPlaying]);
 
   const position = useMemo(() => {
-    const mediaPosition = player.attributes?.media_position ?? null;
-    const mediaPositionUpdatedAt =
-      player.attributes?.media_position_updated_at ?? null;
-    const mediaDuration = player.attributes?.media_duration ?? null;
-    if (
-      mediaPosition === null ||
-      mediaPosition < 0 ||
-      mediaDuration === null ||
-      mediaPositionUpdatedAt === null
-    ) {
-      return null;
-    }
-
-    const now = new Date();
-    const lastUpdate = new Date(mediaPositionUpdatedAt);
-    const timeSinceLastUpdate = now.getTime() - lastUpdate.getTime();
-    const currentPosition = timeSinceLastUpdate / 1000 + mediaPosition;
-    const getPrettyPrinted = (pos: number) => {
-      const minutes = Math.floor(pos / 60)
-        .toString()
-        .padStart(2, "0");
-      const seconds = Math.round(pos - Number(minutes) * 60)
-        .toString()
-        .padStart(2, "0");
-      return `${minutes}:${seconds}`;
-    };
-
-    return {
-      currentPosition,
-      mediaDuration,
-      prettyNow: getPrettyPrinted(currentPosition),
-      prettyEnd: getPrettyPrinted(mediaDuration),
-    };
+    return computeTrackPosition(player);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `tick` is an intentional render trigger (incremented by setInterval) to recalculate elapsed position each second
   }, [player, tick]); // Added tick to the dependency array to update when tick changes
 

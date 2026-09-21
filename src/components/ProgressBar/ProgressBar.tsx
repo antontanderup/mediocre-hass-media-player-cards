@@ -25,7 +25,10 @@ const styles = {
 };
 
 export const ProgressBar = ({ min, max, value }: ProgressBarProps) => {
-  const percentage = max === min ? 0 : ((value - min) / (max - min)) * 100;
+  const percentage =
+    max <= min
+      ? 0
+      : Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
   return (
     <div css={styles.root}>
       <div css={styles.progress} style={{ width: `${percentage}%` }} />

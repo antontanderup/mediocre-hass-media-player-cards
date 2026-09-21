@@ -16,6 +16,8 @@ export const getDidMediaPlayerUpdate = (
     : [
         "state",
         "attributes.media_duration",
+        "attributes.media_position",
+        "attributes.media_position_updated_at",
         "attributes.media_title",
         "attributes.media_artist",
         "attributes.media_album_name",

@@ -185,16 +185,14 @@ export const SpeakerGrouping = () => {
 
                     e.preventDefault();
 
-                    if (supportsPause) {
+                    if (state === "playing") {
                       getHass().callService(
                         "media_player",
-                        "media_play_pause",
-                        { entity_id: player.entity_id }
-                      );
-                    } else if (state === "playing") {
-                      getHass().callService(
-                        "media_player",
-                        supportsStop ? "media_stop" : "media_pause",
+                        supportsPause
+                          ? "media_pause"
+                          : supportsStop
+                            ? "media_stop"
+                            : "media_play_pause",
                         { entity_id: player.entity_id }
                       );
                     } else {

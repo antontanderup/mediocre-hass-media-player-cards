@@ -19,12 +19,14 @@ export const usePlayerActions = () => {
   }, [entity_id]);
 
   const togglePlayback = useCallback(() => {
-    if (supportsPause) {
-      getHass().callService("media_player", "media_play_pause", { entity_id });
-    } else if (state === "playing") {
+    if (state === "playing") {
       getHass().callService(
         "media_player",
-        supportsStop ? "media_stop" : "media_pause",
+        supportsPause
+          ? "media_pause"
+          : supportsStop
+            ? "media_stop"
+            : "media_play_pause",
         { entity_id }
       );
     } else {
