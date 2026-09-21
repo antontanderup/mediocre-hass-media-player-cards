@@ -2,6 +2,7 @@ import { HomeAssistant } from "@types";
 import { useCallback, useEffect, useMemo, useRef } from "preact/hooks";
 import { InteractionConfig } from "@types";
 import { getActionsFormSchema } from "./actionsSchema";
+import { useIntl } from "@components/i18n";
 
 export type ActionsConfiguratorProps = {
   hass: HomeAssistant;
@@ -16,6 +17,7 @@ export const ActionsConfigurator = ({
   onChange,
   disabled = false,
 }: ActionsConfiguratorProps) => {
+  const { t } = useIntl();
   const formRef = useRef<HTMLElement | null>(null);
 
   // Transform ActionConfig to data format for ha-form
@@ -59,7 +61,7 @@ export const ActionsConfigurator = ({
       ref={formRef}
       hass={hass}
       data={data}
-      schema={getActionsFormSchema()}
+      schema={getActionsFormSchema(t)}
       computeLabel={item => item.label || item.name}
       disabled={disabled}
     />

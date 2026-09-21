@@ -5,6 +5,7 @@ import { EntityPicker, FormGroup } from "@components/FormElements";
 import { HaSearchMediaTypesEditor } from "@components/HaSearch/HaSearchMediaTypesEditor";
 import { useHass } from "@components/HassContext";
 import { SubForm } from "@components/SubForm";
+import { useIntl } from "@components/i18n";
 
 type SearchGroupFields = {
   search: SearchConfig;
@@ -21,6 +22,7 @@ export const FieldGroupSearch = withFieldGroup({
   props: {},
   render: function Render({ group }) {
     const hass = useHass();
+    const { t } = useIntl();
 
     return (
       <group.Field name="search" mode="array">
@@ -33,7 +35,7 @@ export const FieldGroupSearch = withFieldGroup({
                     title={
                       searchEntry.name ??
                       searchEntry.entity_id ??
-                      `Entry ${index}`
+                      `${t({ id: "Editor.search.entry" })} ${index}`
                     }
                     buttons={[
                       {
@@ -58,13 +60,15 @@ export const FieldGroupSearch = withFieldGroup({
                     <FormGroup>
                       <group.AppField
                         name={`search[${index}].name`}
-                        children={field => <field.Text label={"Name"} />}
+                        children={field => (
+                          <field.Text label={t({ id: "Editor.search.name" })} />
+                        )}
                       />
                       <group.AppField
                         name={`search[${index}].entity_id`}
                         children={field => (
                           <field.EntityPicker
-                            label={"Media Player Entity ID (to search)"}
+                            label={t({ id: "Editor.search.entity_id" })}
                             domains={["media_player"]}
                             required
                           />
@@ -99,7 +103,7 @@ export const FieldGroupSearch = withFieldGroup({
                     hass.states[value]?.attributes.friendly_name ?? "Search",
                 });
               }}
-              label="Add Search"
+              label={t({ id: "Editor.search.add" })}
               domains={["media_player"]}
             />
           </Fragment>

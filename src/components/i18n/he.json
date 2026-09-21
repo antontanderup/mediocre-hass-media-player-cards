@@ -107,5 +107,98 @@
     "Paused": "מושהה",
     "Stopped": "נעצר",
     "Unavailable": "לא זמין"
+  },
+  "Editor": {
+    "common": {
+      "media_player_entity": "ישות נגן מדיה",
+      "name_optional": "שם (אופציונלי)",
+      "name": "שם",
+      "use_art_colors": "שימוש בצבעי עטיפת האלבום.",
+      "tap_opens_popup": "הקשה פותחת חלון קופץ.",
+      "interactions": "אינטראקציות",
+      "tap_action_overridden": "פעולת ההקשה נדרסת על ידי \"הקשה פותחת חלון קופץ\".",
+      "speaker_group_config": "הגדרת קבוצת רמקולים (אופציונלי)",
+      "main_speaker_entity": "מזהה ישות הרמקול הראשי (אופציונלי)",
+      "select_speakers": "בחירת רמקולים (כולל הרמקול הראשי)",
+      "ma_config": "הגדרת Music Assistant (אופציונלי)",
+      "lms_config": "הגדרת LMS (אופציונלי)",
+      "lms_entity": "מזהה ישות נגן המדיה של LMS",
+      "search_optional": "חיפוש (אופציונלי)",
+      "media_browser_optional": "דפדפן מדיה (אופציונלי)",
+      "custom_buttons_optional": "כפתורים מותאמים אישית (אופציונלי)",
+      "additional_options": "אפשרויות נוספות (אופציונלי)"
+    },
+    "options": {
+      "always_show_power_button": "להציג תמיד את לחצן ההפעלה.",
+      "always_show_custom_buttons": "להציג תמיד את לוח הכפתורים המותאמים מתחת לכרטיס",
+      "hide_when_off": "להסתיר כאשר נגן המדיה כבוי",
+      "hide_when_group_child": "להסתיר כאשר נגן המדיה הוא חבר בקבוצה",
+      "show_volume_step_buttons": "הצגת לחצני שינוי עוצמה ‎+ -‎ על פסי עוצמת הקול",
+      "use_volume_up_down": "שימוש בשירותי volume_up ו‑volume_down עבור לחצני שינוי העוצמה (פוגע בסנכרון העוצמה כאשר נעשה שימוש בלחצנים)",
+      "use_experimental_lms": "שימוש בדפדפן המדיה הניסיוני של LMS (דורש את האינטגרציה lyrion_cli)"
+    },
+    "ma_entities": {
+      "ma_entity_id": "מזהה ישות Music Assistant (אופציונלי)",
+      "ma_favorite_button": "מזהה ישות לחצן המועדפים של MA (אופציונלי)"
+    },
+    "media_browser": {
+      "name": "שם",
+      "entity_id": "מזהה ישות דפדפן המדיה",
+      "add": "הוספת דפדפן מדיה",
+      "entry": "רשומה"
+    },
+    "search": {
+      "name": "שם",
+      "entity_id": "מזהה ישות נגן המדיה (לחיפוש)",
+      "add": "הוספת חיפוש",
+      "entry": "רשומה"
+    },
+    "custom_buttons": {
+      "name": "שם",
+      "icon": "סמל",
+      "interactions": "אינטראקציות",
+      "add": "הוספת כפתור מותאם אישית",
+      "button": "כפתור"
+    },
+    "entities_picker": {
+      "name": "שם"
+    },
+    "multi": {
+      "default_media_player": "נגן מדיה ברירת מחדל (בשימוש כאשר אין נגן מדיה פעיל)",
+      "media_players": "נגני מדיה",
+      "media_player_fallback": "נגן מדיה",
+      "ma_integration": "אינטגרציית Music Assistant (אופציונלי)",
+      "group_media_player": "נגן מדיה לקבוצה (אם שונה מהאמור לעיל)",
+      "enable_grouping": "הפעלת קיבוץ רמקולים (צירוף) עבור נגן זה",
+      "search_config": "הגדרת חיפוש (אופציונלי) (לא עבור Music Assistant)",
+      "add_media_player": "הוספת נגן מדיה חדש",
+      "or": "או",
+      "add_all_ma": "הוספת כל נגני המדיה של Music Assistant",
+      "advanced": "מתקדם",
+      "height": "גובה",
+      "transparent_background": "הסתרת רקע הכרטיס בלשונית הבית (נגן Massive)",
+      "default_tab": "לשונית ברירת מחדל:",
+      "player_active_when": "להחשיב את הנגן כפעיל כאשר:"
+    },
+    "select": {
+      "panel": "פאנל",
+      "card": "כרטיס",
+      "in_card": "בתוך הכרטיס",
+      "large": "גדול",
+      "compact": "קומפקטי",
+      "home": "בית",
+      "search": "חיפוש",
+      "media_browser": "דפדפן מדיה",
+      "queue": "תור",
+      "custom_buttons": "כפתורים מותאמים",
+      "speaker_grouping": "קיבוץ רמקולים",
+      "playing": "מנגן",
+      "playing_or_paused": "מנגן או מושהה"
+    },
+    "actions": {
+      "tap_action": "פעולת הקשה",
+      "hold_action": "פעולת הקשה ממושכת",
+      "double_tap_action": "פעולת הקשה כפולה"
+    }
   }
 }

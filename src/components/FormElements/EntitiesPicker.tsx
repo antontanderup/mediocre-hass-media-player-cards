@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "preact/hooks";
 import { EntityPicker } from "./EntityPicker";
 import { css } from "@emotion/react";
 import { TextInput } from "./TextInput";
+import { useIntl } from "@components/i18n";
 
 const styles = {
   root: css({
@@ -36,6 +37,7 @@ export const EntitiesPicker = ({
   disabled = false,
   allowCustomEntity = false,
 }: EntitiesPickerProps) => {
+  const { t } = useIntl();
   // Filter out undefined/null values
   const entities = useMemo(() => {
     const values = value?.filter(Boolean) || [];
@@ -111,7 +113,7 @@ export const EntitiesPicker = ({
             value={entity.name ?? ""}
             onChange={newValue => handleNameChange(newValue, index)}
             disabled={disabled}
-            label="Name"
+            label={t({ id: "Editor.entities_picker.name" })}
           />
           <EntityPicker
             hass={hass}
