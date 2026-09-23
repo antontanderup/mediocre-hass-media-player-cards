@@ -1623,34 +1623,34 @@
   resolved "https://registry.yarnpkg.com/@tanstack/devtools-event-client/-/devtools-event-client-0.4.3.tgz#bfa2e68f5e06a8bb8934c7bd96912adf2d96571d"
   integrity sha512-OZI6QyULw0FI0wjgmeYzCIfbgPsOEzwJtCpa69XrfLMtNXLGnz3d/dIabk7frg0TmHo+Ah49w5I4KC7Tufwsvw==
 
-"@tanstack/form-core@1.29.1":
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/form-core/-/form-core-1.29.1.tgz#2703b903272ddf6fcf1667226ed86f74293f3dc0"
-  integrity sha512-NIYPO36eEu7nSWvMpbFDQaBWyVtnH/C8fsZ3/XpJUT4uOWgmxsiUvHGbTbDNIQTXAKIkhwEl0sUrqBNn2SfUnw==
+"@tanstack/form-core@1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/form-core/-/form-core-1.33.0.tgz#eee5624c286bbb2b76a31609b958d30050a8e395"
+  integrity sha512-AV4Pw9Dk4orFsuPBcDssfWMJFs+yMYBae7zZ4oTqrCf4ftNGQKxvrQRZeqKHG6A4TkiLeSvf2kzIjcVkrW7E6w==
   dependencies:
     "@tanstack/devtools-event-client" "^0.4.1"
     "@tanstack/pacer-lite" "^0.1.1"
-    "@tanstack/store" "^0.9.1"
+    "@tanstack/store" "^0.11.0"
 
 "@tanstack/pacer-lite@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@tanstack/pacer-lite/-/pacer-lite-0.1.1.tgz#431d3b0ac871280e8326fdbf156bb171d9bb0aa3"
   integrity sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w==
 
-"@tanstack/react-form@^1.29.1":
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-form/-/react-form-1.29.1.tgz#80644619b7347057c999e0180e973532cdde2246"
-  integrity sha512-hVHk4g0phd0HxRsv2ry6Xt8BqmalT55Q3cokhJBCC1St0hcGZhgwJJbohm9atao45BPG9e55DGvtbwExqZe35g==
+"@tanstack/react-form@^1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-form/-/react-form-1.33.0.tgz#d12524a2d4e4b2c6b953f33405537e1ed78369d3"
+  integrity sha512-unaee+VS4MvKo+s1dmgGUXI4902VeAhuaUbKsQbhFe3MceOpB3JpAUGCDpyzjQPXVFkFY0COKfLrUNX2XZYW4g==
   dependencies:
-    "@tanstack/form-core" "1.29.1"
-    "@tanstack/react-store" "^0.9.1"
+    "@tanstack/form-core" "1.33.0"
+    "@tanstack/react-store" "^0.11.0"
 
-"@tanstack/react-store@^0.9.1":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-store/-/react-store-0.9.2.tgz#c0383c50c9e7fa7c3816a32931659de7e22f90ec"
-  integrity sha512-Vt5usJE5sHG/cMechQfmwvwne6ktGCELe89Lmvoxe3LKRoFrhPa8OCKWs0NliG8HTJElEIj7PLtaBQIcux5pAQ==
+"@tanstack/react-store@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-store/-/react-store-0.11.0.tgz#a547563f65b50d0d2b37d5337cc708571af96486"
+  integrity sha512-tX4YXh3PDkmpvGQWkWqKpzs/MSqbtuwY9dWdWhtV9Q50PmO+jOkUKIWIX4G85dwt7lxdHLXsiaEKPdKmC8F41w==
   dependencies:
-    "@tanstack/store" "0.9.2"
+    "@tanstack/store" "0.11.0"
     use-sync-external-store "^1.6.0"
 
 "@tanstack/react-virtual@^3.13.24":
@@ -1660,10 +1660,10 @@
   dependencies:
     "@tanstack/virtual-core" "3.14.0"
 
-"@tanstack/store@0.9.2", "@tanstack/store@^0.9.1":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.9.2.tgz#9857f02e7d0f71695cc8ee351ae14b8285a4962e"
-  integrity sha512-K013lUJEFJK2ofFQ/hZKJUmCnpcV00ebLyOyFOWQvyQHUOZp/iYO84BM6aOGiV81JzwbX0APTVmW8YI7yiG5oA==
+"@tanstack/store@0.11.0", "@tanstack/store@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/store/-/store-0.11.0.tgz#8a2e374a67bf9dbb28e72298156996445570102b"
+  integrity sha512-WlzzCt3xi0G6pCAJu1U+2jiECwabETDpQDi3hfkFZvJii9AuZqEKbOiVarX1/bWhTNjU486yQtJCCasi/0q+Cw==
 
 "@tanstack/virtual-core@3.14.0":
   version "3.14.0"
