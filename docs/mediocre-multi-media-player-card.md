@@ -5,7 +5,7 @@ A card for controlling and viewing multiple media players at once. Useful for ma
 Comes in two sizes:
 
 - **`large`** — Full-featured view with a massive player, tabs for search, queue, media browser, and speaker grouping.
-- **`compact`** — A single compact card (visually similar to the [Mediocre Media Player Card](./mediocre-media-player-card.md)) that displays the active player. Secondary actions (grouping, search, queue, media browser) open as modals.
+- **`compact`** — A single compact card (visually similar to the [Mediocre Media Player Card](./mediocre-media-player-card.md)) that displays the active player. A button cycles through configured players when more than one is available. Secondary actions (grouping, search, queue, media browser) open as modals.
 
 ## Features
 

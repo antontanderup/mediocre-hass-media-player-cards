@@ -98,7 +98,8 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     useContext<CardContextType<MediocreMultiMediaPlayerCardConfig>>(
       CardContext
     );
-  const { selectedPlayer, setLastInteraction } = useSelectedPlayer();
+  const { selectedPlayer, setSelectedPlayer, setLastInteraction } =
+    useSelectedPlayer();
   const {
     ma_entity_id,
     ma_favorite_button_entity_id,
@@ -201,6 +202,16 @@ export const MediocreCompactMultiMediaPlayerCard = ({
     setShowGrouping(!showGrouping);
   };
 
+  const switchPlayer = () => {
+    const currentIndex = config.media_players.findIndex(
+      player => player.entity_id === selectedPlayer?.entity_id
+    );
+    setSelectedPlayer(
+      config.media_players[(currentIndex + 1) % config.media_players.length]
+    );
+    setLastInteraction();
+  };
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const artSize = !subtitle ? 78 : 100;
@@ -259,6 +270,16 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 <PlayerInfo />
               </div>
               <div css={styles.cardRowRight}>
+                {!isEmbeddedInMultiCard && config.media_players.length > 1 && (
+                  <IconButton
+                    id="mmpc-compact-switch-player"
+                    size="x-small"
+                    icon="mdi:swap-horizontal"
+                    title="Show next media player"
+                    aria-label="Show next media player"
+                    onClick={switchPlayer}
+                  />
+                )}
                 {hasCustomButtons && !alwaysShowCustomButtons && (
                   <Fragment>
                     {custom_buttons.length === 1 ? (
