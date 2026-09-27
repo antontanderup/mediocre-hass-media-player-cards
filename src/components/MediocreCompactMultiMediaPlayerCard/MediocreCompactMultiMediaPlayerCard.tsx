@@ -270,16 +270,19 @@ export const MediocreCompactMultiMediaPlayerCard = ({
                 <PlayerInfo />
               </div>
               <div css={styles.cardRowRight}>
-                {!isEmbeddedInMultiCard && config.media_players.length > 1 && (
-                  <IconButton
-                    id="mmpc-compact-switch-player"
-                    size="x-small"
-                    icon="mdi:swap-horizontal"
-                    title="Show next media player"
-                    aria-label="Show next media player"
-                    onClick={switchPlayer}
-                  />
-                )}
+                {!isEmbeddedInMultiCard &&
+                  config.size === "compact" &&
+                  config.options?.show_player_switch_button &&
+                  config.media_players.length > 1 && (
+                    <IconButton
+                      id="mmpc-compact-switch-player"
+                      size="x-small"
+                      icon="mdi:swap-horizontal"
+                      title="Show next media player"
+                      aria-label="Show next media player"
+                      onClick={switchPlayer}
+                    />
+                  )}
                 {hasCustomButtons && !alwaysShowCustomButtons && (
                   <Fragment>
                     {custom_buttons.length === 1 ? (
