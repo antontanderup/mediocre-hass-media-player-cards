@@ -84,7 +84,8 @@
   "AdditionalActionsMenu": {
     "mark_as_favorite": "Als Favorit markieren",
     "transfer_queue": "Wiedergabeliste übergeben",
-    "select_source": "Quelle wählen"
+    "select_source": "Quelle wählen",
+    "select_sound_mode": "Klangmodus"
   },
   "player_states": {
     "Off": "Aus",
