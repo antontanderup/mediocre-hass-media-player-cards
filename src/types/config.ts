@@ -140,6 +140,7 @@ export const MediocreMultiMediaPlayerCardConfigSchema =
         size: "'compact'",
         "tap_opens_popup?": "boolean",
         "options?": commonMediaPlayerCardOptions.and({
+          "show_player_switch_button?": "boolean", // Show a button to select the next configured player
           "always_show_power_button?": "boolean | null", // Always show the power button, even if the media player is on
           "always_show_custom_buttons?": "boolean | null", // Always show custom buttons panel expanded
           "hide_when_off?": "boolean | null", // Hide the card when the media player is off

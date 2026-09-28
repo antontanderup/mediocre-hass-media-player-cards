@@ -5,7 +5,7 @@ A card for controlling and viewing multiple media players at once. Useful for ma
 Comes in two sizes:
 
 - **`large`** — Full-featured view with a massive player, tabs for search, queue, media browser, and speaker grouping.
-- **`compact`** — A single compact card (visually similar to the [Mediocre Media Player Card](./mediocre-media-player-card.md)) that displays the active player. Secondary actions (grouping, search, queue, media browser) open as modals.
+- **`compact`** — A single compact card (visually similar to the [Mediocre Media Player Card](./mediocre-media-player-card.md)) that displays the active player. An optional button cycles through configured players when more than one is available. Secondary actions (grouping, search, queue, media browser) open as modals.
 
 ## Features
 
@@ -47,6 +47,8 @@ media_players:
 type: "custom:mediocre-multi-media-player-card"
 size: compact
 entity_id: media_player.living_room_speaker
+options:
+  show_player_switch_button: true
 media_players:
   - entity_id: media_player.living_room_speaker
     name: Living Room
@@ -90,6 +92,7 @@ media_players:
 | Option                               | Type    | Default | Description                                                  |
 | ------------------------------------ | ------- | ------- | ------------------------------------------------------------ |
 | `tap_opens_popup`                    | boolean |         | Tapping the card opens a popup with the massive card         |
+| `options.show_player_switch_button`  | boolean | false   | Show a button to cycle through configured players            |
 | `options.always_show_power_button`   | boolean |         | Always show the power button, even if the media player is on |
 | `options.always_show_custom_buttons` | boolean |         | Always show custom buttons panel expanded                    |
 | `options.hide_when_off`              | boolean |         | Hide the card when the active player is off                  |

@@ -461,6 +461,12 @@ export const MediocreMultiMediaPlayerCardEditor: FC<
           {size === "compact" && (
             <Fragment>
               <form.AppField
+                name="options.show_player_switch_button"
+                children={field => (
+                  <field.Toggle label="Show player switch button" />
+                )}
+              />
+              <form.AppField
                 name="options.always_show_power_button"
                 children={field => (
                   <field.Toggle label="Always show power button." />
