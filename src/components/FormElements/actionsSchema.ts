@@ -1,21 +1,23 @@
 // Thanks to mushroom card for the inspiration
 // very hard to find documentation for ha-form
 
-export const getActionsFormSchema = () => {
+type TranslateFn = (args: { id: string; defaultMessage?: string }) => string;
+
+export const getActionsFormSchema = (t: TranslateFn) => {
   return [
     {
       name: "tap_action",
-      label: "Tap Action",
+      label: t({ id: "Editor.actions.tap_action" }),
       selector: { ui_action: {} },
     },
     {
       name: "hold_action",
-      label: "Hold Action",
+      label: t({ id: "Editor.actions.hold_action" }),
       selector: { ui_action: {} },
     },
     {
       name: "double_tap_action",
-      label: "Double Tap Action",
+      label: t({ id: "Editor.actions.double_tap_action" }),
       selector: { ui_action: {} },
     },
   ];

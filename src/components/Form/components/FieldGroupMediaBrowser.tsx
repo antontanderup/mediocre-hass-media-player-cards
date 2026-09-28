@@ -4,6 +4,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { SubForm } from "@components/SubForm";
 import { EntityPicker, FormGroup } from "@components/FormElements";
 import { useHass } from "@components/HassContext";
+import { useIntl } from "@components/i18n";
 
 type MediaBrowserFields = {
   media_browser: MediaBrowserConfig;
@@ -18,6 +19,7 @@ export const FieldGroupMediaBrowser = withFieldGroup({
   props: {},
   render: function Render({ group }) {
     const hass = useHass();
+    const { t } = useIntl();
 
     return (
       <group.Field name="media_browser" mode="array">
@@ -30,7 +32,7 @@ export const FieldGroupMediaBrowser = withFieldGroup({
                     title={
                       mediaBrowserEntry.name ??
                       mediaBrowserEntry.entity_id ??
-                      `Entry ${index}`
+                      `${t({ id: "Editor.media_browser.entry" })} ${index}`
                     }
                     buttons={[
                       {
@@ -55,13 +57,17 @@ export const FieldGroupMediaBrowser = withFieldGroup({
                     <FormGroup>
                       <group.AppField
                         name={`media_browser[${index}].name`}
-                        children={field => <field.Text label={"Name"} />}
+                        children={field => (
+                          <field.Text
+                            label={t({ id: "Editor.media_browser.name" })}
+                          />
+                        )}
                       />
                       <group.AppField
                         name={`media_browser[${index}].entity_id`}
                         children={field => (
                           <field.EntityPicker
-                            label={"Media Browser Entity ID"}
+                            label={t({ id: "Editor.media_browser.entity_id" })}
                             domains={["media_player"]}
                           />
                         )}
@@ -81,7 +87,7 @@ export const FieldGroupMediaBrowser = withFieldGroup({
                     hass.states[value]?.attributes.friendly_name ?? undefined,
                 });
               }}
-              label="Add Media Browser"
+              label={t({ id: "Editor.media_browser.add" })}
               domains={["media_player"]}
             />
           </Fragment>

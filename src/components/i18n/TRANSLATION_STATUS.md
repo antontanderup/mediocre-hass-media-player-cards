@@ -6,21 +6,166 @@
 
 | Language | Keys translated | Completion | Status |
 |----------|----------------|------------|--------|
-| he | 69 / 69 | 100% ██████████ | ✅ |
-| nl | 69 / 69 | 100% ██████████ | ✅ |
-| da | 66 / 69 | 96% ██████████ | 🟡 |
-| de | 59 / 69 | 86% █████████░ | 🟡 |
-| pt | 59 / 69 | 86% █████████░ | 🟡 |
+| he | 140 / 140 | 100% ██████████ | ✅ |
+| nl | 69 / 140 | 49% █████░░░░░ | 🔴 |
+| da | 66 / 140 | 47% █████░░░░░ | 🔴 |
+| de | 59 / 140 | 42% ████░░░░░░ | 🔴 |
+| pt | 59 / 140 | 42% ████░░░░░░ | 🔴 |
 
-_Total English keys: 69_
+_Total English keys: 140_
 
 ## Missing keys per language
+
+### nl
+
+  - `Editor.common.media_player_entity`
+  - `Editor.common.name_optional`
+  - `Editor.common.name`
+  - `Editor.common.use_art_colors`
+  - `Editor.common.tap_opens_popup`
+  - `Editor.common.interactions`
+  - `Editor.common.tap_action_overridden`
+  - `Editor.common.speaker_group_config`
+  - `Editor.common.main_speaker_entity`
+  - `Editor.common.select_speakers`
+  - `Editor.common.ma_config`
+  - `Editor.common.lms_config`
+  - `Editor.common.lms_entity`
+  - `Editor.common.search_optional`
+  - `Editor.common.media_browser_optional`
+  - `Editor.common.custom_buttons_optional`
+  - `Editor.common.additional_options`
+  - `Editor.options.always_show_power_button`
+  - `Editor.options.always_show_custom_buttons`
+  - `Editor.options.hide_when_off`
+  - `Editor.options.hide_when_group_child`
+  - `Editor.options.show_volume_step_buttons`
+  - `Editor.options.use_volume_up_down`
+  - `Editor.options.use_experimental_lms`
+  - `Editor.ma_entities.ma_entity_id`
+  - `Editor.ma_entities.ma_favorite_button`
+  - `Editor.media_browser.name`
+  - `Editor.media_browser.entity_id`
+  - `Editor.media_browser.add`
+  - `Editor.media_browser.entry`
+  - `Editor.search.name`
+  - `Editor.search.entity_id`
+  - `Editor.search.add`
+  - `Editor.search.entry`
+  - `Editor.custom_buttons.name`
+  - `Editor.custom_buttons.icon`
+  - `Editor.custom_buttons.interactions`
+  - `Editor.custom_buttons.add`
+  - `Editor.custom_buttons.button`
+  - `Editor.entities_picker.name`
+  - `Editor.multi.default_media_player`
+  - `Editor.multi.media_players`
+  - `Editor.multi.media_player_fallback`
+  - `Editor.multi.ma_integration`
+  - `Editor.multi.group_media_player`
+  - `Editor.multi.enable_grouping`
+  - `Editor.multi.search_config`
+  - `Editor.multi.add_media_player`
+  - `Editor.multi.or`
+  - `Editor.multi.add_all_ma`
+  - `Editor.multi.advanced`
+  - `Editor.multi.height`
+  - `Editor.multi.transparent_background`
+  - `Editor.multi.default_tab`
+  - `Editor.multi.player_active_when`
+  - `Editor.select.panel`
+  - `Editor.select.card`
+  - `Editor.select.in_card`
+  - `Editor.select.large`
+  - `Editor.select.compact`
+  - `Editor.select.home`
+  - `Editor.select.search`
+  - `Editor.select.media_browser`
+  - `Editor.select.queue`
+  - `Editor.select.custom_buttons`
+  - `Editor.select.speaker_grouping`
+  - `Editor.select.playing`
+  - `Editor.select.playing_or_paused`
+  - `Editor.actions.tap_action`
+  - `Editor.actions.hold_action`
+  - `Editor.actions.double_tap_action`
 
 ### da
 
   - `MediocreMultiMediaPlayerCard.AdditionalActionsView.lyrion_info_title`
   - `MediocreMultiMediaPlayerCard.AdditionalActionsView.related_albums_title`
   - `LyrionTrackInfo.empty_state`
+  - `Editor.common.media_player_entity`
+  - `Editor.common.name_optional`
+  - `Editor.common.name`
+  - `Editor.common.use_art_colors`
+  - `Editor.common.tap_opens_popup`
+  - `Editor.common.interactions`
+  - `Editor.common.tap_action_overridden`
+  - `Editor.common.speaker_group_config`
+  - `Editor.common.main_speaker_entity`
+  - `Editor.common.select_speakers`
+  - `Editor.common.ma_config`
+  - `Editor.common.lms_config`
+  - `Editor.common.lms_entity`
+  - `Editor.common.search_optional`
+  - `Editor.common.media_browser_optional`
+  - `Editor.common.custom_buttons_optional`
+  - `Editor.common.additional_options`
+  - `Editor.options.always_show_power_button`
+  - `Editor.options.always_show_custom_buttons`
+  - `Editor.options.hide_when_off`
+  - `Editor.options.hide_when_group_child`
+  - `Editor.options.show_volume_step_buttons`
+  - `Editor.options.use_volume_up_down`
+  - `Editor.options.use_experimental_lms`
+  - `Editor.ma_entities.ma_entity_id`
+  - `Editor.ma_entities.ma_favorite_button`
+  - `Editor.media_browser.name`
+  - `Editor.media_browser.entity_id`
+  - `Editor.media_browser.add`
+  - `Editor.media_browser.entry`
+  - `Editor.search.name`
+  - `Editor.search.entity_id`
+  - `Editor.search.add`
+  - `Editor.search.entry`
+  - `Editor.custom_buttons.name`
+  - `Editor.custom_buttons.icon`
+  - `Editor.custom_buttons.interactions`
+  - `Editor.custom_buttons.add`
+  - `Editor.custom_buttons.button`
+  - `Editor.entities_picker.name`
+  - `Editor.multi.default_media_player`
+  - `Editor.multi.media_players`
+  - `Editor.multi.media_player_fallback`
+  - `Editor.multi.ma_integration`
+  - `Editor.multi.group_media_player`
+  - `Editor.multi.enable_grouping`
+  - `Editor.multi.search_config`
+  - `Editor.multi.add_media_player`
+  - `Editor.multi.or`
+  - `Editor.multi.add_all_ma`
+  - `Editor.multi.advanced`
+  - `Editor.multi.height`
+  - `Editor.multi.transparent_background`
+  - `Editor.multi.default_tab`
+  - `Editor.multi.player_active_when`
+  - `Editor.select.panel`
+  - `Editor.select.card`
+  - `Editor.select.in_card`
+  - `Editor.select.large`
+  - `Editor.select.compact`
+  - `Editor.select.home`
+  - `Editor.select.search`
+  - `Editor.select.media_browser`
+  - `Editor.select.queue`
+  - `Editor.select.custom_buttons`
+  - `Editor.select.speaker_grouping`
+  - `Editor.select.playing`
+  - `Editor.select.playing_or_paused`
+  - `Editor.actions.tap_action`
+  - `Editor.actions.hold_action`
+  - `Editor.actions.double_tap_action`
 
 ### de
 
@@ -34,6 +179,77 @@ _Total English keys: 69_
   - `Search.search_provider.title`
   - `Search.enqueue_mode.title`
   - `LyrionTrackInfo.empty_state`
+  - `Editor.common.media_player_entity`
+  - `Editor.common.name_optional`
+  - `Editor.common.name`
+  - `Editor.common.use_art_colors`
+  - `Editor.common.tap_opens_popup`
+  - `Editor.common.interactions`
+  - `Editor.common.tap_action_overridden`
+  - `Editor.common.speaker_group_config`
+  - `Editor.common.main_speaker_entity`
+  - `Editor.common.select_speakers`
+  - `Editor.common.ma_config`
+  - `Editor.common.lms_config`
+  - `Editor.common.lms_entity`
+  - `Editor.common.search_optional`
+  - `Editor.common.media_browser_optional`
+  - `Editor.common.custom_buttons_optional`
+  - `Editor.common.additional_options`
+  - `Editor.options.always_show_power_button`
+  - `Editor.options.always_show_custom_buttons`
+  - `Editor.options.hide_when_off`
+  - `Editor.options.hide_when_group_child`
+  - `Editor.options.show_volume_step_buttons`
+  - `Editor.options.use_volume_up_down`
+  - `Editor.options.use_experimental_lms`
+  - `Editor.ma_entities.ma_entity_id`
+  - `Editor.ma_entities.ma_favorite_button`
+  - `Editor.media_browser.name`
+  - `Editor.media_browser.entity_id`
+  - `Editor.media_browser.add`
+  - `Editor.media_browser.entry`
+  - `Editor.search.name`
+  - `Editor.search.entity_id`
+  - `Editor.search.add`
+  - `Editor.search.entry`
+  - `Editor.custom_buttons.name`
+  - `Editor.custom_buttons.icon`
+  - `Editor.custom_buttons.interactions`
+  - `Editor.custom_buttons.add`
+  - `Editor.custom_buttons.button`
+  - `Editor.entities_picker.name`
+  - `Editor.multi.default_media_player`
+  - `Editor.multi.media_players`
+  - `Editor.multi.media_player_fallback`
+  - `Editor.multi.ma_integration`
+  - `Editor.multi.group_media_player`
+  - `Editor.multi.enable_grouping`
+  - `Editor.multi.search_config`
+  - `Editor.multi.add_media_player`
+  - `Editor.multi.or`
+  - `Editor.multi.add_all_ma`
+  - `Editor.multi.advanced`
+  - `Editor.multi.height`
+  - `Editor.multi.transparent_background`
+  - `Editor.multi.default_tab`
+  - `Editor.multi.player_active_when`
+  - `Editor.select.panel`
+  - `Editor.select.card`
+  - `Editor.select.in_card`
+  - `Editor.select.large`
+  - `Editor.select.compact`
+  - `Editor.select.home`
+  - `Editor.select.search`
+  - `Editor.select.media_browser`
+  - `Editor.select.queue`
+  - `Editor.select.custom_buttons`
+  - `Editor.select.speaker_grouping`
+  - `Editor.select.playing`
+  - `Editor.select.playing_or_paused`
+  - `Editor.actions.tap_action`
+  - `Editor.actions.hold_action`
+  - `Editor.actions.double_tap_action`
 
 ### pt
 
@@ -47,3 +263,74 @@ _Total English keys: 69_
   - `Search.search_provider.title`
   - `Search.enqueue_mode.title`
   - `LyrionTrackInfo.empty_state`
+  - `Editor.common.media_player_entity`
+  - `Editor.common.name_optional`
+  - `Editor.common.name`
+  - `Editor.common.use_art_colors`
+  - `Editor.common.tap_opens_popup`
+  - `Editor.common.interactions`
+  - `Editor.common.tap_action_overridden`
+  - `Editor.common.speaker_group_config`
+  - `Editor.common.main_speaker_entity`
+  - `Editor.common.select_speakers`
+  - `Editor.common.ma_config`
+  - `Editor.common.lms_config`
+  - `Editor.common.lms_entity`
+  - `Editor.common.search_optional`
+  - `Editor.common.media_browser_optional`
+  - `Editor.common.custom_buttons_optional`
+  - `Editor.common.additional_options`
+  - `Editor.options.always_show_power_button`
+  - `Editor.options.always_show_custom_buttons`
+  - `Editor.options.hide_when_off`
+  - `Editor.options.hide_when_group_child`
+  - `Editor.options.show_volume_step_buttons`
+  - `Editor.options.use_volume_up_down`
+  - `Editor.options.use_experimental_lms`
+  - `Editor.ma_entities.ma_entity_id`
+  - `Editor.ma_entities.ma_favorite_button`
+  - `Editor.media_browser.name`
+  - `Editor.media_browser.entity_id`
+  - `Editor.media_browser.add`
+  - `Editor.media_browser.entry`
+  - `Editor.search.name`
+  - `Editor.search.entity_id`
+  - `Editor.search.add`
+  - `Editor.search.entry`
+  - `Editor.custom_buttons.name`
+  - `Editor.custom_buttons.icon`
+  - `Editor.custom_buttons.interactions`
+  - `Editor.custom_buttons.add`
+  - `Editor.custom_buttons.button`
+  - `Editor.entities_picker.name`
+  - `Editor.multi.default_media_player`
+  - `Editor.multi.media_players`
+  - `Editor.multi.media_player_fallback`
+  - `Editor.multi.ma_integration`
+  - `Editor.multi.group_media_player`
+  - `Editor.multi.enable_grouping`
+  - `Editor.multi.search_config`
+  - `Editor.multi.add_media_player`
+  - `Editor.multi.or`
+  - `Editor.multi.add_all_ma`
+  - `Editor.multi.advanced`
+  - `Editor.multi.height`
+  - `Editor.multi.transparent_background`
+  - `Editor.multi.default_tab`
+  - `Editor.multi.player_active_when`
+  - `Editor.select.panel`
+  - `Editor.select.card`
+  - `Editor.select.in_card`
+  - `Editor.select.large`
+  - `Editor.select.compact`
+  - `Editor.select.home`
+  - `Editor.select.search`
+  - `Editor.select.media_browser`
+  - `Editor.select.queue`
+  - `Editor.select.custom_buttons`
+  - `Editor.select.speaker_grouping`
+  - `Editor.select.playing`
+  - `Editor.select.playing_or_paused`
+  - `Editor.actions.tap_action`
+  - `Editor.actions.hold_action`
+  - `Editor.actions.double_tap_action`

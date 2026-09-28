@@ -9,6 +9,7 @@ import {
   Label,
 } from "@components/FormElements";
 import { useHass } from "@components/HassContext";
+import { useIntl } from "@components/i18n";
 import { ValidationErrorMap } from "@tanstack/react-form";
 import { useCallback } from "preact/hooks";
 
@@ -27,6 +28,7 @@ export const FieldGroupCustomButtons = withFieldGroup({
   },
   render: function Render({ group, formErrors }) {
     const hass = useHass();
+    const { t } = useIntl();
 
     const getSubformError = useCallback(
       (fieldName: string) => {
@@ -47,7 +49,7 @@ export const FieldGroupCustomButtons = withFieldGroup({
                   const stableKey = `${customButtonEntry.name}-${index}`;
                   return (
                     <SubForm
-                      title={`Button ${index} - ${customButtonEntry.name}`}
+                      title={`${t({ id: "Editor.custom_buttons.button" })} ${index} - ${customButtonEntry.name}`}
                       error={getSubformError(`custom_buttons[${index}]`)}
                       buttons={[
                         {
@@ -72,16 +74,25 @@ export const FieldGroupCustomButtons = withFieldGroup({
                       <FormGroup>
                         <group.AppField
                           name={`custom_buttons[${index}].name`}
-                          children={field => <field.Text label="Name" />}
+                          children={field => (
+                            <field.Text
+                              label={t({ id: "Editor.custom_buttons.name" })}
+                            />
+                          )}
                         />
                         <group.AppField
                           name={`custom_buttons[${index}].icon`}
                           children={field => (
-                            <field.Text label="Icon" isIconInput />
+                            <field.Text
+                              label={t({ id: "Editor.custom_buttons.icon" })}
+                              isIconInput
+                            />
                           )}
                         />
 
-                        <Label>Interactions</Label>
+                        <Label>
+                          {t({ id: "Editor.custom_buttons.interactions" })}
+                        </Label>
 
                         <group.Field name={`custom_buttons[${index}]`}>
                           {field => {
@@ -118,7 +129,7 @@ export const FieldGroupCustomButtons = withFieldGroup({
                 });
               }}
             >
-              Add Custom Button
+              {t({ id: "Editor.custom_buttons.add" })}
             </Button>
           </Fragment>
         )}
