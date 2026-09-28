@@ -13,6 +13,7 @@ import {
   MiniPlayer,
   SearchView,
   SpeakerGrouping,
+  VolumePanelView,
 } from "./components";
 import { useMeasure } from "@uidotdev/usehooks";
 import { css } from "@emotion/react";
@@ -28,6 +29,7 @@ export type NavigationRoute =
   | "media-browser"
   | "massive"
   | "speaker-grouping"
+  | "volume-panel"
   | "custom-buttons"
   | "queue"
   | "speaker-overview";
@@ -223,6 +225,9 @@ export const MediocreLargeMultiMediaPlayerCard = ({
           <MediaBrowserView height={contentHeight} />
         )}
         {navigationRoute === "speaker-grouping" && <SpeakerGrouping />}
+        {navigationRoute === "volume-panel" && (
+          <VolumePanelView onClose={() => setNavigationRoute("massive")} />
+        )}
         {navigationRoute === "queue" && contentHeight && (
           <QueueView height={contentHeight} />
         )}

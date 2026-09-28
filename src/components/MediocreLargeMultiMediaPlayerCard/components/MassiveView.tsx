@@ -10,7 +10,12 @@ import {
   usePlayer,
   VolumeSlider,
 } from "@components";
-import { getDeviceIcon, getHass, getVolumeIcon } from "@utils";
+import {
+  getCanOpenLinkedVolumePanel,
+  getDeviceIcon,
+  getHass,
+  getVolumeIcon,
+} from "@utils";
 import { useActionProps } from "@hooks";
 import { theme } from "@constants/theme";
 import { memo } from "preact/compat";
@@ -108,6 +113,11 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
     const groupMembers =
       hass.states[mediaPlayer.speaker_group_entity_id ?? mediaPlayer.entity_id]
         ?.attributes?.group_members;
+    const canOpenLinkedVolumePanel = getCanOpenLinkedVolumePanel(
+      mediaPlayer,
+      config.media_players,
+      hass.states
+    );
     const mdiIcon = getDeviceIcon({ icon, deviceClass });
 
     const moreInfoButtonProps = useActionProps({
@@ -179,10 +189,46 @@ export const MassiveViewView = memo<MassiveViewViewProps>(
                 config.options?.use_volume_up_down_for_step_buttons ?? false
               }
             />
-            <IconButton size="small" onClick={togglePower} icon={"mdi:power"} />
+            <VolumeTrailingButton
+              launchFrom={
+                mediaPlayer.linked_volume_panel?.launch_from ?? "disabled"
+              }
+              canOpenLinkedVolumePanel={canOpenLinkedVolumePanel}
+              icon={
+                config.options?.ui?.volume_bar?.trailing_volume_button_icon?.trim() ||
+                "mdi:volume-source"
+              }
+              onOpenLinkedVolumePanel={() => setNavigationRoute("volume-panel")}
+              onPower={togglePower}
+            />
           </div>
         </MassivePlaybackController>
       </div>
     );
   }
 );
+
+const VolumeTrailingButton = ({
+  launchFrom,
+  canOpenLinkedVolumePanel,
+  icon,
+  onOpenLinkedVolumePanel,
+  onPower,
+}: {
+  launchFrom: "disabled" | "trailing_volume_bar_button";
+  canOpenLinkedVolumePanel: boolean;
+  icon: string;
+  onOpenLinkedVolumePanel: () => void;
+  onPower: () => void;
+}) => {
+  if (
+    launchFrom === "trailing_volume_bar_button" &&
+    canOpenLinkedVolumePanel
+  ) {
+    return (
+      <IconButton size="small" onClick={onOpenLinkedVolumePanel} icon={icon} />
+    );
+  }
+
+  return <IconButton size="small" onClick={onPower} icon="mdi:power" />;
+};

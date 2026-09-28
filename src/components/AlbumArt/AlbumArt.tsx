@@ -1,4 +1,4 @@
-import { Icon, IconSize, usePlayer } from "@components";
+import { Icon, IconSize, MaFavoriteButton, usePlayer } from "@components";
 import { fadeIn, theme } from "@constants";
 import { css } from "@emotion/react";
 import { getDeviceIcon, getSourceIcon } from "@utils";
@@ -11,6 +11,7 @@ export type AlbumArtProps = {
   borderRadius?: number;
   iconSize: IconSize;
   renderLongPressIndicator?: () => JSX.Element | null;
+  showMaFavoriteButton?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const styles = {
@@ -69,6 +70,7 @@ export const AlbumArt = ({
   borderRadius = 4,
   iconSize,
   renderLongPressIndicator,
+  showMaFavoriteButton = false,
   ...buttonProps
 }: AlbumArtProps) => {
   const player = usePlayer();
@@ -194,6 +196,7 @@ export const AlbumArt = ({
           </div>
         )}
       </div>
+      {showMaFavoriteButton && <MaFavoriteButton />}
       {renderLongPressIndicator && renderLongPressIndicator()}
     </button>
   );

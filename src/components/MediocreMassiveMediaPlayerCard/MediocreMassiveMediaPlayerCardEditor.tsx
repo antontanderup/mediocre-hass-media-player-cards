@@ -5,7 +5,7 @@ import {
 import { MediocreMassiveMediaPlayerCardConfig } from "@types";
 import { useCallback, useEffect } from "preact/hooks";
 import { useStore, ValidationErrorMap } from "@tanstack/react-form";
-import { FormGroup, SubForm, FormSelect } from "@components";
+import { FormGroup, SubForm, FormSelect, Label } from "@components";
 import { css } from "@emotion/react";
 import { FC } from "preact/compat";
 import {
@@ -168,7 +168,8 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
         title="Music Assistant Configuration (optional)"
         error={
           getSubformError("ma_entity_id") ??
-          getSubformError("ma_favorite_button_entity_id")
+          getSubformError("ma_favorite_button_entity_id") ??
+          getSubformError("ma_favorite_control")
         }
       >
         <FieldGroupMaEntities
@@ -176,7 +177,10 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
           fields={{
             ma_entity_id: "ma_entity_id",
             ma_favorite_button_entity_id: "ma_favorite_button_entity_id",
+            ma_favorite_control: "ma_favorite_control",
           }}
+          artworkFavoriteHelperText={undefined}
+          showArtworkFavoriteControls={true}
         />
       </SubForm>
       <SubForm
@@ -219,6 +223,32 @@ export const MediocreMassiveMediaPlayerCardEditor: FC<
           formErrors={formErrorMap as ValidationErrorMap<unknown>}
           fields={{ custom_buttons: "custom_buttons" as never }} // todo this casting is stupid
         />
+      </SubForm>
+      <SubForm
+        title="UI Customization (optional)"
+        error={getSubformError("options.ui")}
+      >
+        <SubForm title="Footer / Navigation" error={getSubformError("options.ui.footer_icons")}>
+          <Label>Optional icon overrides for the large footer tabs.</Label>
+          <form.AppField
+            name="options.ui.footer_icons.player"
+            children={field => (
+              <field.Text label="Player / Home tab icon" isIconInput />
+            )}
+          />
+          <form.AppField
+            name="options.ui.footer_icons.search"
+            children={field => (
+              <field.Text label="Search tab icon" isIconInput />
+            )}
+          />
+          <form.AppField
+            name="options.ui.footer_icons.media_browser"
+            children={field => (
+              <field.Text label="Browse Media tab icon" isIconInput />
+            )}
+          />
+        </SubForm>
       </SubForm>
       <SubForm
         title="Additional options (optional)"

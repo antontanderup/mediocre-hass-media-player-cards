@@ -363,6 +363,7 @@ describe("cardConfigUtils", () => {
         media_browser: { enabled: true },
       });
     });
+
   });
 
   describe("getSimpleConfigFromMassiveFormValues", () => {
@@ -448,6 +449,42 @@ describe("cardConfigUtils", () => {
         mode: "card",
         grid_options: { columns: "full" },
         media_browser: { enabled: true },
+      });
+    });
+
+    it("should preserve non-empty footer icon overrides and drop empty ones", () => {
+      const configWithFooterIcons: MediocreMassiveMediaPlayerCardConfig = {
+        type: "custom:mediocre-massive-media-player-card",
+        entity_id: "media_player.test",
+        mode: "card",
+        use_art_colors: false,
+        action: {},
+        speaker_group: { entity_id: null, entities: [] },
+        search: { enabled: false, show_favorites: false, entity_id: null },
+        ma_entity_id: null,
+        custom_buttons: [],
+        options: {
+          always_show_power_button: false,
+          ui: {
+            footer_icons: {
+              media_browser: "mdi:playlist-music",
+              search: "",
+            },
+          },
+        },
+        media_browser: { enabled: false },
+      };
+
+      const result = getSimpleConfigFromMassiveFormValues(
+        configWithFooterIcons
+      );
+
+      expect(result.options).toEqual({
+        ui: {
+          footer_icons: {
+            media_browser: "mdi:playlist-music",
+          },
+        },
       });
     });
   });
