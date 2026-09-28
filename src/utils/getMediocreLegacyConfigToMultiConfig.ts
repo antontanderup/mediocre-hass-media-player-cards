@@ -13,6 +13,7 @@ export const getMediocreLegacyConfigToMediocreMultiConfig = (
       entity_id: config.entity_id,
       ma_entity_id: config.ma_entity_id,
       ma_favorite_button_entity_id: config.ma_favorite_button_entity_id,
+      ma_favorite_control: config.ma_favorite_control,
       speaker_group_entity_id: config.speaker_group?.entity_id,
       lms_entity_id: config.lms_entity_id,
       search: config.search,

@@ -51,6 +51,12 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
     options: {
       show_volume_step_buttons: true,
       use_volume_up_down_for_step_buttons: false,
+      ui: {
+        footer_icons: {
+          player: "mdi:play-circle",
+          media_browser: "mdi:playlist-music",
+        },
+      },
     },
     size: "large",
     mode: "panel",
@@ -103,6 +109,12 @@ describe("getMultiConfigToMediocreMassiveConfig", () => {
         options: {
           show_volume_step_buttons: true,
           use_volume_up_down_for_step_buttons: false,
+          ui: {
+            footer_icons: {
+              player: "mdi:play-circle",
+              media_browser: "mdi:playlist-music",
+            },
+          },
           use_experimental_lms_media_browser: false,
         },
       })
