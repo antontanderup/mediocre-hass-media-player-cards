@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Объединить плееры",
+      "join_subtitle": "Группа выбранных плееров.",
+      "link_volume": "Синхронизировать громкость",
+      "player_focus_title": "Фокус плеера",
+      "player_focus_subtitle": "Выберите плеер, которым вы управляете."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Обзор медиа"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Поиск в Music Assistant",
+      "search_title": "Поиск"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Быстрые действия",
+      "shortcuts_subtitle": "Быстрый доступ к избранным действиям.",
+      "media_player_actions_title": "Действия плеера",
+      "media_player_actions_subtitle": "Дополнительные элементы управления плеером.",
+      "mark_as_favorite": "В избранное",
+      "more_info": "Подробнее",
+      "transfer_queue": "Перенести очередь",
+      "lyrion_info_title": "Информация о треке",
+      "related_albums_title": "Похожие альбомы"
+    },
+    "QueueView": {
+      "up_next": "Далее",
+      "up_next_subtitle": "Текущая очередь воспроизведения"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Группа колонок",
+      "link_volume_title": "Синхронизировать громкость",
+      "add_speakers_title": "Добавить колонки в группу"
+    },
+    "QueueView": {
+      "up_next": "Далее"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Громкость",
+      "speaker_grouping_modal_title": "Группа колонок",
+      "media_browser_modal_title": "Медиабраузер",
+      "search_modal_title": "Поиск",
+      "shortcuts_modal_title": "Быстрые действия",
+      "queue_view_modal_title": "Далее"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Синхронизировать громкость"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "Искать через…"
+    },
+    "input_placeholder": "Поиск медиа…",
+    "categories": {
+      "All": "Все",
+      "Favorites": "Избранное",
+      "Favorite": "Избранное",
+      "Artists": "Исполнители",
+      "Albums": "Альбомы",
+      "Tracks": "Треки",
+      "Playlists": "Плейлисты",
+      "Podcasts": "Подкасты",
+      "Audiobooks": "Аудиокниги",
+      "Genres": "Жанры",
+      "Radio": "Радио"
+    },
+    "enqueue_mode": {
+      "title": "Режим очереди",
+      "play": "Воспроизвести",
+      "replace": "Заменить очередь",
+      "next": "Следующим",
+      "replace_next": "Заменить и поставить следующим",
+      "add": "Добавить в очередь"
+    },
+    "no_results": "Ничего не найдено."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Главная",
+    "filter_placeholder": "Фильтр результатов…",
+    "empty_text": "Нет доступного медиа.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "Очередь",
+      "enqueue_mode": {
+        "play": "Воспроизвести",
+        "next": "Следующим",
+        "replace": "Заменить очередь",
+        "add": "Добавить в очередь"
+      },
+      "browse": "Обзор"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "В избранное",
+    "transfer_queue": "Перенести очередь",
+    "select_source": "Выбрать источник"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "Нет данных о треке"
+  },
+  "player_states": {
+    "Off": "Выкл",
+    "Idle": "Простой",
+    "Playing": "Воспроизведение",
+    "Paused": "Пауза",
+    "Stopped": "Остановлено",
+    "Unavailable": "Недоступно"
+  }
+}

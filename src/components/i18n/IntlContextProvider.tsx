@@ -5,6 +5,18 @@ import pt from "./pt.json";
 import de from "./de.json";
 import nl from "./nl.json";
 import he from "./he.json";
+import es from "./es.json";
+import zh from "./zh.json";
+import hi from "./hi.json";
+import fr from "./fr.json";
+import bn from "./bn.json";
+import ru from "./ru.json";
+import ja from "./ja.json";
+import ko from "./ko.json";
+import tr from "./tr.json";
+import it from "./it.json";
+import ar from "./ar.json";
+import vi from "./vi.json";
 import { useCallback, useContext, useMemo } from "preact/hooks";
 import { memo } from "preact/compat";
 
@@ -32,7 +44,26 @@ function flattenMessages(
   );
 }
 
-const translatedLocales = ["en", "da", "pt", "de", "nl", "he"];
+const translatedLocales = [
+  "en",
+  "da",
+  "pt",
+  "de",
+  "nl",
+  "he",
+  "es",
+  "zh",
+  "hi",
+  "fr",
+  "bn",
+  "ru",
+  "ja",
+  "ko",
+  "tr",
+  "it",
+  "ar",
+  "vi",
+];
 
 export const messages = {
   en,
@@ -41,6 +72,18 @@ export const messages = {
   de,
   nl,
   he,
+  es,
+  zh,
+  hi,
+  fr,
+  bn,
+  ru,
+  ja,
+  ko,
+  tr,
+  it,
+  ar,
+  vi,
 };
 
 export type IntlContextType = {

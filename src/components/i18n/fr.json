@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Grouper les lecteurs",
+      "join_subtitle": "Regroupement des lecteurs sélectionnés.",
+      "link_volume": "Synchroniser le volume",
+      "player_focus_title": "Focus du lecteur",
+      "player_focus_subtitle": "Changez le lecteur que vous contrôlez."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Parcourir les médias"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Rechercher dans Music Assistant",
+      "search_title": "Rechercher"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Raccourcis",
+      "shortcuts_subtitle": "Accès rapide à vos actions favorites.",
+      "media_player_actions_title": "Actions du lecteur",
+      "media_player_actions_subtitle": "Commandes supplémentaires de votre lecteur.",
+      "mark_as_favorite": "Ajouter aux favoris",
+      "more_info": "Plus d’infos",
+      "transfer_queue": "Transférer la file",
+      "lyrion_info_title": "Infos sur le titre",
+      "related_albums_title": "Albums associés"
+    },
+    "QueueView": {
+      "up_next": "À suivre",
+      "up_next_subtitle": "File de lecture actuelle"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Enceintes groupées",
+      "link_volume_title": "Synchroniser le volume",
+      "add_speakers_title": "Ajouter des enceintes au groupe"
+    },
+    "QueueView": {
+      "up_next": "À suivre"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Volume",
+      "speaker_grouping_modal_title": "Regroupement des enceintes",
+      "media_browser_modal_title": "Navigateur de médias",
+      "search_modal_title": "Rechercher",
+      "shortcuts_modal_title": "Raccourcis",
+      "queue_view_modal_title": "À suivre"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Synchroniser le volume"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "Rechercher via…"
+    },
+    "input_placeholder": "Rechercher un média…",
+    "categories": {
+      "All": "Tout",
+      "Favorites": "Favoris",
+      "Favorite": "Favori",
+      "Artists": "Artistes",
+      "Albums": "Albums",
+      "Tracks": "Titres",
+      "Playlists": "Playlists",
+      "Podcasts": "Podcasts",
+      "Audiobooks": "Livres audio",
+      "Genres": "Genres",
+      "Radio": "Radio"
+    },
+    "enqueue_mode": {
+      "title": "Mode d’ajout à la file",
+      "play": "Lire",
+      "replace": "Remplacer la file",
+      "next": "Lire ensuite",
+      "replace_next": "Remplacer et lire ensuite",
+      "add": "Ajouter à la file"
+    },
+    "no_results": "Aucun résultat."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Accueil",
+    "filter_placeholder": "Filtrer les résultats…",
+    "empty_text": "Aucun média disponible.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "File",
+      "enqueue_mode": {
+        "play": "Lire",
+        "next": "Lire ensuite",
+        "replace": "Remplacer la file",
+        "add": "Ajouter à la file"
+      },
+      "browse": "Parcourir"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Ajouter aux favoris",
+    "transfer_queue": "Transférer la file",
+    "select_source": "Choisir la source"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "Aucune info de titre disponible"
+  },
+  "player_states": {
+    "Off": "Éteint",
+    "Idle": "Inactif",
+    "Playing": "Lecture",
+    "Paused": "En pause",
+    "Stopped": "Arrêté",
+    "Unavailable": "Indisponible"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "تجميع مشغلات الوسائط",
+      "join_subtitle": "مجموعة مشغلات محددة.",
+      "link_volume": "مزامنة مستوى الصوت",
+      "player_focus_title": "تركيز المشغل",
+      "player_focus_subtitle": "غيّر المشغل الذي تتحكم به."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "تصفح الوسائط"
+    },
+    "SearchView": {
+      "search_in_ma_title": "البحث في Music Assistant",
+      "search_title": "بحث"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "اختصارات",
+      "shortcuts_subtitle": "وصول سريع إلى إجراءاتك المفضلة.",
+      "media_player_actions_title": "إجراءات المشغل",
+      "media_player_actions_subtitle": "ضوابط إضافية لمشغلك.",
+      "mark_as_favorite": "إضافة إلى المفضلة",
+      "more_info": "مزيد من المعلومات",
+      "transfer_queue": "نقل قائمة الانتظار",
+      "lyrion_info_title": "معلومات المقطع",
+      "related_albums_title": "ألبومات ذات صلة"
+    },
+    "QueueView": {
+      "up_next": "التالي",
+      "up_next_subtitle": "قائمة الانتظار الحالية"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "مكبرات صوت مجمّعة",
+      "link_volume_title": "مزامنة مستوى الصوت",
+      "add_speakers_title": "إضافة مكبرات إلى المجموعة"
+    },
+    "QueueView": {
+      "up_next": "التالي"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "مستوى الصوت",
+      "speaker_grouping_modal_title": "تجميع مكبرات الصوت",
+      "media_browser_modal_title": "متصفح الوسائط",
+      "search_modal_title": "بحث",
+      "shortcuts_modal_title": "اختصارات",
+      "queue_view_modal_title": "التالي"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "مزامنة مستوى الصوت"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "البحث باستخدام…"
+    },
+    "input_placeholder": "ابحث عن وسائط…",
+    "categories": {
+      "All": "الكل",
+      "Favorites": "المفضلة",
+      "Favorite": "مفضل",
+      "Artists": "الفنانون",
+      "Albums": "الألبومات",
+      "Tracks": "المقاطع",
+      "Playlists": "قوائم التشغيل",
+      "Podcasts": "البودكاست",
+      "Audiobooks": "الكتب الصوتية",
+      "Genres": "الأنواع",
+      "Radio": "الراديو"
+    },
+    "enqueue_mode": {
+      "title": "وضع قائمة الانتظار",
+      "play": "تشغيل",
+      "replace": "استبدال القائمة",
+      "next": "تشغيل التالي",
+      "replace_next": "استبدال وتشغيل التالي",
+      "add": "إضافة إلى القائمة"
+    },
+    "no_results": "لا توجد نتائج."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "الرئيسية",
+    "filter_placeholder": "تصفية النتائج…",
+    "empty_text": "لا تتوفر وسائط.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "القائمة",
+      "enqueue_mode": {
+        "play": "تشغيل",
+        "next": "تشغيل التالي",
+        "replace": "استبدال القائمة",
+        "add": "إضافة إلى القائمة"
+      },
+      "browse": "تصفح"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "إضافة إلى المفضلة",
+    "transfer_queue": "نقل قائمة الانتظار",
+    "select_source": "اختيار المصدر"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "لا تتوفر معلومات للمقطع"
+  },
+  "player_states": {
+    "Off": "إيقاف",
+    "Idle": "خامل",
+    "Playing": "قيد التشغيل",
+    "Paused": "متوقف مؤقتًا",
+    "Stopped": "متوقف",
+    "Unavailable": "غير متاح"
+  }
+}

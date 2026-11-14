@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Ortam oynatıcılarını grupla",
+      "join_subtitle": "Seçili oynatıcıların grubu.",
+      "link_volume": "Ses seviyesini eşitle",
+      "player_focus_title": "Oynatıcı odağı",
+      "player_focus_subtitle": "Kontrol ettiğiniz oynatıcıyı değiştirin."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Ortamda gezin"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Music Assistant'ta ara",
+      "search_title": "Ara"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Kısayollar",
+      "shortcuts_subtitle": "Sık kullandığınız işlemlere hızlı erişim.",
+      "media_player_actions_title": "Oynatıcı işlemleri",
+      "media_player_actions_subtitle": "Oynatıcınız için ek kontroller.",
+      "mark_as_favorite": "Favorilere ekle",
+      "more_info": "Daha fazla bilgi",
+      "transfer_queue": "Kuyruğu aktar",
+      "lyrion_info_title": "Parça bilgisi",
+      "related_albums_title": "İlgili albümler"
+    },
+    "QueueView": {
+      "up_next": "Sıradaki",
+      "up_next_subtitle": "Mevcut çalma kuyruğu"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Gruplanmış hoparlörler",
+      "link_volume_title": "Ses seviyesini eşitle",
+      "add_speakers_title": "Hoparlörleri gruba ekle"
+    },
+    "QueueView": {
+      "up_next": "Sıradaki"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Ses seviyesi",
+      "speaker_grouping_modal_title": "Hoparlör gruplaması",
+      "media_browser_modal_title": "Ortam tarayıcısı",
+      "search_modal_title": "Ara",
+      "shortcuts_modal_title": "Kısayollar",
+      "queue_view_modal_title": "Sıradaki"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Ses seviyesini eşitle"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "…ile ara"
+    },
+    "input_placeholder": "Ortam ara…",
+    "categories": {
+      "All": "Tümü",
+      "Favorites": "Favoriler",
+      "Favorite": "Favori",
+      "Artists": "Sanatçılar",
+      "Albums": "Albümler",
+      "Tracks": "Parçalar",
+      "Playlists": "Çalma listeleri",
+      "Podcasts": "Podcast'ler",
+      "Audiobooks": "Sesli kitaplar",
+      "Genres": "Türler",
+      "Radio": "Radyo"
+    },
+    "enqueue_mode": {
+      "title": "Kuyruk modu",
+      "play": "Oynat",
+      "replace": "Kuyruğu değiştir",
+      "next": "Sonra oynat",
+      "replace_next": "Değiştir ve sonra oynat",
+      "add": "Kuyruğa ekle"
+    },
+    "no_results": "Sonuç bulunamadı."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Ana sayfa",
+    "filter_placeholder": "Sonuçları filtrele…",
+    "empty_text": "Kullanılacak ortam yok.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "Kuyruk",
+      "enqueue_mode": {
+        "play": "Oynat",
+        "next": "Sonra oynat",
+        "replace": "Kuyruğu değiştir",
+        "add": "Kuyruğa ekle"
+      },
+      "browse": "Gezin"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Favorilere ekle",
+    "transfer_queue": "Kuyruğu aktar",
+    "select_source": "Kaynak seç"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "Parça bilgisi yok"
+  },
+  "player_states": {
+    "Off": "Kapalı",
+    "Idle": "Boşta",
+    "Playing": "Oynatılıyor",
+    "Paused": "Duraklatıldı",
+    "Stopped": "Durduruldu",
+    "Unavailable": "Kullanılamıyor"
+  }
+}
