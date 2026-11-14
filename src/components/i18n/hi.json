@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "मीडिया प्लेयर जोड़ें",
+      "join_subtitle": "चुने गए प्लेयरों का समूह।",
+      "link_volume": "वॉल्यूम सिंक करें",
+      "player_focus_title": "प्लेयर फोकस",
+      "player_focus_subtitle": "बदलें कि आप कौन सा प्लेयर नियंत्रित कर रहे हैं।"
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "मीडिया ब्राउज़ करें"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Music Assistant में खोजें",
+      "search_title": "खोजें"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "शॉर्टकट",
+      "shortcuts_subtitle": "अपने पसंदीदा कार्यों तक त्वरित पहुँच।",
+      "media_player_actions_title": "प्लेयर क्रियाएँ",
+      "media_player_actions_subtitle": "आपके प्लेयर के अतिरिक्त नियंत्रण।",
+      "mark_as_favorite": "पसंदीदा में जोड़ें",
+      "more_info": "अधिक जानकारी",
+      "transfer_queue": "कतार स्थानांतरित करें",
+      "lyrion_info_title": "ट्रैक जानकारी",
+      "related_albums_title": "संबंधित एल्बम"
+    },
+    "QueueView": {
+      "up_next": "अगला",
+      "up_next_subtitle": "वर्तमान प्लेबैक कतार"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "समूहबद्ध स्पीकर",
+      "link_volume_title": "वॉल्यूम सिंक करें",
+      "add_speakers_title": "समूह में स्पीकर जोड़ें"
+    },
+    "QueueView": {
+      "up_next": "अगला"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "वॉल्यूम",
+      "speaker_grouping_modal_title": "स्पीकर समूह",
+      "media_browser_modal_title": "मीडिया ब्राउज़र",
+      "search_modal_title": "खोजें",
+      "shortcuts_modal_title": "शॉर्टकट",
+      "queue_view_modal_title": "अगला"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "वॉल्यूम सिंक करें"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "इससे खोजें…"
+    },
+    "input_placeholder": "मीडिया खोजें…",
+    "categories": {
+      "All": "सभी",
+      "Favorites": "पसंदीदा",
+      "Favorite": "पसंदीदा",
+      "Artists": "कलाकार",
+      "Albums": "एल्बम",
+      "Tracks": "ट्रैक",
+      "Playlists": "प्लेलिस्ट",
+      "Podcasts": "पॉडकास्ट",
+      "Audiobooks": "ऑडियोबुक",
+      "Genres": "शैलियाँ",
+      "Radio": "रेडियो"
+    },
+    "enqueue_mode": {
+      "title": "कतार मोड",
+      "play": "चलाएँ",
+      "replace": "कतार बदलें",
+      "next": "अगला चलाएँ",
+      "replace_next": "बदलकर अगला चलाएँ",
+      "add": "कतार में जोड़ें"
+    },
+    "no_results": "कोई परिणाम नहीं मिला।"
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "होम",
+    "filter_placeholder": "परिणाम छानें…",
+    "empty_text": "कोई मीडिया उपलब्ध नहीं है।",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "कतार",
+      "enqueue_mode": {
+        "play": "चलाएँ",
+        "next": "अगला चलाएँ",
+        "replace": "कतार बदलें",
+        "add": "कतार में जोड़ें"
+      },
+      "browse": "ब्राउज़ करें"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "पसंदीदा में जोड़ें",
+    "transfer_queue": "कतार स्थानांतरित करें",
+    "select_source": "स्रोत चुनें"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "कोई ट्रैक जानकारी नहीं"
+  },
+  "player_states": {
+    "Off": "बंद",
+    "Idle": "निष्क्रिय",
+    "Playing": "चल रहा है",
+    "Paused": "रोका गया",
+    "Stopped": "रोका",
+    "Unavailable": "अनुपलब्ध"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "连接播放器",
+      "join_subtitle": "所选播放器分组。",
+      "link_volume": "同步音量",
+      "player_focus_title": "播放器焦点",
+      "player_focus_subtitle": "更改你正在控制的播放器。"
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "浏览媒体"
+    },
+    "SearchView": {
+      "search_in_ma_title": "在 Music Assistant 中搜索",
+      "search_title": "搜索"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "快捷操作",
+      "shortcuts_subtitle": "快速访问你最常用的操作。",
+      "media_player_actions_title": "播放器操作",
+      "media_player_actions_subtitle": "播放器的其他控制。",
+      "mark_as_favorite": "收藏",
+      "more_info": "更多信息",
+      "transfer_queue": "转移队列",
+      "lyrion_info_title": "曲目信息",
+      "related_albums_title": "相关专辑"
+    },
+    "QueueView": {
+      "up_next": "接下来播放",
+      "up_next_subtitle": "当前播放队列"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "已分组的扬声器",
+      "link_volume_title": "同步音量",
+      "add_speakers_title": "添加扬声器到分组"
+    },
+    "QueueView": {
+      "up_next": "接下来播放"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "音量",
+      "speaker_grouping_modal_title": "扬声器分组",
+      "media_browser_modal_title": "媒体浏览器",
+      "search_modal_title": "搜索",
+      "shortcuts_modal_title": "快捷操作",
+      "queue_view_modal_title": "接下来播放"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "同步音量"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "使用…搜索"
+    },
+    "input_placeholder": "搜索媒体…",
+    "categories": {
+      "All": "全部",
+      "Favorites": "收藏",
+      "Favorite": "收藏",
+      "Artists": "艺术家",
+      "Albums": "专辑",
+      "Tracks": "曲目",
+      "Playlists": "播放列表",
+      "Podcasts": "播客",
+      "Audiobooks": "有声书",
+      "Genres": "流派",
+      "Radio": "广播"
+    },
+    "enqueue_mode": {
+      "title": "队列模式",
+      "play": "播放",
+      "replace": "替换队列",
+      "next": "下一首播放",
+      "replace_next": "替换并下一首",
+      "add": "加入队列"
+    },
+    "no_results": "未找到结果。"
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "首页",
+    "filter_placeholder": "过滤结果…",
+    "empty_text": "没有可用的媒体。",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "队列",
+      "enqueue_mode": {
+        "play": "播放",
+        "next": "下一首播放",
+        "replace": "替换队列",
+        "add": "加入队列"
+      },
+      "browse": "浏览"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "收藏",
+    "transfer_queue": "转移队列",
+    "select_source": "选择音源"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "暂无曲目信息"
+  },
+  "player_states": {
+    "Off": "关闭",
+    "Idle": "空闲",
+    "Playing": "播放中",
+    "Paused": "已暂停",
+    "Stopped": "已停止",
+    "Unavailable": "不可用"
+  }
+}

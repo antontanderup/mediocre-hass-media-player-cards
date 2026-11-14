@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "プレーヤーをグループ化",
+      "join_subtitle": "選択したプレーヤーのグループ。",
+      "link_volume": "音量を同期",
+      "player_focus_title": "操作対象のプレーヤー",
+      "player_focus_subtitle": "操作するプレーヤーを切り替えます。"
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "メディアを閲覧"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Music Assistant で検索",
+      "search_title": "検索"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "ショートカット",
+      "shortcuts_subtitle": "よく使う操作に素早くアクセス。",
+      "media_player_actions_title": "プレーヤーの操作",
+      "media_player_actions_subtitle": "プレーヤーのその他のコントロール。",
+      "mark_as_favorite": "お気に入りに追加",
+      "more_info": "詳細情報",
+      "transfer_queue": "キューを転送",
+      "lyrion_info_title": "トラック情報",
+      "related_albums_title": "関連アルバム"
+    },
+    "QueueView": {
+      "up_next": "次の曲",
+      "up_next_subtitle": "現在の再生キュー"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "グループ化されたスピーカー",
+      "link_volume_title": "音量を同期",
+      "add_speakers_title": "スピーカーをグループに追加"
+    },
+    "QueueView": {
+      "up_next": "次の曲"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "音量",
+      "speaker_grouping_modal_title": "スピーカーグループ",
+      "media_browser_modal_title": "メディアブラウザー",
+      "search_modal_title": "検索",
+      "shortcuts_modal_title": "ショートカット",
+      "queue_view_modal_title": "次の曲"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "音量を同期"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "…で検索"
+    },
+    "input_placeholder": "メディアを検索…",
+    "categories": {
+      "All": "すべて",
+      "Favorites": "お気に入り",
+      "Favorite": "お気に入り",
+      "Artists": "アーティスト",
+      "Albums": "アルバム",
+      "Tracks": "曲",
+      "Playlists": "プレイリスト",
+      "Podcasts": "ポッドキャスト",
+      "Audiobooks": "オーディオブック",
+      "Genres": "ジャンル",
+      "Radio": "ラジオ"
+    },
+    "enqueue_mode": {
+      "title": "キューの追加方法",
+      "play": "再生",
+      "replace": "キューを置き換え",
+      "next": "次に再生",
+      "replace_next": "置き換えて次に再生",
+      "add": "キューに追加"
+    },
+    "no_results": "結果が見つかりません。"
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "ホーム",
+    "filter_placeholder": "結果を絞り込む…",
+    "empty_text": "利用可能なメディアがありません。",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "キュー",
+      "enqueue_mode": {
+        "play": "再生",
+        "next": "次に再生",
+        "replace": "キューを置き換え",
+        "add": "キューに追加"
+      },
+      "browse": "閲覧"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "お気に入りに追加",
+    "transfer_queue": "キューを転送",
+    "select_source": "ソースを選択"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "トラック情報がありません"
+  },
+  "player_states": {
+    "Off": "オフ",
+    "Idle": "待機中",
+    "Playing": "再生中",
+    "Paused": "一時停止",
+    "Stopped": "停止",
+    "Unavailable": "利用不可"
+  }
+}

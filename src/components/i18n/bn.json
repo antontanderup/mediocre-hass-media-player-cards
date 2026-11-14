@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "মিডিয়া প্লেয়ার যুক্ত করুন",
+      "join_subtitle": "নির্বাচিত প্লেয়ারগুলোর গ্রুপ।",
+      "link_volume": "ভলিউম সিঙ্ক করুন",
+      "player_focus_title": "প্লেয়ার ফোকাস",
+      "player_focus_subtitle": "আপনি কোন প্লেয়ার নিয়ন্ত্রণ করছেন তা পরিবর্তন করুন।"
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "মিডিয়া ব্রাউজ করুন"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Music Assistant-এ খুঁজুন",
+      "search_title": "খুঁজুন"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "শর্টকাট",
+      "shortcuts_subtitle": "আপনার পছন্দের অ্যাকশনে দ্রুত প্রবেশ।",
+      "media_player_actions_title": "প্লেয়ার অ্যাকশন",
+      "media_player_actions_subtitle": "আপনার প্লেয়ারের অতিরিক্ত নিয়ন্ত্রণ।",
+      "mark_as_favorite": "পছন্দের মধ্যে যোগ করুন",
+      "more_info": "আরও তথ্য",
+      "transfer_queue": "কিউ স্থানান্তর করুন",
+      "lyrion_info_title": "ট্র্যাক তথ্য",
+      "related_albums_title": "সম্পর্কিত অ্যালবাম"
+    },
+    "QueueView": {
+      "up_next": "পরবর্তী",
+      "up_next_subtitle": "বর্তমান প্লেব্যাক কিউ"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "গ্রুপকৃত স্পিকার",
+      "link_volume_title": "ভলিউম সিঙ্ক করুন",
+      "add_speakers_title": "গ্রুপে স্পিকার যোগ করুন"
+    },
+    "QueueView": {
+      "up_next": "পরবর্তী"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "ভলিউম",
+      "speaker_grouping_modal_title": "স্পিকার গ্রুপিং",
+      "media_browser_modal_title": "মিডিয়া ব্রাউজার",
+      "search_modal_title": "খুঁজুন",
+      "shortcuts_modal_title": "শর্টকাট",
+      "queue_view_modal_title": "পরবর্তী"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "ভলিউম সিঙ্ক করুন"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "এখান থেকে খুঁজুন…"
+    },
+    "input_placeholder": "মিডিয়া খুঁজুন…",
+    "categories": {
+      "All": "সব",
+      "Favorites": "পছন্দের",
+      "Favorite": "পছন্দের",
+      "Artists": "শিল্পী",
+      "Albums": "অ্যালবাম",
+      "Tracks": "ট্র্যাক",
+      "Playlists": "প্লেলিস্ট",
+      "Podcasts": "পডকাস্ট",
+      "Audiobooks": "অডিওবুক",
+      "Genres": "ধরন",
+      "Radio": "রেডিও"
+    },
+    "enqueue_mode": {
+      "title": "কিউ মোড",
+      "play": "চালান",
+      "replace": "কিউ প্রতিস্থাপন করুন",
+      "next": "পরে চালান",
+      "replace_next": "প্রতিস্থাপন করে পরে চালান",
+      "add": "কিউ-এ যোগ করুন"
+    },
+    "no_results": "কোন ফলাফল পাওয়া যায়নি।"
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "হোম",
+    "filter_placeholder": "ফলাফল ফিল্টার করুন…",
+    "empty_text": "কোন মিডিয়া নেই।",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "কিউ",
+      "enqueue_mode": {
+        "play": "চালান",
+        "next": "পরে চালান",
+        "replace": "কিউ প্রতিস্থাপন করুন",
+        "add": "কিউ-এ যোগ করুন"
+      },
+      "browse": "ব্রাউজ করুন"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "পছন্দের মধ্যে যোগ করুন",
+    "transfer_queue": "কিউ স্থানান্তর করুন",
+    "select_source": "উৎস নির্বাচন করুন"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "কোন ট্র্যাক তথ্য নেই"
+  },
+  "player_states": {
+    "Off": "বন্ধ",
+    "Idle": "নিষ্ক্রিয়",
+    "Playing": "চলছে",
+    "Paused": "বিরতি",
+    "Stopped": "থেমে",
+    "Unavailable": "অনুপলব্ধ"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "Ghép các trình phát",
+      "join_subtitle": "Nhóm các trình phát đã chọn.",
+      "link_volume": "Đồng bộ âm lượng",
+      "player_focus_title": "Trình phát đang tập trung",
+      "player_focus_subtitle": "Đổi trình phát mà bạn đang điều khiển."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "Duyệt phương tiện"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Tìm trong Music Assistant",
+      "search_title": "Tìm kiếm"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "Lối tắt",
+      "shortcuts_subtitle": "Truy cập nhanh các thao tác yêu thích.",
+      "media_player_actions_title": "Thao tác trình phát",
+      "media_player_actions_subtitle": "Điều khiển thêm cho trình phát của bạn.",
+      "mark_as_favorite": "Thêm vào yêu thích",
+      "more_info": "Thông tin khác",
+      "transfer_queue": "Chuyển hàng đợi",
+      "lyrion_info_title": "Thông tin bài hát",
+      "related_albums_title": "Album liên quan"
+    },
+    "QueueView": {
+      "up_next": "Tiếp theo",
+      "up_next_subtitle": "Hàng đợi phát hiện tại"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "Loa đã nhóm",
+      "link_volume_title": "Đồng bộ âm lượng",
+      "add_speakers_title": "Thêm loa vào nhóm"
+    },
+    "QueueView": {
+      "up_next": "Tiếp theo"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "Âm lượng",
+      "speaker_grouping_modal_title": "Ghép loa",
+      "media_browser_modal_title": "Trình duyệt phương tiện",
+      "search_modal_title": "Tìm kiếm",
+      "shortcuts_modal_title": "Lối tắt",
+      "queue_view_modal_title": "Tiếp theo"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "Đồng bộ âm lượng"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "Tìm bằng…"
+    },
+    "input_placeholder": "Tìm phương tiện…",
+    "categories": {
+      "All": "Tất cả",
+      "Favorites": "Yêu thích",
+      "Favorite": "Yêu thích",
+      "Artists": "Nghệ sĩ",
+      "Albums": "Album",
+      "Tracks": "Bài hát",
+      "Playlists": "Danh sách phát",
+      "Podcasts": "Podcast",
+      "Audiobooks": "Sách nói",
+      "Genres": "Thể loại",
+      "Radio": "Radio"
+    },
+    "enqueue_mode": {
+      "title": "Chế độ hàng đợi",
+      "play": "Phát",
+      "replace": "Thay hàng đợi",
+      "next": "Phát tiếp theo",
+      "replace_next": "Thay và phát tiếp theo",
+      "add": "Thêm vào hàng đợi"
+    },
+    "no_results": "Không tìm thấy kết quả."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "Trang chủ",
+    "filter_placeholder": "Lọc kết quả…",
+    "empty_text": "Không có phương tiện nào.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "Hàng đợi",
+      "enqueue_mode": {
+        "play": "Phát",
+        "next": "Phát tiếp theo",
+        "replace": "Thay hàng đợi",
+        "add": "Thêm vào hàng đợi"
+      },
+      "browse": "Duyệt"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "Thêm vào yêu thích",
+    "transfer_queue": "Chuyển hàng đợi",
+    "select_source": "Chọn nguồn"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "Không có thông tin bài hát"
+  },
+  "player_states": {
+    "Off": "Tắt",
+    "Idle": "Chờ",
+    "Playing": "Đang phát",
+    "Paused": "Tạm dừng",
+    "Stopped": "Đã dừng",
+    "Unavailable": "Không khả dụng"
+  }
+}

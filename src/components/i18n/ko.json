@@ -1,0 +1,115 @@
+{
+  "MediocreMultiMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "join_title": "미디어 플레이어 연결",
+      "join_subtitle": "선택한 플레이어 그룹입니다.",
+      "link_volume": "볼륨 동기화",
+      "player_focus_title": "플레이어 초점",
+      "player_focus_subtitle": "제어 중인 플레이어를 변경합니다."
+    },
+    "MediaBrowserView": {
+      "browse_media_title": "미디어 탐색"
+    },
+    "SearchView": {
+      "search_in_ma_title": "Music Assistant에서 검색",
+      "search_title": "검색"
+    },
+    "AdditionalActionsView": {
+      "shortcuts_title": "바로가기",
+      "shortcuts_subtitle": "자주 쓰는 작업에 빠르게 액세스.",
+      "media_player_actions_title": "플레이어 작업",
+      "media_player_actions_subtitle": "플레이어의 추가 컨트롤.",
+      "mark_as_favorite": "즐겨찾기에 추가",
+      "more_info": "자세히",
+      "transfer_queue": "대기열 전송",
+      "lyrion_info_title": "트랙 정보",
+      "related_albums_title": "관련 앨범"
+    },
+    "QueueView": {
+      "up_next": "다음 곡",
+      "up_next_subtitle": "현재 재생 대기열"
+    }
+  },
+  "MediocreMediaPlayerCard": {
+    "SpeakerGrouping": {
+      "grouped_speakers_title": "그룹화된 스피커",
+      "link_volume_title": "볼륨 동기화",
+      "add_speakers_title": "스피커를 그룹에 추가"
+    },
+    "QueueView": {
+      "up_next": "다음 곡"
+    }
+  },
+  "MediocreMassiveMediaPlayerCard": {
+    "PlayerActions": {
+      "volume_modal_title": "볼륨",
+      "speaker_grouping_modal_title": "스피커 그룹",
+      "media_browser_modal_title": "미디어 브라우저",
+      "search_modal_title": "검색",
+      "shortcuts_modal_title": "바로가기",
+      "queue_view_modal_title": "다음 곡"
+    },
+    "SpeakerGrouping": {
+      "link_volume": "볼륨 동기화"
+    }
+  },
+  "Search": {
+    "search_provider": {
+      "title": "…에서 검색"
+    },
+    "input_placeholder": "미디어 검색…",
+    "categories": {
+      "All": "전체",
+      "Favorites": "즐겨찾기",
+      "Favorite": "즐겨찾기",
+      "Artists": "아티스트",
+      "Albums": "앨범",
+      "Tracks": "곡",
+      "Playlists": "재생목록",
+      "Podcasts": "팟캐스트",
+      "Audiobooks": "오디오북",
+      "Genres": "장르",
+      "Radio": "라디오"
+    },
+    "enqueue_mode": {
+      "title": "대기열 모드",
+      "play": "재생",
+      "replace": "대기열 바꾸기",
+      "next": "다음으로 재생",
+      "replace_next": "바꾸고 다음으로 재생",
+      "add": "대기열에 추가"
+    },
+    "no_results": "결과가 없습니다."
+  },
+  "MediaBrowser": {
+    "breadcrumb_home": "홈",
+    "filter_placeholder": "결과 필터…",
+    "empty_text": "사용 가능한 미디어가 없습니다.",
+    "media_item_menu": {
+      "enqueue_dropdown_label": "대기열",
+      "enqueue_mode": {
+        "play": "재생",
+        "next": "다음으로 재생",
+        "replace": "대기열 바꾸기",
+        "add": "대기열에 추가"
+      },
+      "browse": "탐색"
+    }
+  },
+  "AdditionalActionsMenu": {
+    "mark_as_favorite": "즐겨찾기에 추가",
+    "transfer_queue": "대기열 전송",
+    "select_source": "소스 선택"
+  },
+  "LyrionTrackInfo": {
+    "empty_state": "트랙 정보 없음"
+  },
+  "player_states": {
+    "Off": "꺼짐",
+    "Idle": "대기",
+    "Playing": "재생 중",
+    "Paused": "일시정지",
+    "Stopped": "중지",
+    "Unavailable": "사용 불가"
+  }
+}
